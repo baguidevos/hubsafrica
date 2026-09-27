@@ -32,6 +32,12 @@ Route::redirect('/account-type-selection', '/rejoindre');
 // Parcours d'inscription Coach via lien d'invitation sécurisé
 Route::get('/coach/invite/{token}', [CoachInvitationController::class, 'show'])->name('coach.invite');
 Route::post('/coach/invite/{token}', [CoachInvitationController::class, 'register'])->name('coach.invite.register');
+Route::get('/register/coach', function (\Illuminate\Http\Request $request) {
+    $token = $request->query('token');
+    return $token
+        ? redirect()->route('coach.invite', ['token' => $token])
+        : redirect()->route('public.rejoindre');
+});
 
 // Redirection conviviale pour l'espace Coach/Mentor
 Route::redirect('/mentor', '/coach');

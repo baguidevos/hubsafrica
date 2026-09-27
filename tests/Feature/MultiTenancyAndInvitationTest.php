@@ -102,4 +102,36 @@ test('entrepreneur can access portal tenant dashboard', function () {
     $this->actingAs($entrepreneurUser)->get('/portal/teranga-africa')->assertOk();
 });
 
+test('coach invitation notification has copy action and correct url', function () {
+    $sae = Sae::first() ?? Sae::create(['name' => 'SAE Test', 'slug' => 'sae-test']);
+    $invitation = CoachInvitation::create([
+        'sae_id' => $sae->id,
+        'email' => 'coach.copy@test.sn',
+        'name' => 'Coach Copy Test',
+        'token' => 'token-copy-test-999',
+        'status' => 'PENDING',
+    ]);
+
+    expect($invitation->getInvitationUrl())->toContain('/coach/invite/token-copy-test-999');
+
+    $notification = $invitation->makeInvitationNotification();
+    expect($notification->getTitle())->toBe('Lien d\'invitation généré');
+    expect((string) $notification->getBody())->toContain($invitation->getInvitationUrl());
+
+    $actions = $notification->getActions();
+    expect($actions)->not->toBeEmpty();
+
+    $copyAction = collect($actions)->first(fn ($a) => $a->getName() === 'copy_invitation_url');
+    expect($copyAction)->not->toBeNull();
+    expect($copyAction->getLabel())->toBe('Copier le lien');
+    expect($copyAction->getAlpineClickHandler())->toContain('navigator.clipboard.writeText');
+    expect($copyAction->getAlpineClickHandler())->toContain($invitation->getInvitationUrl());
+});
+
+test('legacy register coach url with token redirects to official coach invite route', function () {
+    $response = $this->get('/register/coach?token=demo-token-123');
+    $response->assertRedirect(route('coach.invite', ['token' => 'demo-token-123']));
+});
+
+
 

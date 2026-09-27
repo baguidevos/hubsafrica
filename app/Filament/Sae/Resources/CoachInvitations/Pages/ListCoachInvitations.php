@@ -15,7 +15,8 @@ class ListCoachInvitations extends ListRecords
         return [
             CreateAction::make()
                 ->label('Inviter un coach')
-                ->slideOver(),
+                ->slideOver()
+                ->successNotification(fn (\App\Models\CoachInvitation $record) => $record->makeInvitationNotification()),
         ];
     }
 }

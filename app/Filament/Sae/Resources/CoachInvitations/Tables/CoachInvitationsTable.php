@@ -66,16 +66,11 @@ class CoachInvitationsTable
             ])
             ->recordActions([
                 Action::make('copy_link')
-                    ->label('Lien')
+                    ->label('Lien d\'invitation')
                     ->icon('heroicon-o-link')
-                    ->color('info')
-                    ->action(function ($record) {
-                        $url = url('/register/coach?token=' . $record->token);
-                        Notification::make()
-                            ->title('Lien d\'invitation généré')
-                            ->body($url)
-                            ->info()
-                            ->send();
+                    ->color('warning')
+                    ->action(function (\App\Models\CoachInvitation $record) {
+                        $record->makeInvitationNotification()->send();
                     }),
                 ViewAction::make()->slideOver(),
                 EditAction::make()->slideOver(),

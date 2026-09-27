@@ -4,6 +4,21 @@ Toutes les modifications notables apportées au projet **Hub Africa v2** (Stack 
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
+## [2.7.0] - 2026-09-27
+
+### Ajouté (Added) & Amélioré (Improved)
+- **Action de Copie Immédiate dans la Notification d'Invitation de Coach** :
+  - Intégration d'un bouton d'action **« Copier le lien »** (`copy_invitation_url`) avec icône et retour visuel dynamique (`✓ Lien copié !`) dans la notification Filament lors de la génération d'un lien d'invitation coach.
+  - Implémentation via Alpine.js (`->alpineClickHandler(...)`) avec écriture directe dans le presse-papier (`navigator.clipboard.writeText`) et fallback universel (`execCommand('copy')`).
+  - Ajout d'une seconde action **« Ouvrir »** ouvrant le lien d'invitation dans un nouvel onglet.
+  - Centralisation de la génération d'URL et de notification dans [`CoachInvitation::makeInvitationNotification()`](file:///C:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Models/CoachInvitation.php) :
+    - Déclenchée lors de la création d'une invitation depuis la page [`CreateCoachInvitation`](file:///C:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Filament/Sae/Resources/CoachInvitations/Pages/CreateCoachInvitation.php).
+    - Déclenchée lors de la création depuis le slideOver de [`ListCoachInvitations`](file:///C:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Filament/Sae/Resources/CoachInvitations/Pages/ListCoachInvitations.php).
+    - Déclenchée via l'action de ligne `copy_link` sur le tableau [`CoachInvitationsTable`](file:///C:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Filament/Sae/Resources/CoachInvitations/Tables/CoachInvitationsTable.php).
+    - Ajout de l'action directe « Générer un lien d'invitation » dans l'en-tête de la liste des coachs ([`ListCoaches`](file:///C:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Filament/Sae/Resources/Coaches/Pages/ListCoaches.php)).
+  - Ajout de la redirection de commodité `/register/coach?token=...` vers `/coach/invite/{token}`.
+  - Tests Pest ajoutés et validés à 100% (34/34 tests passants).
+
 ## [2.6.0] - 2026-09-27
 
 ### Ajouté (Added)

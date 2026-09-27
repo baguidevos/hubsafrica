@@ -27,6 +27,7 @@ class CoachPanelProvider extends PanelProvider
         return $panel
             ->id('coach')
             ->path('coach')
+            ->viteTheme('resources/css/filament/coach/theme.css')
             ->login()
             ->colors([
                 'primary' => Color::Indigo,
