@@ -27,6 +27,7 @@ class EntrepreneurPanelProvider extends PanelProvider
         return $panel
             ->id('entrepreneur')
             ->path('portal')
+            ->viteTheme('resources/css/filament/entrepreneur/theme.css')
             ->login()
             ->colors([
                 'primary' => Color::Emerald,

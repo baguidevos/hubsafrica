@@ -188,3 +188,43 @@ test('handle evaluation submission listener marks unlock as completed, logs time
     // Timeline event was recorded
     expect(TimelineEvent::where('entrepreneur_id', $entrepreneur->id)->where('type', 'EVALUATION')->exists())->toBeTrue();
 });
+
+test('fill questionnaire route and page are properly defined and accessible to assigned entrepreneur', function () {
+    $user = User::factory()->create();
+    $user->saes()->attach($this->sae->id);
+
+    $entrepreneur = Entrepreneur::create([
+        'sae_id' => $this->sae->id,
+        'user_id' => $user->id,
+        'first_name' => 'Ousmane',
+        'last_name' => 'Fall',
+        'email' => $user->email,
+        'status' => 'ACTIVE',
+    ]);
+
+    $form = Form::create([
+        'sae_id' => $this->sae->id,
+        'name' => 'Diagnostic Initial Route Test',
+        'slug' => 'diagnostic-initial-route-test',
+        'type' => FormType::BASELINE,
+    ]);
+
+    FormUnlock::create([
+        'sae_id' => $this->sae->id,
+        'form_id' => $form->id,
+        'entrepreneur_id' => $entrepreneur->id,
+        'status' => FormUnlockStatus::EN_ATTENTE,
+        'due_date' => now()->addDays(5),
+    ]);
+
+    $url = route('filament.entrepreneur.pages.fill-questionnaire', [
+        'tenant' => $this->sae->slug,
+        'slug' => $form->slug,
+    ]);
+
+    expect($url)->toContain("/portal/{$this->sae->slug}/questionnaires/{$form->slug}");
+
+    $response = $this->actingAs($user)->get($url);
+    $response->assertOk();
+    $response->assertSee('Diagnostic Initial Route Test');
+});

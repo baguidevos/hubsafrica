@@ -13,6 +13,16 @@ class FillQuestionnairePage extends Page
 
     protected static bool $shouldRegisterNavigation = false;
 
+    public static function getRelativeRouteName(\Filament\Panel $panel): string
+    {
+        return 'fill-questionnaire';
+    }
+
+    public static function getRouteName(?\Filament\Panel $panel = null): string
+    {
+        return 'filament.entrepreneur.pages.fill-questionnaire';
+    }
+
     protected string $view = 'filament.entrepreneur.pages.fill-questionnaire-page';
 
     public ?string $formSlug = null;

@@ -11,7 +11,7 @@ export default defineConfig({
     },
     plugins: lazyPlugins(() => [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/css/filament/sae/theme.css'],
+            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/css/filament/sae/theme.css', 'resources/css/filament/entrepreneur/theme.css'],
             refresh: true,
             fonts: [
                 bunny('Instrument Sans', {
