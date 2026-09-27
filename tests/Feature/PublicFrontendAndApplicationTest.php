@@ -31,8 +31,7 @@ test('public home page loads successfully with institutional branding and metric
     $response = $this->get('/');
 
     $response->assertOk();
-    $response->assertSee('HUB');
-    $response->assertSee('AFRICA');
+    $response->assertSee('Hub Africa');
     $response->assertSee('Startups Accompagnées');
     $response->assertSee('Accélération Tech 2026');
 });

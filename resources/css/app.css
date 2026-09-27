@@ -4,13 +4,13 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-    --color-brand-primary: var(--ha-primary, #064e3b);
-    --color-brand-primary-hover: var(--ha-primary-hover, #04382a);
-    --color-brand-primary-light: var(--ha-primary-light, #059669);
-    --color-brand-secondary: var(--ha-secondary, #0f172a);
-    --color-brand-secondary-light: var(--ha-secondary-light, #1e293b);
-    --color-brand-accent: var(--ha-accent, #d97706);
-    --color-brand-accent-light: var(--ha-accent-light, #f59e0b);
+    --font-sans: 'DM Sans', 'Poppins', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --color-brand-primary: var(--ha-primary, #F8B81D);
+    --color-brand-primary-hover: var(--ha-primary-hover, #e5a510);
+    --color-brand-primary-light: var(--ha-primary-light, #fef3c7);
+    --color-brand-secondary: var(--ha-secondary, #2F3284);
+    --color-brand-secondary-light: var(--ha-secondary-light, #4347a8);
+    --color-brand-accent: var(--ha-accent, #F9B104);
+    --color-brand-accent-light: var(--ha-accent-light, #fbbf24);
     --color-brand-surface: var(--ha-surface, #f8fafc);
 }

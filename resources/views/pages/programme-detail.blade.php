@@ -10,9 +10,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
             {{-- Breadcrumb --}}
             <nav class="flex items-center gap-2 text-xs text-slate-400">
-                <a href="{{ route('home') }}" class="hover:text-emerald-400">Accueil</a>
+                <a href="{{ route('home') }}" class="hover:text-[#F8B81D]">Accueil</a>
                 <span>/</span>
-                <a href="{{ route('public.programmes') }}" class="hover:text-emerald-400">Programmes</a>
+                <a href="{{ route('public.programmes') }}" class="hover:text-[#F8B81D]">Programmes</a>
                 <span>/</span>
                 <span class="text-slate-200 truncate">{{ $program->name }}</span>
             </nav>
@@ -21,8 +21,8 @@
                 <div class="space-y-2">
                     <div class="flex items-center gap-3">
                         @if($isOpen)
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
-                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#F8B81D]/20 text-[#F8B81D] border border-[#F8B81D]/40">
+                                <span class="w-2 h-2 rounded-full bg-[#F8B81D] animate-pulse"></span>
                                 Candidatures Ouvertes
                             </span>
                         @else
@@ -55,10 +55,10 @@
                     <div class="shrink-0">
                         <a
                             href="{{ route('public.programme.candidater', $program->id) }}"
-                            class="px-6 py-3.5 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                            class="px-6 py-3.5 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 font-bold text-xs sm:text-sm shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
                         >
                             <span>Déposer ma Candidature</span>
-                            <svg class="w-4 h-4 text-emerald-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                            <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </a>
                     </div>
                 @endif
@@ -76,7 +76,7 @@
                 {{-- Présentation & Résumé --}}
                 <div class="bg-white rounded-3xl p-8 border border-slate-200/90 shadow-xs space-y-4">
                     <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-[#2F3284]"></span>
                         Présentation du Programme
                     </h2>
                     <div class="text-sm text-slate-700 leading-relaxed whitespace-pre-line space-y-3">
@@ -88,7 +88,7 @@
                 @if($program->objectives)
                     <div class="bg-white rounded-3xl p-8 border border-slate-200/90 shadow-xs space-y-4">
                         <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#F8B81D]"></span>
                             Objectifs &amp; Compétences Visées
                         </h2>
                         <div class="text-sm text-slate-700 leading-relaxed whitespace-pre-line">
@@ -100,7 +100,7 @@
                 {{-- Critères d'éligibilité --}}
                 <div class="bg-white rounded-3xl p-8 border border-slate-200/90 shadow-xs space-y-4">
                     <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-teal-600"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-[#2F3284]"></span>
                         Critères d'Éligibilité
                     </h2>
                     @if($program->eligibility)
@@ -110,15 +110,15 @@
                     @else
                         <ul class="space-y-3 text-xs sm:text-sm text-slate-700">
                             <li class="flex items-start gap-2.5">
-                                <svg class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                <svg class="w-4 h-4 text-[#F8B81D] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                                 <span>Entrepreneurs et co-fondateurs porteurs d'un projet formalisé ou en cours d'immatriculation.</span>
                             </li>
                             <li class="flex items-start gap-2.5">
-                                <svg class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                <svg class="w-4 h-4 text-[#F8B81D] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                                 <span>Solution répondant à un besoin concret de marché (innovation d'usage, technologique ou de procédé).</span>
                             </li>
                             <li class="flex items-start gap-2.5">
-                                <svg class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                <svg class="w-4 h-4 text-[#F8B81D] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                                 <span>Disponibilité avérée de l'équipe fondatrice pour suivre les séances de mentorat individuel et les ateliers collectifs.</span>
                             </li>
                         </ul>
@@ -129,13 +129,13 @@
                 @if($program->deliverableDefinitions && $program->deliverableDefinitions->isNotEmpty())
                     <div class="bg-white rounded-3xl p-8 border border-slate-200/90 shadow-xs space-y-4">
                         <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#2F3284]"></span>
                             Livrables Méthodologiques Validés
                         </h2>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             @foreach($program->deliverableDefinitions as $def)
                                 <div class="p-3.5 rounded-xl border border-slate-200/80 bg-slate-50 flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs shrink-0">
+                                    <div class="w-8 h-8 rounded-lg bg-[#F8B81D]/20 text-[#2F3284] flex items-center justify-center font-bold text-xs shrink-0">
                                         ✓
                                     </div>
                                     <div>
@@ -182,7 +182,7 @@
 
                         <div class="flex items-center justify-between pb-3 border-b border-slate-100">
                             <span class="text-slate-500">Capacité d'accueil</span>
-                            <strong class="text-emerald-700 font-bold">
+                            <strong class="text-[#2F3284] font-bold">
                                 {{ $program->capacity ?: '20' }} startups
                             </strong>
                         </div>
@@ -191,7 +191,7 @@
                     @if($isOpen)
                         <a
                             href="{{ route('public.programme.candidater', $program->id) }}"
-                            class="w-full block py-4 px-6 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs text-center shadow-md shadow-emerald-900/20 transition transform hover:-translate-y-0.5"
+                            class="w-full block py-4 px-6 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 font-extrabold text-xs text-center shadow-md transition transform hover:-translate-y-0.5"
                         >
                             Postuler à ce programme &rarr;
                         </a>
@@ -221,7 +221,7 @@
                         @if($program->sae?->email)
                             <div class="flex items-center gap-2">
                                 <span class="text-slate-400">Email :</span>
-                                <a href="mailto:{{ $program->sae->email }}" class="text-emerald-700 font-semibold hover:underline truncate">{{ $program->sae->email }}</a>
+                                <a href="mailto:{{ $program->sae->email }}" class="text-[#2F3284] font-semibold hover:underline truncate">{{ $program->sae->email }}</a>
                             </div>
                         @endif
                         @if($program->sae?->phone)

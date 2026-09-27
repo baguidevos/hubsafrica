@@ -13,10 +13,10 @@
                         type="text"
                         wire:model.live.debounce.300ms="search"
                         placeholder="Rechercher par titre, mot-clé, SAE..."
-                        class="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-300 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/10 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition"
+                        class="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-300 focus:border-[#F8B81D] focus:ring-4 focus:ring-[#F8B81D]/20 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition"
                     >
                     <div wire:loading wire:target="search" class="absolute inset-y-0 right-0 pr-3.5 flex items-center">
-                        <svg class="animate-spin h-4 w-4 text-emerald-600" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+                        <svg class="animate-spin h-4 w-4 text-[#2F3284]" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
                     </div>
                 </div>
 
@@ -24,7 +24,7 @@
                 <div class="md:col-span-3">
                     <select
                         wire:model.live="selectedSae"
-                        class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/10 text-sm text-slate-800 bg-white outline-none transition"
+                        class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:border-[#F8B81D] focus:ring-4 focus:ring-[#F8B81D]/20 text-sm text-slate-800 bg-white outline-none transition"
                     >
                         <option value="all">Toutes les structures (SAE)</option>
                         @foreach($saes as $s)
@@ -37,7 +37,7 @@
                 <div class="md:col-span-2">
                     <select
                         wire:model.live="selectedStatus"
-                        class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/10 text-sm text-slate-800 bg-white outline-none transition"
+                        class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:border-[#F8B81D] focus:ring-4 focus:ring-[#F8B81D]/20 text-sm text-slate-800 bg-white outline-none transition"
                     >
                         <option value="all">Tous les statuts</option>
                         <option value="open">Candidatures Ouvertes</option>
@@ -49,7 +49,7 @@
                 <div class="md:col-span-2">
                     <select
                         wire:model.live="selectedLevel"
-                        class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/10 text-sm text-slate-800 bg-white outline-none transition"
+                        class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:border-[#F8B81D] focus:ring-4 focus:ring-[#F8B81D]/20 text-sm text-slate-800 bg-white outline-none transition"
                     >
                         <option value="all">Toutes les phases</option>
                         @foreach($levels as $lvl)
@@ -117,8 +117,8 @@
                             <div class="flex items-center justify-between gap-2 mb-3">
                                 {{-- Statut Inscriptions --}}
                                 @if($isOpen)
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
-                                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-[#2F3284] border border-amber-200">
+                                        <span class="w-2 h-2 rounded-full bg-[#F8B81D] animate-pulse"></span>
                                         Candidatures Ouvertes
                                     </span>
                                 @else
@@ -129,21 +129,21 @@
 
                                 {{-- Phase / Niveau --}}
                                 @if($p->level)
-                                    <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 bg-amber-50 text-amber-800 border border-amber-200 rounded-lg">
+                                    <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 bg-[#2F3284]/10 text-[#2F3284] border border-[#2F3284]/20 rounded-lg">
                                         {{ $p->level->name }}
                                     </span>
                                 @endif
                             </div>
 
                             {{-- Titre & Structure Organisatrice --}}
-                            <h3 class="text-lg font-extrabold text-slate-900 group-hover:text-emerald-700 transition line-clamp-1">
+                            <h3 class="text-lg font-extrabold text-slate-900 group-hover:text-[#2F3284] transition line-clamp-1">
                                 <a href="{{ route('public.programme.detail', $p->id) }}">
                                     {{ $p->name }}
                                 </a>
                             </h3>
 
                             <div class="flex items-center gap-2 mt-2 text-xs text-slate-600 font-medium">
-                                <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                                <svg class="w-4 h-4 text-[#F8B81D] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                                 <span class="truncate">{{ $p->sae?->name ?: 'Hub Africa Régional' }}</span>
                             </div>
                         </div>
@@ -162,7 +162,7 @@
                                         {{ $p->registration_end ? $p->registration_end->format('d/m/Y') : 'À déterminer' }}
                                     </div>
                                     @if($isOpen && $daysRemaining !== null)
-                                        <div class="text-[9px] text-emerald-700 font-bold mt-0.5">
+                                        <div class="text-[9px] text-[#2F3284] font-bold mt-0.5">
                                             @if($daysRemaining == 0)
                                                 Dernier jour !
                                             @else
@@ -189,7 +189,7 @@
                     <div class="p-6 pt-0 flex items-center justify-between gap-3">
                         <a
                             href="{{ route('public.programme.detail', $p->id) }}"
-                            class="flex-1 text-center py-2.5 px-3 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-100 text-xs font-bold transition"
+                            class="flex-1 text-center py-2.5 px-3 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-100 hover:text-[#2F3284] text-xs font-bold transition"
                         >
                             Détails &amp; Critères
                         </a>
@@ -197,7 +197,7 @@
                         @if($isOpen)
                             <a
                                 href="{{ route('public.programme.candidater', $p->id) }}"
-                                class="flex-1 text-center py-2.5 px-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold shadow-sm transition"
+                                class="flex-1 text-center py-2.5 px-3 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 text-xs font-bold shadow-sm transition"
                             >
                                 Candidater &rarr;
                             </a>
@@ -223,7 +223,7 @@
                     <button
                         type="button"
                         wire:click="resetFilters"
-                        class="px-5 py-2.5 rounded-xl bg-emerald-700 text-white text-xs font-bold shadow hover:bg-emerald-800 transition"
+                        class="px-5 py-2.5 rounded-xl bg-[#F8B81D] text-slate-950 text-xs font-bold shadow hover:bg-[#e5a510] transition"
                     >
                         Réinitialiser tous les filtres
                     </button>

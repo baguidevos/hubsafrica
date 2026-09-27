@@ -14,22 +14,24 @@ return [
     |--------------------------------------------------------------------------
     | Thème & Couleurs Institutionnelles (Modifiables via .env ou ici)
     |--------------------------------------------------------------------------
-    | Ces valeurs sont injectées dynamiquement dans les variables CSS (--ha-*)
-    | et permettent une personnalisation sans avoir à recompiler les assets.
+    | Couleurs officielles issues de la Version 1 de Hub-Africa :
+    | - Primaire : Or / Ambre (#F8B81D)
+    | - Secondaire : Bleu Indigo profond (#2F3284)
+    | - Accent : Orange / Jaune chaud (#F9B104)
     */
     'theme' => [
-        // Vert Émeraude Institutionnel (Croissance, Impact, Durabilité)
-        'primary' => env('HUBAFRICA_COLOR_PRIMARY', '#064e3b'),
-        'primary_hover' => env('HUBAFRICA_COLOR_PRIMARY_HOVER', '#04382a'),
-        'primary_light' => env('HUBAFRICA_COLOR_PRIMARY_LIGHT', '#059669'),
+        // Or / Jaune Hub-Africa V1 (Actions principales, highlights, badges)
+        'primary' => env('HUBAFRICA_COLOR_PRIMARY', '#F8B81D'),
+        'primary_hover' => env('HUBAFRICA_COLOR_PRIMARY_HOVER', '#e5a510'),
+        'primary_light' => env('HUBAFRICA_COLOR_PRIMARY_LIGHT', '#fef3c7'),
         
-        // Bleu Nuit / Ardoise Impériale (Autorité, Solidité institutionnelle)
-        'secondary' => env('HUBAFRICA_COLOR_SECONDARY', '#0f172a'),
-        'secondary_light' => env('HUBAFRICA_COLOR_SECONDARY_LIGHT', '#1e293b'),
+        // Bleu Indigo profond Hub-Africa V1 (Titres, navigation, contraste)
+        'secondary' => env('HUBAFRICA_COLOR_SECONDARY', '#2F3284'),
+        'secondary_light' => env('HUBAFRICA_COLOR_SECONDARY_LIGHT', '#4347a8'),
         
-        // Or / Ambre Panafricain (Excellence, Rayonnement, Innovation)
-        'accent' => env('HUBAFRICA_COLOR_ACCENT', '#d97706'),
-        'accent_light' => env('HUBAFRICA_COLOR_ACCENT_LIGHT', '#f59e0b'),
+        // Accent Orange / Jaune chaud Hub-Africa V1
+        'accent' => env('HUBAFRICA_COLOR_ACCENT', '#F9B104'),
+        'accent_light' => env('HUBAFRICA_COLOR_ACCENT_LIGHT', '#fbbf24'),
         
         // Nuances de fond et de surfaces
         'surface' => env('HUBAFRICA_COLOR_SURFACE', '#f8fafc'),

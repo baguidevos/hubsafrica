@@ -2,16 +2,16 @@
     <section class="bg-slate-950 text-white py-12 sm:py-14 border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
             <nav class="flex items-center gap-2 text-xs text-slate-400">
-                <a href="{{ route('home') }}" class="hover:text-emerald-400">Accueil</a>
+                <a href="{{ route('home') }}" class="hover:text-[#F8B81D]">Accueil</a>
                 <span>/</span>
-                <a href="{{ route('public.structures') }}" class="hover:text-emerald-400">Structures</a>
+                <a href="{{ route('public.structures') }}" class="hover:text-[#F8B81D]">Structures</a>
                 <span>/</span>
                 <span class="text-slate-200 truncate">{{ $sae->name }}</span>
             </nav>
 
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pt-2">
                 <div class="flex items-center gap-4 sm:gap-5">
-                    <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-slate-900 text-emerald-400 font-black text-2xl flex items-center justify-center border border-slate-800 shrink-0">
+                    <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-slate-900 text-[#F8B81D] font-black text-2xl flex items-center justify-center border border-slate-800 shrink-0">
                         {{ substr($sae->name, 0, 2) }}
                     </div>
                     <div>
@@ -26,7 +26,7 @@
 
                 <div class="flex items-center gap-3 text-xs">
                     <div class="bg-slate-900 px-4 py-2 rounded-xl text-center border border-slate-800">
-                        <span class="block text-emerald-400 font-bold text-sm">{{ $sae->projects_count }}</span>
+                        <span class="block text-[#F8B81D] font-bold text-sm">{{ $sae->projects_count }}</span>
                         <span class="text-slate-400 text-[10px]">Startups</span>
                     </div>
                     <div class="bg-slate-900 px-4 py-2 rounded-xl text-center border border-slate-800">
@@ -55,7 +55,7 @@
                     @if($sae->email)
                         <div>
                             <span class="text-slate-400 block text-[11px]">Email :</span>
-                            <a href="mailto:{{ $sae->email }}" class="text-emerald-700 font-semibold hover:underline">{{ $sae->email }}</a>
+                            <a href="mailto:{{ $sae->email }}" class="text-[#2F3284] font-semibold hover:underline">{{ $sae->email }}</a>
                         </div>
                     @endif
                     @if($sae->phone)
@@ -84,7 +84,7 @@
                 @forelse($sae->programs as $p)
                     <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs hover:shadow-md transition space-y-3 flex flex-col justify-between">
                         <div class="space-y-2">
-                            <span class="inline-block px-2.5 py-0.5 rounded text-[10px] font-bold uppercase bg-emerald-50 text-emerald-800">
+                            <span class="inline-block px-2.5 py-0.5 rounded text-[10px] font-bold uppercase bg-[#2F3284]/10 text-[#2F3284]">
                                 Actif
                             </span>
                             <h3 class="text-base font-bold text-slate-900">
@@ -95,10 +95,10 @@
                             </p>
                         </div>
                         <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
-                            <a href="{{ route('public.programme.detail', $p->id) }}" class="text-xs font-bold text-emerald-700 hover:underline">
+                            <a href="{{ route('public.programme.detail', $p->id) }}" class="text-xs font-bold text-[#2F3284] hover:underline">
                                 Voir détails &rarr;
                             </a>
-                            <a href="{{ route('public.programme.candidater', $p->id) }}" class="px-3.5 py-1.5 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-bold">
+                            <a href="{{ route('public.programme.candidater', $p->id) }}" class="px-3.5 py-1.5 rounded-lg bg-[#F8B81D] hover:bg-[#e5a510] text-slate-900 text-xs font-bold transition">
                                 Candidater
                             </a>
                         </div>

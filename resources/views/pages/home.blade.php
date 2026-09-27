@@ -5,14 +5,14 @@
             <div class="text-center max-w-3xl mx-auto space-y-6">
                 
                 {{-- Badge sobre --}}
-                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 border border-emerald-800/60 text-emerald-300 text-xs font-semibold">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 border border-[#F8B81D]/30 text-[#F8B81D] text-xs font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-[#F8B81D]"></span>
                     <span>Réseau Panafricain des Structures d'Accompagnement</span>
                 </div>
 
-                {{-- Titre clair et digne, sans effet IA criard --}}
+                {{-- Titre clair et digne, avec or Hub-Africa V1 --}}
                 <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight text-white">
-                    Faire grandir les entreprises africaines, <span class="text-emerald-400">de l'idée au marché</span>
+                    Faire grandir les entreprises africaines, <span class="text-[#F8B81D]">de l'idée au marché</span>
                 </h1>
 
                 {{-- Sous-titre sobre et humain --}}
@@ -20,19 +20,19 @@
                     Hub Africa réunit les structures d'accompagnement locales, des mentors engagés et les entrepreneurs ambitieux pour bâtir des entreprises solides, pérennes et créatrices d'emplois.
                 </p>
 
-                {{-- CTAs sobres et fonctionnels --}}
+                {{-- CTAs aux couleurs Version 1 --}}
                 <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
                     <a
                         href="{{ route('public.programmes') }}"
-                        class="w-full sm:w-auto px-6 sm:px-8 py-3.5 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-sm shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                        class="w-full sm:w-auto px-6 sm:px-8 py-3.5 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 font-bold text-sm shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
                     >
                         <span>Découvrir les Programmes</span>
-                        <svg class="w-4 h-4 text-emerald-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                     </a>
 
                     <a
                         href="{{ route('public.structures') }}"
-                        class="w-full sm:w-auto px-6 sm:px-7 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-semibold text-sm transition flex items-center justify-center gap-2"
+                        class="w-full sm:w-auto px-6 sm:px-7 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 hover:border-[#F8B81D]/40 font-semibold text-sm transition flex items-center justify-center gap-2"
                     >
                         <span>Consulter les Incubateurs (SAE)</span>
                     </a>
@@ -42,7 +42,7 @@
             {{-- 2. INDICATEURS D'IMPACT SUR LE TERRAIN --}}
             <div class="mt-14 sm:mt-16 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 pt-10 border-t border-slate-800/80">
                 <div class="bg-slate-900/80 p-5 sm:p-6 rounded-2xl border border-slate-800 text-center">
-                    <div class="text-2xl sm:text-3xl font-black text-emerald-400 tabular-nums">
+                    <div class="text-2xl sm:text-3xl font-black text-[#F8B81D] tabular-nums">
                         {{ $metrics['projects'] }}+
                     </div>
                     <div class="text-xs font-bold text-slate-200 mt-1">Startups Accompagnées</div>
@@ -50,7 +50,7 @@
                 </div>
 
                 <div class="bg-slate-900/80 p-5 sm:p-6 rounded-2xl border border-slate-800 text-center">
-                    <div class="text-2xl sm:text-3xl font-black text-amber-400 tabular-nums">
+                    <div class="text-2xl sm:text-3xl font-black text-[#F9B104] tabular-nums">
                         {{ $metrics['saes'] }}
                     </div>
                     <div class="text-xs font-bold text-slate-200 mt-1">Structures (SAE)</div>
@@ -58,7 +58,7 @@
                 </div>
 
                 <div class="bg-slate-900/80 p-5 sm:p-6 rounded-2xl border border-slate-800 text-center">
-                    <div class="text-2xl sm:text-3xl font-black text-teal-300 tabular-nums">
+                    <div class="text-2xl sm:text-3xl font-black text-amber-200 tabular-nums">
                         {{ $metrics['hours'] }} h
                     </div>
                     <div class="text-xs font-bold text-slate-200 mt-1">Mentorat Dispensé</div>
@@ -66,7 +66,7 @@
                 </div>
 
                 <div class="bg-slate-900/80 p-5 sm:p-6 rounded-2xl border border-slate-800 text-center">
-                    <div class="text-xl sm:text-2xl font-black text-emerald-300 truncate">
+                    <div class="text-xl sm:text-2xl font-black text-[#F8B81D] truncate">
                         {{ $metrics['funding'] }}
                     </div>
                     <div class="text-xs font-bold text-slate-200 mt-1">Fonds Mobilisés</div>
@@ -80,7 +80,7 @@
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
             <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-3 py-1 rounded-md border border-emerald-200">
+                <span class="text-xs font-bold uppercase tracking-wider text-[#2F3284] bg-amber-50 px-3 py-1 rounded-md border border-amber-200">
                     Appels à Candidatures
                 </span>
                 <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mt-2.5">
@@ -93,7 +93,7 @@
 
             <a
                 href="{{ route('public.programmes') }}"
-                class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-800 hover:text-emerald-950 transition"
+                class="inline-flex items-center gap-1.5 text-xs font-bold text-[#2F3284] hover:text-[#F8B81D] transition"
             >
                 <span>Voir les {{ \App\Models\Program::count() }} programmes</span>
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
@@ -105,8 +105,8 @@
                 <article class="bg-white rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-lg transition-all duration-200 flex flex-col justify-between overflow-hidden">
                     <div class="p-6 space-y-4">
                         <div class="flex items-center justify-between gap-2">
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-50 text-[#2F3284] border border-amber-200">
+                                <span class="w-1.5 h-1.5 rounded-full bg-[#F8B81D]"></span>
                                 Candidatures Ouvertes
                             </span>
                             @if($p->level)
@@ -116,7 +116,7 @@
                             @endif
                         </div>
 
-                        <h3 class="text-base font-extrabold text-slate-900 hover:text-emerald-800 transition line-clamp-1">
+                        <h3 class="text-base font-extrabold text-slate-900 hover:text-[#2F3284] transition line-clamp-1">
                             <a href="{{ route('public.programme.detail', $p->id) }}">
                                 {{ $p->name }}
                             </a>
@@ -127,7 +127,7 @@
                         </p>
 
                         <div class="pt-3 flex items-center gap-2 text-xs text-slate-500 font-medium border-t border-slate-100">
-                            <svg class="w-3.5 h-3.5 text-emerald-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                            <svg class="w-3.5 h-3.5 text-[#F8B81D] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                             <span class="truncate">{{ $p->sae?->name ?: 'Hub Africa' }}</span>
                         </div>
                     </div>
@@ -141,7 +141,7 @@
                         </a>
                         <a
                             href="{{ route('public.programme.candidater', $p->id) }}"
-                            class="px-3.5 py-1.5 rounded-lg bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs shadow-xs transition"
+                            class="px-3.5 py-1.5 rounded-lg bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 font-bold text-xs shadow-xs transition"
                         >
                             Candidater &rarr;
                         </a>
@@ -159,7 +159,7 @@
     <section id="impact" class="bg-slate-900 text-white py-18 sm:py-20 border-y border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
             <div class="text-center max-w-2xl mx-auto space-y-3">
-                <span class="text-xs font-bold uppercase tracking-wider text-amber-400 bg-amber-950/60 px-3 py-1 rounded-md border border-amber-800/60">
+                <span class="text-xs font-bold uppercase tracking-wider text-[#F8B81D] bg-[#F8B81D]/10 px-3 py-1 rounded-md border border-[#F8B81D]/30">
                     Parcours &amp; Méthode
                 </span>
                 <h2 class="text-2xl sm:text-4xl font-black">
@@ -173,7 +173,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {{-- Étape 1 --}}
                 <div class="bg-slate-950/80 p-6 rounded-2xl border border-slate-800 space-y-3">
-                    <div class="w-10 h-10 rounded-xl bg-emerald-950 text-emerald-400 flex items-center justify-center font-bold text-sm border border-emerald-800/80">
+                    <div class="w-10 h-10 rounded-xl bg-[#2F3284]/40 text-[#F8B81D] flex items-center justify-center font-bold text-sm border border-[#F8B81D]/30">
                         01
                     </div>
                     <h3 class="text-sm font-bold text-white">Diagnostic &amp; Cadrage</h3>
@@ -184,7 +184,7 @@
 
                 {{-- Étape 2 --}}
                 <div class="bg-slate-950/80 p-6 rounded-2xl border border-slate-800 space-y-3">
-                    <div class="w-10 h-10 rounded-xl bg-teal-950 text-teal-400 flex items-center justify-center font-bold text-sm border border-teal-800/80">
+                    <div class="w-10 h-10 rounded-xl bg-[#2F3284]/40 text-[#F8B81D] flex items-center justify-center font-bold text-sm border border-[#F8B81D]/30">
                         02
                     </div>
                     <h3 class="text-sm font-bold text-white">Mentorat Individuel</h3>
@@ -195,7 +195,7 @@
 
                 {{-- Étape 3 --}}
                 <div class="bg-slate-950/80 p-6 rounded-2xl border border-slate-800 space-y-3">
-                    <div class="w-10 h-10 rounded-xl bg-amber-950 text-amber-400 flex items-center justify-center font-bold text-sm border border-amber-800/80">
+                    <div class="w-10 h-10 rounded-xl bg-[#2F3284]/40 text-[#F8B81D] flex items-center justify-center font-bold text-sm border border-[#F8B81D]/30">
                         03
                     </div>
                     <h3 class="text-sm font-bold text-white">Structuration Financière</h3>
@@ -206,7 +206,7 @@
 
                 {{-- Étape 4 --}}
                 <div class="bg-slate-950/80 p-6 rounded-2xl border border-slate-800 space-y-3">
-                    <div class="w-10 h-10 rounded-xl bg-emerald-950 text-emerald-400 flex items-center justify-center font-bold text-sm border border-emerald-800/80">
+                    <div class="w-10 h-10 rounded-xl bg-[#2F3284]/40 text-[#F8B81D] flex items-center justify-center font-bold text-sm border border-[#F8B81D]/30">
                         04
                     </div>
                     <h3 class="text-sm font-bold text-white">Accès aux Marchés</h3>
@@ -235,14 +235,14 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             {{-- Témoignage 1 : Entrepreneure --}}
             <div class="bg-white rounded-2xl p-7 border border-slate-200/90 shadow-xs space-y-4">
-                <div class="flex items-center gap-1 text-amber-400 text-sm">
+                <div class="flex items-center gap-1 text-[#F8B81D] text-sm">
                     ★★★★★
                 </div>
                 <p class="text-xs sm:text-sm text-slate-700 leading-relaxed italic">
                     « L'accompagnement par notre incubateur via Hub Africa a été le point de bascule. La clarté du diagnostic d'entrée et le suivi individuel nous ont permis de formaliser nos comptes et de signer nos premiers contrats distributeurs. »
                 </p>
                 <div class="pt-3 border-t border-slate-100 flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-xs">
+                    <div class="w-10 h-10 rounded-full bg-[#F8B81D]/20 text-[#2F3284] font-bold flex items-center justify-center text-xs">
                         MC
                     </div>
                     <div>
@@ -254,14 +254,14 @@
 
             {{-- Témoignage 2 : Responsable d'Incubateur --}}
             <div class="bg-white rounded-2xl p-7 border border-slate-200/90 shadow-xs space-y-4">
-                <div class="flex items-center gap-1 text-amber-400 text-sm">
+                <div class="flex items-center gap-1 text-[#F8B81D] text-sm">
                     ★★★★★
                 </div>
                 <p class="text-xs sm:text-sm text-slate-700 leading-relaxed italic">
                     « Avoir une plateforme centralisée pour suivre les livrables de nos promotions et coordonner les mentors nous fait gagner un temps précieux. Les données d'impact sont immédiatement exploitables pour nos bilans bailleurs. »
                 </p>
                 <div class="pt-3 border-t border-slate-100 flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-800 font-bold flex items-center justify-center text-xs">
+                    <div class="w-10 h-10 rounded-full bg-[#2F3284]/15 text-[#2F3284] font-bold flex items-center justify-center text-xs">
                         MD
                     </div>
                     <div>
@@ -287,14 +287,14 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             @foreach($featuredSaes as $sae)
-                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs hover:border-emerald-600/40 transition flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-slate-100 text-emerald-800 font-extrabold flex items-center justify-center text-base shrink-0 border border-slate-200">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs hover:border-[#F8B81D]/60 hover:shadow-md transition flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-slate-100 text-[#2F3284] font-extrabold flex items-center justify-center text-base shrink-0 border border-slate-200">
                         {{ substr($sae->name, 0, 2) }}
                     </div>
                     <div class="min-w-0 flex-1">
                         <h4 class="font-bold text-xs sm:text-sm text-slate-900 truncate">{{ $sae->name }}</h4>
                         <p class="text-[11px] text-slate-500 truncate mt-0.5">{{ $sae->address ?: 'Pôle d\'innovation régional' }}</p>
-                        <a href="{{ route('public.structure.detail', $sae->id) }}" class="text-[11px] font-semibold text-emerald-700 hover:underline mt-1 inline-block">
+                        <a href="{{ route('public.structure.detail', $sae->id) }}" class="text-[11px] font-semibold text-[#2F3284] hover:text-[#e5a510] mt-1 inline-block">
                             Voir les programmes &rarr;
                         </a>
                     </div>
@@ -303,15 +303,15 @@
         </div>
     </section>
 
-    {{-- 7. BANNIÈRE REJOINDRE (SOBRE ET DIRECTE) --}}
+    {{-- 7. BANNIÈRE REJOINDRE (AUX COULEURS VERSION 1) --}}
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-        <div class="bg-slate-900 rounded-3xl p-8 sm:p-12 text-white border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="bg-[#2F3284] rounded-3xl p-8 sm:p-12 text-white border border-[#2F3284]/60 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
             <div class="space-y-2 max-w-xl text-center md:text-left">
-                <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Prêt à démarrer ?</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-[#F8B81D]">Prêt à démarrer ?</span>
                 <h3 class="text-xl sm:text-3xl font-black">
                     Rejoignez le réseau Hub Africa
                 </h3>
-                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">
                     Porteur de projet, mentor ou responsable d'une structure d'incubation : sélectionnez votre profil pour débuter.
                 </p>
             </div>
@@ -319,7 +319,7 @@
             <div class="shrink-0 w-full md:w-auto">
                 <a
                     href="{{ route('public.rejoindre') }}"
-                    class="block w-full sm:w-auto text-center px-6 py-3.5 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs shadow-sm transition"
+                    class="block w-full sm:w-auto text-center px-7 py-3.5 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 font-bold text-xs shadow-md transition transform hover:-translate-y-0.5"
                 >
                     Choisir mon profil &rarr;
                 </a>

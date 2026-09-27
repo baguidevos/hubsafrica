@@ -4,6 +4,26 @@ Toutes les modifications notables apportées au projet **Hub Africa v2** (Stack 
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
+## [2.5.0] - 2026-09-27
+
+### Modifié (Changed) & Harmonisé (Aligned)
+- **Palette Graphique Officielle Hub Africa Version 1** :
+  - Extraction et intégration des codes couleur exacts de la Version 1 (`C:\Users\D3vOs\Projets\Laravel\Web\hub-africa`) :
+    - Couleur primaire : `#F8B81D` (Jaune d'or / Gold Hub Africa)
+    - Survol primaire : `#e5a510`
+    - Couleur secondaire : `#2F3284` (Bleu indigo nuit profond / Navy)
+    - Accent chaleureux : `#F9B104` (Ambre)
+  - Configuration centralisée dans `config/hubafrica.php` et déclaration des variables de design system dans `resources/css/app.css` (Tailwind `@theme`).
+  - Déclinaison harmonieuse sur l'ensemble des pages publiques (Accueil, Catalogue des programmes, Fiche programme, Annuaire SAE, Fiche SAE, Parcours d'orientation, et Assistant de candidature multi-étapes).
+- **Intégration du Logo Officiel & Partenaire de la Version 1** :
+  - Déploiement du véritable logo horizontal Hub Africa issu de la v1 (`koworkers.png` — "Hub" doré `#F8B81D`, "Africa" noir avec point doré sur le 'i') dans le header et le footer.
+  - Déploiement de l'emblème officiel partenaire `iyba-seed.png` dans la grille des partenaires institutionnels.
+- **Remplacement des Favicons par ceux de la Version 1** :
+  - Intégration dans `public/` de `favicon.ico`, `favicon.svg`, et `apple-touch-icon.png` officiels de Hub Africa v1.
+  - Référencement complet dans le layout public (`<x-layouts.public>`).
+- **Tests & Robustesse** :
+  - Suite de tests Pest validée à 100% (25/25 tests passants).
+
 ## [2.4.0] - 2026-09-27
 
 ### Modifié (Changed) & Corrigé (Fixed)

@@ -1,11 +1,11 @@
 <x-layouts.public>
     <section class="bg-slate-950 text-white py-14 lg:py-18 border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-3xl mx-auto space-y-3">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 text-emerald-400 border border-emerald-800/80 text-xs font-semibold">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 text-[#F8B81D] border border-[#F8B81D]/30 text-xs font-semibold">
                 Écosystème &amp; Incubateurs
             </span>
             <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight">
-                Structures d'<span class="text-emerald-400">Accompagnement (SAE)</span>
+                Structures d'<span class="text-[#F8B81D]">Accompagnement (SAE)</span>
             </h1>
             <p class="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-2xl mx-auto font-normal">
                 Découvrez le réseau officiel des incubateurs, technopoles et accélérateurs membres d'Hub Africa à travers le continent.
@@ -19,11 +19,11 @@
                 <article class="bg-white rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-lg transition-all duration-200 flex flex-col justify-between overflow-hidden">
                     <div class="p-6 sm:p-7 space-y-4">
                         <div class="flex items-center gap-4">
-                            <div class="w-13 h-13 rounded-xl bg-slate-100 text-emerald-900 font-extrabold text-xl flex items-center justify-center border border-slate-200 shrink-0">
+                            <div class="w-13 h-13 rounded-xl bg-slate-100 text-[#2F3284] font-extrabold text-xl flex items-center justify-center border border-slate-200 shrink-0">
                                 {{ substr($sae->name, 0, 2) }}
                             </div>
                             <div class="min-w-0 flex-1">
-                                <h3 class="text-base font-bold text-slate-900 hover:text-emerald-800 transition truncate">
+                                <h3 class="text-base font-bold text-slate-900 hover:text-[#2F3284] transition truncate">
                                     {{ $sae->name }}
                                 </h3>
                                 <p class="text-xs text-slate-500 truncate mt-0.5">

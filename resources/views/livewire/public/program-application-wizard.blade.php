@@ -1,13 +1,13 @@
 <div class="max-w-3xl mx-auto">
     @if($isSubmitted)
         {{-- Écran de Confirmation Officielle & Succès --}}
-        <div class="bg-white rounded-3xl p-8 sm:p-12 border border-emerald-200 shadow-xl text-center space-y-6">
-            <div class="w-20 h-20 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto shadow-inner">
+        <div class="bg-white rounded-3xl p-8 sm:p-12 border border-amber-200 shadow-xl text-center space-y-6">
+            <div class="w-20 h-20 bg-amber-50 text-[#F8B81D] rounded-full flex items-center justify-center mx-auto shadow-inner">
                 <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
             </div>
 
             <div class="space-y-2">
-                <span class="inline-block px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200">
+                <span class="inline-block px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-50 text-[#2F3284] border border-amber-200">
                     Candidature Enregistrée avec Succès
                 </span>
                 <h2 class="text-2xl sm:text-3xl font-black text-slate-900">
@@ -21,7 +21,7 @@
             <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 text-left space-y-3 text-xs text-slate-700">
                 <div class="font-bold text-slate-900 text-sm border-b border-slate-200 pb-2 flex items-center justify-between">
                     <span>Récapitulatif de votre soumission</span>
-                    <span class="text-emerald-700">Statut : En cours d'examen</span>
+                    <span class="text-[#2F3284]">Statut : En cours d'examen</span>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
@@ -41,10 +41,10 @@
             <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a
                     href="/portal"
-                    class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm shadow-lg shadow-emerald-900/20 transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                    class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 font-bold text-sm shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
                 >
                     <span>Accéder à mon Espace Entrepreneur</span>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                 </a>
                 <a
                     href="{{ route('public.programmes') }}"
@@ -59,15 +59,15 @@
         <div class="bg-white rounded-3xl border border-slate-200/90 shadow-lg overflow-hidden">
             
             {{-- En-tête du Formulaire & Indicateur d'Étapes --}}
-            <div class="p-6 sm:p-8 bg-gradient-to-r from-slate-900 to-emerald-950 text-white border-b border-emerald-900/40">
+            <div class="p-6 sm:p-8 bg-gradient-to-r from-slate-950 to-[#2F3284] text-white border-b border-[#2F3284]/40">
                 <div class="flex items-center justify-between gap-4 mb-6">
                     <div>
-                        <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-400">Dossier Officiel de Candidature</span>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-[#F8B81D]">Dossier Officiel de Candidature</span>
                         <h1 class="text-xl sm:text-2xl font-black mt-1">{{ $program->name }}</h1>
                     </div>
                     <div class="hidden sm:block text-right">
                         <span class="text-xs text-slate-400 block">Structure Organisatrice</span>
-                        <span class="font-bold text-sm text-emerald-300">{{ $program->sae?->name }}</span>
+                        <span class="font-bold text-sm text-amber-200">{{ $program->sae?->name }}</span>
                     </div>
                 </div>
 
@@ -76,7 +76,7 @@
                     <button
                         type="button"
                         wire:click="goToStep(1)"
-                        class="p-2.5 rounded-xl flex items-center gap-2 transition {{ $currentStep === 1 ? 'bg-emerald-600 text-white font-bold' : ($currentStep > 1 ? 'bg-emerald-900/60 text-emerald-300' : 'bg-slate-800/60 text-slate-400') }}"
+                        class="p-2.5 rounded-xl flex items-center gap-2 transition {{ $currentStep === 1 ? 'bg-[#F8B81D] text-slate-950 font-bold' : ($currentStep > 1 ? 'bg-[#2F3284] text-amber-200' : 'bg-slate-800/60 text-slate-400') }}"
                     >
                         <span class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black {{ $currentStep >= 1 ? 'bg-white text-slate-900' : 'bg-slate-700 text-slate-300' }}">1</span>
                         <span class="truncate">Porteur</span>
@@ -85,7 +85,7 @@
                     <button
                         type="button"
                         wire:click="goToStep(2)"
-                        class="p-2.5 rounded-xl flex items-center gap-2 transition {{ $currentStep === 2 ? 'bg-emerald-600 text-white font-bold' : ($currentStep > 2 ? 'bg-emerald-900/60 text-emerald-300' : 'bg-slate-800/60 text-slate-400') }}"
+                        class="p-2.5 rounded-xl flex items-center gap-2 transition {{ $currentStep === 2 ? 'bg-[#F8B81D] text-slate-950 font-bold' : ($currentStep > 2 ? 'bg-[#2F3284] text-amber-200' : 'bg-slate-800/60 text-slate-400') }}"
                     >
                         <span class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black {{ $currentStep >= 2 ? 'bg-white text-slate-900' : 'bg-slate-700 text-slate-300' }}">2</span>
                         <span class="truncate">Startup &amp; Projet</span>
@@ -94,7 +94,7 @@
                     <button
                         type="button"
                         wire:click="goToStep(3)"
-                        class="p-2.5 rounded-xl flex items-center gap-2 transition {{ $currentStep === 3 ? 'bg-emerald-600 text-white font-bold' : 'bg-slate-800/60 text-slate-400' }}"
+                        class="p-2.5 rounded-xl flex items-center gap-2 transition {{ $currentStep === 3 ? 'bg-[#F8B81D] text-slate-950 font-bold' : 'bg-slate-800/60 text-slate-400' }}"
                     >
                         <span class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black {{ $currentStep === 3 ? 'bg-white text-slate-900' : 'bg-slate-700 text-slate-300' }}">3</span>
                         <span class="truncate">Motivation &amp; Pièces</span>
@@ -124,7 +124,7 @@
                                 <input
                                     type="text"
                                     wire:model="first_name"
-                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/10 text-sm outline-none transition"
+                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#F8B81D] focus:ring-2 focus:ring-[#F8B81D]/20 text-sm outline-none transition"
                                     placeholder="Ex: Aminata"
                                 >
                                 @error('first_name') <span class="text-[11px] text-red-600 font-medium">{{ $message }}</span> @enderror
@@ -135,7 +135,7 @@
                                 <input
                                     type="text"
                                     wire:model="last_name"
-                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/10 text-sm outline-none transition"
+                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#F8B81D] focus:ring-2 focus:ring-[#F8B81D]/20 text-sm outline-none transition"
                                     placeholder="Ex: Ndiaye"
                                 >
                                 @error('last_name') <span class="text-[11px] text-red-600 font-medium">{{ $message }}</span> @enderror
@@ -148,7 +148,7 @@
                                 <input
                                     type="email"
                                     wire:model="email"
-                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/10 text-sm outline-none transition"
+                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#F8B81D] focus:ring-2 focus:ring-[#F8B81D]/20 text-sm outline-none transition"
                                     placeholder="aminata.ndiaye@startup.sn"
                                 >
                                 @error('email') <span class="text-[11px] text-red-600 font-medium">{{ $message }}</span> @enderror
@@ -159,7 +159,7 @@
                                 <input
                                     type="text"
                                     wire:model="phone"
-                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/10 text-sm outline-none transition"
+                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#F8B81D] focus:ring-2 focus:ring-[#F8B81D]/20 text-sm outline-none transition"
                                     placeholder="+221 77 000 00 00"
                                 >
                                 @error('phone') <span class="text-[11px] text-red-600 font-medium">{{ $message }}</span> @enderror
@@ -171,7 +171,7 @@
                                 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Genre *</label>
                                 <select
                                     wire:model="gender"
-                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/10 text-sm bg-white outline-none transition"
+                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#F8B81D] focus:ring-2 focus:ring-[#F8B81D]/20 text-sm bg-white outline-none transition"
                                 >
                                     <option value="M">Homme</option>
                                     <option value="F">Femme</option>
@@ -184,7 +184,7 @@
                                 <input
                                     type="text"
                                     wire:model="city"
-                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/10 text-sm outline-none transition"
+                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#F8B81D] focus:ring-2 focus:ring-[#F8B81D]/20 text-sm outline-none transition"
                                     placeholder="Ex: Dakar, Sénégal"
                                 >
                             </div>
@@ -226,10 +226,10 @@
                             <button
                                 type="button"
                                 wire:click="goToStep(2)"
-                                class="px-6 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-md transition flex items-center gap-2"
+                                class="px-6 py-3 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 font-bold text-xs shadow-md transition flex items-center gap-2"
                             >
                                 <span>Étape suivante : Le Projet</span>
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                             </button>
                         </div>
                     </div>
@@ -249,7 +249,7 @@
                                 <input
                                     type="text"
                                     wire:model="project_name"
-                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/10 text-sm outline-none transition"
+                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#F8B81D] focus:ring-2 focus:ring-[#F8B81D]/20 text-sm outline-none transition"
                                     placeholder="Ex: AgriTech Sahel"
                                 >
                                 @error('project_name') <span class="text-[11px] text-red-600 font-medium">{{ $message }}</span> @enderror
@@ -259,7 +259,7 @@
                                 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Secteur d'activité *</label>
                                 <select
                                     wire:model="sector"
-                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/10 text-sm bg-white outline-none transition"
+                                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#F8B81D] focus:ring-2 focus:ring-[#F8B81D]/20 text-sm bg-white outline-none transition"
                                 >
                                     <option value="">Sélectionnez un secteur</option>
                                     <option value="AgriTech / Agriculture durable">AgriTech &amp; Agriculture durable</option>
@@ -280,7 +280,7 @@
                             <textarea
                                 wire:model="pitch"
                                 rows="4"
-                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/10 text-sm outline-none transition"
+                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#F8B81D] focus:ring-2 focus:ring-[#F8B81D]/20 text-sm outline-none transition"
                                 placeholder="Quel problème résolvez-vous ? Quelle est votre proposition de valeur et qui sont vos clients cibles ?"
                             ></textarea>
                             @error('pitch') <span class="text-[11px] text-red-600 font-medium">{{ $message }}</span> @enderror
@@ -320,7 +320,7 @@
                             <button
                                 type="button"
                                 wire:click="goToStep(3)"
-                                class="px-6 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-md transition flex items-center gap-2"
+                                class="px-6 py-3 rounded-xl bg-[#2F3284] hover:bg-[#25286b] text-white font-bold text-xs shadow-md transition flex items-center gap-2"
                             >
                                 <span>Étape suivante : Dossier &amp; Motivation</span>
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
@@ -342,7 +342,7 @@
                             <textarea
                                 wire:model="motivation"
                                 rows="4"
-                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/10 text-sm outline-none transition"
+                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#F8B81D] focus:ring-2 focus:ring-[#F8B81D]/20 text-sm outline-none transition"
                                 placeholder="Vos attentes pédagogiques, votre disponibilité pour suivre les ateliers et les séances de mentorat individuel..."
                             ></textarea>
                             @error('motivation') <span class="text-[11px] text-red-600 font-medium">{{ $message }}</span> @enderror
@@ -352,19 +352,19 @@
                             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Vos principaux besoins prioritaires</label>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-700">
                                 <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
-                                    <input type="checkbox" wire:model="needs" value="Mentorat & Structuration" class="rounded text-emerald-600">
+                                    <input type="checkbox" wire:model="needs" value="Mentorat & Structuration" class="rounded text-[#2F3284] focus:ring-[#F8B81D]">
                                     <span>Mentorat méthodologique &amp; Stratégie</span>
                                 </label>
                                 <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
-                                    <input type="checkbox" wire:model="needs" value="Accès aux marchés & Ventes" class="rounded text-emerald-600">
+                                    <input type="checkbox" wire:model="needs" value="Accès aux marchés & Ventes" class="rounded text-[#2F3284] focus:ring-[#F8B81D]">
                                     <span>Accès aux marchés &amp; B2B</span>
                                 </label>
                                 <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
-                                    <input type="checkbox" wire:model="needs" value="Levée de fonds & Financement" class="rounded text-emerald-600">
+                                    <input type="checkbox" wire:model="needs" value="Levée de fonds & Financement" class="rounded text-[#2F3284] focus:ring-[#F8B81D]">
                                     <span>Préparation à la levée de fonds</span>
                                 </label>
                                 <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
-                                    <input type="checkbox" wire:model="needs" value="Expertise technique & MVP" class="rounded text-emerald-600">
+                                    <input type="checkbox" wire:model="needs" value="Expertise technique & MVP" class="rounded text-[#2F3284] focus:ring-[#F8B81D]">
                                     <span>Finalisation du MVP / R&amp;D</span>
                                 </label>
                             </div>
@@ -377,9 +377,9 @@
                             <input
                                 type="file"
                                 wire:model="pitch_deck"
-                                class="w-full text-xs text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer border border-slate-300 rounded-xl"
+                                class="w-full text-xs text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-amber-50 file:text-[#2F3284] hover:file:bg-amber-100 cursor-pointer border border-slate-300 rounded-xl"
                             >
-                            <div wire:loading wire:target="pitch_deck" class="text-[11px] text-emerald-600 mt-1">
+                            <div wire:loading wire:target="pitch_deck" class="text-[11px] text-[#2F3284] font-medium mt-1">
                                 Téléversement du fichier en cours...
                             </div>
                             @error('pitch_deck') <span class="text-[11px] text-red-600 font-medium">{{ $message }}</span> @enderror
@@ -402,11 +402,11 @@
                             </button>
                             <button
                                 type="submit"
-                                class="px-7 py-3 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white font-extrabold text-sm shadow-md transition transform hover:-translate-y-0.5 flex items-center gap-2"
+                                class="px-7 py-3 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-900 font-extrabold text-sm shadow-md transition transform hover:-translate-y-0.5 flex items-center gap-2"
                             >
                                 <span wire:loading.remove wire:target="submitApplication">Transmettre ma Candidature Officielle</span>
                                 <span wire:loading wire:target="submitApplication">Enregistrement en cours...</span>
-                                <svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                <svg class="w-4 h-4 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             </button>
                         </div>
                     </div>
