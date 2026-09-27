@@ -84,9 +84,9 @@ class EvaluationFormResource extends FormResource
             ->components([
                 Tabs::make()
                     ->tabs([
-                        Tab::make('Cadrage CUBE S&E')
+                        Tab::make('Cadrage Suivi & Évaluation')
                             ->icon('heroicon-o-academic-cap')
-                            ->schema(static::cubeScopeSchema()),
+                            ->schema(static::seScopeSchema()),
                         Tab::make(__('packstub-form-builder::form-builder.tabs.fields'))
                             ->icon('heroicon-o-list-bullet')
                             ->schema([FieldBlocks::make('fields')]),
@@ -110,7 +110,7 @@ class EvaluationFormResource extends FormResource
             ->columns(1);
     }
 
-    protected static function cubeScopeSchema(): array
+    protected static function seScopeSchema(): array
     {
         return [
             Section::make('Rattachement au parcours & Type de collecte')
@@ -131,7 +131,7 @@ class EvaluationFormResource extends FormResource
                         ->placeholder('Transversal (Tous les programmes)')
                         ->helperText('Laissez vide si le questionnaire s\'applique de manière transversale à toute la structure.'),
                     Select::make('target_level_id')
-                        ->label('Niveau / Jalon CUBE ciblé (optionnel)')
+                        ->label('Niveau / Jalon ciblé (optionnel)')
                         ->relationship('targetLevel', 'name')
                         ->searchable()
                         ->preload()

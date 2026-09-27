@@ -25,7 +25,7 @@ class ProgramsTable
                     ->sortable(),
 
                 TextColumn::make('level.name')
-                    ->label('Niveau CUBE')
+                    ->label('Niveau')
                     ->badge()
                     ->color('primary')
                     ->sortable()

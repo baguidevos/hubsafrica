@@ -45,13 +45,13 @@
                     </select>
                 </div>
 
-                {{-- Filtre Niveau CUBE --}}
+                {{-- Filtre Phase / Niveau --}}
                 <div class="md:col-span-2">
                     <select
                         wire:model.live="selectedLevel"
                         class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/10 text-sm text-slate-800 bg-white outline-none transition"
                     >
-                        <option value="all">Tous les jalons</option>
+                        <option value="all">Toutes les phases</option>
                         @foreach($levels as $lvl)
                             <option value="{{ $lvl->id }}">{{ $lvl->name }}</option>
                         @endforeach
@@ -127,7 +127,7 @@
                                     </span>
                                 @endif
 
-                                {{-- Jalon CUBE --}}
+                                {{-- Phase / Niveau --}}
                                 @if($p->level)
                                     <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 bg-amber-50 text-amber-800 border border-amber-200 rounded-lg">
                                         {{ $p->level->name }}
@@ -151,7 +151,7 @@
                         {{-- Corps descriptif --}}
                         <div class="p-6 space-y-4">
                             <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
-                                {{ $p->description ?: 'Programme intensif d\'incubation méthodologique certifié CUBE S&E pour les startups à fort potentiel de croissance.' }}
+                                {{ $p->description ?: 'Programme d\'accompagnement entrepreneurial combinant mentorat individuel, ateliers pratiques et mise en relation investisseurs.' }}
                             </p>
 
                             {{-- Métadonnées de dates et capacité --}}

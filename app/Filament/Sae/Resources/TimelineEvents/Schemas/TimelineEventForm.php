@@ -43,7 +43,7 @@ class TimelineEventForm
                                     'LIVRABLE_VALIDE' => 'Validation de livrable',
                                     'FINANCEMENT' => 'Mobilisation de financement',
                                     'STATUT_PROJET' => 'Évolution du statut projet',
-                                    'PALIER_FRANCHI' => 'Franchissement de palier CUBE',
+                                    'PALIER_FRANCHI' => 'Franchissement de palier',
                                     'APPLICATION' => 'Candidature & Sélection',
                                     'NOTE' => 'Note de suivi / Observation',
                                 ])

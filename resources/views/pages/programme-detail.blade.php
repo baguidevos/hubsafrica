@@ -32,8 +32,8 @@
                         @endif
 
                         @if($program->level)
-                            <span class="text-xs font-bold uppercase tracking-wider px-3 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded-lg">
-                                Jalon CUBE : {{ $program->level->name }}
+                            <span class="text-xs font-semibold px-3 py-1 bg-slate-800 text-slate-300 border border-slate-700 rounded-lg">
+                                Niveau : {{ $program->level->name }}
                             </span>
                         @endif
                     </div>
@@ -55,10 +55,10 @@
                     <div class="shrink-0">
                         <a
                             href="{{ route('public.programme.candidater', $program->id) }}"
-                            class="px-8 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-emerald-800 text-white font-extrabold text-sm shadow-xl shadow-emerald-950/40 transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                            class="px-6 py-3.5 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
                         >
                             <span>Déposer ma Candidature</span>
-                            <svg class="w-4 h-4 text-emerald-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                            <svg class="w-4 h-4 text-emerald-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </a>
                     </div>
                 @endif
@@ -80,7 +80,7 @@
                         Présentation du Programme
                     </h2>
                     <div class="text-sm text-slate-700 leading-relaxed whitespace-pre-line space-y-3">
-                        {{ $program->description ?: 'Ce programme a pour vocation d\'accompagner les startups à fort potentiel dans la consolidation de leur modèle économique, le déploiement opérationnel et la mise en conformité méthodologique selon le standard CUBE S&E.' }}
+                        {{ $program->description ?: 'Ce programme a pour vocation d\'accompagner les startups à fort potentiel dans la consolidation de leur modèle économique, le déploiement opérationnel et la mise en conformité de leur gestion selon les meilleures pratiques.' }}
                     </div>
                 </div>
 
@@ -125,7 +125,7 @@
                     @endif
                 </div>
 
-                {{-- Livrables Méthodologiques Attendus (CUBE) --}}
+                {{-- Livrables Méthodologiques Attendus --}}
                 @if($program->deliverableDefinitions && $program->deliverableDefinitions->isNotEmpty())
                     <div class="bg-white rounded-3xl p-8 border border-slate-200/90 shadow-xs space-y-4">
                         <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">

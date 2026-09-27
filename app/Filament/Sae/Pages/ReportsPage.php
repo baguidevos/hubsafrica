@@ -24,7 +24,7 @@ class ReportsPage extends Page
 
     protected static ?string $navigationLabel = 'Rapports';
 
-    protected static ?string $title = 'Rapports & Indicateurs d\'impact CUBE';
+    protected static ?string $title = 'Rapports & Indicateurs d\'impact';
 
     protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-document-chart-bar';
 
@@ -51,7 +51,7 @@ class ReportsPage extends Page
         $indicators = Indicator::all();
 
         if ($indicators->isEmpty()) {
-            // Calculs dynamiques standards CUBE si la table des indicateurs manuels n'a pas encore été garnie
+            // Calculs dynamiques standards S&E si la table des indicateurs manuels n'a pas encore été garnie
             $totalEnt = max(Entrepreneur::count(), 1);
             $femmes = Entrepreneur::where('gender', 'F')->count();
             $tauxGenre = round(($femmes / $totalEnt) * 100, 1);
@@ -120,7 +120,7 @@ class ReportsPage extends Page
     public function exportCsv(): StreamedResponse
     {
         $data = $this->getIndicatorsData();
-        $filename = 'rapport_indicateurs_cube_' . now()->format('Ymd_His') . '.csv';
+        $filename = 'rapport_indicateurs_impact_' . now()->format('Ymd_His') . '.csv';
 
         return response()->streamDownload(function () use ($data) {
             $handle = fopen('php://output', 'w');

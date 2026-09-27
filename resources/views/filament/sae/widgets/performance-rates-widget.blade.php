@@ -3,7 +3,7 @@
         <x-slot name="heading">
             <div class="flex items-center gap-2">
                 <x-heroicon-m-chart-bar class="w-5 h-5 text-teal-600" />
-                <span>Formules des principaux indicateurs de performance (CUBE)</span>
+                <span>Formules des principaux indicateurs de performance</span>
             </div>
         </x-slot>
         <x-slot name="description">

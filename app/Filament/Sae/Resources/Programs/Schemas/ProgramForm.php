@@ -26,7 +26,7 @@ class ProgramForm
                                 ->required(),
 
                             Select::make('level_id')
-                                ->label('Niveau CUBE ciblé')
+                                ->label('Niveau ciblé')
                                 ->relationship('level', 'name')
                                 ->searchable()
                                 ->preload(),

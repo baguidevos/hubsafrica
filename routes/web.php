@@ -9,11 +9,11 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Routes Publiques Institutionnelles — Hub Africa v2
+| Routes Publiques Institutionnelles — Hub Africa
 |--------------------------------------------------------------------------
 */
 
-// Accueil Institutionnelle avec métriques CUBE
+// Accueil Institutionnelle avec métriques d'impact
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Programmes d'Accompagnement & Candidatures

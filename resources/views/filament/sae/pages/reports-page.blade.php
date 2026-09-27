@@ -9,7 +9,7 @@
             <div>
                 <h3 class="text-lg font-bold text-stone-900 dark:text-white flex items-center gap-2">
                     <x-heroicon-o-document-chart-bar class="w-6 h-6 text-teal-600" />
-                    Rapports d'impact & Dispositif de Suivi-Évaluation CUBE
+                    Rapports d'impact & Dispositif de Suivi-Évaluation
                 </h3>
                 <p class="text-xs text-stone-500 dark:text-stone-400 mt-1 max-w-2xl">
                     Consolidation multi-cohortes des indicateurs de gouvernance, d'accompagnement, d'insertion et de mobilisation de fonds.
@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        <!-- Table des indicateurs CUBE -->
+        <!-- Table des indicateurs -->
         <div class="rounded-2xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 shadow-sm overflow-hidden">
             <div class="px-6 py-4 border-b border-stone-200 dark:border-stone-800">
                 <h4 class="text-sm font-bold text-stone-900 dark:text-white uppercase tracking-wider">
@@ -67,7 +67,7 @@
                             <th class="px-4 py-3">Catégorie</th>
                             <th class="px-4 py-3">Formule de calcul</th>
                             <th class="px-4 py-3 text-right">Valeur actuelle</th>
-                            <th class="px-4 py-3 text-right">Cible CUBE</th>
+                            <th class="px-4 py-3 text-right">Cible</th>
                             <th class="px-4 py-3 text-center">Statut</th>
                         </tr>
                     </thead>

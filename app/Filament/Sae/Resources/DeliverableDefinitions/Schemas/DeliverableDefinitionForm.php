@@ -27,7 +27,7 @@ class DeliverableDefinitionForm
                                 ->preload(),
 
                             Select::make('level_id')
-                                ->label('Niveau / Phase CUBE')
+                                ->label('Niveau / Phase')
                                 ->relationship('level', 'name')
                                 ->searchable()
                                 ->preload(),

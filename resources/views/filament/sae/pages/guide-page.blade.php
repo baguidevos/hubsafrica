@@ -50,7 +50,7 @@
                 </div>
             </div>
 
-            {{-- Module 4 : Suivi & Évaluation CUBE --}}
+            {{-- Module 4 : Suivi & Évaluation --}}
             <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
                 <h4 class="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                     <x-heroicon-o-chart-pie class="w-5 h-5 text-emerald-600" />

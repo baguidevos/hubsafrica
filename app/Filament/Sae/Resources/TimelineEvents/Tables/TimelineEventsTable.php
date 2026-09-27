@@ -31,7 +31,7 @@ class TimelineEventsTable
                         'LIVRABLE_VALIDE' => 'Livrable validé',
                         'FINANCEMENT' => 'Financement',
                         'STATUT_PROJET' => 'Statut projet',
-                        'PALIER_FRANCHI' => 'Palier CUBE',
+                        'PALIER_FRANCHI' => 'Palier franchi',
                         'APPLICATION' => 'Candidature',
                         'NOTE' => 'Note',
                         default => $state,
@@ -72,7 +72,7 @@ class TimelineEventsTable
                         'LIVRABLE_VALIDE' => 'Validation de livrable',
                         'FINANCEMENT' => 'Financement',
                         'STATUT_PROJET' => 'Statut projet',
-                        'PALIER_FRANCHI' => 'Palier CUBE',
+                        'PALIER_FRANCHI' => 'Palier franchi',
                     ]),
 
                 SelectFilter::make('project_id')

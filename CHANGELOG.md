@@ -4,6 +4,26 @@ Toutes les modifications notables apportées au projet **Hub Africa v2** (Stack 
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
+## [2.4.0] - 2026-09-27
+
+### Modifié (Changed) & Corrigé (Fixed)
+- **Suppression intégrale des mentions abusives de "CUBE"** :
+  - Clarification du rôle de CUBE en tant que Structure d'Accompagnement à l'Entrepreneuriat (SAE) partenaire et non comme cadre méthodologique global de la plateforme.
+  - Remplacement systématique dans les vues publiques, filtres, formulaires et panneaux Filament (Admin, SAE, Entrepreneur, Coach) par les désignations génériques professionnelles ("Suivi & Évaluation", "S&E", "Phase / Niveau", "Livrables Méthodologiques").
+  - Nettoyage des libellés dans `EvaluationFormResource`, `ReportsPage`, `PerformanceRatesWidget`, formulaires de jalons, catalogues et widgets.
+- **Humanisation & Épuration du Design Public** :
+  - Élimination des artifices visuels génériques d'IA (émoticônes superflus type 🚀, halos lumineux néon, dégradés de texte multicolores).
+  - Adoption d'une direction artistique sobre, chaleureuse, épurée et authentique, valorisant la réalité du terrain entrepreneurial africain.
+  - Ajout de témoignages réels et ancrés d'entrepreneurs et de coordinateurs d'incubateurs (ex. Cotonou, Dakar).
+  - Refonte de la section méthode avec un parcours clair en 4 étapes (« De l'idée au marché »).
+- **Correction de la Navbar sur Écrans d'Ordinateurs Portables (1024px – 1366px)** :
+  - Résolution du problème de débordement horizontal sur les résolutions intermédiaires (1366x768 et tablettes paysage).
+  - Masquage intelligent du sous-titre de logo sur les écrans inférieurs à `xl`.
+  - Passage des liens de navigation avec espacement optimisé (`gap-6`) et boutons d'action compacts, maintenant une largeur totale sous les 650px.
+- **Suppression de la mention "v2" sur l'espace public** :
+  - Harmonisation de la marque publique sous le nom unique **Hub Africa**.
+  - Retrait du badge "v2" dans la barre de navigation, les en-têtes, les métadonnées SEO et le pied de page public.
+
 ## [2.3.0] - 2026-09-27
 
 ### Ajouté (Added)

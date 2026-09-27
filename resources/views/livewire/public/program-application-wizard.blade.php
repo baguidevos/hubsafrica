@@ -388,7 +388,7 @@
                         <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-2">
                             <div class="font-bold text-slate-800">Engagement &amp; Exactitude des données</div>
                             <p class="text-[11px]">
-                                En validant ce formulaire, vous certifiez l'exactitude des informations fournies et acceptez qu'elles soient traitées par l'équipe de la structure d'accompagnement <strong>{{ $program->sae?->name }}</strong> dans le cadre du processus d'évaluation certifié CUBE S&amp;E.
+                                En validant ce formulaire, vous certifiez l'exactitude des informations fournies et acceptez qu'elles soient traitées par l'équipe de la structure d'accompagnement <strong>{{ $program->sae?->name }}</strong> dans le cadre du processus de sélection et d'évaluation des candidatures.
                             </p>
                         </div>
 
@@ -402,7 +402,7 @@
                             </button>
                             <button
                                 type="submit"
-                                class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-emerald-700 to-emerald-900 hover:from-emerald-800 hover:to-emerald-950 text-white font-extrabold text-sm shadow-xl shadow-emerald-900/25 transition transform hover:-translate-y-0.5 flex items-center gap-2"
+                                class="px-7 py-3 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white font-extrabold text-sm shadow-md transition transform hover:-translate-y-0.5 flex items-center gap-2"
                             >
                                 <span wire:loading.remove wire:target="submitApplication">Transmettre ma Candidature Officielle</span>
                                 <span wire:loading wire:target="submitApplication">Enregistrement en cours...</span>

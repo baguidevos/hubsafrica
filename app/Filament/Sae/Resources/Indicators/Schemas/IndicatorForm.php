@@ -17,7 +17,7 @@ class IndicatorForm
     {
         return $schema
             ->components([
-                Section::make('Définition de l\'indicateur CUBE')
+                Section::make('Définition de l\'indicateur')
                     ->schema([
                         Grid::make(2)->schema([
                             TextInput::make('name')
@@ -26,7 +26,7 @@ class IndicatorForm
                                 ->required(),
 
                             Select::make('category')
-                                ->label('Catégorie CUBE')
+                                ->label('Catégorie')
                                 ->options(IndicatorCategory::class)
                                 ->default(IndicatorCategory::PORTEE)
                                 ->required(),

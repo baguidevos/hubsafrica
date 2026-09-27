@@ -40,7 +40,7 @@ class ProjectsTable
                     ->searchable(),
 
                 TextColumn::make('currentLevel.name')
-                    ->label('Jalon CUBE')
+                    ->label('Niveau / Jalon')
                     ->badge()
                     ->color('info')
                     ->default('Niveau 1'),

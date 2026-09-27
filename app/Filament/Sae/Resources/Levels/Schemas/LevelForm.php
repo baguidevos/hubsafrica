@@ -14,7 +14,7 @@ class LevelForm
     {
         return $schema
             ->components([
-                Section::make('Palier / Niveau du parcours CUBE')
+                Section::make('Palier / Niveau du parcours')
                     ->schema([
                         Grid::make(2)->schema([
                             TextInput::make('name')

@@ -75,7 +75,7 @@ class EntrepreneurResource extends Resource
                         ]),
                     ]),
 
-                Section::make('Profil socio-démographique & Inclusion (CUBE)')
+                Section::make('Profil socio-démographique & Inclusion')
                     ->schema([
                         Grid::make(3)->schema([
                             TextEntry::make('gender')

@@ -59,57 +59,56 @@
     {{-- 2. Barre Principale de Navigation --}}
     <nav class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs transition">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
+            <div class="flex items-center justify-between h-18 sm:h-20">
                 
-                {{-- Logo & Identité Institutionnelle --}}
+                {{-- Logo & Identité --}}
                 <div class="flex items-center gap-3">
                     <a href="{{ route('home') }}" class="group flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-800 to-slate-900 flex items-center justify-center text-white shadow-md shadow-emerald-950/20 group-hover:scale-105 transition-transform duration-200">
+                        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-emerald-800 flex items-center justify-center text-white shadow-sm shrink-0 group-hover:scale-105 transition-transform duration-200">
                             {{-- Emblème officiel Panafricain --}}
-                            <svg class="w-7 h-7 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                             </svg>
                         </div>
                         <div class="flex flex-col">
-                            <span class="font-extrabold text-xl tracking-tight text-slate-950 font-sans flex items-center gap-1.5">
+                            <span class="font-extrabold text-lg sm:text-xl tracking-tight text-slate-950 font-sans leading-none">
                                 HUB <span class="text-emerald-700">AFRICA</span>
-                                <span class="text-[10px] px-1.5 py-0.5 rounded font-black tracking-widest bg-amber-100 text-amber-800 uppercase">v2</span>
                             </span>
-                            <span class="text-[10px] uppercase font-bold tracking-widest text-slate-500">
-                                Accompagnement & Suivi de l'Innovation
+                            <span class="text-[10px] uppercase font-semibold tracking-wider text-slate-500 mt-1 hidden xl:block">
+                                Accompagnement &amp; Innovation
                             </span>
                         </div>
                     </a>
                 </div>
 
-                {{-- Liens de Navigation Desktop --}}
-                <div class="hidden md:flex items-center gap-8">
-                    <a href="{{ route('home') }}" class="text-sm font-semibold {{ request()->routeIs('home') ? 'text-emerald-700 border-b-2 border-emerald-600 pb-1' : 'text-slate-600 hover:text-emerald-700' }} transition">
+                {{-- Liens de Navigation Desktop (Visible à partir de lg: 1024px pour ne pas déborder) --}}
+                <div class="hidden lg:flex items-center gap-6 xl:gap-8">
+                    <a href="{{ route('home') }}" class="text-xs sm:text-sm font-semibold {{ request()->routeIs('home') ? 'text-emerald-700 font-bold' : 'text-slate-600 hover:text-emerald-700' }} transition">
                         Accueil
                     </a>
-                    <a href="{{ route('public.programmes') }}" class="text-sm font-semibold {{ request()->routeIs('public.programmes*') ? 'text-emerald-700 border-b-2 border-emerald-600 pb-1' : 'text-slate-600 hover:text-emerald-700' }} transition">
-                        Programmes d'Accompagnement
+                    <a href="{{ route('public.programmes') }}" class="text-xs sm:text-sm font-semibold {{ request()->routeIs('public.programmes*') ? 'text-emerald-700 font-bold' : 'text-slate-600 hover:text-emerald-700' }} transition">
+                        Programmes
                     </a>
-                    <a href="{{ route('public.structures') }}" class="text-sm font-semibold {{ request()->routeIs('public.structures*') ? 'text-emerald-700 border-b-2 border-emerald-600 pb-1' : 'text-slate-600 hover:text-emerald-700' }} transition">
-                        Réseau des SAEs
+                    <a href="{{ route('public.structures') }}" class="text-xs sm:text-sm font-semibold {{ request()->routeIs('public.structures*') ? 'text-emerald-700 font-bold' : 'text-slate-600 hover:text-emerald-700' }} transition">
+                        Structures SAE
                     </a>
-                    <a href="{{ route('home') }}#cube" class="text-sm font-semibold text-slate-600 hover:text-emerald-700 transition">
-                        Cadre CUBE S&amp;E
+                    <a href="{{ route('home') }}#impact" class="text-xs sm:text-sm font-semibold text-slate-600 hover:text-emerald-700 transition">
+                        À propos
                     </a>
                 </div>
 
                 {{-- Boutons d'Action & Menus Déroulants --}}
-                <div class="hidden lg:flex items-center gap-3">
+                <div class="hidden lg:flex items-center gap-3 shrink-0">
                     {{-- Dropdown Espaces Sécurisés --}}
                     <div class="relative" x-data="{ open: false }">
-                        <button @click="open = !open" @click.away="open = false" type="button" class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-100 transition">
-                            <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                        <button @click="open = !open" @click.away="open = false" type="button" class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 transition">
+                            <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                             <span>Espaces Dédiés</span>
-                            <svg class="w-3.5 h-3.5 text-slate-400 transition" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            <svg class="w-3 h-3 text-slate-400 transition" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
 
-                        <div x-show="open" x-transition.origin.top.right class="absolute right-0 mt-2 w-64 rounded-xl bg-white border border-slate-200 shadow-xl py-2 z-50 divide-y divide-slate-100" style="display: none;">
-                            <div class="px-4 py-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                        <div x-show="open" x-transition.origin.top.right class="absolute right-0 mt-2 w-64 rounded-2xl bg-white border border-slate-200 shadow-xl py-2 z-50 divide-y divide-slate-100" style="display: none;">
+                            <div class="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                                 Connexion aux portails
                             </div>
                             <div class="py-1">
@@ -131,7 +130,7 @@
                                     <div class="w-7 h-7 rounded-lg bg-slate-200 text-slate-800 flex items-center justify-center font-bold">S</div>
                                     <div>
                                         <div class="font-bold">Espace Structure (SAE)</div>
-                                        <div class="text-[10px] text-slate-500">Pilotage cohorte, KPIs CUBE</div>
+                                        <div class="text-[10px] text-slate-500">Pilotage cohorte, promotions</div>
                                     </div>
                                 </a>
                             </div>
@@ -139,32 +138,32 @@
                     </div>
 
                     {{-- CTA Candidater / Rejoindre --}}
-                    <a href="{{ route('public.rejoindre') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-700 to-emerald-800 hover:from-emerald-800 hover:to-emerald-900 text-white font-bold text-xs shadow-md shadow-emerald-900/20 hover:shadow-lg transition transform hover:-translate-y-0.5">
-                        <span>Candidater / Rejoindre</span>
-                        <svg class="w-4 h-4 text-emerald-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    <a href="{{ route('public.rejoindre') }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs shadow-sm transition transform hover:-translate-y-0.5">
+                        <span>Rejoindre</span>
+                        <svg class="w-3.5 h-3.5 text-emerald-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                     </a>
                 </div>
 
-                {{-- Burger Menu Mobile --}}
-                <div class="flex md:hidden items-center">
-                    <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+                {{-- Burger Menu Mobile & Tablette (< lg) --}}
+                <div class="flex lg:hidden items-center">
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                     </button>
                 </div>
             </div>
         </div>
 
-        {{-- Tiroir Mobile --}}
-        <div x-show="mobileMenuOpen" x-transition class="md:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-3" style="display: none;">
+        {{-- Tiroir Mobile & Tablette --}}
+        <div x-show="mobileMenuOpen" x-transition class="lg:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-3" style="display: none;">
             <a href="{{ route('home') }}" class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-100">Accueil</a>
-            <a href="{{ route('public.programmes') }}" class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-100">Programmes d'Accompagnement</a>
-            <a href="{{ route('public.structures') }}" class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-100">Réseau des SAEs</a>
-            <a href="{{ route('home') }}#cube" class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-100">Cadre CUBE S&amp;E</a>
+            <a href="{{ route('public.programmes') }}" class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-100">Programmes</a>
+            <a href="{{ route('public.structures') }}" class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-100">Structures SAE</a>
+            <a href="{{ route('home') }}#impact" class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-100">À propos</a>
             <div class="pt-3 border-t border-slate-100 flex flex-col gap-2">
-                <a href="/portal" class="block w-full text-center px-4 py-2.5 rounded-lg border border-slate-300 text-xs font-bold text-slate-700">Portail Entrepreneur</a>
-                <a href="/mentor" class="block w-full text-center px-4 py-2.5 rounded-lg border border-slate-300 text-xs font-bold text-slate-700">Portail Mentor / Coach</a>
-                <a href="/sae" class="block w-full text-center px-4 py-2.5 rounded-lg border border-slate-300 text-xs font-bold text-slate-700">Portail Structure SAE</a>
-                <a href="{{ route('public.rejoindre') }}" class="block w-full text-center px-4 py-2.5 rounded-lg bg-emerald-700 text-white text-xs font-bold shadow">Candidater / Rejoindre</a>
+                <a href="/portal" class="block w-full text-center px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-700">Portail Entrepreneur</a>
+                <a href="/mentor" class="block w-full text-center px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-700">Portail Coach &amp; Mentor</a>
+                <a href="/sae" class="block w-full text-center px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-700">Portail Structure SAE</a>
+                <a href="{{ route('public.rejoindre') }}" class="block w-full text-center px-4 py-2.5 rounded-xl bg-emerald-800 text-white text-xs font-bold shadow">Rejoindre / Candidater</a>
             </div>
         </div>
     </nav>
@@ -178,14 +177,14 @@
     <footer class="bg-slate-950 text-slate-400 border-t border-slate-800 pt-16 pb-12 mt-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
             
-            {{-- En-tête Footer avec Logos Partenaires Institutionnels --}}
+            {{-- En-tête Footer avec Partenaires Institutionnels --}}
             <div class="border-b border-slate-800/80 pb-10">
                 <div class="text-xs uppercase font-bold tracking-widest text-slate-500 mb-6 text-center sm:text-left">
                     Partenaires d'Appui &amp; Cadre de Concertation Panafricain
                 </div>
-                <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-6 items-center opacity-75 grayscale hover:grayscale-0 transition-all duration-300">
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 items-center opacity-80">
                     <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 flex items-center justify-center text-xs font-bold text-slate-300">
-                        CUBE S&amp;E
+                        BAD
                     </div>
                     <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 flex items-center justify-center text-xs font-bold text-slate-300">
                         IYBA-SEED
@@ -219,7 +218,7 @@
                         <span>HUB AFRICA</span>
                     </div>
                     <p class="text-xs text-slate-400 leading-relaxed">
-                        Plateforme panafricaine d'accompagnement entrepreneurial unifiant structures d'incubation, mentors accrédités et startups innovantes selon la méthodologie de mesure d'impact CUBE.
+                        Plateforme panafricaine unifiant les structures d'accompagnement locales, les mentors engagés et les entrepreneurs innovants pour créer des entreprises pérennes et génératrices d'emplois.
                     </p>
                     <div class="text-xs text-emerald-400 font-semibold">
                         &bull; Dakar &bull; Lomé &bull; Abidjan &bull; Yaoundé &bull; Cotonou
@@ -232,8 +231,8 @@
                     <ul class="space-y-2 text-xs">
                         <li><a href="{{ route('public.programmes') }}" class="hover:text-emerald-400 transition">Tous les programmes d'incubation</a></li>
                         <li><a href="{{ route('public.programmes') }}?status=open" class="hover:text-emerald-400 transition">Appels à candidatures ouverts</a></li>
-                        <li><a href="{{ route('public.rejoindre') }}" class="hover:text-emerald-400 transition">Déposer une candidature spontanée</a></li>
-                        <li><a href="{{ route('public.structures') }}" class="hover:text-emerald-400 transition">Annuaire des incubateurs et SAEs</a></li>
+                        <li><a href="{{ route('public.rejoindre') }}" class="hover:text-emerald-400 transition">Déposer une candidature</a></li>
+                        <li><a href="{{ route('public.structures') }}" class="hover:text-emerald-400 transition">Annuaire des structures (SAE)</a></li>
                     </ul>
                 </div>
 
@@ -248,9 +247,9 @@
                     </ul>
                 </div>
 
-                {{-- Col 4 : Contact & Certifications --}}
+                {{-- Col 4 : Contact & Réseau --}}
                 <div class="space-y-3">
-                    <h4 class="text-xs font-bold text-white uppercase tracking-wider">Gouvernance &amp; Contact</h4>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider">Contact &amp; Réseau</h4>
                     <p class="text-xs text-slate-400 leading-relaxed">
                         {{ config('hubafrica.contact.address') }}
                     </p>
@@ -260,7 +259,7 @@
                     </div>
                     <div class="pt-2">
                         <span class="inline-block px-3 py-1 bg-emerald-950 border border-emerald-800/80 rounded-md text-[10px] font-bold text-emerald-300 uppercase">
-                            Conforme Standards CUBE S&amp;E
+                            Réseau Labellisé Hub Africa
                         </span>
                     </div>
                 </div>
@@ -268,11 +267,11 @@
 
             {{-- Mentions Légales & Droits --}}
             <div class="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
-                <p>&copy; {{ date('Y') }} Hub Africa. Tous droits réservés. Plateforme Panafricaine de Suivi et d'Évaluation.</p>
+                <p>&copy; {{ date('Y') }} Hub Africa. Tous droits réservés. Plateforme Panafricaine d'Accompagnement à l'Entrepreneuriat.</p>
                 <div class="flex items-center gap-6">
                     <a href="#" class="hover:text-slate-400 transition">Politique de confidentialité</a>
                     <a href="#" class="hover:text-slate-400 transition">Conditions générales</a>
-                    <a href="#" class="hover:text-slate-400 transition">Cadre éthique CUBE</a>
+                    <a href="#" class="hover:text-slate-400 transition">Charte éthique</a>
                 </div>
             </div>
         </div>

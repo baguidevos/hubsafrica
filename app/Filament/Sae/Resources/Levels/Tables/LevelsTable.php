@@ -23,7 +23,7 @@ class LevelsTable
                     ->color('gray'),
 
                 TextColumn::make('name')
-                    ->label('Niveau / Phase CUBE')
+                    ->label('Niveau / Phase')
                     ->weight('bold')
                     ->searchable()
                     ->sortable(),

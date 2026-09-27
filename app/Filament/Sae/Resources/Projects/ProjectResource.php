@@ -74,7 +74,7 @@ class ProjectResource extends Resource
                             TextEntry::make('territory')
                                 ->label('Territoire / Région'),
                             TextEntry::make('currentLevel.name')
-                                ->label('Niveau / Jalon CUBE')
+                                ->label('Niveau / Jalon')
                                 ->badge()
                                 ->color('info'),
                             TextEntry::make('team_size')

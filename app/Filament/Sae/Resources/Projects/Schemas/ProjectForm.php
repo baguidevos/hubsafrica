@@ -57,7 +57,7 @@ class ProjectForm
                                 ->placeholder('Ex: Dakar, Thiès, Ziguinchor'),
 
                             Select::make('current_level_id')
-                                ->label('Palier CUBE actuel')
+                                ->label('Palier actuel')
                                 ->relationship('currentLevel', 'name')
                                 ->searchable()
                                 ->preload(),

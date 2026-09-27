@@ -61,6 +61,6 @@ return [
         'title' => 'Hub Africa — Plateforme Panafricaine d\'Accompagnement & Suivi de l\'Innovation',
         'description' => 'Découvrez les programmes d\'incubation en Afrique, candidatez aux appels à projets et bénéficiez de l\'accompagnement de mentors accrédités.',
         'og_image' => '/images/hubafrica-og.jpg',
-        'keywords' => 'entrepreneuriat, afrique, incubation, accélération, startups, SAE, mentorat, financement, CUBE',
+        'keywords' => 'entrepreneuriat, afrique, incubation, accélération, startups, SAE, mentorat, financement, accompagnement',
     ],
 ];

@@ -48,7 +48,7 @@ class ResourceForm
                                 ->required(),
 
                             Select::make('level_id')
-                                ->label('Niveau CUBE associé')
+                                ->label('Niveau associé')
                                 ->relationship('level', 'name')
                                 ->searchable()
                                 ->preload(),
@@ -59,7 +59,7 @@ class ResourceForm
 
                             TextInput::make('author')
                                 ->label('Auteur / Source')
-                                ->placeholder('Ex: Teranga Hub, Bpifrance, CUBE'),
+                                ->placeholder('Ex: Teranga Hub, Bpifrance, Incubateur Local'),
 
                             TextInput::make('url')
                                 ->label('Lien URL (Web ou Vidéo)')
