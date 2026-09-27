@@ -1,0 +1,247 @@
+<x-layouts.public>
+    @php
+        $now = now()->toDateString();
+        $isOpen = $program->status === \App\Enums\ProgramStatus::ACTIF && (!$program->registration_end || $program->registration_end->toDateString() >= $now);
+        $daysRemaining = $program->registration_end ? now()->diffInDays($program->registration_end, false) : null;
+    @endphp
+
+    {{-- Fil d'ariane & En-tête --}}
+    <section class="bg-slate-900 text-white border-b border-slate-800 py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
+            {{-- Breadcrumb --}}
+            <nav class="flex items-center gap-2 text-xs text-slate-400">
+                <a href="{{ route('home') }}" class="hover:text-emerald-400">Accueil</a>
+                <span>/</span>
+                <a href="{{ route('public.programmes') }}" class="hover:text-emerald-400">Programmes</a>
+                <span>/</span>
+                <span class="text-slate-200 truncate">{{ $program->name }}</span>
+            </nav>
+
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pt-2">
+                <div class="space-y-2">
+                    <div class="flex items-center gap-3">
+                        @if($isOpen)
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                Candidatures Ouvertes
+                            </span>
+                        @else
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                Inscriptions Clôturées
+                            </span>
+                        @endif
+
+                        @if($program->level)
+                            <span class="text-xs font-bold uppercase tracking-wider px-3 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded-lg">
+                                Jalon CUBE : {{ $program->level->name }}
+                            </span>
+                        @endif
+                    </div>
+
+                    <h1 class="text-2xl sm:text-4xl font-black text-white tracking-tight">
+                        {{ $program->name }}
+                    </h1>
+
+                    <p class="text-xs sm:text-sm text-slate-400 flex items-center gap-2">
+                        <span>Organisé par</span>
+                        <strong class="text-slate-200 font-bold">{{ $program->sae?->name ?: 'Hub Africa Régional' }}</strong>
+                        @if($program->sae?->address)
+                            <span>&bull; {{ $program->sae->address }}</span>
+                        @endif
+                    </p>
+                </div>
+
+                @if($isOpen)
+                    <div class="shrink-0">
+                        <a
+                            href="{{ route('public.programme.candidater', $program->id) }}"
+                            class="px-8 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-emerald-800 text-white font-extrabold text-sm shadow-xl shadow-emerald-950/40 transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                        >
+                            <span>Déposer ma Candidature</span>
+                            <svg class="w-4 h-4 text-emerald-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </a>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </section>
+
+    {{-- Corps de la fiche programme (2 colonnes) --}}
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            {{-- Colonne Gauche : Détails & Contenu Pédagogique (8 cols) --}}
+            <div class="lg:col-span-8 space-y-8">
+                
+                {{-- Présentation & Résumé --}}
+                <div class="bg-white rounded-3xl p-8 border border-slate-200/90 shadow-xs space-y-4">
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+                        Présentation du Programme
+                    </h2>
+                    <div class="text-sm text-slate-700 leading-relaxed whitespace-pre-line space-y-3">
+                        {{ $program->description ?: 'Ce programme a pour vocation d\'accompagner les startups à fort potentiel dans la consolidation de leur modèle économique, le déploiement opérationnel et la mise en conformité méthodologique selon le standard CUBE S&E.' }}
+                    </div>
+                </div>
+
+                {{-- Objectifs pédagogiques --}}
+                @if($program->objectives)
+                    <div class="bg-white rounded-3xl p-8 border border-slate-200/90 shadow-xs space-y-4">
+                        <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                            Objectifs &amp; Compétences Visées
+                        </h2>
+                        <div class="text-sm text-slate-700 leading-relaxed whitespace-pre-line">
+                            {{ $program->objectives }}
+                        </div>
+                    </div>
+                @endif
+
+                {{-- Critères d'éligibilité --}}
+                <div class="bg-white rounded-3xl p-8 border border-slate-200/90 shadow-xs space-y-4">
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-teal-600"></span>
+                        Critères d'Éligibilité
+                    </h2>
+                    @if($program->eligibility)
+                        <div class="text-sm text-slate-700 leading-relaxed whitespace-pre-line">
+                            {{ $program->eligibility }}
+                        </div>
+                    @else
+                        <ul class="space-y-3 text-xs sm:text-sm text-slate-700">
+                            <li class="flex items-start gap-2.5">
+                                <svg class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                <span>Entrepreneurs et co-fondateurs porteurs d'un projet formalisé ou en cours d'immatriculation.</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <svg class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                <span>Solution répondant à un besoin concret de marché (innovation d'usage, technologique ou de procédé).</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <svg class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                <span>Disponibilité avérée de l'équipe fondatrice pour suivre les séances de mentorat individuel et les ateliers collectifs.</span>
+                            </li>
+                        </ul>
+                    @endif
+                </div>
+
+                {{-- Livrables Méthodologiques Attendus (CUBE) --}}
+                @if($program->deliverableDefinitions && $program->deliverableDefinitions->isNotEmpty())
+                    <div class="bg-white rounded-3xl p-8 border border-slate-200/90 shadow-xs space-y-4">
+                        <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+                            Livrables Méthodologiques Validés
+                        </h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            @foreach($program->deliverableDefinitions as $def)
+                                <div class="p-3.5 rounded-xl border border-slate-200/80 bg-slate-50 flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs shrink-0">
+                                        ✓
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-bold text-slate-900">{{ $def->name }}</div>
+                                        <div class="text-[10px] text-slate-500">Seuil de passage : {{ $def->passing_score }}%</div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+            </div>
+
+            {{-- Colonne Droite : Sidebar Institutionnelle & Actions (4 cols) --}}
+            <div class="lg:col-span-4 space-y-6">
+                
+                {{-- Carte d'action prioritaire --}}
+                <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-md space-y-6">
+                    <div class="text-xs uppercase font-bold text-slate-400 tracking-wider">
+                        Modalités de la promotion
+                    </div>
+
+                    <div class="space-y-4 text-xs text-slate-700">
+                        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                            <span class="text-slate-500">Clôture des candidatures</span>
+                            <strong class="text-slate-900 font-bold">
+                                {{ $program->registration_end ? $program->registration_end->format('d/m/Y') : 'À déterminer' }}
+                            </strong>
+                        </div>
+
+                        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                            <span class="text-slate-500">Démarrage cohorte</span>
+                            <strong class="text-slate-900 font-bold">
+                                {{ $program->start_date ? $program->start_date->format('d/m/Y') : 'Prochainement' }}
+                            </strong>
+                        </div>
+
+                        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                            <span class="text-slate-500">Fin d'accompagnement</span>
+                            <strong class="text-slate-900 font-bold">
+                                {{ $program->end_date ? $program->end_date->format('d/m/Y') : 'Selon cycle' }}
+                            </strong>
+                        </div>
+
+                        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                            <span class="text-slate-500">Capacité d'accueil</span>
+                            <strong class="text-emerald-700 font-bold">
+                                {{ $program->capacity ?: '20' }} startups
+                            </strong>
+                        </div>
+                    </div>
+
+                    @if($isOpen)
+                        <a
+                            href="{{ route('public.programme.candidater', $program->id) }}"
+                            class="w-full block py-4 px-6 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs text-center shadow-md shadow-emerald-900/20 transition transform hover:-translate-y-0.5"
+                        >
+                            Postuler à ce programme &rarr;
+                        </a>
+                    @else
+                        <div class="p-3 rounded-xl bg-slate-100 text-center text-xs text-slate-500 font-medium">
+                            Les inscriptions pour cette session sont actuellement closes.
+                        </div>
+                    @endif
+                </div>
+
+                {{-- Fiche de la Structure (SAE) --}}
+                <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-4">
+                    <div class="text-xs uppercase font-bold text-slate-400 tracking-wider">
+                        Structure d'Accueil (SAE)
+                    </div>
+
+                    <div class="space-y-2">
+                        <h4 class="font-extrabold text-base text-slate-900">{{ $program->sae?->name }}</h4>
+                        @if($program->sae?->description)
+                            <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
+                                {{ $program->sae->description }}
+                            </p>
+                        @endif
+                    </div>
+
+                    <div class="space-y-2 text-xs text-slate-600 pt-2 border-t border-slate-100">
+                        @if($program->sae?->email)
+                            <div class="flex items-center gap-2">
+                                <span class="text-slate-400">Email :</span>
+                                <a href="mailto:{{ $program->sae->email }}" class="text-emerald-700 font-semibold hover:underline truncate">{{ $program->sae->email }}</a>
+                            </div>
+                        @endif
+                        @if($program->sae?->phone)
+                            <div class="flex items-center gap-2">
+                                <span class="text-slate-400">Tél :</span>
+                                <span class="font-semibold text-slate-800">{{ $program->sae->phone }}</span>
+                            </div>
+                        @endif
+                    </div>
+
+                    <div class="pt-2">
+                        <a
+                            href="{{ route('public.structure.detail', $program->sae_id) }}"
+                            class="block w-full py-2.5 text-center rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 font-bold text-xs transition"
+                        >
+                            Consulter la fiche incubateur
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</x-layouts.public>

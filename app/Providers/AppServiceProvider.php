@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Laravel\Head\Facades\Head;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,11 +25,32 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+        $this->configureHeadDefaults();
 
         \Illuminate\Support\Facades\Event::listen(
             \Packstub\FormBuilder\Events\SubmissionReceived::class,
             \App\Listeners\HandleEvaluationSubmission::class,
         );
+    }
+
+    /**
+     * Configure default SEO metadata using laravel/head.
+     */
+    protected function configureHeadDefaults(): void
+    {
+        Head::defaults(function ($head) {
+            $head->title(config('hubafrica.seo.title', 'Hub Africa — Plateforme Panafricaine d\'Accompagnement'))
+                ->description(config('hubafrica.seo.description', 'Plateforme institutionnelle d\'accompagnement et d\'incubation en Afrique.'))
+                ->applicationName(config('hubafrica.name', 'Hub Africa'))
+                ->themeColor(config('hubafrica.theme.primary', '#064e3b'))
+                ->canonical()
+                ->og(
+                    type: 'website',
+                    siteName: config('hubafrica.name', 'Hub Africa'),
+                    locale: 'fr_FR'
+                )
+                ->twitter(card: 'summary_large_image');
+        });
     }
 
     /**

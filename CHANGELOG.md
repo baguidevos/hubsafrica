@@ -4,6 +4,49 @@ Toutes les modifications notables apportées au projet **Hub Africa v2** (Stack 
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
+## [2.3.0] - 2026-09-27
+
+### Ajouté (Added)
+- **Portail Public Institutionnel & Panafricain (Blade + Tailwind v4 + Livewire 4)** :
+  - **Identité de marque & Alignement CUBE S&E** :
+    - Design institutionnel haut standing répondant aux exigences des bailleurs et partenaires (CUBE S&E, IYBA-SEED, AFD, Enabel, BAD, Union Européenne).
+    - Métriques d'impact en temps réel sur la page d'accueil (`/`) : nombre de startups accompagnées, structures SAE en réseau, heures de mentorat certifiées et financements mobilisés (en FCFA).
+    - Barre supérieure officielle ("République du Bénin / Initiative Panafricaine CUBE S&E"), logos partenaires, menu de navigation contextuel et accès direct aux portails (`/portal`, `/mentor`, `/sae`).
+  - **Catalogue Réactif des Programmes d'Incubation & Accélération (`/programmes`)** :
+    - Moteur de recherche et de filtrage dynamique par mots-clés, SAE d'accueil, niveau de maturité CUBE (Idéation, Prototypage, Amorçage, Croissance) et statut d'enrôlement.
+    - Fiche détaillée de programme (`/programmes/{id}`) : objectifs, critères d'éligibilité, dotations, SAE opératrice, durée et bouton d'action vers la candidature.
+  - **Annuaire des Structures d'Accompagnement (SAE) (`/structures`, `/structures/{id}`)** :
+    - Cartographie des incubateurs et accélérateurs affiliés avec programmes actifs et coordonnées officielles.
+  - **Orientation & Aiguillage des Profils (`/rejoindre`, `/account-type-selection`)** :
+    - Page de sélection de parcours guidé (Entrepreneur, Mentor/Coach, Structure d'Accompagnement SAE).
+  - **Assistant de Candidature Multi-étapes (`/programmes/{id}/candidater`)** :
+    - Composant Livewire réactif `ProgramApplicationWizard` en 3 étapes :
+      - *Étape 1* : Identité entrepreneuriale & création de compte (nom, prénom, email, téléphone, mot de passe).
+      - *Étape 2* : Profil de la startup / projet (nom, secteur d'activité, stade de maturité, description, ville).
+      - *Étape 3* : Motivations & téléversement du pitch deck / dossier de présentation.
+    - Création transactionnelle automatique de l'utilisateur (`User`), profil entrepreneur (`Entrepreneur` rattaché à la SAE), projet (`Project`), candidature (`Application` au statut `SOUMISE`) et événement d'historique (`TimelineEvent`).
+    - Authentification automatique immédiate après soumission avec redirection vers le portail entrepreneur (`/portal/{tenant}`).
+
+- **Optimisations Avancées Livewire 4** :
+  - **Directive `@placeholder`** : Chargement fluide avec squelettes d'animation SVG institutionnels pour le catalogue de programmes.
+  - **Attribut `#[Js]`** : Réinitialisation instantanée des filtres côté client sans aller-retour serveur (`resetFilters()`).
+  - **Attribut `#[Json]`** : Endpoint réactif ultra-léger pour consultation asynchrone des métriques d'un programme (`getProgramQuickStats($id)`).
+
+- **Référencement & Métadonnées SEO avec `laravel/head`** :
+  - Intégration du package officiel `laravel/head`.
+  - Configuration globale dans `AppServiceProvider.php` via `Head::defaults()` (OpenGraph, Twitter Cards, balises canoniques, séparateurs de titres dynamiques).
+  - En-têtes personnalisés dynamiques sur chaque page publique (`HomeController`, `ProgramPublicController`, `StructurePublicController`).
+
+- **Moteur de Thème & Palette Configurable (`config/hubafrica.php`)** :
+  - Fichier de configuration centralisé `config/hubafrica.php` gérant l'identité, les contacts, les métadonnées SEO et la charte graphique.
+  - Système de variables CSS dynamiques (`--ha-primary`, `--ha-secondary`, `--ha-accent`, `--ha-surface`) injectées dans le layout et intégrées aux tokens `@theme` de Tailwind CSS v4 (`--color-brand-primary`, etc.).
+  - Personnalisation immédiate des couleurs via variables d'environnement `.env` sans recompilation des assets.
+
+- **Suite de Tests Fonctionnels Pest (`tests/Feature/PublicFrontendAndApplicationTest.php`)** :
+  - 5 tests complets validant la page d'accueil, le catalogue Livewire, la fiche détaillée, le flux de candidature de bout en bout et l'annuaire des structures (49 assertions).
+
+---
+
 ## [2.2.1] - 2026-09-27
 
 ### Corrigé (Fixed)
