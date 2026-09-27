@@ -224,4 +224,38 @@ test('entrepreneur stats overview widget renders properly with ProjectStatus enu
         ->assertSee('Statut : Actif');
 });
 
+test('sae performance rates widget computes formulas and renders without SQL errors', function () {
+    $user = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $user->id,
+        'name' => 'SAE Performance Rates Hub',
+        'slug' => 'sae-perf-rates',
+    ]);
+    $user->saes()->attach($sae->id, ['role' => 'RESPONSABLE']);
+
+    $program = \App\Models\Program::create([
+        'sae_id' => $sae->id,
+        'name' => 'Incubation Vert 2026',
+        'slug' => 'incubation-vert-2026',
+        'status' => 'ACTIF',
+    ]);
+
+    $cohort = \App\Models\Cohort::create([
+        'sae_id' => $sae->id,
+        'program_id' => $program->id,
+        'name' => 'Cohorte Alpha',
+        'capacity' => 25,
+        'status' => 'OUVERTE',
+    ]);
+
+    $this->actingAs($user);
+
+    \Livewire\Livewire::test(\App\Filament\Sae\Widgets\PerformanceRatesWidget::class)
+        ->assertSuccessful()
+        ->assertSee('Taux de remplissage')
+        ->assertSee('Charge par coach')
+        ->assertSee('Taux de validation');
+});
+
+
 

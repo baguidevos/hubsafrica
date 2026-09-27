@@ -30,7 +30,7 @@ class PerformanceRatesWidget extends Widget
 
         // 2. Taux de remplissage
         $integres = Enrollment::count();
-        $capacite = (int) Cohort::sum('max_participants');
+        $capacite = (int) Cohort::sum('capacity');
         if ($capacite === 0) {
             $capacite = max(20, $integres);
         }
@@ -47,12 +47,12 @@ class PerformanceRatesWidget extends Widget
         $tauxDepot = $attendus > 0 ? round(($depots / $attendus) * 100, 1) : 0;
 
         // 5. Taux de validation
-        $evalues = DeliverableSubmission::whereIn('status', ['VALIDEE', 'REJETEE'])->count();
-        $valides = DeliverableSubmission::where('status', 'VALIDEE')->count();
+        $evalues = DeliverableSubmission::whereIn('status', ['VALIDEE', 'VALIDE', 'REJETEE', 'NON_VALIDE'])->count();
+        $valides = DeliverableSubmission::whereIn('status', ['VALIDEE', 'VALIDE'])->count();
         $tauxValidation = $evalues > 0 ? round(($valides / $evalues) * 100, 1) : ($depots > 0 ? 80 : 0);
 
         // 6. Taux de resoumission
-        $retours = DeliverableSubmission::where('status', 'REJETEE')->count();
+        $retours = DeliverableSubmission::whereIn('status', ['REJETEE', 'NON_VALIDE', 'CORRECTION_DEMANDEE'])->count();
         $resoumis = DeliverableSubmission::where('version', '>', 1)->count();
         $tauxResoumission = $retours > 0 ? round(($resoumis / $retours) * 100, 1) : 0;
 

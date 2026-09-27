@@ -11,6 +11,12 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
   - Correction de l'erreur `Object of class App\Enums\ProjectStatus could not be converted to string` survenue lors de la concaténation directe du statut de projet.
   - Conversion sécurisée du BackedEnum `ProjectStatus` via `->getLabel()`, avec application dynamique de la couleur (`getColor()`) et de l'icône (`getIcon()`) associées au statut du projet.
   - Ajout d'un test fonctionnel Pest (`entrepreneur stats overview widget renders properly with ProjectStatus enum`) garantissant la robustesse du rendu.
+- **Résolution de la colonne `max_participants` dans `PerformanceRatesWidget`** :
+  - Correction de l'erreur `SQLSTATE[42S22]: Column not found: 1054 Unknown column 'max_participants' in 'SELECT'` lors du calcul du taux de remplissage.
+  - Remplacement de `Cohort::sum('max_participants')` par la colonne réelle du schéma `Cohort::sum('capacity')`.
+  - Ajout d'un accesseur rétrocompatible `$cohort->max_participants` sur le modèle `Cohort`.
+  - Prise en charge élargie des statuts de livrables (`VALIDEE`/`VALIDE`, `REJETEE`/`NON_VALIDE`/`CORRECTION_DEMANDEE`).
+  - Ajout d'un test fonctionnel Pest (`sae performance rates widget computes formulas and renders without SQL errors`).
 - **Résolution de route `filament.entrepreneur.pages.fill-questionnaire`** :
   - Normalisation du nom de route pour le widget de questionnaires en attente de l'entrepreneur.
 

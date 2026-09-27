@@ -35,6 +35,11 @@ class Cohort extends Model
         ];
     }
 
+    public function getMaxParticipantsAttribute(): ?int
+    {
+        return $this->capacity;
+    }
+
     public function program(): BelongsTo
     {
         return $this->belongsTo(Program::class, 'program_id');
