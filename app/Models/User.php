@@ -71,6 +71,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasTenant
         return $this->hasOne(Entrepreneur::class, 'user_id');
     }
 
+    public function entrepreneur(): HasOne
+    {
+        return $this->entrepreneurProfile();
+    }
+
     public function isSuperAdmin(): bool
     {
         return $this->email === 'admin@hubafrica.org'

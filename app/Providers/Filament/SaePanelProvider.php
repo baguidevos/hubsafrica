@@ -55,7 +55,11 @@ class SaePanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Sae/Widgets'), for: 'App\Filament\Sae\Widgets')
             ->widgets([])
             ->plugins([
-                FormBuilderPlugin::make(),
+                FormBuilderPlugin::make()
+                    ->resource(\App\Filament\Sae\Resources\EvaluationForms\EvaluationFormResource::class)
+                    ->navigationGroup('Suivi & évaluation')
+                    ->navigationIcon('heroicon-o-clipboard-document-check')
+                    ->navigationSort(3),
                 FilamentShieldPlugin::make(),
             ])
             ->databaseNotifications()

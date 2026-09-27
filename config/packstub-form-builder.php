@@ -35,7 +35,7 @@ return [
     */
 
     'models' => [
-        'form' => Form::class,
+        'form' => \App\Models\Form::class,
         'submission' => FormSubmission::class,
         'webhook_delivery' => WebhookDelivery::class,
     ],

@@ -24,6 +24,10 @@ use App\Models\TimelineEvent;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use App\Enums\FormType;
+use App\Enums\FormUnlockStatus;
+use App\Models\Form;
+use App\Models\FormUnlock;
 use App\Models\Role;
 
 class DatabaseSeeder extends Seeder
@@ -501,5 +505,156 @@ class DatabaseSeeder extends Seeder
             'description' => 'Le projet EcoBat a franchi les jalons de validation du niveau Idéation.',
             'icon' => 'trending-up',
         ]);
+
+        // 16. Formulaires d'évaluation & Enquêtes CUBE S&E
+        $baselineForm = Form::firstOrCreate(
+            ['slug' => 'diagnostic-initial-baseline'],
+            [
+                'sae_id' => $teranga->id,
+                'program_id' => $programGreen->id,
+                'name' => 'Diagnostic Initial & Cadrage (Baseline)',
+                'description' => 'Évaluation approfondie de la maturité commerciale, technique et financière du projet à l\'entrée dans le programme.',
+                'type' => FormType::BASELINE,
+                'is_mandatory' => true,
+                'is_active' => true,
+                'fields' => [
+                    [
+                        'type' => 'text',
+                        'data' => [
+                            'key' => 'chiffre_affaires_actuel',
+                            'label' => 'Chiffre d\'affaires mensuel moyen actuel (FCFA)',
+                            'required' => true,
+                        ],
+                    ],
+                    [
+                        'type' => 'number',
+                        'data' => [
+                            'key' => 'nombre_salaries',
+                            'label' => 'Nombre d\'emplois permanents à ce jour',
+                            'required' => true,
+                        ],
+                    ],
+                    [
+                        'type' => 'select',
+                        'data' => [
+                            'key' => 'stade_produit',
+                            'label' => 'Stade de développement de l\'offre',
+                            'options' => [
+                                ['value' => 'ideation', 'label' => 'Idéation / Concept'],
+                                ['value' => 'prototype', 'label' => 'Prototype / MVP testé'],
+                                ['value' => 'commercialise', 'label' => 'Produit commercialisé'],
+                                ['value' => 'croissance', 'label' => 'En phase de croissance'],
+                            ],
+                            'required' => true,
+                        ],
+                    ],
+                    [
+                        'type' => 'textarea',
+                        'data' => [
+                            'key' => 'principaux_defis',
+                            'label' => 'Quels sont les 3 freins majeurs que vous souhaitez lever avec la SAE ?',
+                            'required' => true,
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        $satisfactionForm = Form::firstOrCreate(
+            ['slug' => 'enquete-satisfaction-mi-parcours'],
+            [
+                'sae_id' => $teranga->id,
+                'program_id' => $programGreen->id,
+                'name' => 'Enquête de satisfaction mi-parcours',
+                'description' => 'Recueil des retours d\'expérience des entrepreneurs sur les coachings et ateliers reçus.',
+                'type' => FormType::SATISFACTION,
+                'is_mandatory' => false,
+                'is_active' => true,
+                'fields' => [
+                    [
+                        'type' => 'rating',
+                        'data' => [
+                            'key' => 'satisfaction_globale',
+                            'label' => 'Satisfaction globale vis-à-vis de l\'accompagnement (sur 5)',
+                            'required' => true,
+                        ],
+                    ],
+                    [
+                        'type' => 'textarea',
+                        'data' => [
+                            'key' => 'points_forts',
+                            'label' => 'Quels sont les aspects les plus utiles de votre accompagnement ?',
+                        ],
+                    ],
+                    [
+                        'type' => 'textarea',
+                        'data' => [
+                            'key' => 'suggestions',
+                            'label' => 'Avez-vous des suggestions d\'amélioration ?',
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        $endlineForm = Form::firstOrCreate(
+            ['slug' => 'bilan-final-sortie-endline'],
+            [
+                'sae_id' => $teranga->id,
+                'program_id' => $programGreen->id,
+                'name' => 'Bilan final & Sortie de programme (Endline)',
+                'description' => 'Mesure des résultats finaux, des financements mobilisés et de l\'autonomie acquise par l\'entreprise.',
+                'type' => FormType::ENDLINE,
+                'is_mandatory' => true,
+                'is_active' => true,
+                'fields' => [
+                    [
+                        'type' => 'text',
+                        'data' => [
+                            'key' => 'ca_sortie',
+                            'label' => 'Chiffre d\'affaires annuel réalisé à la sortie (FCFA)',
+                            'required' => true,
+                        ],
+                    ],
+                    [
+                        'type' => 'number',
+                        'data' => [
+                            'key' => 'emplois_crees_nets',
+                            'label' => 'Nouveaux emplois créés durant l\'accompagnement',
+                            'required' => true,
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        // Assignation / Déblocage pour Ousmane Fall (ent1)
+        FormUnlock::firstOrCreate(
+            [
+                'form_id' => $baselineForm->id,
+                'entrepreneur_id' => $ent1->id,
+            ],
+            [
+                'sae_id' => $teranga->id,
+                'unlocked_by_id' => $fatou->id,
+                'status' => FormUnlockStatus::EN_ATTENTE,
+                'due_date' => now()->addDays(5),
+                'note' => 'Merci de compléter ce diagnostic initial avant la prochaine séance de coaching individuel avec votre mentor.',
+            ]
+        );
+
+        FormUnlock::firstOrCreate(
+            [
+                'form_id' => $satisfactionForm->id,
+                'entrepreneur_id' => $ent1->id,
+            ],
+            [
+                'sae_id' => $teranga->id,
+                'unlocked_by_id' => $fatou->id,
+                'status' => FormUnlockStatus::EN_ATTENTE,
+                'due_date' => now()->addDays(12),
+                'note' => 'Votre avis compte pour adapter les prochains ateliers.',
+            ]
+        );
     }
 }
