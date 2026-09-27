@@ -43,7 +43,7 @@ class CoachResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            \App\Filament\Sae\Resources\Coaches\RelationManagers\AssignedProjectsRelationManager::class,
         ];
     }
 

@@ -9,6 +9,16 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 ## [2.2.0] - 2026-09-27
 
 ### Ajouté (Added)
+- **Système d'Affectation des Coachs aux Projets (`CoachAssignment`)** :
+  - **Gestion bidirectionnelle depuis le panel SAE** :
+    - *Depuis la fiche Coach (`CoachResource`)* : Ajout du relation manager `AssignedProjectsRelationManager` et de l'action rapide de tableau `Affecter à des projets` avec suivi en temps réel de la charge active (ex. `2 / 5 startups`).
+    - *Depuis la fiche Projet (`ProjectResource`)* : Ajout de l'action `Assigner un coach` dans `CoachAssignmentsRelationManager` avec affichage des spécialités des mentors et de leur disponibilité.
+  - **Résolution automatique du contexte CUBE** : Attribution automatique du `program_id` et du `cohort_id` basés sur l'enrôlement du projet.
+  - **Notifications & Traçabilité** :
+    - Notification in-app au coach dans son portail `/mentor/{tenant}`.
+    - Notification in-app à l'entrepreneur dans son portail `/portal/{tenant}`.
+    - Journalisation automatique d'un événement `TimelineEvent` sur le parcours du projet.
+  - **Cycle de vie de l'affectation** : Clôture (`Mettre fin`) ou révocation avec horodatage `ended_at`.
 - **Système complet d'Évaluation & Enquêtes dynamiques par Programme (CUBE S&E)** :
   - **Typologie BackedEnum `FormType`** (`app/Enums/FormType.php`) :
     - `BASELINE` : Diagnostic initial / Entrée (cadrage, maturité de départ)
