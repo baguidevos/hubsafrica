@@ -32,3 +32,14 @@ Route::redirect('/account-type-selection', '/rejoindre');
 // Parcours d'inscription Coach via lien d'invitation sécurisé
 Route::get('/coach/invite/{token}', [CoachInvitationController::class, 'show'])->name('coach.invite');
 Route::post('/coach/invite/{token}', [CoachInvitationController::class, 'register'])->name('coach.invite.register');
+
+// Redirection conviviale pour l'espace Coach/Mentor
+Route::redirect('/mentor', '/coach');
+
+// Comptes de Démonstration & Connexion Instantanée 1-Clic
+use App\Http\Controllers\DevLoginController;
+Route::get('/comptes-test', [DevLoginController::class, 'index'])->name('dev.comptes');
+Route::get('/demo', [DevLoginController::class, 'index'])->name('dev.demo');
+Route::get('/demo/login', [DevLoginController::class, 'login'])->name('dev.login');
+Route::get('/demo/logout', [DevLoginController::class, 'logout'])->name('dev.logout');
+

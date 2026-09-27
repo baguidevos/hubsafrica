@@ -4,6 +4,20 @@ Toutes les modifications notables apportées au projet **Hub Africa v2** (Stack 
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
+## [2.6.0] - 2026-09-27
+
+### Ajouté (Added)
+- **Comptes de Test & Système de Connexion Instantanée 1-Clic** :
+  - Création du document de référence [`COMPTES_TESTS.md`](file:///C:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/COMPTES_TESTS.md) recensant tous les comptes pré-configurés (Super Admin, Responsables SAE, Coachs/Mentors, Entrepreneurs) avec mot de passe universel `password`.
+  - Contrôleur de démo dédié [`DevLoginController`](file:///C:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Http/Controllers/DevLoginController.php) gérant la connexion directe `/demo/login?as=...` et la déconnexion rapide `/demo/logout`.
+  - Page interactive [`/comptes-test`](file:///C:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/resources/views/pages/comptes-test.blade.php) affichant les cartes de chaque profil avec copie en un clic des identifiants et accès directs aux tableaux de bord.
+  - Intégration d'un Render Hook Filament (`PanelsRenderHook::AUTH_LOGIN_FORM_AFTER` dans [`quick-login.blade.php`](file:///C:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/resources/views/filament/hooks/quick-login.blade.php)) sur l'ensemble des formulaires de connexion (`/admin/login`, `/sae/login`, `/coach/login`, `/portal/login`) offrant :
+    - Bouton « Remplir » (injection instantanée de l'email et du mot de passe dans le formulaire).
+    - Bouton « 1-Clic » (authentification immédiate et redirection automatique vers le tableau de bord cible).
+  - Ajout des accès rapides dans la barre de navigation et le menu « Espaces Dédiés » du site public.
+  - Ajout de la redirection de commodité `/mentor` vers `/coach`.
+  - Suite de tests enrichie et validée à 100% (32/32 tests passants).
+
 ## [2.5.0] - 2026-09-27
 
 ### Modifié (Changed) & Harmonisé (Aligned)

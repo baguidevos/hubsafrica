@@ -31,6 +31,13 @@ class AppServiceProvider extends ServiceProvider
             \Packstub\FormBuilder\Events\SubmissionReceived::class,
             \App\Listeners\HandleEvaluationSubmission::class,
         );
+
+        if (class_exists(\Filament\Support\Facades\FilamentView::class) && class_exists(\Filament\View\PanelsRenderHook::class)) {
+            \Filament\Support\Facades\FilamentView::registerRenderHook(
+                \Filament\View\PanelsRenderHook::AUTH_LOGIN_FORM_AFTER,
+                fn () => view('filament.hooks.quick-login'),
+            );
+        }
     }
 
     /**

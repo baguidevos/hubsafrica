@@ -48,13 +48,18 @@
                 <span class="text-slate-400 text-[11px] sm:text-xs">Réseau Panafricain des Structures d'Accompagnement à l'Entrepreneuriat</span>
             </div>
 
-            <div class="flex items-center gap-4 text-[11px] text-slate-400">
-                <a href="mailto:{{ config('hubafrica.contact.email') }}" class="hover:text-[#F8B81D] transition flex items-center gap-1">
+            <div class="flex items-center gap-3 text-[11px] text-slate-400">
+                <a href="{{ route('dev.comptes') }}" class="px-2.5 py-0.5 rounded-full bg-[#F8B81D]/20 text-[#F8B81D] font-bold text-[10px] hover:bg-[#F8B81D]/30 transition flex items-center gap-1 border border-[#F8B81D]/40">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#F8B81D]"></span>
+                    <span>Comptes de Test (1-Clic)</span>
+                </a>
+                <span class="text-slate-700 hidden sm:inline">&bull;</span>
+                <a href="mailto:{{ config('hubafrica.contact.email') }}" class="hover:text-[#F8B81D] transition hidden sm:flex items-center gap-1">
                     <svg class="w-3.5 h-3.5 text-[#F8B81D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                     <span>{{ config('hubafrica.contact.email') }}</span>
                 </a>
-                <span class="text-slate-700">&bull;</span>
-                <span class="flex items-center gap-1">
+                <span class="text-slate-700 hidden sm:inline">&bull;</span>
+                <span class="hidden sm:flex items-center gap-1">
                     <svg class="w-3.5 h-3.5 text-[#F9B104]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                     <span>{{ config('hubafrica.contact.phone') }}</span>
                 </span>
@@ -126,6 +131,18 @@
                                         <div class="text-[10px] text-slate-500">Pilotage cohorte, promotions</div>
                                     </div>
                                 </a>
+                                <a href="/admin" class="flex items-center gap-3 px-4 py-2.5 text-xs text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition">
+                                    <div class="w-7 h-7 rounded-lg bg-slate-800 text-[#F8B81D] flex items-center justify-center font-bold">A</div>
+                                    <div>
+                                        <div class="font-bold">Espace Super Admin</div>
+                                        <div class="text-[10px] text-slate-500">Supervision plateforme</div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="p-2 bg-slate-50 border-t border-slate-100">
+                                <a href="{{ route('dev.comptes') }}" class="flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-xl bg-[#F8B81D]/20 text-[#2F3284] text-[11px] font-bold hover:bg-[#F8B81D]/30 transition border border-[#F8B81D]/40">
+                                    <span>🧪 Voir tous les comptes de test</span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -153,9 +170,11 @@
             <a href="{{ route('public.structures') }}" class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-[#2F3284]">Structures SAE</a>
             <a href="{{ route('home') }}#impact" class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-[#2F3284]">À propos</a>
             <div class="pt-3 border-t border-slate-100 flex flex-col gap-2">
+                <a href="{{ route('dev.comptes') }}" class="block w-full text-center px-4 py-2 rounded-xl bg-[#F8B81D]/20 text-[#2F3284] text-xs font-bold border border-[#F8B81D]/40">🧪 Comptes de Test (1-Clic)</a>
                 <a href="/portal" class="block w-full text-center px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:text-[#2F3284]">Portail Entrepreneur</a>
                 <a href="/mentor" class="block w-full text-center px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:text-[#2F3284]">Portail Coach &amp; Mentor</a>
                 <a href="/sae" class="block w-full text-center px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:text-[#2F3284]">Portail Structure SAE</a>
+                <a href="/admin" class="block w-full text-center px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:text-[#2F3284]">Portail Super Admin</a>
                 <a href="{{ route('public.rejoindre') }}" class="block w-full text-center px-4 py-2.5 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 text-xs font-bold shadow">Rejoindre / Candidater</a>
             </div>
         </div>
