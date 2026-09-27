@@ -1,16 +1,4 @@
 <div>
-    {{-- Directive @placeholder pour un état de chargement skeleton institutionnel --}}
-    @placeholder
-        <div class="space-y-8 animate-pulse">
-            <div class="h-20 bg-slate-200 rounded-2xl"></div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="h-96 bg-slate-200 rounded-3xl"></div>
-                <div class="h-96 bg-slate-200 rounded-3xl"></div>
-                <div class="h-96 bg-slate-200 rounded-3xl"></div>
-            </div>
-        </div>
-    @endplaceholder
-
     <div class="space-y-8">
         {{-- Barre de Filtres et Recherche Interactive --}}
         <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-6">
@@ -89,8 +77,32 @@
             @endif
         </div>
 
+        {{-- État de chargement skeleton réactif lors du filtrage/recherche --}}
+        <div wire:loading.delay.shorter class="w-full">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-pulse">
+                @for($i = 0; $i < 6; $i++)
+                    <div class="bg-white rounded-3xl border border-slate-200/90 p-6 space-y-5">
+                        <div class="flex justify-between items-center">
+                            <div class="h-5 bg-slate-200 rounded-full w-28"></div>
+                            <div class="h-5 bg-slate-200 rounded-md w-20"></div>
+                        </div>
+                        <div class="h-6 bg-slate-200 rounded-xl w-3/4"></div>
+                        <div class="h-4 bg-slate-200 rounded w-1/2"></div>
+                        <div class="space-y-2 pt-4 border-t border-slate-100">
+                            <div class="h-3 bg-slate-200 rounded w-full"></div>
+                            <div class="h-3 bg-slate-200 rounded w-5/6"></div>
+                        </div>
+                        <div class="pt-4 flex justify-between items-center">
+                            <div class="h-4 bg-slate-200 rounded w-24"></div>
+                            <div class="h-9 bg-slate-200 rounded-xl w-28"></div>
+                        </div>
+                    </div>
+                @endfor
+            </div>
+        </div>
+
         {{-- Grille des Programmes d'Accompagnement --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div wire:loading.remove class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @forelse($programs as $p)
                 @php
                     $now = now()->toDateString();

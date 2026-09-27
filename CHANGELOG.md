@@ -46,6 +46,12 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
   - 5 tests complets validant la page d'accueil, le catalogue Livewire, la fiche détaillée, le flux de candidature de bout en bout et l'annuaire des structures (49 assertions).
 
 ### Corrigé (Fixed)
+- **Suppression du rendu textuel brut de `@placeholder` dans le catalogue** :
+  - Dans Livewire 4, la directive `@placeholder` est exclusivement dédiée au compilateur d'îlots (`@island(lazy: true)`). Placée en tête d'une vue de composant standard, elle était renvoyée telle quelle sous forme de texte brut dans le DOM du navigateur.
+  - Retrait des balises `@placeholder` / `@endplaceholder` de la vue Blade [`programmes-catalog.blade.php`](file:///C:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/resources/views/livewire/public/programmes-catalog.blade.php).
+  - Implémentation de la méthode officielle Livewire `public function placeholder(): string` sur le composant [`ProgrammesCatalog.php`](file:///C:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Livewire/Public/ProgrammesCatalog.php) pour le lazy loading natif.
+  - Intégration d'un squelette animé fluide via `wire:loading.delay.shorter` et `wire:loading.remove` lors des recherches et filtrages interactifs.
+  - Ajout d'assertions négatives (`assertDontSee('@placeholder')`) dans les tests fonctionnels.
 - **Résolution de la colonne `order_index` dans `ProgrammesCatalog`** :
   - Correction de l'erreur SQL `1054 Unknown column 'order_index' in 'ORDER BY'` sur la table `levels`.
   - Alignement avec la colonne réelle de la base de données `order` (`orderBy('order')`).

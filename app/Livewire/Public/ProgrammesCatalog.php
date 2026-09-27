@@ -63,6 +63,23 @@ class ProgrammesCatalog extends Component
     }
 
     /**
+     * Méthode officielle Livewire pour l'état de chargement initial (lazy loading)
+     */
+    public function placeholder(): string
+    {
+        return <<<'HTML'
+        <div class="space-y-8 animate-pulse py-8">
+            <div class="h-24 bg-slate-200/80 rounded-3xl"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="h-96 bg-slate-200/60 rounded-3xl"></div>
+                <div class="h-96 bg-slate-200/60 rounded-3xl"></div>
+                <div class="h-96 bg-slate-200/60 rounded-3xl"></div>
+            </div>
+        </div>
+        HTML;
+    }
+
+    /**
      * Endpoint optimisé avec l'attribut #[Json] renvoyant directement du JSON
      * sans cycle de re-rendering Blade pour les survols ou aperçus dynamiques.
      */

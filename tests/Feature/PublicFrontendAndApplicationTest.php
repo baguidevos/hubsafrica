@@ -70,7 +70,9 @@ test('public programmes catalog page and livewire component render with reactive
 
     $this->get('/programmes')
         ->assertOk()
-        ->assertSee('Programmes d\'Accompagnement');
+        ->assertSee('Programmes d\'Accompagnement')
+        ->assertDontSee('@placeholder')
+        ->assertDontSee('@endplaceholder');
 
     // Test du composant Livewire
     Livewire::test(ProgrammesCatalog::class)
