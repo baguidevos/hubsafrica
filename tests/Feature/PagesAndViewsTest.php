@@ -190,3 +190,38 @@ test('models cast enums properly with HasLabel and HasColor', function () {
     expect($indicator->status)->toBe(\App\Enums\IndicatorStatus::EN_BONNE_VOIE);
 });
 
+test('entrepreneur stats overview widget renders properly with ProjectStatus enum', function () {
+    $user = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $user->id,
+        'name' => 'SAE Test Hub Entrepreneur',
+        'slug' => 'sae-test-hub-ent',
+    ]);
+
+    $entrepreneur = Entrepreneur::create([
+        'user_id' => $user->id,
+        'sae_id' => $sae->id,
+        'first_name' => 'Fatou',
+        'last_name' => 'Sow',
+        'email' => $user->email,
+        'gender' => 'F',
+        'status' => 'ACTIVE',
+    ]);
+
+    $project = Project::create([
+        'sae_id' => $sae->id,
+        'entrepreneur_id' => $entrepreneur->id,
+        'name' => 'TechSahel Hub',
+        'sector' => 'Technologies',
+        'status' => \App\Enums\ProjectStatus::ACTIF,
+    ]);
+
+    $this->actingAs($user);
+
+    \Livewire\Livewire::test(\App\Filament\Entrepreneur\Widgets\EntrepreneurStatsOverviewWidget::class)
+        ->assertSuccessful()
+        ->assertSee('TechSahel Hub')
+        ->assertSee('Statut : Actif');
+});
+
+

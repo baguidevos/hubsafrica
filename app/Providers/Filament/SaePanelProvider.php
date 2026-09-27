@@ -33,6 +33,7 @@ class SaePanelProvider extends PanelProvider
             ->id('sae')
             ->path('sae')
             ->viteTheme('resources/css/filament/sae/theme.css')
+            ->spa(hasPrefetching:true)
             ->login()
             ->colors([
                 'primary' => Color::Teal,

@@ -4,6 +4,20 @@ Toutes les modifications notables apportées au projet **Hub Africa v2** (Stack 
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
+## [2.2.1] - 2026-09-27
+
+### Corrigé (Fixed)
+- **Résolution du cast Enum dans `EntrepreneurStatsOverviewWidget`** :
+  - Correction de l'erreur `Object of class App\Enums\ProjectStatus could not be converted to string` survenue lors de la concaténation directe du statut de projet.
+  - Conversion sécurisée du BackedEnum `ProjectStatus` via `->getLabel()`, avec application dynamique de la couleur (`getColor()`) et de l'icône (`getIcon()`) associées au statut du projet.
+  - Ajout d'un test fonctionnel Pest (`entrepreneur stats overview widget renders properly with ProjectStatus enum`) garantissant la robustesse du rendu.
+- **Résolution de route `filament.entrepreneur.pages.fill-questionnaire`** :
+  - Normalisation du nom de route pour le widget de questionnaires en attente de l'entrepreneur.
+
+### Amélioré (Improved)
+- **Navigation SPA & Performance** :
+  - Activation de `->spa(hasPrefetching: true)` sur `EntrepreneurPanelProvider` et `SaePanelProvider` pour une navigation instantanée sans rechargement de page.
+
 ---
 
 ## [2.2.0] - 2026-09-27

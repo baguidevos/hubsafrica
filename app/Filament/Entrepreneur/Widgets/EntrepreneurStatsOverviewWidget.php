@@ -2,6 +2,7 @@
 
 namespace App\Filament\Entrepreneur\Widgets;
 
+use App\Enums\ProjectStatus;
 use App\Models\CoachingSession;
 use App\Models\DeliverableSubmission;
 use App\Models\FundingRecord;
@@ -49,11 +50,27 @@ class EntrepreneurStatsOverviewWidget extends BaseWidget
             : 0;
         $financementFormat = number_format($financementObtenu, 0, ',', ' ') . ' FCFA';
 
+        $statusLabel = 'N/A';
+        $statusColor = 'primary';
+        $statusIcon = 'heroicon-m-light-bulb';
+
+        if ($project?->status) {
+            if ($project->status instanceof ProjectStatus) {
+                $statusLabel = $project->status->getLabel() ?? $project->status->value;
+                $statusColor = $project->status->getColor() ?? 'primary';
+                $statusIcon = $project->status->getIcon() ?? 'heroicon-m-light-bulb';
+            } elseif (is_object($project->status) && method_exists($project->status, 'getLabel')) {
+                $statusLabel = $project->status->getLabel();
+            } else {
+                $statusLabel = (string) ($project->status->value ?? $project->status);
+            }
+        }
+
         return [
             Stat::make('Mon projet', $project?->name ?: 'En attente')
-                ->description('Statut : ' . ($project?->status ?: 'N/A'))
-                ->descriptionIcon('heroicon-m-light-bulb')
-                ->color('primary'),
+                ->description('Statut : ' . $statusLabel)
+                ->descriptionIcon($statusIcon)
+                ->color($statusColor),
 
             Stat::make('Jalon / Niveau', $niveau)
                 ->description('Parcours d\'incubation')

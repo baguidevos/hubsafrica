@@ -29,6 +29,7 @@ class EntrepreneurPanelProvider extends PanelProvider
             ->path('portal')
             ->viteTheme('resources/css/filament/entrepreneur/theme.css')
             ->login()
+            ->spa(hasPrefetching:true)
             ->colors([
                 'primary' => Color::Emerald,
             ])
