@@ -48,7 +48,7 @@ test('public programmes catalog page and livewire component render with reactive
     $level = Level::create([
         'sae_id' => $sae->id,
         'name' => 'Maturation MVP',
-        'order_index' => 1,
+        'order' => 1,
     ]);
 
     $programA = Program::create([

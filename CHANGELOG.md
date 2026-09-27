@@ -45,6 +45,13 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 - **Suite de Tests Fonctionnels Pest (`tests/Feature/PublicFrontendAndApplicationTest.php`)** :
   - 5 tests complets validant la page d'accueil, le catalogue Livewire, la fiche détaillée, le flux de candidature de bout en bout et l'annuaire des structures (49 assertions).
 
+### Corrigé (Fixed)
+- **Résolution de la colonne `order_index` dans `ProgrammesCatalog`** :
+  - Correction de l'erreur SQL `1054 Unknown column 'order_index' in 'ORDER BY'` sur la table `levels`.
+  - Alignement avec la colonne réelle de la base de données `order` (`orderBy('order')`).
+  - Scoping automatique des niveaux par SAE lorsque le filtre SAE est sélectionné.
+  - Ajout d'un accesseur `$level->order_index` sur le modèle `Level` pour rétrocompatibilité.
+
 ---
 
 ## [2.2.1] - 2026-09-27

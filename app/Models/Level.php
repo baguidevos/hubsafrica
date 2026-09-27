@@ -28,6 +28,11 @@ class Level extends Model
         ];
     }
 
+    public function getOrderIndexAttribute(): ?int
+    {
+        return $this->attributes['order'] ?? null;
+    }
+
     public function projects(): HasMany
     {
         return $this->hasMany(Project::class, 'current_level_id');

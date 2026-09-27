@@ -133,7 +133,12 @@ class ProgrammesCatalog extends Component
         $programs = $query->latest()->paginate(9);
 
         $saes = Sae::orderBy('name')->get(['id', 'name']);
-        $levels = Level::orderBy('order_index')->get(['id', 'name']);
+
+        $levelsQuery = Level::query();
+        if ($this->selectedSae !== 'all') {
+            $levelsQuery->where('sae_id', (int) $this->selectedSae);
+        }
+        $levels = $levelsQuery->orderBy('order')->get(['id', 'name']);
 
         return view('livewire.public.programmes-catalog', [
             'programs' => $programs,
