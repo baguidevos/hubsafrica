@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\CoachInvitationStatus;
 use App\Models\Coach;
 use App\Models\CoachInvitation;
 use App\Models\Sae;
@@ -55,7 +56,7 @@ test('a coach can accept an invitation via token and join the SAE', function () 
 
     $this->assertAuthenticated();
     expect(Coach::where('email', 'nouveau.coach@test.sn')->exists())->toBeTrue();
-    expect($invitation->fresh()->status)->toBe(\App\Enums\CoachInvitationStatus::ACCEPTED);
+    expect($invitation->fresh()->status)->toBe(CoachInvitationStatus::ACCEPTED);
 });
 
 test('panels have functioning login and entry points', function () {
@@ -132,6 +133,3 @@ test('legacy register coach url with token redirects to official coach invite ro
     $response = $this->get('/register/coach?token=demo-token-123');
     $response->assertRedirect(route('coach.invite', ['token' => 'demo-token-123']));
 });
-
-
-

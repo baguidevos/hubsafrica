@@ -14,5 +14,3 @@ class ListResources extends ListRecords
         return [];
     }
 }
-
-

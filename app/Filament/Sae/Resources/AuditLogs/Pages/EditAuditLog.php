@@ -17,5 +17,3 @@ class EditAuditLog extends EditRecord
         ];
     }
 }
-
-

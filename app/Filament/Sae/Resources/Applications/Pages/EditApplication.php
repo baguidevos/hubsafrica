@@ -17,5 +17,3 @@ class EditApplication extends EditRecord
         ];
     }
 }
-
-

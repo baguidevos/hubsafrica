@@ -9,5 +9,3 @@ class CreateDataRoomDocument extends CreateRecord
 {
     protected static string $resource = DataRoomDocumentResource::class;
 }
-
-

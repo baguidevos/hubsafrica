@@ -7,6 +7,7 @@ return [
     |--------------------------------------------------------------------------
     */
     'name' => env('HUBAFRICA_APP_NAME', 'Hub Africa'),
+    'version' => env('HUBAFRICA_VERSION', '2.8.0'),
     'tagline' => env('HUBAFRICA_TAGLINE', 'Plateforme Panafricaine d\'Accompagnement et de Suivi de l\'Innovation'),
     'description' => env('HUBAFRICA_DESCRIPTION', 'L\'écosystème institutionnel qui unifie les structures d\'accompagnement (SAE), les mentors experts et les entrepreneurs à fort impact en Afrique.'),
 
@@ -24,20 +25,20 @@ return [
         'primary' => env('HUBAFRICA_COLOR_PRIMARY', '#F8B81D'),
         'primary_hover' => env('HUBAFRICA_COLOR_PRIMARY_HOVER', '#e5a510'),
         'primary_light' => env('HUBAFRICA_COLOR_PRIMARY_LIGHT', '#fef3c7'),
-        
+
         // Bleu Indigo profond Hub-Africa V1 (Titres, navigation, contraste)
         'secondary' => env('HUBAFRICA_COLOR_SECONDARY', '#2F3284'),
         'secondary_light' => env('HUBAFRICA_COLOR_SECONDARY_LIGHT', '#4347a8'),
-        
+
         // Accent Orange / Jaune chaud Hub-Africa V1
         'accent' => env('HUBAFRICA_COLOR_ACCENT', '#F9B104'),
         'accent_light' => env('HUBAFRICA_COLOR_ACCENT_LIGHT', '#fbbf24'),
-        
+
         // Nuances de fond et de surfaces
         'surface' => env('HUBAFRICA_COLOR_SURFACE', '#f8fafc'),
         'card_bg' => env('HUBAFRICA_COLOR_CARD_BG', '#ffffff'),
         'border' => env('HUBAFRICA_COLOR_BORDER', '#e2e8f0'),
-        
+
         // Typographie
         'text_dark' => env('HUBAFRICA_COLOR_TEXT_DARK', '#0f172a'),
         'text_muted' => env('HUBAFRICA_COLOR_TEXT_MUTED', '#64748b'),

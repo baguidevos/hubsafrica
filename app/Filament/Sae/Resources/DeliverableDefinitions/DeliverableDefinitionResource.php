@@ -2,6 +2,7 @@
 
 namespace App\Filament\Sae\Resources\DeliverableDefinitions;
 
+use App\Filament\Sae\Clusters\AccompagnementCluster;
 use App\Filament\Sae\Resources\DeliverableDefinitions\Pages\CreateDeliverableDefinition;
 use App\Filament\Sae\Resources\DeliverableDefinitions\Pages\EditDeliverableDefinition;
 use App\Filament\Sae\Resources\DeliverableDefinitions\Pages\ListDeliverableDefinitions;
@@ -11,14 +12,13 @@ use App\Models\DeliverableDefinition;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
 class DeliverableDefinitionResource extends Resource
 {
     protected static ?string $model = DeliverableDefinition::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Suivi & évaluation';
+    protected static ?string $cluster = AccompagnementCluster::class;
 
     protected static ?string $navigationLabel = 'Livrables attendus';
 
@@ -28,7 +28,7 @@ class DeliverableDefinitionResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-check';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 5;
 
     public static function form(Schema $schema): Schema
     {
@@ -56,5 +56,3 @@ class DeliverableDefinitionResource extends Resource
         ];
     }
 }
-
-

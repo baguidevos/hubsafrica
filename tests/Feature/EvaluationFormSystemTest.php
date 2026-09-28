@@ -5,7 +5,6 @@ use App\Enums\FormUnlockStatus;
 use App\Filament\Entrepreneur\Pages\QuestionnairesPage;
 use App\Filament\Entrepreneur\Widgets\EntrepreneurPendingSurveysWidget;
 use App\Listeners\HandleEvaluationSubmission;
-use App\Models\Cohort;
 use App\Models\Entrepreneur;
 use App\Models\Form;
 use App\Models\FormUnlock;
@@ -13,7 +12,6 @@ use App\Models\Program;
 use App\Models\Sae;
 use App\Models\TimelineEvent;
 use App\Models\User;
-use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Event;
 use Packstub\FormBuilder\Events\SubmissionReceived;
 use Packstub\FormBuilder\Models\FormSubmission;
@@ -175,7 +173,7 @@ test('handle evaluation submission listener marks unlock as completed, logs time
     $event = new SubmissionReceived($form, $submission, $context);
 
     // Call listener
-    $listener = new HandleEvaluationSubmission();
+    $listener = new HandleEvaluationSubmission;
     $listener->handle($event);
 
     $unlock->refresh();

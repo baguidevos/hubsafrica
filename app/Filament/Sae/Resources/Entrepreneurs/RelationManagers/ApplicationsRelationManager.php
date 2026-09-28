@@ -2,7 +2,6 @@
 
 namespace App\Filament\Sae\Resources\Entrepreneurs\RelationManagers;
 
-use App\Filament\Sae\Resources\Applications\Schemas\ApplicationForm;
 use BackedEnum;
 use Filament\Actions\ViewAction;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -12,8 +11,10 @@ use Filament\Tables\Table;
 class ApplicationsRelationManager extends RelationManager
 {
     protected static string $relationship = 'applications';
+
     protected static ?string $title = 'Candidatures';
-    protected static string | BackedEnum | null $icon = 'heroicon-o-clipboard-document-list';
+
+    protected static string|BackedEnum|null $icon = 'heroicon-o-clipboard-document-list';
 
     public function table(Table $table): Table
     {

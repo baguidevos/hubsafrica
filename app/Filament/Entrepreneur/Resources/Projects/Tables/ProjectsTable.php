@@ -2,9 +2,6 @@
 
 namespace App\Filament\Entrepreneur\Resources\Projects\Tables;
 
-use App\Enums\ProjectStatus;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
@@ -53,9 +50,7 @@ class ProjectsTable
                 EditAction::make()->slideOver(),
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
+                //
             ])
             ->defaultSort('name');
     }

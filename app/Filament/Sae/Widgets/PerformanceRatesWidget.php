@@ -15,7 +15,9 @@ use Filament\Widgets\Widget;
 class PerformanceRatesWidget extends Widget
 {
     protected static ?int $sort = 2;
-    protected int | string | array $columnSpan = 'full';
+
+    protected int|string|array $columnSpan = 'full';
+
     protected string $view = 'filament.sae.widgets.performance-rates-widget';
 
     public function getFormulesData(): array
@@ -65,7 +67,7 @@ class PerformanceRatesWidget extends Widget
             [
                 'key' => 'admission',
                 'label' => 'Taux d\'admission',
-                'val' => $tauxAdmission . ' %',
+                'val' => $tauxAdmission.' %',
                 'raw' => $tauxAdmission,
                 'num' => "Candidatures acceptées ({$acceptees})",
                 'den' => "Candidatures examinées ({$examinees}) × 100",
@@ -73,7 +75,7 @@ class PerformanceRatesWidget extends Widget
             [
                 'key' => 'remplissage',
                 'label' => 'Taux de remplissage',
-                'val' => $tauxRemplissage . ' %',
+                'val' => $tauxRemplissage.' %',
                 'raw' => $tauxRemplissage,
                 'num' => "Effectif intégré ({$integres})",
                 'den' => "Capacité prévue ({$capacite}) × 100",
@@ -81,7 +83,7 @@ class PerformanceRatesWidget extends Widget
             [
                 'key' => 'chargeCoach',
                 'label' => 'Charge par coach',
-                'val' => $chargeCoach . ' proj.',
+                'val' => $chargeCoach.' proj.',
                 'raw' => $chargeCoach * 10,
                 'num' => "Accompagnements ({$accompagnements})",
                 'den' => "Coachs actifs ({$coachsActifs})",
@@ -89,7 +91,7 @@ class PerformanceRatesWidget extends Widget
             [
                 'key' => 'depot',
                 'label' => 'Taux de dépôt',
-                'val' => $tauxDepot . ' %',
+                'val' => $tauxDepot.' %',
                 'raw' => $tauxDepot,
                 'num' => "Livrables déposés ({$depots})",
                 'den' => "Livrables attendus ({$attendus}) × 100",
@@ -97,7 +99,7 @@ class PerformanceRatesWidget extends Widget
             [
                 'key' => 'validation',
                 'label' => 'Taux de validation',
-                'val' => $tauxValidation . ' %',
+                'val' => $tauxValidation.' %',
                 'raw' => $tauxValidation,
                 'num' => "Livrables validés ({$valides})",
                 'den' => "Livrables évalués ({$evalues}) × 100",
@@ -105,7 +107,7 @@ class PerformanceRatesWidget extends Widget
             [
                 'key' => 'resoumission',
                 'label' => 'Taux de resoumission',
-                'val' => $tauxResoumission . ' %',
+                'val' => $tauxResoumission.' %',
                 'raw' => $tauxResoumission,
                 'num' => "Livrables redéposés ({$resoumis})",
                 'den' => "Livrables rejetés ({$retours}) × 100",
@@ -113,7 +115,7 @@ class PerformanceRatesWidget extends Widget
             [
                 'key' => 'progression',
                 'label' => 'Taux de progression',
-                'val' => $tauxProgression . ' %',
+                'val' => $tauxProgression.' %',
                 'raw' => $tauxProgression,
                 'num' => "Projets promus ({$promus})",
                 'den' => "Projets actifs ({$eligibles}) × 100",

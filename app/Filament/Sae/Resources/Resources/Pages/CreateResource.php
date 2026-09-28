@@ -9,5 +9,3 @@ class CreateResource extends CreateRecord
 {
     protected static string $resource = ResourceResource::class;
 }
-
-

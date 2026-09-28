@@ -6,7 +6,7 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum FormType: string implements HasLabel, HasColor, HasIcon
+enum FormType: string implements HasColor, HasIcon, HasLabel
 {
     case BASELINE = 'BASELINE';
     case DIAGNOSTIC = 'DIAGNOSTIC';

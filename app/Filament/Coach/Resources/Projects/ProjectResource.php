@@ -11,14 +11,14 @@ use App\Models\Project;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Mon accompagnement';
+    protected static string|\UnitEnum|null $navigationGroup = 'Mon accompagnement';
 
     protected static ?string $navigationLabel = 'Mes projets assignés';
 
@@ -40,7 +40,7 @@ class ProjectResource extends Resource
         return ProjectsTable::configure($table);
     }
 
-    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
         $coach = auth()->user()?->coachProfile;
@@ -48,6 +48,7 @@ class ProjectResource extends Resource
             $projectIds = $coach->assignments()->where('status', 'ACTIF')->pluck('project_id');
             $query->whereIn('id', $projectIds);
         }
+
         return $query;
     }
 
@@ -67,5 +68,3 @@ class ProjectResource extends Resource
         ];
     }
 }
-
-

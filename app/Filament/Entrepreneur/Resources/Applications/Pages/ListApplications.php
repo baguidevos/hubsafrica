@@ -14,5 +14,3 @@ class ListApplications extends ListRecords
         return [];
     }
 }
-
-

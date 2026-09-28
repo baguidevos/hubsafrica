@@ -4,7 +4,6 @@ namespace App\Listeners;
 
 use App\Enums\FormUnlockStatus;
 use App\Models\Entrepreneur;
-use App\Models\Form;
 use App\Models\FormUnlock;
 use App\Models\TimelineEvent;
 use App\Models\User;
@@ -57,7 +56,7 @@ class HandleEvaluationSubmission
         TimelineEvent::create([
             'sae_id' => $form->getAttribute('sae_id') ?? $entrepreneur->sae_id,
             'entrepreneur_id' => $entrepreneur->id,
-            'title' => 'Questionnaire complété : ' . $form->name,
+            'title' => 'Questionnaire complété : '.$form->name,
             'description' => "L'entrepreneur {$entrepreneur->full_name} a complété avec succès le formulaire '{$form->name}'.",
             'type' => 'EVALUATION',
             'event_date' => now(),

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\EntrepreneurStatus;
+use App\Enums\Gender;
 use App\Models\Concerns\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,8 +37,8 @@ class Entrepreneur extends Model
     protected function casts(): array
     {
         return [
-            'status' => \App\Enums\EntrepreneurStatus::class,
-            'gender' => \App\Enums\Gender::class,
+            'status' => EntrepreneurStatus::class,
+            'gender' => Gender::class,
             'birth_date' => 'date',
         ];
     }

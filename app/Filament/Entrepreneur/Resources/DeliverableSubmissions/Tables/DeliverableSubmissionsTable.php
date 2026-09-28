@@ -4,9 +4,6 @@ namespace App\Filament\Entrepreneur\Resources\DeliverableSubmissions\Tables;
 
 use App\Enums\DeliverableSubmissionStatus;
 use Filament\Actions\Action;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
@@ -29,6 +26,13 @@ class DeliverableSubmissionsTable
                     ->label('Projet')
                     ->searchable(),
 
+                TextColumn::make('cohortPhase.name')
+                    ->label('Jalon / Phase')
+                    ->badge()
+                    ->color('info')
+                    ->placeholder('Général')
+                    ->sortable(),
+
                 TextColumn::make('version')
                     ->label('Version')
                     ->badge()
@@ -40,6 +44,18 @@ class DeliverableSubmissionsTable
                     ->label('Statut')
                     ->badge()
                     ->sortable(),
+
+                TextColumn::make('latestEvaluation.score')
+                    ->label('Note Coach')
+                    ->badge()
+                    ->color(fn ($state) => match (true) {
+                        $state === null => 'gray',
+                        $state >= 75 => 'success',
+                        $state >= 50 => 'warning',
+                        default => 'danger',
+                    })
+                    ->formatStateUsing(fn ($state) => $state !== null ? "{$state} / 100" : 'En attente')
+                    ->alignCenter(),
 
                 TextColumn::make('submitted_at')
                     ->label('Déposé le')
@@ -56,17 +72,16 @@ class DeliverableSubmissionsTable
                     ->label('Mon fichier')
                     ->icon('heroicon-o-arrow-down-tray')
                     ->color('gray')
-                    ->url(fn ($record) => $record->file_path ? asset('storage/' . $record->file_path) : null)
+                    ->url(fn ($record) => $record->file_path ? asset('storage/'.$record->file_path) : null)
                     ->openUrlInNewTab()
                     ->visible(fn ($record) => filled($record->file_path)),
 
                 ViewAction::make()->slideOver(),
-                EditAction::make()->slideOver(),
+                EditAction::make()->slideOver()
+                    ->visible(fn ($record) => $record->status !== DeliverableSubmissionStatus::VALIDE),
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
+                //
             ])
             ->defaultSort('submitted_at', 'desc');
     }

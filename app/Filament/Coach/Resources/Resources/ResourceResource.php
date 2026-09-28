@@ -15,7 +15,7 @@ class ResourceResource extends Resource
 {
     protected static ?string $model = ResourceModel::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Outils & Partages';
+    protected static string|\UnitEnum|null $navigationGroup = 'Outils & Partages';
 
     protected static ?string $navigationLabel = 'Ressources';
 
@@ -44,5 +44,3 @@ class ResourceResource extends Resource
         ];
     }
 }
-
-

@@ -13,6 +13,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 class EntrepreneurStatsOverviewWidget extends BaseWidget
 {
     protected static ?int $sort = 1;
+
     protected ?string $pollingInterval = '30s';
 
     protected function getStats(): array
@@ -48,7 +49,7 @@ class EntrepreneurStatsOverviewWidget extends BaseWidget
         $financementObtenu = $project
             ? (float) FundingRecord::where('project_id', $project->id)->whereIn('status', ['ACCORDE', 'DECAISSE', 'INVESTI'])->sum('amount_obtained')
             : 0;
-        $financementFormat = number_format($financementObtenu, 0, ',', ' ') . ' FCFA';
+        $financementFormat = number_format($financementObtenu, 0, ',', ' ').' FCFA';
 
         $statusLabel = 'N/A';
         $statusColor = 'primary';
@@ -68,7 +69,7 @@ class EntrepreneurStatsOverviewWidget extends BaseWidget
 
         return [
             Stat::make('Mon projet', $project?->name ?: 'En attente')
-                ->description('Statut : ' . $statusLabel)
+                ->description('Statut : '.$statusLabel)
                 ->descriptionIcon($statusIcon)
                 ->color($statusColor),
 

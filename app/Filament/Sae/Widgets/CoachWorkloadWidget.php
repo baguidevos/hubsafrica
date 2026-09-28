@@ -8,10 +8,12 @@ use Filament\Widgets\Widget;
 class CoachWorkloadWidget extends Widget
 {
     protected static ?int $sort = 7;
-    protected int | string | array $columnSpan = [
+
+    protected int|string|array $columnSpan = [
         'default' => 'full',
         'lg' => 1,
     ];
+
     protected string $view = 'filament.sae.widgets.coach-workload-widget';
 
     public function getCoachWorkloads(): array
@@ -19,9 +21,9 @@ class CoachWorkloadWidget extends Widget
         $coaches = Coach::withCount(['assignments' => function ($q) {
             $q->where('status', 'ACTIF');
         }])
-        ->where('status', 'ACTIF')
-        ->limit(6)
-        ->get();
+            ->where('status', 'ACTIF')
+            ->limit(6)
+            ->get();
 
         return $coaches->map(function ($c) {
             $capacite = $c->capacity ?: 5;

@@ -5,7 +5,7 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum FundingStatus: string implements HasLabel, HasColor
+enum FundingStatus: string implements HasColor, HasLabel
 {
     case DEMANDE = 'DEMANDE';
     case ACCORDE = 'ACCORDE';
@@ -22,7 +22,7 @@ enum FundingStatus: string implements HasLabel, HasColor
         };
     }
 
-    public function getColor(): string | array | null
+    public function getColor(): string|array|null
     {
         return match ($this) {
             self::DEMANDE => 'warning',

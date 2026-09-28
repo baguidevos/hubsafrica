@@ -16,7 +16,7 @@ class DataRoomDocumentResource extends Resource
 {
     protected static ?string $model = DataRoomDocument::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Outils & Partages';
+    protected static string|\UnitEnum|null $navigationGroup = 'Outils & Partages';
 
     protected static ?string $navigationLabel = 'Data room';
 
@@ -46,6 +46,7 @@ class DataRoomDocumentResource extends Resource
             $projectIds = $coach->assignments()->where('status', 'ACTIF')->pluck('project_id');
             $query->whereIn('project_id', $projectIds);
         }
+
         return $query;
     }
 
@@ -56,5 +57,3 @@ class DataRoomDocumentResource extends Resource
         ];
     }
 }
-
-

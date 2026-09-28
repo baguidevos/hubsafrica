@@ -17,5 +17,3 @@ class EditIndicator extends EditRecord
         ];
     }
 }
-
-

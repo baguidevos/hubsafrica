@@ -30,7 +30,7 @@ class HomeController extends Controller
             'projects' => max($projectsCount, 120),
             'saes' => max($saesCount, 12),
             'hours' => max($coachingHours, 840),
-            'funding' => $fundingSum > 0 ? number_format($fundingSum, 0, ',', ' ') . ' FCFA' : '450 000 000 FCFA',
+            'funding' => $fundingSum > 0 ? number_format($fundingSum, 0, ',', ' ').' FCFA' : '450 000 000 FCFA',
         ];
 
         // Programmes ouverts et en vedette

@@ -3,6 +3,7 @@
 namespace App\Filament\Sae\Resources\CoachInvitations\Pages;
 
 use App\Filament\Sae\Resources\CoachInvitations\CoachInvitationResource;
+use App\Models\CoachInvitation;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
@@ -16,7 +17,7 @@ class ListCoachInvitations extends ListRecords
             CreateAction::make()
                 ->label('Inviter un coach')
                 ->slideOver()
-                ->successNotification(fn (\App\Models\CoachInvitation $record) => $record->makeInvitationNotification()),
+                ->successNotification(fn (CoachInvitation $record) => $record->makeInvitationNotification()),
         ];
     }
 }

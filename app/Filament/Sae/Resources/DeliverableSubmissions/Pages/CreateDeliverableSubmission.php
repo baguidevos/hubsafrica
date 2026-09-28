@@ -9,5 +9,3 @@ class CreateDeliverableSubmission extends CreateRecord
 {
     protected static string $resource = DeliverableSubmissionResource::class;
 }
-
-

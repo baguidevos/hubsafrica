@@ -9,5 +9,3 @@ class CreateSae extends CreateRecord
 {
     protected static string $resource = SaeResource::class;
 }
-
-

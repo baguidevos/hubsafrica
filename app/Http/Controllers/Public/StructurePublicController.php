@@ -36,8 +36,8 @@ class StructurePublicController extends Controller
         }, 'coaches' => function ($q) {
             $q->where('status', 'ACTIF');
         }])
-        ->withCount(['projects', 'coaches'])
-        ->findOrFail($id);
+            ->withCount(['projects', 'coaches'])
+            ->findOrFail($id);
 
         Head::title("{$sae->name} — Structure d'Accompagnement | Hub Africa")
             ->description(strip_tags($sae->description ?: "Découvrez les programmes et mentors de la structure {$sae->name}."));

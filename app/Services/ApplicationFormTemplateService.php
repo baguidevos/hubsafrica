@@ -1,0 +1,240 @@
+<?php
+
+namespace App\Services;
+
+use App\Enums\FormType;
+use App\Models\Cohort;
+use App\Models\Form;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Str;
+
+class ApplicationFormTemplateService
+{
+    public const STANDARD_TEMPLATE_SLUG = 'candidature-standard-hub-africa';
+
+    /**
+     * Récupère ou initialise le Template Standardisé Officiel Hub Africa.
+     */
+    public function getOrCreateStandardTemplate(): Form
+    {
+        return Form::withoutGlobalScopes()->updateOrCreate(
+            ['slug' => self::STANDARD_TEMPLATE_SLUG],
+            [
+                'name' => 'Dossier de Candidature Standard Hub Africa',
+                'description' => 'Modèle officiel standardisé Hub Africa comprenant l\'état civil porteur, la présentation de la startup, la note de motivation et le pitch deck.',
+                'type' => FormType::CANDIDATURE,
+                'is_template' => true,
+                'is_standard' => true,
+                'is_mandatory' => true,
+                'is_active' => true,
+                'sae_id' => null, // Template universel commun
+                'submit_label' => 'Déposer ma Candidature',
+                'success_message' => 'Félicitations, votre dossier de candidature a été transmis avec succès au comité de sélection.',
+                'fields' => $this->getStandardFieldsDefinition(),
+            ]
+        );
+    }
+
+    /**
+     * Définition exhaustive des champs du socle commun Hub Africa.
+     */
+    public function getStandardFieldsDefinition(): array
+    {
+        return [
+            // Étape 1 : Profil du Porteur
+            [
+                'type' => 'text',
+                'data' => [
+                    'key' => 'first_name',
+                    'label' => 'Prénom du porteur de projet',
+                    'required' => true,
+                    'placeholder' => 'Ex: Amadou',
+                ],
+            ],
+            [
+                'type' => 'text',
+                'data' => [
+                    'key' => 'last_name',
+                    'label' => 'Nom de famille',
+                    'required' => true,
+                    'placeholder' => 'Ex: Diallo',
+                ],
+            ],
+            [
+                'type' => 'email',
+                'data' => [
+                    'key' => 'email',
+                    'label' => 'Adresse email',
+                    'required' => true,
+                    'placeholder' => 'amadou.diallo@startup.africa',
+                ],
+            ],
+            [
+                'type' => 'text',
+                'data' => [
+                    'key' => 'phone',
+                    'label' => 'Numéro de téléphone (WhatsApp)',
+                    'required' => true,
+                    'placeholder' => '+221 77 000 00 00',
+                ],
+            ],
+            [
+                'type' => 'select',
+                'data' => [
+                    'key' => 'gender',
+                    'label' => 'Genre',
+                    'required' => true,
+                    'options' => [
+                        ['value' => 'M', 'label' => 'Homme'],
+                        ['value' => 'F', 'label' => 'Femme'],
+                    ],
+                ],
+            ],
+            [
+                'type' => 'text',
+                'data' => [
+                    'key' => 'city',
+                    'label' => 'Ville / Pays de résidence',
+                    'required' => false,
+                    'placeholder' => 'Ex: Dakar, Sénégal',
+                ],
+            ],
+
+            // Étape 2 : Projet & Startup
+            [
+                'type' => 'text',
+                'data' => [
+                    'key' => 'project_name',
+                    'label' => 'Nom du projet ou de la startup',
+                    'required' => true,
+                    'placeholder' => 'Ex: AgriSolar Tech',
+                ],
+            ],
+            [
+                'type' => 'text',
+                'data' => [
+                    'key' => 'sector',
+                    'label' => 'Secteur d\'activité principal',
+                    'required' => true,
+                    'placeholder' => 'Ex: AgTech, FinTech, Santé, Énergie...',
+                ],
+            ],
+            [
+                'type' => 'textarea',
+                'data' => [
+                    'key' => 'pitch',
+                    'label' => 'Pitch synthétique du projet (Problème / Solution / Valeur)',
+                    'required' => true,
+                    'placeholder' => 'Décrivez votre solution en quelques lignes...',
+                ],
+            ],
+            [
+                'type' => 'number',
+                'data' => [
+                    'key' => 'team_size',
+                    'label' => 'Taille de l\'équipe (nombre de fondateurs et employés)',
+                    'required' => false,
+                    'placeholder' => '1',
+                ],
+            ],
+            [
+                'type' => 'text',
+                'data' => [
+                    'key' => 'website',
+                    'label' => 'Site internet ou lien vers un prototype',
+                    'required' => false,
+                    'placeholder' => 'https://monprojet.africa',
+                ],
+            ],
+
+            // Étape 3 : Motivation & Pièces Jointes
+            [
+                'type' => 'textarea',
+                'data' => [
+                    'key' => 'motivation',
+                    'label' => 'Motivation pour intégrer ce programme d\'accompagnement',
+                    'required' => true,
+                    'placeholder' => 'Expliquez pourquoi vous candidatez et ce que vous attendez des mentors...',
+                ],
+            ],
+            [
+                'type' => 'file',
+                'data' => [
+                    'key' => 'pitch_deck',
+                    'label' => 'Pitch Deck ou présentation du projet (PDF / PPTX, max 15 Mo)',
+                    'required' => false,
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Récupère tous les templates de candidature disponibles pour une SAE :
+     * 1. Le template officiel standardisé Hub Africa.
+     * 2. Les templates personnalisés créés par cette SAE.
+     */
+    public function getAvailableTemplatesForSae(?int $saeId): Collection
+    {
+        $standard = $this->getOrCreateStandardTemplate();
+
+        $query = Form::withoutGlobalScopes()
+            ->where(function ($q) use ($saeId) {
+                $q->where('is_standard', true)
+                    ->orWhere(function ($sub) use ($saeId) {
+                        if ($saeId) {
+                            $sub->where('sae_id', $saeId)
+                                ->where(function ($typeQ) {
+                                    $typeQ->where('type', FormType::CANDIDATURE)
+                                        ->orWhere('is_template', true);
+                                });
+                        }
+                    });
+            })
+            ->where('is_active', true)
+            ->orderByRaw('is_standard DESC, name ASC');
+
+        return $query->get();
+    }
+
+    /**
+     * Duplique un template (standard ou existant) au profit d'une SAE spécifique
+     * pour qu'elle puisse le personnaliser librement.
+     */
+    public function duplicateAsSaeTemplate(Form $sourceTemplate, int $saeId, ?string $newName = null): Form
+    {
+        $baseName = $newName ?: "{$sourceTemplate->name} (Personnalisé)";
+        $slug = Str::slug($baseName).'-'.Str::random(6);
+
+        return Form::withoutGlobalScopes()->create([
+            'sae_id' => $saeId,
+            'program_id' => $sourceTemplate->program_id,
+            'name' => $baseName,
+            'slug' => $slug,
+            'description' => $sourceTemplate->description,
+            'type' => FormType::CANDIDATURE,
+            'is_template' => true,
+            'is_standard' => false,
+            'is_mandatory' => true,
+            'is_active' => true,
+            'submit_label' => $sourceTemplate->submit_label ?: 'Déposer ma Candidature',
+            'success_message' => $sourceTemplate->success_message,
+            'fields' => $sourceTemplate->fields,
+        ]);
+    }
+
+    /**
+     * Obtient le formulaire effectif pour une cohorte :
+     * Le formulaire assigné ou, à défaut, le template standardisé Hub Africa.
+     */
+    public function getEffectiveFormForCohort(Cohort $cohort): Form
+    {
+        if ($cohort->application_form_id) {
+            $form = Form::withoutGlobalScopes()->find($cohort->application_form_id);
+            if ($form) {
+                return $form;
+            }
+        }
+
+        return $this->getOrCreateStandardTemplate();
+    }
+}

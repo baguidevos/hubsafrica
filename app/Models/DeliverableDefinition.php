@@ -16,6 +16,7 @@ class DeliverableDefinition extends Model
         'sae_id',
         'program_id',
         'level_id',
+        'program_phase_id',
         'name',
         'description',
         'instructions',
@@ -45,6 +46,11 @@ class DeliverableDefinition extends Model
     public function level(): BelongsTo
     {
         return $this->belongsTo(Level::class, 'level_id');
+    }
+
+    public function phase(): BelongsTo
+    {
+        return $this->belongsTo(ProgramPhase::class, 'program_phase_id');
     }
 
     public function submissions(): HasMany

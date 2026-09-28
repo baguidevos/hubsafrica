@@ -9,5 +9,3 @@ class CreateFundingRecord extends CreateRecord
 {
     protected static string $resource = FundingRecordResource::class;
 }
-
-

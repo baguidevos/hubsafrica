@@ -2,29 +2,30 @@
 
 namespace App\Filament\Sae\Resources\Cohorts;
 
+use App\Filament\Sae\Clusters\ProgrammesCluster;
 use App\Filament\Sae\Resources\Cohorts\Pages\CreateCohort;
 use App\Filament\Sae\Resources\Cohorts\Pages\EditCohort;
 use App\Filament\Sae\Resources\Cohorts\Pages\ListCohorts;
+use App\Filament\Sae\Resources\Cohorts\RelationManagers\CohortPhasesRelationManager;
 use App\Filament\Sae\Resources\Cohorts\Schemas\CohortForm;
 use App\Filament\Sae\Resources\Cohorts\Tables\CohortsTable;
 use App\Models\Cohort;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
 class CohortResource extends Resource
 {
     protected static ?string $model = Cohort::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Programmes';
+    protected static ?string $cluster = ProgrammesCluster::class;
 
-    protected static ?string $navigationLabel = 'Cohortes';
+    protected static ?string $navigationLabel = 'Cohortes & Promotions';
 
     protected static ?string $modelLabel = 'Cohorte';
 
-    protected static ?string $pluralModelLabel = 'Cohortes';
+    protected static ?string $pluralModelLabel = 'Cohortes & Promotions';
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-users';
 
@@ -43,7 +44,8 @@ class CohortResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            CohortPhasesRelationManager::class,
+            RelationManagers\CohortSessionsRelationManager::class,
         ];
     }
 
@@ -56,5 +58,3 @@ class CohortResource extends Resource
         ];
     }
 }
-
-

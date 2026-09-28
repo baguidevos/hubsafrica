@@ -17,5 +17,3 @@ class EditDeliverableDefinition extends EditRecord
         ];
     }
 }
-
-

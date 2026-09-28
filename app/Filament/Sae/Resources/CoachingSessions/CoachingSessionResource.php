@@ -2,10 +2,12 @@
 
 namespace App\Filament\Sae\Resources\CoachingSessions;
 
+use App\Filament\Sae\Clusters\AccompagnementCluster;
 use App\Filament\Sae\Resources\CoachingSessions\Pages\CreateCoachingSession;
 use App\Filament\Sae\Resources\CoachingSessions\Pages\EditCoachingSession;
 use App\Filament\Sae\Resources\CoachingSessions\Pages\ListCoachingSessions;
 use App\Filament\Sae\Resources\CoachingSessions\Pages\ViewCoachingSession;
+use App\Filament\Sae\Resources\CoachingSessions\RelationManagers\AttendeesRelationManager;
 use App\Filament\Sae\Resources\CoachingSessions\Schemas\CoachingSessionForm;
 use App\Filament\Sae\Resources\CoachingSessions\Tables\CoachingSessionsTable;
 use App\Models\CoachingSession;
@@ -21,17 +23,17 @@ class CoachingSessionResource extends Resource
 {
     protected static ?string $model = CoachingSession::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Suivi & évaluation';
+    protected static ?string $cluster = AccompagnementCluster::class;
 
-    protected static ?string $navigationLabel = 'Séances de coaching';
+    protected static ?string $navigationLabel = 'Séances & Ateliers';
 
-    protected static ?string $modelLabel = 'Séance de coaching';
+    protected static ?string $modelLabel = 'Séance d\'accompagnement';
 
-    protected static ?string $pluralModelLabel = 'Séances de coaching';
+    protected static ?string $pluralModelLabel = 'Séances & Ateliers';
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-calendar-days';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {
@@ -54,9 +56,17 @@ class CoachingSessionResource extends Resource
                                 ->label('Coach référent')
                                 ->weight('bold'),
                             TextEntry::make('project.name')
-                                ->label('Projet'),
+                                ->label('Projet')
+                                ->placeholder('Session collective'),
                             TextEntry::make('entrepreneur.full_name')
-                                ->label('Entrepreneur'),
+                                ->label('Entrepreneur')
+                                ->placeholder('Session collective'),
+                            TextEntry::make('cohort.name')
+                                ->label('Cohorte ciblée')
+                                ->placeholder('—'),
+                            TextEntry::make('cohortPhase.name')
+                                ->label('Jalon pédagogique')
+                                ->placeholder('—'),
                             TextEntry::make('date')
                                 ->label('Date & heure')
                                 ->dateTime('d/m/Y à H:i'),
@@ -93,7 +103,8 @@ class CoachingSessionResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            AttendeesRelationManager::class,
+            RelationManagers\SessionDocumentsRelationManager::class,
         ];
     }
 

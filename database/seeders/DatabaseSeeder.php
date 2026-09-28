@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Enums\FormType;
+use App\Enums\FormUnlockStatus;
 use App\Models\Coach;
 use App\Models\CoachAssignment;
 use App\Models\CoachingSession;
@@ -12,6 +14,8 @@ use App\Models\DeliverableSubmission;
 use App\Models\Enrollment;
 use App\Models\Entrepreneur;
 use App\Models\Evaluation;
+use App\Models\Form;
+use App\Models\FormUnlock;
 use App\Models\FundingRecord;
 use App\Models\Indicator;
 use App\Models\Level;
@@ -19,16 +23,12 @@ use App\Models\Program;
 use App\Models\Project;
 use App\Models\ProjectLevelHistory;
 use App\Models\Resource;
+use App\Models\Role;
 use App\Models\Sae;
 use App\Models\TimelineEvent;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use App\Enums\FormType;
-use App\Enums\FormUnlockStatus;
-use App\Models\Form;
-use App\Models\FormUnlock;
-use App\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {

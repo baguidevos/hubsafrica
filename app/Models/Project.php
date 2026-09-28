@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Enums\ProjectStatus;
 use App\Models\Concerns\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Project extends Model
 {
@@ -37,7 +39,7 @@ class Project extends Model
     protected function casts(): array
     {
         return [
-            'status' => \App\Enums\ProjectStatus::class,
+            'status' => ProjectStatus::class,
             'sdgs' => 'array',
             'team_size' => 'integer',
             'current_level_entered_at' => 'datetime',
@@ -97,5 +99,15 @@ class Project extends Model
     public function dataRoomDocuments(): HasMany
     {
         return $this->hasMany(DataRoomDocument::class, 'project_id');
+    }
+
+    public function documents(): MorphMany
+    {
+        return $this->morphMany(Document::class, 'documentable');
+    }
+
+    public function indicatorEntries(): HasMany
+    {
+        return $this->hasMany(IndicatorEntry::class, 'project_id');
     }
 }

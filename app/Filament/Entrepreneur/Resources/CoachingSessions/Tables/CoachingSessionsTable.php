@@ -4,8 +4,6 @@ namespace App\Filament\Entrepreneur\Resources\CoachingSessions\Tables;
 
 use App\Enums\CoachingSessionStatus;
 use App\Enums\CoachingSessionType;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -32,6 +30,36 @@ class CoachingSessionsTable
                     ->label('Type')
                     ->badge()
                     ->sortable(),
+
+                TextColumn::make('cohort.name')
+                    ->label('Cohorte / Promotion')
+                    ->badge()
+                    ->color('info')
+                    ->placeholder('Individuel')
+                    ->sortable(),
+
+                TextColumn::make('attendance')
+                    ->label('Présence')
+                    ->badge()
+                    ->getStateUsing(function ($record) {
+                        $entrepreneur = auth()->user()?->entrepreneurProfile;
+                        if (! $entrepreneur) {
+                            return null;
+                        }
+
+                        $attendee = $record->attendees()->where('entrepreneur_id', $entrepreneur->id)->first();
+                        if (! $attendee) {
+                            return $record->isCollective() ? 'Inscrit' : null;
+                        }
+
+                        return $attendee->attended ? 'Présent' : 'Absent';
+                    })
+                    ->colors([
+                        'success' => 'Présent',
+                        'danger' => 'Absent',
+                        'info' => 'Inscrit',
+                    ])
+                    ->placeholder('—'),
 
                 TextColumn::make('theme')
                     ->label('Thème de la séance')
@@ -60,11 +88,6 @@ class CoachingSessionsTable
             ])
             ->recordActions([
                 ViewAction::make()->slideOver(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
             ])
             ->defaultSort('date', 'desc');
     }

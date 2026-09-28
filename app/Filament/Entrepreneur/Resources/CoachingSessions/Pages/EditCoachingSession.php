@@ -17,5 +17,3 @@ class EditCoachingSession extends EditRecord
         ];
     }
 }
-
-

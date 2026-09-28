@@ -3,14 +3,15 @@
 namespace App\Filament\Sae\Widgets;
 
 use App\Models\Application;
-use Carbon\Carbon;
 use Filament\Widgets\ChartWidget;
 
 class ApplicationsChartWidget extends ChartWidget
 {
     protected static ?int $sort = 5;
+
     protected ?string $heading = 'Candidatures — 6 derniers mois';
-    protected int | string | array $columnSpan = [
+
+    protected int|string|array $columnSpan = [
         'default' => 'full',
         'lg' => 2,
     ];

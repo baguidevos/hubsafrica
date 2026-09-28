@@ -9,5 +9,3 @@ class CreateEntrepreneur extends CreateRecord
 {
     protected static string $resource = EntrepreneurResource::class;
 }
-
-

@@ -92,5 +92,3 @@ class RegisterSae extends RegisterTenant
         return $sae;
     }
 }
-
-

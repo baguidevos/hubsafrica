@@ -11,14 +11,13 @@ use App\Models\Sae;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
 class SaeResource extends Resource
 {
     protected static ?string $model = Sae::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Système';
+    protected static string|\UnitEnum|null $navigationGroup = 'Système';
 
     protected static ?string $navigationLabel = 'Structures (SAE)';
 
@@ -56,5 +55,3 @@ class SaeResource extends Resource
         ];
     }
 }
-
-

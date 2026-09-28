@@ -2,6 +2,7 @@
 
 namespace App\Filament\Sae\Resources\Entrepreneurs;
 
+use App\Filament\Sae\Clusters\PortefeuilleCluster;
 use App\Filament\Sae\Resources\Entrepreneurs\Pages\CreateEntrepreneur;
 use App\Filament\Sae\Resources\Entrepreneurs\Pages\EditEntrepreneur;
 use App\Filament\Sae\Resources\Entrepreneurs\Pages\ListEntrepreneurs;
@@ -24,17 +25,17 @@ class EntrepreneurResource extends Resource
 {
     protected static ?string $model = Entrepreneur::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Portefeuille';
+    protected static ?string $cluster = PortefeuilleCluster::class;
 
-    protected static ?string $navigationLabel = 'Entrepreneurs';
+    protected static ?string $navigationLabel = 'Porteurs de projet';
 
-    protected static ?string $modelLabel = 'Entrepreneur';
+    protected static ?string $modelLabel = 'Porteur de projet';
 
-    protected static ?string $pluralModelLabel = 'Entrepreneurs';
+    protected static ?string $pluralModelLabel = 'Porteurs de projet';
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-users';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-user';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {

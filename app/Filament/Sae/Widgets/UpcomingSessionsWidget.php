@@ -9,10 +9,12 @@ use Filament\Widgets\Widget;
 class UpcomingSessionsWidget extends Widget
 {
     protected static ?int $sort = 3;
-    protected int | string | array $columnSpan = [
+
+    protected int|string|array $columnSpan = [
         'default' => 'full',
         'lg' => 1,
     ];
+
     protected string $view = 'filament.sae.widgets.upcoming-sessions-widget';
 
     public function getUpcomingSessions(): array
@@ -44,7 +46,7 @@ class UpcomingSessionsWidget extends Widget
                 'coach' => $s->coach?->name ?: 'Coach assigné',
                 'project' => $s->project?->name ?: 'Sans projet',
                 'time' => $date->format('H:i'),
-                'duration' => $s->duration . ' min',
+                'duration' => $s->duration.' min',
                 'dayLabel' => $dayLabel,
                 'dayNum' => $date->format('d M'),
                 'accent' => $accent,

@@ -9,7 +9,9 @@ use Filament\Widgets\Widget;
 class EntrepreneurUpcomingSessionsWidget extends Widget
 {
     protected static ?int $sort = 2;
-    protected int | string | array $columnSpan = 'full';
+
+    protected int|string|array $columnSpan = 'full';
+
     protected string $view = 'filament.entrepreneur.widgets.entrepreneur-upcoming-sessions-widget';
 
     public function getEntrepreneurSessions(): array
@@ -52,7 +54,7 @@ class EntrepreneurUpcomingSessionsWidget extends Widget
                 'coach' => $s->coach?->name ?: 'Votre coach référent',
                 'coach_email' => $s->coach?->email,
                 'time' => $date->format('H:i'),
-                'duration' => $s->duration . ' min',
+                'duration' => $s->duration.' min',
                 'dayLabel' => $dayLabel,
                 'dayNum' => $date->format('d M'),
                 'accent' => $accent,

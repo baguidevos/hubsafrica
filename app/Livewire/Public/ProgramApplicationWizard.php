@@ -6,15 +6,17 @@ use App\Enums\ApplicationStatus;
 use App\Enums\Gender;
 use App\Enums\ProjectStatus;
 use App\Models\Application;
+use App\Models\Cohort;
 use App\Models\Entrepreneur;
+use App\Models\Form;
 use App\Models\Program;
 use App\Models\Project;
 use App\Models\TimelineEvent;
 use App\Models\User;
+use App\Services\ApplicationFormTemplateService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -25,8 +27,19 @@ class ProgramApplicationWizard extends Component
 
     public Program $program;
 
+    public ?int $selectedCohortId = null;
+
+    public ?Cohort $selectedCohort = null;
+
+    public ?Form $applicationForm = null;
+
+    public array $custom_fields = [];
+
+    public array $custom_answers = [];
+
     // Étape active (1: Profil, 2: Projet, 3: Dossier/Motivation, 4: Confirmation)
     public int $currentStep = 1;
+
     public bool $isSubmitted = false;
 
     // Étape 1 : Profil Entrepreneur
@@ -48,6 +61,7 @@ class ProgramApplicationWizard extends Component
     public string $city = '';
 
     public string $password = '';
+
     public string $password_confirmation = '';
 
     // Étape 2 : Projet & Startup
@@ -61,6 +75,7 @@ class ProgramApplicationWizard extends Component
     public string $pitch = '';
 
     public ?int $team_size = 1;
+
     public string $website = '';
 
     // Étape 3 : Motivation & Pièces Jointes
@@ -71,9 +86,39 @@ class ProgramApplicationWizard extends Component
 
     public $pitch_deck = null;
 
-    public function mount(Program $program): void
+    public function mount(Program $program, ?int $cohortId = null): void
     {
         $this->program = $program;
+
+        $cId = $cohortId ?: request()->query('cohort');
+        if ($cId) {
+            $this->selectedCohort = Cohort::where('program_id', $program->id)->find($cId)
+                ?? Cohort::find($cId);
+            if ($this->selectedCohort) {
+                $this->selectedCohortId = $this->selectedCohort->id;
+            }
+        }
+
+        // Chargement du formulaire / template de candidature effectif
+        $service = app(ApplicationFormTemplateService::class);
+        if ($this->selectedCohort) {
+            $this->applicationForm = $service->getEffectiveFormForCohort($this->selectedCohort);
+        } else {
+            $this->applicationForm = $service->getOrCreateStandardTemplate();
+        }
+
+        $standardKeys = ['first_name', 'last_name', 'email', 'phone', 'gender', 'city', 'project_name', 'sector', 'pitch', 'team_size', 'website', 'motivation', 'needs', 'pitch_deck'];
+        if ($this->applicationForm && ! empty($this->applicationForm->fields)) {
+            foreach ($this->applicationForm->fields as $field) {
+                $key = $field['data']['key'] ?? $field['data']['name'] ?? $field['name'] ?? null;
+                if ($key && ! in_array($key, $standardKeys)) {
+                    $this->custom_fields[] = $field;
+                    if (! isset($this->custom_answers[$key])) {
+                        $this->custom_answers[$key] = '';
+                    }
+                }
+            }
+        }
 
         // Si l'utilisateur est déjà connecté en tant qu'entrepreneur, pré-remplir ses données
         if (Auth::check()) {
@@ -108,6 +153,7 @@ class ProgramApplicationWizard extends Component
     {
         if ($step < $this->currentStep) {
             $this->currentStep = $step;
+
             return;
         }
 
@@ -207,24 +253,53 @@ class ProgramApplicationWizard extends Component
             }
 
             // 5. Recherche d'une cohorte active ou ouverte pour le programme
-            $activeCohort = $this->program->cohorts()
-                ->whereIn('status', ['OUVERTE', 'EN_COURS'])
-                ->latest()
-                ->first();
+            $targetCohort = $this->selectedCohort
+                ?? $this->program->cohorts()
+                    ->whereIn('status', ['OUVERTE', 'EN_COURS'])
+                    ->latest()
+                    ->first();
+
+            // Validation des questions spécifiques de la structure si définies
+            foreach ($this->custom_fields as $field) {
+                $key = $field['data']['key'] ?? $field['data']['name'] ?? $field['name'] ?? null;
+                $isRequired = $field['data']['required'] ?? false;
+                $label = $field['data']['label'] ?? $field['label'] ?? ucfirst(str_replace('_', ' ', (string) $key));
+                if ($key && $isRequired && empty($this->custom_answers[$key])) {
+                    $this->addError("custom_answers.{$key}", "Le champ « {$label} » est obligatoire.");
+
+                    return;
+                }
+            }
 
             // 6. Création de la candidature officielle
-            $commentBody = "Motivation du candidat :\n" . $this->motivation;
+            $commentBody = "Motivation du candidat :\n".$this->motivation;
             if (! empty($this->needs)) {
-                $commentBody .= "\n\nBesoins identifiés : " . implode(', ', $this->needs);
+                $commentBody .= "\n\nBesoins identifiés : ".implode(', ', $this->needs);
             }
             if ($deckPath) {
-                $commentBody .= "\nPitch deck déposé : " . asset("storage/{$deckPath}");
+                $commentBody .= "\nPitch deck déposé : ".asset("storage/{$deckPath}");
             }
+
+            if (! empty($this->custom_answers)) {
+                $commentBody .= "\n\n--- Questions spécifiques de la structure ---\n";
+                foreach ($this->custom_fields as $field) {
+                    $key = $field['data']['key'] ?? $field['data']['name'] ?? $field['name'] ?? null;
+                    $label = $field['data']['label'] ?? $field['label'] ?? ucfirst(str_replace('_', ' ', (string) $key));
+                    $val = is_array($this->custom_answers[$key] ?? null) ? implode(', ', $this->custom_answers[$key]) : ($this->custom_answers[$key] ?? 'N/A');
+                    $commentBody .= "• {$label} : {$val}\n";
+                }
+            }
+
+            $effectiveFormId = $this->applicationForm?->id
+                ?? $targetCohort?->application_form_id
+                ?? app(ApplicationFormTemplateService::class)->getOrCreateStandardTemplate()->id;
 
             $application = Application::create([
                 'sae_id' => $this->program->sae_id,
                 'program_id' => $this->program->id,
-                'cohort_id' => $activeCohort?->id,
+                'cohort_id' => $targetCohort?->id,
+                'form_id' => $effectiveFormId,
+                'answers' => $this->custom_answers,
                 'entrepreneur_id' => $entrepreneur->id,
                 'project_id' => $project->id,
                 'status' => ApplicationStatus::SOUMISE,
@@ -253,7 +328,7 @@ class ProgramApplicationWizard extends Component
             $this->isSubmitted = true;
         } catch (\Throwable $e) {
             DB::rollBack();
-            $this->addError('submit_error', 'Une erreur est survenue lors de l\'enregistrement de votre dossier : ' . $e->getMessage());
+            $this->addError('submit_error', 'Une erreur est survenue lors de l\'enregistrement de votre dossier : '.$e->getMessage());
         }
     }
 

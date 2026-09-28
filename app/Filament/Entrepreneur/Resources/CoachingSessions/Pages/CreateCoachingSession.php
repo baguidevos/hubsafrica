@@ -9,5 +9,3 @@ class CreateCoachingSession extends CreateRecord
 {
     protected static string $resource = CoachingSessionResource::class;
 }
-
-

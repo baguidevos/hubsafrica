@@ -5,7 +5,7 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum CoachStatus: string implements HasLabel, HasColor
+enum CoachStatus: string implements HasColor, HasLabel
 {
     case ACTIF = 'ACTIF';
     case ACTIVE = 'ACTIVE';
@@ -22,7 +22,7 @@ enum CoachStatus: string implements HasLabel, HasColor
         };
     }
 
-    public function getColor(): string | array | null
+    public function getColor(): string|array|null
     {
         return match ($this) {
             self::ACTIF, self::ACTIVE => 'success',

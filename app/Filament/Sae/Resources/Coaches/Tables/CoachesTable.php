@@ -45,7 +45,7 @@ class CoachesTable
                     ->counts(['assignments as active_assignments_count' => fn ($q) => $q->where('status', CoachAssignmentStatus::ACTIF)])
                     ->badge()
                     ->color(fn ($state, Coach $record): string => (int) $state >= ($record->max_capacity ?? 5) ? 'danger' : 'success')
-                    ->formatStateUsing(fn ($state, Coach $record): string => "{$state} / " . ($record->max_capacity ?? 5) . ' startups')
+                    ->formatStateUsing(fn ($state, Coach $record): string => "{$state} / ".($record->max_capacity ?? 5).' startups')
                     ->alignCenter(),
 
                 TextColumn::make('status')

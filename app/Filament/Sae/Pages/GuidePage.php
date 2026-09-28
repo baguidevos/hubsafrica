@@ -6,17 +6,15 @@ use Filament\Pages\Page;
 
 class GuidePage extends Page
 {
-    protected static string | \UnitEnum | null $navigationGroup = 'Système';
+    protected static string|\UnitEnum|null $navigationGroup = 'Pilotage';
 
-    protected static ?string $navigationLabel = 'Guide d\'utilisation';
+    protected static ?string $navigationLabel = 'Guide d\'utilisation SAE';
 
-    protected static ?string $title = 'Guide d\'utilisation & FAQ SIGAE';
+    protected static ?string $title = 'Guide Méthodologique & Pratique de l\'Accompagnateur SAE';
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-bookmark-square';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-book-open';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 1;
 
     protected string $view = 'filament.sae.pages.guide-page';
 }
-
-

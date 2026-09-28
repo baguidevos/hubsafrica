@@ -11,6 +11,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 class CoachStatsOverviewWidget extends BaseWidget
 {
     protected static ?int $sort = 1;
+
     protected ?string $pollingInterval = '30s';
 
     protected function getStats(): array

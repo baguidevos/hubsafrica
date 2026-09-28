@@ -6,8 +6,8 @@ use App\Enums\DeliverableSubmissionStatus;
 use App\Models\DeliverableSubmission;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Select;
@@ -75,7 +75,7 @@ class DeliverableSubmissionsTable
                     ->label('Fichier')
                     ->icon('heroicon-o-arrow-down-tray')
                     ->color('gray')
-                    ->url(fn ($record) => $record->file_path ? asset('storage/' . $record->file_path) : null)
+                    ->url(fn ($record) => $record->file_path ? asset('storage/'.$record->file_path) : null)
                     ->openUrlInNewTab()
                     ->visible(fn ($record) => filled($record->file_path)),
 

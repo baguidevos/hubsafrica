@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\FundingStatus;
+use App\Enums\FundingType;
 use App\Models\Concerns\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,8 +30,8 @@ class FundingRecord extends Model
     protected function casts(): array
     {
         return [
-            'status' => \App\Enums\FundingStatus::class,
-            'type' => \App\Enums\FundingType::class,
+            'status' => FundingStatus::class,
+            'type' => FundingType::class,
             'amount_sought' => 'decimal:2',
             'amount_obtained' => 'decimal:2',
             'amount_invested' => 'decimal:2',

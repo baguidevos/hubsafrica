@@ -18,7 +18,7 @@ class ListCoachingSessions extends ListRecords
                 ->label('Vue Calendrier')
                 ->icon('heroicon-o-calendar')
                 ->color('gray')
-                ->url(fn () => url(filament()->getCurrentPanel()->getId() . '/coaching-calendar-page')),
+                ->url(fn () => url(filament()->getCurrentPanel()->getId().'/coaching-calendar-page')),
             CreateAction::make()
                 ->label('Nouvelle séance')
                 ->slideOver(),

@@ -8,6 +8,7 @@ use App\Models\Entrepreneur;
 use App\Models\Form;
 use App\Models\FormUnlock;
 use App\Models\TimelineEvent;
+use Carbon\Carbon;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\DatePicker;
@@ -148,8 +149,8 @@ class UnlocksRelationManager extends RelationManager
 
                             if ($entrepreneur?->user) {
                                 Notification::make()
-                                    ->title('Nouveau formulaire à remplir : ' . $form->name)
-                                    ->body('Date limite : ' . \Carbon\Carbon::parse($data['due_date'])->format('d/m/Y') . ($data['note'] ? " — Consigne : {$data['note']}" : ''))
+                                    ->title('Nouveau formulaire à remplir : '.$form->name)
+                                    ->body('Date limite : '.Carbon::parse($data['due_date'])->format('d/m/Y').($data['note'] ? " — Consigne : {$data['note']}" : ''))
                                     ->icon('heroicon-o-clipboard-document-check')
                                     ->warning()
                                     ->sendToDatabase($entrepreneur->user);
@@ -159,7 +160,7 @@ class UnlocksRelationManager extends RelationManager
                                 TimelineEvent::create([
                                     'sae_id' => $saeId,
                                     'entrepreneur_id' => $entrepreneur->id,
-                                    'title' => 'Questionnaire assigné : ' . $form->name,
+                                    'title' => 'Questionnaire assigné : '.$form->name,
                                     'description' => "Le questionnaire '{$form->name}' a été assigné par l'équipe d'accompagnement.",
                                     'type' => 'EVALUATION',
                                     'event_date' => now(),
@@ -190,7 +191,7 @@ class UnlocksRelationManager extends RelationManager
                         if ($user) {
                             Notification::make()
                                 ->title('Rappel : Questionnaire en attente')
-                                ->body("N'oubliez pas de compléter le questionnaire '{$record->form?->name}'" . ($record->due_date ? " avant le {$record->due_date->format('d/m/Y')}" : ''))
+                                ->body("N'oubliez pas de compléter le questionnaire '{$record->form?->name}'".($record->due_date ? " avant le {$record->due_date->format('d/m/Y')}" : ''))
                                 ->danger()
                                 ->icon('heroicon-o-exclamation-triangle')
                                 ->sendToDatabase($user);

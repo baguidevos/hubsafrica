@@ -9,5 +9,3 @@ class CreateDeliverableDefinition extends CreateRecord
 {
     protected static string $resource = DeliverableDefinitionResource::class;
 }
-
-

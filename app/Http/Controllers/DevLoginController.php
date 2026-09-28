@@ -158,13 +158,13 @@ class DevLoginController extends Controller
             $targetRedirect = $targetRedirect ?: $accounts[$as]['panel_url'];
         }
 
-        if (!$email) {
+        if (! $email) {
             return redirect()->route('dev.comptes');
         }
 
         $user = User::where('email', $email)->first();
 
-        if (!$user) {
+        if (! $user) {
             return redirect()->route('dev.comptes')->with('error', "Le compte [{$email}] n'existe pas en base. Veuillez lancer 'php artisan db:seed'.");
         }
 

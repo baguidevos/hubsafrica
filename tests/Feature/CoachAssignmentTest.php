@@ -9,7 +9,6 @@ use App\Models\Entrepreneur;
 use App\Models\Program;
 use App\Models\Project;
 use App\Models\Sae;
-use App\Models\TimelineEvent;
 use App\Models\User;
 
 beforeEach(function () {

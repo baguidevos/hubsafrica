@@ -15,7 +15,14 @@ class Form extends BaseForm
         return array_merge(parent::casts(), [
             'type' => FormType::class,
             'is_mandatory' => 'boolean',
+            'is_template' => 'boolean',
+            'is_standard' => 'boolean',
         ]);
+    }
+
+    public function cohorts(): HasMany
+    {
+        return $this->hasMany(Cohort::class, 'application_form_id');
     }
 
     public function program(): BelongsTo

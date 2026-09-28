@@ -2,6 +2,7 @@
 
 namespace App\Filament\Sae\Resources\DataRoomDocuments;
 
+use App\Filament\Sae\Clusters\ImpactCluster;
 use App\Filament\Sae\Resources\DataRoomDocuments\Pages\CreateDataRoomDocument;
 use App\Filament\Sae\Resources\DataRoomDocuments\Pages\EditDataRoomDocument;
 use App\Filament\Sae\Resources\DataRoomDocuments\Pages\ListDataRoomDocuments;
@@ -11,14 +12,13 @@ use App\Models\DataRoomDocument;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
 class DataRoomDocumentResource extends Resource
 {
     protected static ?string $model = DataRoomDocument::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Suivi & évaluation';
+    protected static ?string $cluster = ImpactCluster::class;
 
     protected static ?string $navigationLabel = 'Data room';
 
@@ -28,7 +28,7 @@ class DataRoomDocumentResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-lock-closed';
 
-    protected static ?int $navigationSort = 8;
+    protected static ?int $navigationSort = 3;
 
     public static function form(Schema $schema): Schema
     {
@@ -56,5 +56,3 @@ class DataRoomDocumentResource extends Resource
         ];
     }
 }
-
-

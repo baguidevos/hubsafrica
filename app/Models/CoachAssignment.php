@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\CoachAssignmentStatus;
 use App\Models\Concerns\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -25,7 +26,7 @@ class CoachAssignment extends Model
     protected function casts(): array
     {
         return [
-            'status' => \App\Enums\CoachAssignmentStatus::class,
+            'status' => CoachAssignmentStatus::class,
             'assigned_at' => 'datetime',
             'ended_at' => 'datetime',
         ];

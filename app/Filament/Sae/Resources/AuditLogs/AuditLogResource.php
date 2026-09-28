@@ -11,14 +11,13 @@ use App\Models\AuditLog;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
 class AuditLogResource extends Resource
 {
     protected static ?string $model = AuditLog::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Système';
+    protected static string|\UnitEnum|null $navigationGroup = 'Système';
 
     protected static ?string $navigationLabel = 'Journal d\'audit';
 
@@ -56,5 +55,3 @@ class AuditLogResource extends Resource
         ];
     }
 }
-
-

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Sae\Pages;
 
+use App\Enums\CoachingSessionType;
 use App\Models\Application;
 use App\Models\CoachingSession;
 use App\Models\Enrollment;
@@ -9,20 +10,19 @@ use App\Models\Entrepreneur;
 use App\Models\FundingRecord;
 use App\Models\Project;
 use BackedEnum;
-use Carbon\Carbon;
 use Filament\Pages\Page;
 
 class AnalyticsPage extends Page
 {
     protected string $view = 'filament.sae.pages.analytics-page';
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Pilotage';
+    protected static string|\UnitEnum|null $navigationGroup = 'Pilotage';
 
     protected static ?string $navigationLabel = 'Centre d\'analyse';
 
     protected static ?string $title = 'Centre d\'analyse & Performance du portefeuille';
 
-    protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-presentation-chart-line';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-presentation-chart-line';
 
     protected static ?int $navigationSort = 3;
 
@@ -78,7 +78,8 @@ class AnalyticsPage extends Page
             ->orderByDesc('count')
             ->get()
             ->mapWithKeys(function ($r) {
-                $key = $r->type instanceof \App\Enums\CoachingSessionType ? $r->type->getLabel() : (string) $r->type;
+                $key = $r->type instanceof CoachingSessionType ? $r->type->getLabel() : (string) $r->type;
+
                 return [$key => $r->count];
             });
 

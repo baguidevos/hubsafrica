@@ -17,5 +17,3 @@ class EditResource extends EditRecord
         ];
     }
 }
-
-

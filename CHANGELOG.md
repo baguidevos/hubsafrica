@@ -4,6 +4,67 @@ Toutes les modifications notables apportées au projet **Hub Africa v2** (Stack 
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
+## [2.8.0] - 2026-09-28
+
+### Ajouté (Added) & Amélioré (Improved)
+- **Architecture d'Accompagnement Hub Africa & Organisation par Clusters Métiers** :
+  - Restructuration intégrale du panneau SAE en 4 Clusters fonctionnels fluides :
+    - *🎓 Programmes & Sélection* : Fiche d'édition enrichie avec onglets combinés (*Informations*, *Phases & Jalons*, *Grille de Sélection & Jurys*, *Partenaires & Bailleurs*), gestion des promotions et candidatures.
+    - *💼 Portefeuille Startups* : Fiches 360° des entreprises, profils des fondateurs et timeline chronologique.
+    - *👥 Accompagnement & Mentorat* : Séances individuelles et ateliers collectifs, annuaire des coachs avec quota de charge max, invitations sécurisées, gestion des livrables et calendrier global.
+    - *📊 Impact, Finance & Évaluation* : Indicateurs S&E avec relevés périodiques, financements & subventions, data room documentaire confidentielle et formulaires d'enquête.
+  - Module Transverse *🎯 Pilotage & Décision* : Tableau de bord, Centre d'analyse graphique, Rapports & Exports certifiés pour bailleurs, Journal d'audit immuable et Guide d'utilisation interactif.
+  - **Gestion Directe des Jalons & Phases de Cohorte** :
+    - Nouveau menu direct `Jalons & Phases` permettant la visualisation centralisée et l'ajustement rapide des dates (`starts_on`, `ends_on`).
+    - Action 1-clic *« Synchroniser depuis le programme »* pour calculer instantanément le rétro-planning complet de toute la promotion.
+  - **Calendrier & Planning Global Unifié** (`CoachingCalendarPage`) :
+    - Vue mensuelle interactive projetant en temps réel les séances de coaching, ateliers, jalons de promotions (lancements et échéances) et promotions.
+    - Filtres par type d'événement, par cohorte et par coach avec modales de détail au clic.
+  - **Gestion Électronique des Documents (GED) Polymorphe & Versionnée** :
+    - Versionnage intelligent (`v1`, `v2`, `v3`) pour chaque livrable soumis avec archivage historique et téléchargement en un clic.
+  - **Grille de Sélection & Notation Matricielle du Jury** :
+    - Modale interactive d'évaluation critère par critère avec coefficients pondérés.
+    - Calcul automatique de la note consolidée sur 100 avec code couleur dynamique (vert $\ge 75$, orange $\ge 50$, rouge $< 50$).
+  - **Manuel d'Utilisation SAE & Page Guide In-App** :
+    - Documentation complète `GUIDE_UTILISATION_PLATEFORME_ACCOMPAGNEMENT.md` structurée par cas pratique fil rouge (« BioAgri Tech »).
+    - Page guide interactive intégrée au panel SAE (`/sae/{tenant}/pilotage/guide-page`) avec onglets, repères de captures d'écran et fiches réflexes.
+
+- **Passerelle d'Enrôlement Direct & Gestion des Cohortes Ouvertes** :
+  - **Passerelle d'accès direct 1-clic** (`/cohortes/{id}/rejoindre`) :
+    - Accueil des candidats avec présentation de la cohorte et du programme.
+    - Inscription express en 30 secondes pour les nouveaux candidats avec connexion immédiate et redirection automatique vers le formulaire pré-verrouillé sur la promotion.
+    - Connexion directe pour les candidats disposant déjà d'un compte avec redirection automatique vers la même cohorte.
+    - Redirection instantanée sans friction pour les utilisateurs déjà authentifiés.
+  - **Génération & Partage Instantané du Lien de Promotion** :
+    - Action rapide *« Lien direct »* avec modale et copie en 1 clic dans le presse-papier (`navigator.clipboard`) sur la table des cohortes et en tête de fiche d'édition.
+  - **Mise en Valeur sur le Catalogue Public** :
+    - Pastille verte animée `🟢 Cohorte Ouverte : [Nom]` sur les programmes ayant une promotion active.
+    - Bouton d'action public transformé en `Rejoindre cohorte →` pointant directement sur la passerelle.
+  - **Matrice des Présences de Promotion (Export Excel)** :
+    - Export complet (`/sae/{tenant}/programmes/cohorts/{cohort}/export-attendance`) au format CSV/Excel croisant toutes les startups inscrites et toutes les séances de coaching de la promotion avec calcul automatique du taux d'assiduité.
+
+- **Système de Templates de Formulaires de Candidature Standardisés & Personnalisés par SAE** :
+  - **Modèle Officiel Standard Hub Africa** :
+    - Initialisation automatique d'un template officiel panafricain (`is_standard = true`, `is_template = true`) comportant le socle commun de 13 champs (état civil, contact WhatsApp, profil porteur, startup, pitch synthétique, taille d'équipe, note de motivation, besoins d'accompagnement prioritaires, téléversement du pitch deck).
+    - Protection stricte : interdiction de suppression ou de modification du modèle standard Hub Africa pour garantir l'uniformité des données pan-africaines.
+  - **Formulaire Obligatoire à la Création de Cohorte** :
+    - Champ `application_form_id` rendu obligatoire sur chaque cohorte (`CohortForm`), avec sélection dynamique entre le modèle standardisé et les templates propres à la structure, pré-sélectionné par défaut sur le standard Hub Africa.
+  - **Création de Modèles Sur-Mesure par Structure (SAE)** :
+    - Possibilité pour chaque SAE de créer ses propres templates personnalisés (`is_template = true`) ou de dupliquer en 1 clic le modèle officiel (`duplicateAsSaeTemplate`) pour y ajouter des questions d'éligibilité, des QCM ou des champs spécifiques.
+    - Filtrage et badges d'usage (`Standard Hub Africa`, `Template Candidature`, `Enquête & Suivi`) dans `EvaluationFormResource`.
+  - **Génération Dynamique dans le Wizard Public de Candidature** :
+    - Détection automatique et rendu dynamique des questions complémentaires de la structure à l'Étape 3 du wizard Livewire (`ProgramApplicationWizard`).
+    - Prise en charge des types de champs : texte libre, textarea, listes déroulantes (`select`), nombres, cases à cocher avec validation en temps réel.
+  - **Persistance des Réponses Spécifiques & Consultation Jury** :
+    - Enregistrement des réponses structurées dans la colonne `applications.answers` (JSON) et formatage soigné dans le commentaire de dossier pour les évaluateurs.
+    - Section dédiée *« Réponses au questionnaire spécifique »* avec composant interactif `KeyValue` dans la fiche de candidature Filament SAE (`ApplicationForm`).
+    - Colonne d'identification du modèle de formulaire utilisé (`Template`) dans la table des candidatures (`ApplicationsTable`).
+
+- **Tests Fonctionnels & Robustesse** :
+  - Suite de tests Pest complète validée à 100% (**56 tests passés, 322 assertions**).
+  - Couverture dédiée pour le workflow complet des templates de candidature (`tests/Feature/CohortApplicationFormTemplateTest.php`).
+  - Formatage conforme aux règles du projet via Laravel Pint (`vendor/bin/pint --format agent`).
+
 ## [2.7.0] - 2026-09-27
 
 ### Ajouté (Added) & Amélioré (Improved)

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Public;
 
+use App\Enums\ProgramStatus;
 use App\Models\Level;
 use App\Models\Program;
 use App\Models\Sae;
@@ -98,13 +99,13 @@ class ProgrammesCatalog extends Component
             'capacity' => $program->capacity ?: 20,
             'applications_count' => $program->applications_count,
             'cohorts_count' => $program->cohorts_count,
-            'is_open' => $program->status === \App\Enums\ProgramStatus::ACTIF,
+            'is_open' => $program->status === ProgramStatus::ACTIF,
         ];
     }
 
     public function render()
     {
-        $query = Program::with(['sae', 'level'])
+        $query = Program::with(['sae', 'level', 'cohorts'])
             ->withCount('cohorts');
 
         // Filtre Recherche
@@ -132,14 +133,14 @@ class ProgrammesCatalog extends Component
         // Filtre Statut / Inscriptions ouvertes
         $now = now()->toDateString();
         if ($this->selectedStatus === 'open') {
-            $query->where('status', \App\Enums\ProgramStatus::ACTIF)
+            $query->where('status', ProgramStatus::ACTIF)
                 ->where(function ($q) use ($now) {
                     $q->whereNull('registration_end')
                         ->orWhere('registration_end', '>=', $now);
                 });
         } elseif ($this->selectedStatus === 'closed') {
             $query->where(function ($q) use ($now) {
-                $q->where('status', '!=', \App\Enums\ProgramStatus::ACTIF)
+                $q->where('status', '!=', ProgramStatus::ACTIF)
                     ->orWhere(function ($sub) use ($now) {
                         $sub->whereNotNull('registration_end')
                             ->where('registration_end', '<', $now);

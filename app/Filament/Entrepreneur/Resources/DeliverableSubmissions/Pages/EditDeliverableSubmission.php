@@ -17,5 +17,3 @@ class EditDeliverableSubmission extends EditRecord
         ];
     }
 }
-
-

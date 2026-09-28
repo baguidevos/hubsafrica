@@ -11,8 +11,10 @@ use Filament\Tables\Table;
 class CoachingSessionsRelationManager extends RelationManager
 {
     protected static string $relationship = 'coachingSessions';
+
     protected static ?string $title = 'Séances de coaching suivies';
-    protected static string | BackedEnum | null $icon = 'heroicon-o-calendar-days';
+
+    protected static string|BackedEnum|null $icon = 'heroicon-o-calendar-days';
 
     public function table(Table $table): Table
     {

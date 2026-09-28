@@ -17,5 +17,3 @@ class ListCoachingSessions extends ListRecords
         ];
     }
 }
-
-

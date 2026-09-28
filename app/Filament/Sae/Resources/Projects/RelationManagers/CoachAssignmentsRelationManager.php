@@ -68,7 +68,7 @@ class CoachAssignmentsRelationManager extends RelationManager
                         /** @var Project $project */
                         $project = $this->getOwnerRecord();
 
-                        return "Projet cible : {$project->name} — Porteur : " . ($project->entrepreneur?->full_name ?? 'N/A');
+                        return "Projet cible : {$project->name} — Porteur : ".($project->entrepreneur?->full_name ?? 'N/A');
                     })
                     ->form([
                         Select::make('coach_id')
@@ -88,7 +88,7 @@ class CoachAssignmentsRelationManager extends RelationManager
                                     ->mapWithKeys(function (Coach $c) {
                                         $activeCount = $c->activeAssignmentsCount();
                                         $max = $c->max_capacity ?? 5;
-                                        $specialties = ! empty($c->specialties) ? ' — ' . implode(', ', (array) $c->specialties) : '';
+                                        $specialties = ! empty($c->specialties) ? ' — '.implode(', ', (array) $c->specialties) : '';
 
                                         return [$c->id => "{$c->name} ({$activeCount}/{$max} startups){$specialties}"];
                                     });

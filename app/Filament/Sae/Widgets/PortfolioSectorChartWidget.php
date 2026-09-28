@@ -8,8 +8,10 @@ use Filament\Widgets\ChartWidget;
 class PortfolioSectorChartWidget extends ChartWidget
 {
     protected static ?int $sort = 6;
+
     protected ?string $heading = 'Répartition par secteur';
-    protected int | string | array $columnSpan = [
+
+    protected int|string|array $columnSpan = [
         'default' => 'full',
         'lg' => 1,
     ];

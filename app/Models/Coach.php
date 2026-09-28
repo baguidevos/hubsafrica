@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\CoachStatus;
 use App\Models\Concerns\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,7 +29,7 @@ class Coach extends Model
     protected function casts(): array
     {
         return [
-            'status' => \App\Enums\CoachStatus::class,
+            'status' => CoachStatus::class,
             'specialties' => 'array',
             'is_external' => 'boolean',
             'max_capacity' => 'integer',

@@ -7,18 +7,20 @@ use App\Filament\Coach\Resources\CoachingSessions\Pages\EditCoachingSession;
 use App\Filament\Coach\Resources\CoachingSessions\Pages\ListCoachingSessions;
 use App\Filament\Coach\Resources\CoachingSessions\Schemas\CoachingSessionForm;
 use App\Filament\Coach\Resources\CoachingSessions\Tables\CoachingSessionsTable;
+use App\Filament\Sae\Resources\CoachingSessions\RelationManagers\AttendeesRelationManager;
+use App\Filament\Sae\Resources\CoachingSessions\RelationManagers\SessionDocumentsRelationManager;
 use App\Models\CoachingSession;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class CoachingSessionResource extends Resource
 {
     protected static ?string $model = CoachingSession::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Mon accompagnement';
+    protected static string|\UnitEnum|null $navigationGroup = 'Mon accompagnement';
 
     protected static ?string $navigationLabel = 'Mes séances de coaching';
 
@@ -40,20 +42,22 @@ class CoachingSessionResource extends Resource
         return CoachingSessionsTable::configure($table);
     }
 
-    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
         $coach = auth()->user()?->coachProfile;
         if ($coach) {
             $query->where('coach_id', $coach->id);
         }
+
         return $query;
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            AttendeesRelationManager::class,
+            SessionDocumentsRelationManager::class,
         ];
     }
 
@@ -66,5 +70,3 @@ class CoachingSessionResource extends Resource
         ];
     }
 }
-
-

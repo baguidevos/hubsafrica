@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Sae;
 use App\Models\User;
 
 test('comptes test overview page renders successfully', function () {

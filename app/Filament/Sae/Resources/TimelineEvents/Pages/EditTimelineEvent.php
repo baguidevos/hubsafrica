@@ -17,5 +17,3 @@ class EditTimelineEvent extends EditRecord
         ];
     }
 }
-
-

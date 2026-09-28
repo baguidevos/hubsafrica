@@ -4,8 +4,8 @@ namespace App\Filament\Sae\Resources\Projects\Tables;
 
 use App\Enums\ProjectStatus;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;

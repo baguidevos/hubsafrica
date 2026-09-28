@@ -17,5 +17,3 @@ class EditCoachInvitation extends EditRecord
         ];
     }
 }
-
-

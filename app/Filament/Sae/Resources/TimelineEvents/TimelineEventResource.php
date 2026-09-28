@@ -2,6 +2,7 @@
 
 namespace App\Filament\Sae\Resources\TimelineEvents;
 
+use App\Filament\Sae\Clusters\PortefeuilleCluster;
 use App\Filament\Sae\Resources\TimelineEvents\Pages\CreateTimelineEvent;
 use App\Filament\Sae\Resources\TimelineEvents\Pages\EditTimelineEvent;
 use App\Filament\Sae\Resources\TimelineEvents\Pages\ListTimelineEvents;
@@ -11,20 +12,19 @@ use App\Models\TimelineEvent;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
 class TimelineEventResource extends Resource
 {
     protected static ?string $model = TimelineEvent::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Portefeuille';
+    protected static ?string $cluster = PortefeuilleCluster::class;
 
-    protected static ?string $navigationLabel = 'Historique des parcours';
+    protected static ?string $navigationLabel = 'Jalons & Timeline';
 
-    protected static ?string $modelLabel = 'Événement de parcours';
+    protected static ?string $modelLabel = 'Jalon de parcours';
 
-    protected static ?string $pluralModelLabel = 'Historique des parcours';
+    protected static ?string $pluralModelLabel = 'Jalons & Timeline';
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-clock';
 
@@ -56,5 +56,3 @@ class TimelineEventResource extends Resource
         ];
     }
 }
-
-

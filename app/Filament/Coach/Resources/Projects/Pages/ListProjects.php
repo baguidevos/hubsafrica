@@ -17,5 +17,3 @@ class ListProjects extends ListRecords
         ];
     }
 }
-
-

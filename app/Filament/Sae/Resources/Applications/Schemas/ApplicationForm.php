@@ -5,6 +5,7 @@ namespace App\Filament\Sae\Resources\Applications\Schemas;
 use App\Enums\ApplicationStatus;
 use App\Models\Entrepreneur;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -47,6 +48,14 @@ class ApplicationForm
                                 ->searchable()
                                 ->preload(),
 
+                            Select::make('form_id')
+                                ->label('Modèle / Template de candidature')
+                                ->relationship('form', 'name')
+                                ->searchable()
+                                ->preload()
+                                ->disabled()
+                                ->dehydrated(false),
+
                             DateTimePicker::make('submitted_at')
                                 ->label('Date de soumission')
                                 ->default(now()),
@@ -86,6 +95,19 @@ class ApplicationForm
                             ->visible(fn ($get) => in_array($get('status'), [ApplicationStatus::REFUSEE, ApplicationStatus::REORIENTEE, 'REFUSEE', 'REORIENTEE']))
                             ->columnSpanFull(),
                     ]),
+
+                Section::make('Réponses au questionnaire spécifique')
+                    ->description('Données complémentaires fournies par le candidat selon le template de formulaire de la cohorte.')
+                    ->schema([
+                        KeyValue::make('answers')
+                            ->label('Questions & Réponses')
+                            ->keyLabel('Identifiant / Question')
+                            ->valueLabel('Réponse')
+                            ->disabled()
+                            ->dehydrated(false),
+                    ])
+                    ->visible(fn ($record) => ! empty($record?->answers))
+                    ->collapsible(),
             ]);
     }
 }

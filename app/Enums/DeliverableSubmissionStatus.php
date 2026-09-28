@@ -5,7 +5,7 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum DeliverableSubmissionStatus: string implements HasLabel, HasColor
+enum DeliverableSubmissionStatus: string implements HasColor, HasLabel
 {
     case BROUILLON = 'BROUILLON';
     case SOUMIS = 'SOUMIS';
@@ -30,7 +30,7 @@ enum DeliverableSubmissionStatus: string implements HasLabel, HasColor
         };
     }
 
-    public function getColor(): string | array | null
+    public function getColor(): string|array|null
     {
         return match ($this) {
             self::BROUILLON => 'gray',

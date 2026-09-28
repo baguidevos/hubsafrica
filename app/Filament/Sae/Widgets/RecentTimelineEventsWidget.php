@@ -9,10 +9,12 @@ use Filament\Widgets\Widget;
 class RecentTimelineEventsWidget extends Widget
 {
     protected static ?int $sort = 4;
-    protected int | string | array $columnSpan = [
+
+    protected int|string|array $columnSpan = [
         'default' => 'full',
         'lg' => 1,
     ];
+
     protected string $view = 'filament.sae.widgets.recent-timeline-events-widget';
 
     public function getRecentEvents(): array

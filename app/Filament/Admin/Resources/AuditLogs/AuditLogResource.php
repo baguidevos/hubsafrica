@@ -16,7 +16,7 @@ class AuditLogResource extends Resource
 {
     protected static ?string $model = AuditLog::class;
 
-    protected static string | UnitEnum | null $navigationGroup = 'Système';
+    protected static string|UnitEnum|null $navigationGroup = 'Système';
 
     protected static ?string $navigationLabel = 'Journal d\'audit';
 
@@ -24,7 +24,7 @@ class AuditLogResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Journal d\'audit';
 
-    protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-shield-check';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-shield-check';
 
     protected static ?int $navigationSort = 3;
 

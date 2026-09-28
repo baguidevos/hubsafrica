@@ -4,8 +4,8 @@ namespace App\Filament\Sae\Resources\Resources\Tables;
 
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
@@ -89,7 +89,7 @@ class ResourcesTable
                     ->label('Consulter')
                     ->icon('heroicon-o-arrow-top-right-on-square')
                     ->color('info')
-                    ->url(fn ($record) => $record->url ?: ($record->file_path ? asset('storage/' . $record->file_path) : null))
+                    ->url(fn ($record) => $record->url ?: ($record->file_path ? asset('storage/'.$record->file_path) : null))
                     ->openUrlInNewTab()
                     ->visible(fn ($record) => filled($record->url) || filled($record->file_path)),
 

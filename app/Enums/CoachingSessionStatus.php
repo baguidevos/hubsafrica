@@ -6,7 +6,7 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum CoachingSessionStatus: string implements HasLabel, HasColor, HasIcon
+enum CoachingSessionStatus: string implements HasColor, HasIcon, HasLabel
 {
     case PLANIFIEE = 'PLANIFIEE';
     case REALISEE = 'REALISEE';
@@ -21,7 +21,7 @@ enum CoachingSessionStatus: string implements HasLabel, HasColor, HasIcon
         };
     }
 
-    public function getColor(): string | array | null
+    public function getColor(): string|array|null
     {
         return match ($this) {
             self::PLANIFIEE => 'warning',

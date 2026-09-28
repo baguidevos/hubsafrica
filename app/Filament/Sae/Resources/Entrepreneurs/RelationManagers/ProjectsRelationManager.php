@@ -11,8 +11,10 @@ use Filament\Tables\Table;
 class ProjectsRelationManager extends RelationManager
 {
     protected static string $relationship = 'projects';
+
     protected static ?string $title = 'Projets portés';
-    protected static string | BackedEnum | null $icon = 'heroicon-o-light-bulb';
+
+    protected static string|BackedEnum|null $icon = 'heroicon-o-light-bulb';
 
     public function table(Table $table): Table
     {

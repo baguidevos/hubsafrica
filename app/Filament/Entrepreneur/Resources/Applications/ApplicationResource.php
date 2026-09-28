@@ -3,8 +3,8 @@
 namespace App\Filament\Entrepreneur\Resources\Applications;
 
 use App\Filament\Entrepreneur\Resources\Applications\Pages\ListApplications;
+use App\Filament\Entrepreneur\Resources\Applications\Tables\ApplicationsTable;
 use App\Filament\Sae\Resources\Applications\Schemas\ApplicationForm;
-use App\Filament\Sae\Resources\Applications\Tables\ApplicationsTable;
 use App\Models\Application;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -16,7 +16,7 @@ class ApplicationResource extends Resource
 {
     protected static ?string $model = Application::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Mon espace';
+    protected static string|\UnitEnum|null $navigationGroup = 'Mon espace';
 
     protected static ?string $navigationLabel = 'Mes candidatures';
 
@@ -45,7 +45,23 @@ class ApplicationResource extends Resource
         if ($entrepreneur) {
             $query->where('entrepreneur_id', $entrepreneur->id);
         }
+
         return $query;
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return false;
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return false;
     }
 
     public static function getPages(): array
@@ -55,5 +71,3 @@ class ApplicationResource extends Resource
         ];
     }
 }
-
-

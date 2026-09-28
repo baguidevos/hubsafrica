@@ -5,7 +5,7 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum CohortStatus: string implements HasLabel, HasColor
+enum CohortStatus: string implements HasColor, HasLabel
 {
     case OUVERTE = 'OUVERTE';
     case EN_COURS = 'EN_COURS';
@@ -20,7 +20,7 @@ enum CohortStatus: string implements HasLabel, HasColor
         };
     }
 
-    public function getColor(): string | array | null
+    public function getColor(): string|array|null
     {
         return match ($this) {
             self::OUVERTE => 'info',

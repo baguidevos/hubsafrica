@@ -11,14 +11,14 @@ use App\Models\DeliverableSubmission;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class DeliverableSubmissionResource extends Resource
 {
     protected static ?string $model = DeliverableSubmission::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Mon accompagnement';
+    protected static string|\UnitEnum|null $navigationGroup = 'Mon accompagnement';
 
     protected static ?string $navigationLabel = 'Évaluations des livrables';
 
@@ -40,7 +40,7 @@ class DeliverableSubmissionResource extends Resource
         return DeliverableSubmissionsTable::configure($table);
     }
 
-    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
         $coach = auth()->user()?->coachProfile;
@@ -48,6 +48,7 @@ class DeliverableSubmissionResource extends Resource
             $projectIds = $coach->assignments()->where('status', 'ACTIF')->pluck('project_id');
             $query->whereIn('project_id', $projectIds);
         }
+
         return $query;
     }
 
@@ -67,5 +68,3 @@ class DeliverableSubmissionResource extends Resource
         ];
     }
 }
-
-

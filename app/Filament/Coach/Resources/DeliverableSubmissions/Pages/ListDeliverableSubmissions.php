@@ -17,5 +17,3 @@ class ListDeliverableSubmissions extends ListRecords
         ];
     }
 }
-
-

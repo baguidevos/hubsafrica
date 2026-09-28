@@ -3,16 +3,13 @@
 namespace App\Filament\Sae\Pages;
 
 use App\Models\Application;
-use App\Models\Coach;
 use App\Models\Cohort;
 use App\Models\DeliverableSubmission;
 use App\Models\Entrepreneur;
 use App\Models\FundingRecord;
 use App\Models\Indicator;
 use App\Models\Program;
-use App\Models\Project;
 use BackedEnum;
-use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -20,17 +17,18 @@ class ReportsPage extends Page
 {
     protected string $view = 'filament.sae.pages.reports-page';
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Pilotage';
+    protected static string|\UnitEnum|null $navigationGroup = 'Pilotage';
 
     protected static ?string $navigationLabel = 'Rapports';
 
     protected static ?string $title = 'Rapports & Indicateurs d\'impact';
 
-    protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-document-chart-bar';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-chart-bar';
 
     protected static ?int $navigationSort = 2;
 
     public ?string $selectedProgramId = 'all';
+
     public ?string $selectedCohortId = 'all';
 
     public function getProgramsProperty()
@@ -43,6 +41,7 @@ class ReportsPage extends Page
         if ($this->selectedProgramId && $this->selectedProgramId !== 'all') {
             return Cohort::where('program_id', $this->selectedProgramId)->get();
         }
+
         return Cohort::all();
     }
 
@@ -120,7 +119,7 @@ class ReportsPage extends Page
     public function exportCsv(): StreamedResponse
     {
         $data = $this->getIndicatorsData();
-        $filename = 'rapport_indicateurs_impact_' . now()->format('Ymd_His') . '.csv';
+        $filename = 'rapport_indicateurs_impact_'.now()->format('Ymd_His').'.csv';
 
         return response()->streamDownload(function () use ($data) {
             $handle = fopen('php://output', 'w');

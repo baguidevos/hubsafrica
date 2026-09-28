@@ -9,5 +9,3 @@ class CreateLevel extends CreateRecord
 {
     protected static string $resource = LevelResource::class;
 }
-
-

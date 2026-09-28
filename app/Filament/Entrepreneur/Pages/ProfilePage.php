@@ -2,33 +2,44 @@
 
 namespace App\Filament\Entrepreneur\Pages;
 
+use App\Enums\Gender;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 
 class ProfilePage extends Page
 {
-    protected static string | \UnitEnum | null $navigationGroup = 'Mon espace';
+    protected static string|\UnitEnum|null $navigationGroup = 'Mon espace';
 
     protected static ?string $navigationLabel = 'Mon profil';
 
     protected static ?string $title = 'Mon profil entrepreneur';
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-user';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-user';
 
     protected static ?int $navigationSort = 2;
 
     protected string $view = 'filament.entrepreneur.pages.profile-page';
 
     public ?string $firstName = '';
+
     public ?string $lastName = '';
+
     public ?string $email = '';
+
     public ?string $phone = '';
+
     public ?string $gender = '';
+
     public ?string $birthDate = '';
+
     public ?string $country = '';
+
     public ?string $territory = '';
+
     public ?string $educationLevel = '';
+
     public ?string $profession = '';
+
     public ?string $professionalStatus = '';
 
     public function mount(): void
@@ -39,7 +50,7 @@ class ProfilePage extends Page
             $this->lastName = $entrepreneur->last_name;
             $this->email = $entrepreneur->email ?? auth()->user()?->email;
             $this->phone = $entrepreneur->phone;
-            $this->gender = $entrepreneur->gender instanceof \App\Enums\Gender ? $entrepreneur->gender->value : ($entrepreneur->gender ? (string) $entrepreneur->gender : null);
+            $this->gender = $entrepreneur->gender instanceof Gender ? $entrepreneur->gender->value : ($entrepreneur->gender ? (string) $entrepreneur->gender : null);
             $this->birthDate = $entrepreneur->birth_date?->format('Y-m-d');
             $this->country = $entrepreneur->country;
             $this->territory = $entrepreneur->territory;
@@ -88,5 +99,3 @@ class ProfilePage extends Page
         }
     }
 }
-
-

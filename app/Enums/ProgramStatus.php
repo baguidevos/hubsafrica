@@ -5,7 +5,7 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum ProgramStatus: string implements HasLabel, HasColor
+enum ProgramStatus: string implements HasColor, HasLabel
 {
     case BROUILLON = 'BROUILLON';
     case OUVERT_CANDIDATURES = 'OUVERT_CANDIDATURES';
@@ -31,7 +31,7 @@ enum ProgramStatus: string implements HasLabel, HasColor
         };
     }
 
-    public function getColor(): string | array | null
+    public function getColor(): string|array|null
     {
         return match ($this) {
             self::BROUILLON => 'gray',

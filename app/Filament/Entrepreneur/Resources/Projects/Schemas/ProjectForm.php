@@ -2,7 +2,6 @@
 
 namespace App\Filament\Entrepreneur\Resources\Projects\Schemas;
 
-use App\Enums\ProjectStatus;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;

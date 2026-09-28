@@ -17,5 +17,3 @@ class EditDataRoomDocument extends EditRecord
         ];
     }
 }
-
-

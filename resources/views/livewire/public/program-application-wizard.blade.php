@@ -102,6 +102,25 @@
                 </div>
             </div>
 
+            @if($selectedCohort)
+                <div class="mx-6 sm:mx-10 mt-6 -mb-2 p-4 rounded-2xl bg-amber-50 border border-amber-200/90 flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-xl bg-[#F8B81D] text-slate-950 font-black flex items-center justify-center text-sm shadow-sm shrink-0">
+                            🎯
+                        </span>
+                        <div>
+                            <div class="text-[10px] font-bold text-amber-900 uppercase tracking-wide">Promotion ciblée</div>
+                            <div class="text-sm font-extrabold text-slate-900">{{ $selectedCohort->name }}</div>
+                        </div>
+                    </div>
+                    <div class="text-right text-xs text-slate-600 hidden sm:block">
+                        <span>Lancement : <strong>{{ $selectedCohort->start_date ? $selectedCohort->start_date->format('d/m/Y') : 'À venir' }}</strong></span>
+                        <span class="mx-1">&bull;</span>
+                        <span class="text-amber-800 font-bold">{{ $selectedCohort->capacity ?: 20 }} places</span>
+                    </div>
+                </div>
+            @endif
+
             {{-- Corps du Formulaire --}}
             <form wire:submit.prevent="submitApplication" class="p-6 sm:p-10 space-y-8">
                 @if($errors->has('submit_error'))
@@ -384,6 +403,93 @@
                             </div>
                             @error('pitch_deck') <span class="text-[11px] text-red-600 font-medium">{{ $message }}</span> @enderror
                         </div>
+
+                        {{-- QUESTIONS COMPLÉMENTAIRES DÉFINIES PAR LA STRUCTURE (TEMPLATE PERSONNALISÉ) --}}
+                        @if(!empty($custom_fields))
+                            <div class="p-5 rounded-2xl bg-amber-50/60 border border-amber-200 space-y-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#2F3284]"></span>
+                                    <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                                        Questions spécifiques posées par {{ $program->sae?->name ?? 'la structure d\'accompagnement' }}
+                                    </h3>
+                                </div>
+                                <p class="text-[11px] text-slate-600">
+                                    Merci de renseigner ces informations complémentaires requises par l'équipe d'accompagnement pour évaluer votre candidature.
+                                </p>
+
+                                <div class="space-y-4 pt-2">
+                                    @foreach($custom_fields as $field)
+                                        @php
+                                            $fData = $field['data'] ?? [];
+                                            $fKey = $fData['key'] ?? $fData['name'] ?? $field['name'] ?? null;
+                                            $fType = $field['type'] ?? 'text';
+                                            $fLabel = $fData['label'] ?? $field['label'] ?? ucfirst(str_replace('_', ' ', (string) $fKey));
+                                            $fReq = !empty($fData['required']);
+                                            $fPlaceholder = $fData['placeholder'] ?? '';
+                                            $fOptions = $fData['options'] ?? [];
+                                        @endphp
+
+                                        @if($fKey)
+                                            <div>
+                                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                                                    {{ $fLabel }} @if($fReq)<span class="text-red-500 font-bold">*</span>@endif
+                                                </label>
+
+                                                @if($fType === 'textarea')
+                                                    <textarea
+                                                        wire:model="custom_answers.{{ $fKey }}"
+                                                        rows="3"
+                                                        class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#F8B81D] focus:ring-2 focus:ring-[#F8B81D]/20 text-sm outline-none transition bg-white"
+                                                        placeholder="{{ $fPlaceholder }}"
+                                                    ></textarea>
+                                                @elseif($fType === 'select')
+                                                    <select
+                                                        wire:model="custom_answers.{{ $fKey }}"
+                                                        class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#F8B81D] focus:ring-2 focus:ring-[#F8B81D]/20 text-sm bg-white outline-none transition"
+                                                    >
+                                                        <option value="">-- Sélectionnez une option --</option>
+                                                        @foreach($fOptions as $optVal => $optLabel)
+                                                            @php
+                                                                $val = is_array($optLabel) ? ($optLabel['value'] ?? $optVal) : (is_numeric($optVal) ? $optLabel : $optVal);
+                                                                $lbl = is_array($optLabel) ? ($optLabel['label'] ?? $optLabel['value'] ?? $optVal) : $optLabel;
+                                                            @endphp
+                                                            <option value="{{ $val }}">{{ $lbl }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                @elseif($fType === 'number')
+                                                    <input
+                                                        type="number"
+                                                        wire:model="custom_answers.{{ $fKey }}"
+                                                        class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#F8B81D] focus:ring-2 focus:ring-[#F8B81D]/20 text-sm outline-none transition bg-white"
+                                                        placeholder="{{ $fPlaceholder }}"
+                                                    >
+                                                @elseif($fType === 'checkbox')
+                                                    <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 cursor-pointer">
+                                                        <input
+                                                            type="checkbox"
+                                                            wire:model="custom_answers.{{ $fKey }}"
+                                                            class="rounded text-[#2F3284] focus:ring-[#F8B81D]"
+                                                        >
+                                                        <span class="text-xs text-slate-700">{{ $fPlaceholder ?: 'Oui / Confirmé' }}</span>
+                                                    </label>
+                                                @else
+                                                    <input
+                                                        type="text"
+                                                        wire:model="custom_answers.{{ $fKey }}"
+                                                        class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#F8B81D] focus:ring-2 focus:ring-[#F8B81D]/20 text-sm outline-none transition bg-white"
+                                                        placeholder="{{ $fPlaceholder }}"
+                                                    >
+                                                @endif
+
+                                                @error("custom_answers.{$fKey}")
+                                                    <span class="text-[11px] text-red-600 font-medium block mt-1">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
 
                         <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-2">
                             <div class="font-bold text-slate-800">Engagement &amp; Exactitude des données</div>

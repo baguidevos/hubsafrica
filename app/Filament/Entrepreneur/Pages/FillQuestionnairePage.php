@@ -5,6 +5,7 @@ namespace App\Filament\Entrepreneur\Pages;
 use App\Models\Form;
 use App\Models\FormUnlock;
 use Filament\Pages\Page;
+use Filament\Panel;
 use Illuminate\Contracts\Support\Htmlable;
 
 class FillQuestionnairePage extends Page
@@ -13,12 +14,12 @@ class FillQuestionnairePage extends Page
 
     protected static bool $shouldRegisterNavigation = false;
 
-    public static function getRelativeRouteName(\Filament\Panel $panel): string
+    public static function getRelativeRouteName(Panel $panel): string
     {
         return 'fill-questionnaire';
     }
 
-    public static function getRouteName(?\Filament\Panel $panel = null): string
+    public static function getRouteName(?Panel $panel = null): string
     {
         return 'filament.entrepreneur.pages.fill-questionnaire';
     }

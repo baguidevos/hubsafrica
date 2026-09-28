@@ -2,6 +2,8 @@
 
 namespace App\Filament\Sae\Resources\Projects;
 
+use App\Filament\Sae\Clusters\PortefeuilleCluster;
+use App\Filament\Sae\Resources\Applications\RelationManagers\DocumentsRelationManager;
 use App\Filament\Sae\Resources\Projects\Pages\CreateProject;
 use App\Filament\Sae\Resources\Projects\Pages\EditProject;
 use App\Filament\Sae\Resources\Projects\Pages\ListProjects;
@@ -25,17 +27,17 @@ class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Portefeuille';
+    protected static ?string $cluster = PortefeuilleCluster::class;
 
-    protected static ?string $navigationLabel = 'Projets';
+    protected static ?string $navigationLabel = 'Startups & Entreprises';
 
-    protected static ?string $modelLabel = 'Projet';
+    protected static ?string $modelLabel = 'Startup';
 
-    protected static ?string $pluralModelLabel = 'Projets';
+    protected static ?string $pluralModelLabel = 'Startups & Entreprises';
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-light-bulb';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-briefcase';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {
@@ -117,6 +119,7 @@ class ProjectResource extends Resource
             DeliverableSubmissionsRelationManager::class,
             FundingRecordsRelationManager::class,
             CoachAssignmentsRelationManager::class,
+            DocumentsRelationManager::class,
         ];
     }
 

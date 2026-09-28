@@ -17,5 +17,3 @@ class EditSae extends EditRecord
         ];
     }
 }
-
-

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Sae\Resources\Levels;
 
+use App\Filament\Sae\Clusters\ProgrammesCluster;
 use App\Filament\Sae\Resources\Levels\Pages\CreateLevel;
 use App\Filament\Sae\Resources\Levels\Pages\EditLevel;
 use App\Filament\Sae\Resources\Levels\Pages\ListLevels;
@@ -11,20 +12,19 @@ use App\Models\Level;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
 class LevelResource extends Resource
 {
     protected static ?string $model = Level::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Programmes';
+    protected static ?string $cluster = ProgrammesCluster::class;
 
-    protected static ?string $navigationLabel = 'Niveaux d\'accompagnement';
+    protected static ?string $navigationLabel = 'Niveaux de maturité';
 
     protected static ?string $modelLabel = 'Niveau';
 
-    protected static ?string $pluralModelLabel = 'Niveaux d\'accompagnement';
+    protected static ?string $pluralModelLabel = 'Niveaux de maturité';
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-arrow-trending-up';
 
@@ -56,5 +56,3 @@ class LevelResource extends Resource
         ];
     }
 }
-
-

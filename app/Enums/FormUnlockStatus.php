@@ -6,7 +6,7 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum FormUnlockStatus: string implements HasLabel, HasColor, HasIcon
+enum FormUnlockStatus: string implements HasColor, HasIcon, HasLabel
 {
     case EN_ATTENTE = 'EN_ATTENTE';
     case SOUMIS = 'SOUMIS';

@@ -7,6 +7,7 @@ use App\Filament\Sae\Resources\Coaches\CoachResource;
 use App\Models\CoachInvitation;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
+use Filament\Facades\Filament;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\ListRecords;
@@ -45,7 +46,7 @@ class ListCoaches extends ListRecords
                         ->placeholder('Ex: Finance, Marketing Digital'),
                 ])
                 ->action(function (array $data): void {
-                    $sae = \Filament\Facades\Filament::getTenant();
+                    $sae = Filament::getTenant();
 
                     $invitation = CoachInvitation::create([
                         'sae_id' => $sae?->id ?? auth()->user()?->sae_id,
@@ -65,4 +66,3 @@ class ListCoaches extends ListRecords
         ];
     }
 }
-

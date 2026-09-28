@@ -17,5 +17,3 @@ class EditFundingRecord extends EditRecord
         ];
     }
 }
-
-

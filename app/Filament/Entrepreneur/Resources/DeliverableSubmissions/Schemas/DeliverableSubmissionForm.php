@@ -3,6 +3,7 @@
 namespace App\Filament\Entrepreneur\Resources\DeliverableSubmissions\Schemas;
 
 use App\Enums\DeliverableSubmissionStatus;
+use App\Models\Enrollment;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -38,15 +39,41 @@ class DeliverableSubmissionForm
                         Grid::make(2)->schema([
                             Select::make('project_id')
                                 ->label('Projet concerné')
-                                ->relationship('project', 'name')
+                                ->relationship('project', 'name', modifyQueryUsing: function ($query) {
+                                    $entrepreneur = auth()->user()?->entrepreneurProfile;
+                                    if ($entrepreneur) {
+                                        $query->where('entrepreneur_id', $entrepreneur->id);
+                                    }
+                                })
                                 ->required(),
 
                             Select::make('definition_id')
                                 ->label('Livrable attendu')
-                                ->relationship('definition', 'name')
+                                ->relationship('definition', 'name', modifyQueryUsing: function ($query) {
+                                    $saeId = auth()->user()?->entrepreneurProfile?->sae_id;
+                                    if ($saeId) {
+                                        $query->where('sae_id', $saeId);
+                                    }
+                                })
                                 ->required()
                                 ->searchable()
                                 ->preload(),
+
+                            Select::make('cohort_phase_id')
+                                ->label('Jalon pédagogique / Phase')
+                                ->relationship('cohortPhase', 'name', modifyQueryUsing: function ($query) {
+                                    $entrepreneur = auth()->user()?->entrepreneurProfile;
+                                    if ($entrepreneur) {
+                                        $cohortIds = Enrollment::where('entrepreneur_id', $entrepreneur->id)
+                                            ->pluck('cohort_id');
+                                        if ($cohortIds->isNotEmpty()) {
+                                            $query->whereIn('cohort_id', $cohortIds);
+                                        }
+                                    }
+                                })
+                                ->searchable()
+                                ->preload()
+                                ->helperText('Optionnel : associez ce dépôt à un jalon spécifique.'),
 
                             TextInput::make('version')
                                 ->label('Version')
@@ -74,6 +101,39 @@ class DeliverableSubmissionForm
                             ->label('Message / Commentaires pour votre coach')
                             ->rows(3)
                             ->placeholder('Précisez les avancées notables ou les questions spécifiques sur ce livrable...')
+                            ->columnSpanFull(),
+                    ]),
+
+                Section::make('Évaluation & Retour du Coach')
+                    ->visible(fn ($record) => $record && $record->evaluations()->exists())
+                    ->schema([
+                        Grid::make(3)->schema([
+                            TextInput::make('eval_score')
+                                ->label('Note attribuée')
+                                ->default(fn ($record) => $record?->latestEvaluation?->score !== null ? $record->latestEvaluation->score.' / 100' : 'Non noté')
+                                ->disabled(),
+
+                            TextInput::make('eval_status')
+                                ->label('Décision du coach')
+                                ->default(fn ($record) => match ($record?->latestEvaluation?->status) {
+                                    'VALIDE' => 'Validé avec succès',
+                                    'A_REVOIR' => 'À retravailler',
+                                    'REJETE' => 'Non conforme',
+                                    default => $record?->latestEvaluation?->status ?? 'En attente',
+                                })
+                                ->disabled(),
+
+                            TextInput::make('eval_date')
+                                ->label('Évalué le')
+                                ->default(fn ($record) => $record?->latestEvaluation?->evaluated_at?->format('d/m/Y H:i') ?? '—')
+                                ->disabled(),
+                        ]),
+
+                        Textarea::make('eval_feedback')
+                            ->label('Commentaires & Conseils du coach')
+                            ->default(fn ($record) => $record?->latestEvaluation?->feedback ?? 'Aucun commentaire.')
+                            ->disabled()
+                            ->rows(3)
                             ->columnSpanFull(),
                     ]),
             ]);

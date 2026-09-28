@@ -3,13 +3,13 @@
 namespace App\Filament\Sae\Resources\CoachInvitations\Tables;
 
 use App\Enums\CoachInvitationStatus;
+use App\Models\CoachInvitation;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
-use Filament\Notifications\Notification;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -69,7 +69,7 @@ class CoachInvitationsTable
                     ->label('Lien d\'invitation')
                     ->icon('heroicon-o-link')
                     ->color('warning')
-                    ->action(function (\App\Models\CoachInvitation $record) {
+                    ->action(function (CoachInvitation $record) {
                         $record->makeInvitationNotification()->send();
                     }),
                 ViewAction::make()->slideOver(),

@@ -2,23 +2,26 @@
 
 namespace App\Filament\Entrepreneur\Resources\DeliverableSubmissions;
 
+use App\Enums\DeliverableSubmissionStatus;
 use App\Filament\Entrepreneur\Resources\DeliverableSubmissions\Pages\CreateDeliverableSubmission;
 use App\Filament\Entrepreneur\Resources\DeliverableSubmissions\Pages\EditDeliverableSubmission;
 use App\Filament\Entrepreneur\Resources\DeliverableSubmissions\Pages\ListDeliverableSubmissions;
 use App\Filament\Entrepreneur\Resources\DeliverableSubmissions\Schemas\DeliverableSubmissionForm;
 use App\Filament\Entrepreneur\Resources\DeliverableSubmissions\Tables\DeliverableSubmissionsTable;
+use App\Filament\Sae\Resources\DeliverableSubmissions\RelationManagers\SubmissionDocumentsRelationManager;
 use App\Models\DeliverableSubmission;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class DeliverableSubmissionResource extends Resource
 {
     protected static ?string $model = DeliverableSubmission::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Mes dépôts';
+    protected static string|\UnitEnum|null $navigationGroup = 'Mes dépôts';
 
     protected static ?string $navigationLabel = 'Mes livrables';
 
@@ -40,20 +43,31 @@ class DeliverableSubmissionResource extends Resource
         return DeliverableSubmissionsTable::configure($table);
     }
 
-    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
         $entrepreneur = auth()->user()?->entrepreneurProfile;
         if ($entrepreneur) {
             $query->where('entrepreneur_id', $entrepreneur->id);
         }
+
         return $query;
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return $record->status !== DeliverableSubmissionStatus::VALIDE;
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return $record->status !== DeliverableSubmissionStatus::VALIDE;
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            SubmissionDocumentsRelationManager::class,
         ];
     }
 
@@ -66,5 +80,3 @@ class DeliverableSubmissionResource extends Resource
         ];
     }
 }
-
-

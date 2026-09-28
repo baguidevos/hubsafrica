@@ -11,14 +11,13 @@ use App\Models\User;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Système';
+    protected static string|\UnitEnum|null $navigationGroup = 'Système';
 
     protected static ?string $navigationLabel = 'Utilisateurs';
 
@@ -56,5 +55,3 @@ class UserResource extends Resource
         ];
     }
 }
-
-

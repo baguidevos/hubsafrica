@@ -4,17 +4,21 @@ namespace App\Filament\Sae\Resources\EvaluationForms;
 
 use App\Enums\FormType;
 use App\Enums\FormUnlockStatus;
+use App\Filament\Sae\Clusters\ImpactCluster;
 use App\Filament\Sae\Resources\EvaluationForms\RelationManagers\UnlocksRelationManager;
 use App\Models\Cohort;
 use App\Models\Entrepreneur;
 use App\Models\Form;
 use App\Models\FormUnlock;
 use App\Models\TimelineEvent;
+use App\Services\ApplicationFormTemplateService;
+use Carbon\Carbon;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Facades\Filament;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
@@ -30,10 +34,14 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Packstub\FormBuilder\Filament\FieldBlocks;
 use Packstub\FormBuilder\Filament\FormActions;
 use Packstub\FormBuilder\Filament\Resources\FormResource;
+use Packstub\FormBuilder\Filament\Resources\FormResource\Pages\CreateForm;
+use Packstub\FormBuilder\Filament\Resources\FormResource\Pages\EditForm;
+use Packstub\FormBuilder\Filament\Resources\FormResource\Pages\ListForms;
 use Packstub\FormBuilder\Filament\Resources\FormResource\RelationManagers\SubmissionsRelationManager;
 use Packstub\FormBuilder\Filament\Resources\FormResource\RelationManagers\WebhookDeliveriesRelationManager;
 
@@ -46,6 +54,13 @@ class EvaluationFormResource extends FormResource
     public static function getModel(): string
     {
         return Form::class;
+    }
+
+    protected static ?string $cluster = ImpactCluster::class;
+
+    public static function getCluster(): ?string
+    {
+        return ImpactCluster::class;
     }
 
     public static function getModelLabel(): string
@@ -65,7 +80,7 @@ class EvaluationFormResource extends FormResource
 
     public static function getNavigationGroup(): ?string
     {
-        return 'Suivi & évaluation';
+        return null;
     }
 
     public static function getNavigationIcon(): string|\BackedEnum|null
@@ -75,7 +90,7 @@ class EvaluationFormResource extends FormResource
 
     public static function getNavigationSort(): ?int
     {
-        return 3;
+        return 4;
     }
 
     public static function form(Schema $schema): Schema
@@ -141,6 +156,10 @@ class EvaluationFormResource extends FormResource
                         ->label('Questionnaire obligatoire')
                         ->helperText('Si activé, l\'entrepreneur doit impérativement remplir ce questionnaire dans son parcours.')
                         ->default(true),
+                    Toggle::make('is_template')
+                        ->label('Modèle / Template de candidature réutilisable')
+                        ->helperText('Activez pour que ce formulaire apparaisse dans la liste des templates sélectionnables pour les cohortes.')
+                        ->default(false),
                 ]),
         ];
     }
@@ -155,6 +174,29 @@ class EvaluationFormResource extends FormResource
                     ->searchable(['name', 'slug'])
                     ->sortable()
                     ->weight('bold'),
+                TextColumn::make('usage')
+                    ->label('Rôle')
+                    ->badge()
+                    ->state(function (Form $record): string {
+                        if ($record->is_standard) {
+                            return '⭐️ Standard Hub Africa';
+                        }
+                        if ($record->is_template || $record->type === FormType::CANDIDATURE) {
+                            return '🏛️ Template Candidature';
+                        }
+
+                        return '📊 Enquête & Suivi';
+                    })
+                    ->color(function (Form $record): string {
+                        if ($record->is_standard) {
+                            return 'warning';
+                        }
+                        if ($record->is_template || $record->type === FormType::CANDIDATURE) {
+                            return 'primary';
+                        }
+
+                        return 'gray';
+                    }),
                 TextColumn::make('type')
                     ->label('Type')
                     ->badge()
@@ -179,7 +221,7 @@ class EvaluationFormResource extends FormResource
                     ->alignEnd(),
                 TextColumn::make('completion_rate')
                     ->label('Taux de complétion')
-                    ->state(fn (Form $record): string => $record->completionRate() . '%')
+                    ->state(fn (Form $record): string => $record->completionRate().'%')
                     ->badge()
                     ->color(fn (Form $record): string => $record->completionRate() >= 80 ? 'success' : ($record->completionRate() >= 40 ? 'warning' : 'gray'))
                     ->alignEnd(),
@@ -291,8 +333,8 @@ class EvaluationFormResource extends FormResource
 
                             if ($entrepreneur?->user) {
                                 Notification::make()
-                                    ->title('Nouveau formulaire à remplir : ' . $record->name)
-                                    ->body('Date limite : ' . \Carbon\Carbon::parse($data['due_date'])->format('d/m/Y') . ($data['note'] ? " — Consigne : {$data['note']}" : ''))
+                                    ->title('Nouveau formulaire à remplir : '.$record->name)
+                                    ->body('Date limite : '.Carbon::parse($data['due_date'])->format('d/m/Y').($data['note'] ? " — Consigne : {$data['note']}" : ''))
                                     ->icon('heroicon-o-clipboard-document-check')
                                     ->warning()
                                     ->sendToDatabase($entrepreneur->user);
@@ -302,7 +344,7 @@ class EvaluationFormResource extends FormResource
                                 TimelineEvent::create([
                                     'sae_id' => $saeId,
                                     'entrepreneur_id' => $entrepreneur->id,
-                                    'title' => 'Questionnaire assigné : ' . $record->name,
+                                    'title' => 'Questionnaire assigné : '.$record->name,
                                     'description' => "Le questionnaire '{$record->name}' a été assigné par l'équipe d'accompagnement.",
                                     'type' => 'EVALUATION',
                                     'event_date' => now(),
@@ -318,7 +360,25 @@ class EvaluationFormResource extends FormResource
                             ->success()
                             ->send();
                     }),
-                EditAction::make(),
+                Action::make('duplicateAsTemplate')
+                    ->label('Créer template SAE')
+                    ->icon('heroicon-o-document-duplicate')
+                    ->color('warning')
+                    ->tooltip('Dupliquer ce formulaire comme template personnalisable pour votre structure')
+                    ->action(function (Form $record, ApplicationFormTemplateService $service) {
+                        $saeId = Filament::getTenant()?->id;
+                        if (! $saeId) {
+                            return;
+                        }
+                        $newForm = $service->duplicateAsSaeTemplate($record, $saeId);
+                        Notification::make()
+                            ->title('Template créé !')
+                            ->body("Le template « {$newForm->name} » a été ajouté à votre structure.")
+                            ->success()
+                            ->send();
+                    }),
+                EditAction::make()
+                    ->visible(fn (Form $record) => ! $record->is_standard),
                 FormActions::share(),
                 Action::make('open')
                     ->label(__('packstub-form-builder::form-builder.actions.open_page'))
@@ -328,12 +388,27 @@ class EvaluationFormResource extends FormResource
                 ActionGroup::make([
                     FormActions::duplicate(),
                     FormActions::export(),
-                    DeleteAction::make(),
+                    DeleteAction::make()
+                        ->visible(fn (Form $record) => ! $record->is_standard),
                 ]),
             ])
             ->toolbarActions([
                 DeleteBulkAction::make(),
             ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $saeId = Filament::getTenant()?->id;
+
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes()
+            ->where(function (Builder $query) use ($saeId) {
+                $query->where('is_standard', true);
+                if ($saeId) {
+                    $query->orWhere('sae_id', $saeId);
+                }
+            });
     }
 
     public static function getRelations(): array
@@ -348,9 +423,9 @@ class EvaluationFormResource extends FormResource
     public static function getPages(): array
     {
         return [
-            'index' => \Packstub\FormBuilder\Filament\Resources\FormResource\Pages\ListForms::route('/'),
-            'create' => \Packstub\FormBuilder\Filament\Resources\FormResource\Pages\CreateForm::route('/create'),
-            'edit' => \Packstub\FormBuilder\Filament\Resources\FormResource\Pages\EditForm::route('/{record}/edit'),
+            'index' => ListForms::route('/'),
+            'create' => CreateForm::route('/create'),
+            'edit' => EditForm::route('/{record}/edit'),
         ];
     }
 }

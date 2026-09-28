@@ -5,7 +5,7 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum IndicatorStatus: string implements HasLabel, HasColor
+enum IndicatorStatus: string implements HasColor, HasLabel
 {
     case EN_BONNE_VOIE = 'EN_BONNE_VOIE';
     case VIGILANCE = 'VIGILANCE';
@@ -22,7 +22,7 @@ enum IndicatorStatus: string implements HasLabel, HasColor
         };
     }
 
-    public function getColor(): string | array | null
+    public function getColor(): string|array|null
     {
         return match ($this) {
             self::EN_BONNE_VOIE => 'success',

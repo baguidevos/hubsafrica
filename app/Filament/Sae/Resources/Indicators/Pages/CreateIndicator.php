@@ -9,5 +9,3 @@ class CreateIndicator extends CreateRecord
 {
     protected static string $resource = IndicatorResource::class;
 }
-
-

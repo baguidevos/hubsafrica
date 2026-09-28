@@ -147,6 +147,89 @@
                         </div>
                     </div>
                 @endif
+
+                {{-- Promotions & Cohortes du Programme --}}
+                @if($program->cohorts && $program->cohorts->isNotEmpty())
+                    <div class="bg-white rounded-3xl p-8 border border-slate-200/90 shadow-xs space-y-6">
+                        <div class="flex items-center justify-between gap-4">
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#F8B81D]"></span>
+                                    Promotions &amp; Cohortes du Programme
+                                </h2>
+                                <p class="text-xs text-slate-500 mt-1">
+                                    Consultez les promotions planifiées pour ce programme et postulez directement à une cohorte ouverte.
+                                </p>
+                            </div>
+                            <span class="text-xs font-bold px-3 py-1 bg-slate-100 text-slate-700 rounded-full border border-slate-200">
+                                {{ $program->cohorts->count() }} promotion(s)
+                            </span>
+                        </div>
+
+                        <div class="space-y-4">
+                            @foreach($program->cohorts as $cohort)
+                                @php
+                                    $isCohortOpen = $cohort->status === \App\Enums\CohortStatus::OUVERTE;
+                                    $isCohortClosed = $cohort->status === \App\Enums\CohortStatus::CLOTUREE;
+                                @endphp
+                                <div class="p-5 rounded-2xl border @if($isCohortOpen) border-amber-300 bg-amber-50/40 @else border-slate-200 bg-slate-50/50 @endif transition space-y-3">
+                                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                        <div class="space-y-1">
+                                            <div class="flex items-center gap-2.5">
+                                                <h3 class="font-extrabold text-slate-900 text-base">
+                                                    {{ $cohort->name }}
+                                                </h3>
+                                                @if($isCohortOpen)
+                                                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                                        Inscriptions ouvertes
+                                                    </span>
+                                                @elseif($isCohortClosed)
+                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-600">
+                                                        Clôturée
+                                                    </span>
+                                                @else
+                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800">
+                                                        En cours
+                                                    </span>
+                                                @endif
+                                            </div>
+                                            <div class="flex flex-wrap items-center gap-3 text-xs text-slate-600">
+                                                <span>Démarrage : <strong>{{ $cohort->start_date ? $cohort->start_date->format('d/m/Y') : 'À déterminer' }}</strong></span>
+                                                <span>&bull;</span>
+                                                <span>Clôture : <strong>{{ $cohort->end_date ? $cohort->end_date->format('d/m/Y') : 'À déterminer' }}</strong></span>
+                                                <span>&bull;</span>
+                                                <span>Capacité : <strong class="text-[#2F3284]">{{ $cohort->capacity ?: 20 }} startups</strong></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="shrink-0">
+                                            @if($isCohortOpen)
+                                                <a
+                                                    href="{{ route('public.cohort.join', $cohort->id) }}"
+                                                    class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 font-bold text-xs shadow-sm transition"
+                                                >
+                                                    <span>Rejoindre cette cohorte</span>
+                                                    <svg class="w-3.5 h-3.5 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                                </a>
+                                            @else
+                                                <span class="text-xs text-slate-400 font-medium px-3 py-1.5 rounded-lg bg-slate-100">
+                                                    Non disponible
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    @if($cohort->objectives)
+                                        <p class="text-xs text-slate-600 pt-2 border-t border-slate-200/60 leading-relaxed">
+                                            {{ $cohort->objectives }}
+                                        </p>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
             </div>
 
             {{-- Colonne Droite : Sidebar Institutionnelle & Actions (4 cols) --}}

@@ -5,7 +5,7 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum IndicatorCategory: string implements HasLabel, HasColor
+enum IndicatorCategory: string implements HasColor, HasLabel
 {
     case PORTEE = 'PORTEE';
     case INCLUSION = 'INCLUSION';
@@ -30,7 +30,7 @@ enum IndicatorCategory: string implements HasLabel, HasColor
         };
     }
 
-    public function getColor(): string | array | null
+    public function getColor(): string|array|null
     {
         return match ($this) {
             self::PORTEE => 'primary',

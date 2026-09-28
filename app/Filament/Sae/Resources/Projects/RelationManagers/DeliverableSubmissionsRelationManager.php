@@ -11,8 +11,10 @@ use Filament\Tables\Table;
 class DeliverableSubmissionsRelationManager extends RelationManager
 {
     protected static string $relationship = 'submissions';
+
     protected static ?string $title = 'Livrables & Dépôts';
-    protected static string | \BackedEnum | null $icon = 'heroicon-o-document-check';
+
+    protected static string|\BackedEnum|null $icon = 'heroicon-o-document-check';
 
     public function table(Table $table): Table
     {
@@ -41,7 +43,7 @@ class DeliverableSubmissionsRelationManager extends RelationManager
                     ->label('Fichier')
                     ->icon('heroicon-o-arrow-down-tray')
                     ->color('gray')
-                    ->url(fn ($record) => $record->file_path ? asset('storage/' . $record->file_path) : null)
+                    ->url(fn ($record) => $record->file_path ? asset('storage/'.$record->file_path) : null)
                     ->openUrlInNewTab()
                     ->visible(fn ($record) => filled($record->file_path)),
                 ViewAction::make()->slideOver(),

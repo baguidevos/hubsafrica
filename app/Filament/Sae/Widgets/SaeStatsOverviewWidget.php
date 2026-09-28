@@ -15,6 +15,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 class SaeStatsOverviewWidget extends BaseWidget
 {
     protected static ?int $sort = 1;
+
     protected ?string $pollingInterval = '30s';
 
     protected function getStats(): array
@@ -35,7 +36,7 @@ class SaeStatsOverviewWidget extends BaseWidget
         $projetsBloques = Project::where('status', 'BLOQUE')->count();
 
         $montantsLeves = (float) FundingRecord::whereIn('status', ['ACCORDE', 'DECAISSE', 'INVESTI'])->sum('amount_obtained');
-        $montantsFormat = number_format($montantsLeves, 0, ',', ' ') . ' FCFA';
+        $montantsFormat = number_format($montantsLeves, 0, ',', ' ').' FCFA';
 
         return [
             Stat::make('Entrepreneurs accompagnés', $entrepreneursActifs)

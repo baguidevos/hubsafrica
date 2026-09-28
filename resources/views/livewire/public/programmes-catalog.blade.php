@@ -108,6 +108,7 @@
                     $now = now()->toDateString();
                     $isOpen = $p->status === \App\Enums\ProgramStatus::ACTIF && (!$p->registration_end || $p->registration_end->toDateString() >= $now);
                     $daysRemaining = $p->registration_end ? now()->diffInDays($p->registration_end, false) : null;
+                    $openCohort = $p->cohorts->first(fn ($c) => $c->status === \App\Enums\CohortStatus::OUVERTE);
                 @endphp
 
                 <article class="bg-white rounded-3xl border border-slate-200/90 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden group hover:-translate-y-1">
@@ -115,8 +116,13 @@
                     <div>
                         <div class="p-6 pb-4 border-b border-slate-100 bg-gradient-to-br from-slate-50 to-white">
                             <div class="flex items-center justify-between gap-2 mb-3">
-                                {{-- Statut Inscriptions --}}
-                                @if($isOpen)
+                                {{-- Statut Inscriptions / Cohorte Ouverte --}}
+                                @if($openCohort)
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                        Cohorte Ouverte : {{ Str::limit($openCohort->name, 22) }}
+                                    </span>
+                                @elseif($isOpen)
                                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-[#2F3284] border border-amber-200">
                                         <span class="w-2 h-2 rounded-full bg-[#F8B81D] animate-pulse"></span>
                                         Candidatures Ouvertes
@@ -129,7 +135,7 @@
 
                                 {{-- Phase / Niveau --}}
                                 @if($p->level)
-                                    <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 bg-[#2F3284]/10 text-[#2F3284] border border-[#2F3284]/20 rounded-lg">
+                                    <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 bg-[#2F3284]/10 text-[#2F3284] border border-[#2F3284]/20 rounded-lg shrink-0">
                                         {{ $p->level->name }}
                                     </span>
                                 @endif
@@ -173,12 +179,20 @@
                                 </div>
 
                                 <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200/60">
-                                    <div class="text-[10px] text-slate-400 uppercase font-semibold">Capacité promotion</div>
-                                    <div class="font-bold text-slate-800 mt-0.5">
-                                        {{ $p->capacity ?: '20' }} startups
+                                    <div class="text-[10px] text-slate-400 uppercase font-semibold">Promotion</div>
+                                    <div class="font-bold text-slate-800 mt-0.5 truncate">
+                                        @if($openCohort)
+                                            {{ $openCohort->name }}
+                                        @else
+                                            {{ $p->capacity ?: '20' }} startups
+                                        @endif
                                     </div>
-                                    <div class="text-[9px] text-slate-400 mt-0.5">
-                                        {{ $p->cohorts_count }} cohorte(s)
+                                    <div class="text-[9px] text-slate-500 mt-0.5">
+                                        @if($openCohort)
+                                            <span class="text-emerald-700 font-bold">{{ $openCohort->capacity ?: 20 }} places</span> &bull; Ouverte
+                                        @else
+                                            {{ $p->cohorts_count }} cohorte(s)
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -194,7 +208,15 @@
                             Détails &amp; Critères
                         </a>
 
-                        @if($isOpen)
+                        @if($openCohort)
+                            <a
+                                href="{{ route('public.cohort.join', $openCohort->id) }}"
+                                class="flex-1 text-center py-2.5 px-3 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 text-xs font-bold shadow-sm transition"
+                                title="Rejoindre directement la cohorte {{ $openCohort->name }}"
+                            >
+                                Rejoindre cohorte &rarr;
+                            </a>
+                        @elseif($isOpen)
                             <a
                                 href="{{ route('public.programme.candidater', $p->id) }}"
                                 class="flex-1 text-center py-2.5 px-3 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 text-xs font-bold shadow-sm transition"

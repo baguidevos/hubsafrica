@@ -10,6 +10,21 @@ class EditCoachingSession extends EditRecord
 {
     protected static string $resource = CoachingSessionResource::class;
 
+    public function hasCombinedRelationManagerTabsWithContent(): bool
+    {
+        return true;
+    }
+
+    public function getContentTabLabel(): ?string
+    {
+        return 'Détails de la séance';
+    }
+
+    public function getContentTabIcon(): ?string
+    {
+        return 'heroicon-m-calendar-days';
+    }
+
     protected function getHeaderActions(): array
     {
         return [
@@ -17,5 +32,3 @@ class EditCoachingSession extends EditRecord
         ];
     }
 }
-
-

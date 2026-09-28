@@ -14,5 +14,3 @@ class ListDataRoomDocuments extends ListRecords
         return [];
     }
 }
-
-

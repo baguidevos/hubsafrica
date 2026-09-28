@@ -6,6 +6,8 @@ use App\Models\Concerns\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Enrollment extends Model
 {
@@ -40,5 +42,15 @@ class Enrollment extends Model
     public function entrepreneur(): BelongsTo
     {
         return $this->belongsTo(Entrepreneur::class, 'entrepreneur_id');
+    }
+
+    public function documents(): MorphMany
+    {
+        return $this->morphMany(Document::class, 'documentable');
+    }
+
+    public function indicatorEntries(): HasMany
+    {
+        return $this->hasMany(IndicatorEntry::class, 'enrollment_id');
     }
 }

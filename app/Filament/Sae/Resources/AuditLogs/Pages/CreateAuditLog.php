@@ -9,5 +9,3 @@ class CreateAuditLog extends CreateRecord
 {
     protected static string $resource = AuditLogResource::class;
 }
-
-

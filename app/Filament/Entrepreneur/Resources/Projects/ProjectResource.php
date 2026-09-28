@@ -11,14 +11,14 @@ use App\Models\Project;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Mon espace';
+    protected static string|\UnitEnum|null $navigationGroup = 'Mon espace';
 
     protected static ?string $navigationLabel = 'Mon projet';
 
@@ -40,13 +40,14 @@ class ProjectResource extends Resource
         return ProjectsTable::configure($table);
     }
 
-    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
         $entrepreneur = auth()->user()?->entrepreneurProfile;
         if ($entrepreneur) {
             $query->where('entrepreneur_id', $entrepreneur->id);
         }
+
         return $query;
     }
 
@@ -66,5 +67,3 @@ class ProjectResource extends Resource
         ];
     }
 }
-
-

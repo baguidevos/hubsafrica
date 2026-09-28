@@ -3,6 +3,10 @@
 namespace App\Filament\Sae\Resources\Cohorts\Schemas;
 
 use App\Enums\CohortStatus;
+use App\Models\Form;
+use App\Services\ApplicationFormTemplateService;
+use Filament\Facades\Filament;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -44,6 +48,41 @@ class CohortForm
                                 ->suffix('startups')
                                 ->placeholder('20'),
                         ]),
+                    ]),
+
+                Section::make('Formulaire de candidature obligatoire')
+                    ->description('Chaque promotion doit obligatoirement être rattachée à un modèle de formulaire de candidature.')
+                    ->icon('heroicon-o-clipboard-document-check')
+                    ->schema([
+                        Select::make('application_form_id')
+                            ->label('Template du formulaire de candidature')
+                            ->helperText('Obligatoire : Sélectionnez le formulaire que rempliront les candidats. Vous pouvez choisir le modèle officiel Hub Africa ou un template personnalisé de votre structure.')
+                            ->options(function () {
+                                $saeId = Filament::getTenant()?->id;
+                                $service = app(ApplicationFormTemplateService::class);
+                                $templates = $service->getAvailableTemplatesForSae($saeId);
+
+                                return $templates->mapWithKeys(function (Form $form) {
+                                    $badge = $form->is_standard ? '⭐️ Standard Hub Africa' : '🏛️ Template de votre structure';
+
+                                    return [$form->id => "{$form->name} ({$badge})"];
+                                })->toArray();
+                            })
+                            ->default(function () {
+                                $service = app(ApplicationFormTemplateService::class);
+
+                                return $service->getOrCreateStandardTemplate()->id;
+                            })
+                            ->required()
+                            ->searchable()
+                            ->preload()
+                            ->hintAction(
+                                Action::make('manageTemplates')
+                                    ->label('Créer / Gérer mes templates')
+                                    ->icon('heroicon-m-arrow-top-right-on-square')
+                                    ->url(fn () => Filament::getTenant() ? route('filament.sae.resources.evaluation-forms.index', ['tenant' => Filament::getTenant()]) : null)
+                                    ->openUrlInNewTab()
+                            ),
                     ]),
 
                 Section::make('Statut & Calendrier')

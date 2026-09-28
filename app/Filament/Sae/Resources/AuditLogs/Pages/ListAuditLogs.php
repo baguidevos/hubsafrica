@@ -17,5 +17,3 @@ class ListAuditLogs extends ListRecords
         ];
     }
 }
-
-

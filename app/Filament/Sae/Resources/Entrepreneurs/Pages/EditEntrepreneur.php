@@ -17,5 +17,3 @@ class EditEntrepreneur extends EditRecord
         ];
     }
 }
-
-

@@ -8,6 +8,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateCoachingSession extends CreateRecord
 {
     protected static string $resource = CoachingSessionResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('edit', ['record' => $this->getRecord()]);
+    }
 }
-
-

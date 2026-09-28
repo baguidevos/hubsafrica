@@ -9,5 +9,3 @@ class CreateTimelineEvent extends CreateRecord
 {
     protected static string $resource = TimelineEventResource::class;
 }
-
-

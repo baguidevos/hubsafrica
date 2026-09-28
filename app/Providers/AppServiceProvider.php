@@ -2,12 +2,17 @@
 
 namespace App\Providers;
 
+use App\Listeners\HandleEvaluationSubmission;
 use Carbon\CarbonImmutable;
+use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Head\Facades\Head;
+use Packstub\FormBuilder\Events\SubmissionReceived;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,14 +32,14 @@ class AppServiceProvider extends ServiceProvider
         $this->configureDefaults();
         $this->configureHeadDefaults();
 
-        \Illuminate\Support\Facades\Event::listen(
-            \Packstub\FormBuilder\Events\SubmissionReceived::class,
-            \App\Listeners\HandleEvaluationSubmission::class,
+        Event::listen(
+            SubmissionReceived::class,
+            HandleEvaluationSubmission::class,
         );
 
-        if (class_exists(\Filament\Support\Facades\FilamentView::class) && class_exists(\Filament\View\PanelsRenderHook::class)) {
-            \Filament\Support\Facades\FilamentView::registerRenderHook(
-                \Filament\View\PanelsRenderHook::AUTH_LOGIN_FORM_AFTER,
+        if (class_exists(FilamentView::class) && class_exists(PanelsRenderHook::class)) {
+            FilamentView::registerRenderHook(
+                PanelsRenderHook::AUTH_LOGIN_FORM_AFTER,
                 fn () => view('filament.hooks.quick-login'),
             );
         }

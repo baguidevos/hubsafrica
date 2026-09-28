@@ -19,15 +19,22 @@ class DeliverableDefinitionForm
             ->components([
                 Section::make('Cadrage & Programme')
                     ->schema([
-                        Grid::make(2)->schema([
+                        Grid::make(3)->schema([
                             Select::make('program_id')
-                                ->label('Programme d\'accompagnement')
+                                ->label('Programme')
                                 ->relationship('program', 'name')
                                 ->searchable()
                                 ->preload(),
 
+                            Select::make('program_phase_id')
+                                ->label('Jalon pédagogique')
+                                ->relationship('phase', 'name')
+                                ->searchable()
+                                ->preload()
+                                ->helperText('Phase du programme où le livrable est exigé'),
+
                             Select::make('level_id')
-                                ->label('Niveau / Phase')
+                                ->label('Niveau ciblé')
                                 ->relationship('level', 'name')
                                 ->searchable()
                                 ->preload(),
