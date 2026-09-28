@@ -14,6 +14,7 @@ use App\Enums\ProjectStatus;
 use App\Filament\Entrepreneur\Resources\Applications\Pages\ListApplications;
 use App\Filament\Entrepreneur\Resources\CoachingSessions\CoachingSessionResource;
 use App\Filament\Entrepreneur\Resources\DeliverableSubmissions\DeliverableSubmissionResource;
+use App\Filament\Entrepreneur\Resources\Resources\Pages\ListResources;
 use App\Filament\Entrepreneur\Resources\Resources\ResourceResource;
 use App\Filament\Entrepreneur\Widgets\EntrepreneurStatsOverviewWidget;
 use App\Filament\Sae\Clusters\ProgrammesCluster;
@@ -444,6 +445,15 @@ test('entrepreneur portal alignment: resources visibility, deliverable protectio
     $visibleResources = ResourceResource::getEloquentQuery()->pluck('id')->all();
     expect($visibleResources)->toContain($resPublic->id)
         ->and($visibleResources)->not->toContain($resCoachOnly->id);
+
+    Livewire::test(ListResources::class)
+        ->assertSuccessful()
+        ->assertCanSeeTableRecords([$resPublic])
+        ->assertCanNotSeeTableRecords([$resCoachOnly])
+        ->filterTable('type', 'DOCUMENT')
+        ->assertCanSeeTableRecords([$resPublic])
+        ->filterTable('type', 'VIDEO')
+        ->assertCanNotSeeTableRecords([$resPublic]);
 
     // 2. Deliverable submissions: validated submissions cannot be edited or deleted
     $project = Project::create([
