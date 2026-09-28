@@ -5,6 +5,7 @@ namespace App\Filament\Entrepreneur\Resources\Projects;
 use App\Filament\Entrepreneur\Resources\Projects\Pages\CreateProject;
 use App\Filament\Entrepreneur\Resources\Projects\Pages\EditProject;
 use App\Filament\Entrepreneur\Resources\Projects\Pages\ListProjects;
+use App\Filament\Entrepreneur\Resources\Projects\Pages\ViewProject;
 use App\Filament\Entrepreneur\Resources\Projects\Schemas\ProjectForm;
 use App\Filament\Entrepreneur\Resources\Projects\Tables\ProjectsTable;
 use App\Models\Project;
@@ -52,6 +53,20 @@ class ProjectResource extends Resource
         return $query;
     }
 
+    /**
+     * Only allow project creation if the entrepreneur has no project yet.
+     */
+    public static function canCreate(): bool
+    {
+        $entrepreneur = auth()->user()?->entrepreneurProfile;
+
+        if (! $entrepreneur) {
+            return false;
+        }
+
+        return ! Project::where('entrepreneur_id', $entrepreneur->id)->exists();
+    }
+
     public static function canDelete(Model $record): bool
     {
         return ! $record->applications()->exists() && ! $record->submissions()->exists();
@@ -69,6 +84,7 @@ class ProjectResource extends Resource
         return [
             'index' => ListProjects::route('/'),
             'create' => CreateProject::route('/create'),
+            'view' => ViewProject::route('/{record}'),
             'edit' => EditProject::route('/{record}/edit'),
         ];
     }

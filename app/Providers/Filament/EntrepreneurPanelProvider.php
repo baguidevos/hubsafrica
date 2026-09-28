@@ -11,6 +11,7 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\Width;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -26,6 +27,7 @@ class EntrepreneurPanelProvider extends PanelProvider
             ->id('entrepreneur')
             ->path('portal')
             ->viteTheme('resources/css/filament/entrepreneur/theme.css')
+            ->maxContentWidth(Width::Full)
             ->login()
             ->spa(hasPrefetching: true)
             ->colors([

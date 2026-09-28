@@ -35,6 +35,7 @@ class DeliverableSubmissionForm
                     ->default(now()),
 
                 Section::make('Dépôt de votre livrable')
+                    ->columnSpanFull()
                     ->schema([
                         Grid::make(2)->schema([
                             Select::make('project_id')

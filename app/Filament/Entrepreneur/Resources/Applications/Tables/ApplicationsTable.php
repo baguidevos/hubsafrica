@@ -64,7 +64,7 @@ class ApplicationsTable
                     ->relationship('program', 'name'),
             ])
             ->recordActions([
-                ViewAction::make()->slideOver(),
+                ViewAction::make(),
             ])
             ->defaultSort('submitted_at', 'desc');
     }

@@ -290,7 +290,7 @@ class ApplicationsTable
                             ->danger()
                             ->send();
                     }),
-                ViewAction::make()->slideOver(),
+                ViewAction::make(),
                 EditAction::make()->slideOver(),
             ])
             ->toolbarActions([

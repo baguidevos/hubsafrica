@@ -3,6 +3,7 @@
 namespace App\Filament\Entrepreneur\Resources\Applications;
 
 use App\Filament\Entrepreneur\Resources\Applications\Pages\ListApplications;
+use App\Filament\Entrepreneur\Resources\Applications\Pages\ViewApplication;
 use App\Filament\Entrepreneur\Resources\Applications\Tables\ApplicationsTable;
 use App\Filament\Sae\Resources\Applications\Schemas\ApplicationForm;
 use App\Models\Application;
@@ -69,6 +70,7 @@ class ApplicationResource extends Resource
     {
         return [
             'index' => ListApplications::route('/'),
+            'view' => ViewApplication::route('/{record}'),
         ];
     }
 }

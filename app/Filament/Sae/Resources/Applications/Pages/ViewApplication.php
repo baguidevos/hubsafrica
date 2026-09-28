@@ -1,0 +1,231 @@
+<?php
+
+namespace App\Filament\Sae\Resources\Applications\Pages;
+
+use App\Enums\ApplicationEvaluationStatus;
+use App\Enums\ApplicationStatus;
+use App\Filament\Sae\Resources\Applications\ApplicationResource;
+use App\Filament\Sae\Resources\Projects\ProjectResource;
+use App\Models\Application;
+use App\Models\ApplicationEvaluation;
+use App\Models\ApplicationEvaluationScore;
+use Filament\Actions\Action;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
+use Filament\Resources\Pages\ViewRecord;
+use Illuminate\Database\Eloquent\Model;
+
+class ViewApplication extends ViewRecord
+{
+    protected static string $resource = ApplicationResource::class;
+
+    protected string $view = 'filament.common.view-application';
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('evaluate')
+                ->label('Noter le dossier')
+                ->icon('heroicon-o-academic-cap')
+                ->color('success')
+                ->modalHeading(fn (Application $record) => 'Notation Jury — Candidature de '.($record->entrepreneur?->full_name ?? 'Candidat'))
+                ->modalDescription('Saisissez les notes critère par critère. Le score global pondéré sera calculé et appliqué automatiquement.')
+                ->modalSubmitActionLabel('Valider l\'évaluation')
+                ->form(function (Application $record) {
+                    $components = [];
+                    $criteria = $record->program?->evaluationCriteria()->orderBy('position')->get() ?? collect();
+
+                    if ($criteria->isEmpty()) {
+                        $components[] = TextInput::make('direct_score')
+                            ->label('Score direct (sur 100)')
+                            ->numeric()
+                            ->minValue(0)
+                            ->maxValue(100)
+                            ->default($record->score)
+                            ->helperText('Aucun critère spécifique n\'a été configuré dans ce programme.');
+                    } else {
+                        $existingEval = ApplicationEvaluation::where('application_id', $record->id)
+                            ->where('evaluator_id', auth()->id())
+                            ->first();
+
+                        foreach ($criteria as $criterion) {
+                            $existingScore = $existingEval
+                                ? ApplicationEvaluationScore::where('evaluation_id', $existingEval->id)
+                                    ->where('criterion_id', $criterion->id)
+                                    ->value('score')
+                                : null;
+
+                            $components[] = TextInput::make("criterion_{$criterion->id}")
+                                ->label("{$criterion->name} (sur {$criterion->max_score} pts — Coeff {$criterion->weight}x)")
+                                ->numeric()
+                                ->minValue(0)
+                                ->maxValue($criterion->max_score)
+                                ->default($existingScore)
+                                ->helperText($criterion->description)
+                                ->required();
+                        }
+                    }
+
+                    $components[] = Select::make('decision_status')
+                        ->label('Décision & Statut de la candidature')
+                        ->options([
+                            'AUTO' => 'Automatique selon la note (≥75 Retenue, 50-74 Liste d\'attente, <50 Refusée)',
+                            ApplicationStatus::ACCEPTEE->value => 'Acceptée / Retenue pour la cohorte',
+                            ApplicationStatus::EN_ATTENTE->value => 'Placer sur liste d\'attente',
+                            ApplicationStatus::REFUSEE->value => 'Refusée / Non retenue',
+                            ApplicationStatus::EN_EXAMEN->value => 'Maintenir En examen',
+                        ])
+                        ->default('AUTO')
+                        ->helperText('Actualise automatiquement le statut de la candidature et enrôle le projet dans la cohorte en cas d\'admission.');
+
+                    $components[] = Textarea::make('comment')
+                        ->label('Commentaire & appréciation globale du jury')
+                        ->placeholder('Synthèse des points forts, faiblesses et recommandation du comité...')
+                        ->rows(3);
+
+                    return $components;
+                })
+                ->action(function (Application $record, array $data) {
+                    $evaluatorId = auth()->id() ?? $record->sae->owner_id ?? 1;
+                    $criteria = $record->program?->evaluationCriteria ?? collect();
+                    $decisionChoice = $data['decision_status'] ?? 'AUTO';
+                    $forcedStatus = $decisionChoice !== 'AUTO' ? ApplicationStatus::from($decisionChoice) : null;
+
+                    if ($criteria->isEmpty() && isset($data['direct_score'])) {
+                        $score = (int) $data['direct_score'];
+                        $record->applyEvaluationDecision($score, $forcedStatus, $data['comment'] ?? null);
+                    } else {
+                        $evaluation = ApplicationEvaluation::updateOrCreate(
+                            [
+                                'sae_id' => $record->sae_id,
+                                'application_id' => $record->id,
+                                'evaluator_id' => $evaluatorId,
+                            ],
+                            [
+                                'comment' => $data['comment'] ?? null,
+                                'status' => ApplicationEvaluationStatus::SOUMIS,
+                                'submitted_at' => now(),
+                            ]
+                        );
+
+                        foreach ($criteria as $criterion) {
+                            $field = "criterion_{$criterion->id}";
+                            if (isset($data[$field])) {
+                                ApplicationEvaluationScore::updateOrCreate(
+                                    [
+                                        'evaluation_id' => $evaluation->id,
+                                        'criterion_id' => $criterion->id,
+                                    ],
+                                    [
+                                        'score' => (float) $data[$field],
+                                    ]
+                                );
+                            }
+                        }
+
+                        $evaluation->calculateWeightedScore();
+
+                        if ($forcedStatus !== null) {
+                            $freshScore = $record->fresh()->score ?? 0;
+                            $record->fresh()->applyEvaluationDecision($freshScore, $forcedStatus, $data['comment'] ?? null);
+                        }
+                    }
+
+                    $fresh = $record->fresh();
+                    Notification::make()
+                        ->title('Évaluation enregistrée')
+                        ->body("Note : {$fresh->score} / 100 — Statut : {$fresh->status->getLabel()}. Projet actualisé.")
+                        ->success()
+                        ->send();
+                }),
+
+            Action::make('accept')
+                ->label('Accepter')
+                ->icon('heroicon-o-check-badge')
+                ->color('success')
+                ->requiresConfirmation()
+                ->modalHeading('Accepter la candidature')
+                ->modalDescription(fn (Application $record) => "Valider l'admission de {$record->entrepreneur?->full_name} ({$record->project?->name}) dans la cohorte {$record->cohort?->name} ? Le projet sera automatiquement enrôlé et activé.")
+                ->modalSubmitActionLabel('Confirmer l\'admission')
+                ->visible(fn (Application $record) => $record->status !== ApplicationStatus::ACCEPTEE)
+                ->action(function (Application $record) {
+                    $record->applyEvaluationDecision($record->score ?? 80, ApplicationStatus::ACCEPTEE, 'Admission validée par le comité SAE');
+                    Notification::make()
+                        ->title('Candidature acceptée')
+                        ->body("Le projet « {$record->project?->name} » a été admis et enrôlé dans la cohorte {$record->cohort?->name}.")
+                        ->success()
+                        ->send();
+                }),
+
+            Action::make('waitlist')
+                ->label('Liste d\'attente')
+                ->icon('heroicon-o-clock')
+                ->color('warning')
+                ->requiresConfirmation()
+                ->modalHeading('Mettre en liste d\'attente')
+                ->modalDescription(fn (Application $record) => "Placer la candidature de {$record->entrepreneur?->full_name} ({$record->project?->name}) sur liste d'attente ?")
+                ->modalSubmitActionLabel('Placer en attente')
+                ->visible(fn (Application $record) => in_array($record->status, [ApplicationStatus::SOUMISE, ApplicationStatus::EN_EXAMEN]))
+                ->action(function (Application $record) {
+                    $record->applyEvaluationDecision($record->score ?? 50, ApplicationStatus::EN_ATTENTE, 'Dossier placé sur liste d\'attente');
+                    Notification::make()
+                        ->title('Candidature en attente')
+                        ->body('Le dossier a été placé sur liste d\'attente.')
+                        ->warning()
+                        ->send();
+                }),
+
+            Action::make('reject')
+                ->label('Refuser')
+                ->icon('heroicon-o-x-circle')
+                ->color('danger')
+                ->requiresConfirmation()
+                ->modalHeading('Refuser la candidature')
+                ->modalDescription(fn (Application $record) => "Confirmer le rejet de la candidature de {$record->entrepreneur?->full_name} ({$record->project?->name}) ?")
+                ->modalSubmitActionLabel('Confirmer le refus')
+                ->form([
+                    Textarea::make('rejection_reason')
+                        ->label('Motif de refus')
+                        ->placeholder('Ex: Projet ne répondant pas aux critères d\'éligibilité du programme...')
+                        ->required(),
+                ])
+                ->visible(fn (Application $record) => $record->status !== ApplicationStatus::REFUSEE)
+                ->action(function (Application $record, array $data) {
+                    $record->update(['rejection_reason' => $data['rejection_reason']]);
+                    $record->applyEvaluationDecision($record->score ?? 40, ApplicationStatus::REFUSEE, $data['rejection_reason']);
+                    Notification::make()
+                        ->title('Candidature refusée')
+                        ->body('La candidature a été marquée comme refusée.')
+                        ->danger()
+                        ->send();
+                }),
+
+            Action::make('viewProject')
+                ->label('Fiche Projet')
+                ->icon('heroicon-o-light-bulb')
+                ->color('gray')
+                ->visible(fn () => $this->record->project_id !== null && $this->record->project !== null)
+                ->url(fn () => ProjectResource::getUrl('view', ['record' => $this->record->project])),
+
+            EditAction::make(),
+        ];
+    }
+
+    protected function resolveRecord(int|string $key): Model
+    {
+        return parent::resolveRecord($key)->load([
+            'program.sae',
+            'cohort',
+            'project.currentLevel',
+            'form',
+            'reviewer',
+            'evaluations.evaluator',
+            'evaluations.scores.criterion',
+            'documents',
+            'entrepreneur',
+        ]);
+    }
+}

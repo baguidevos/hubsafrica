@@ -20,6 +20,7 @@ class ApplicationForm
         return $schema
             ->components([
                 Section::make('Candidat & Programme visé')
+                    ->columnSpanFull()
                     ->schema([
                         Grid::make(2)->schema([
                             Select::make('program_id')
@@ -63,6 +64,7 @@ class ApplicationForm
                     ]),
 
                 Section::make('Évaluation & Décision du comité')
+                    ->columnSpanFull()
                     ->schema([
                         Grid::make(2)->schema([
                             Select::make('status')

@@ -16,4 +16,12 @@ class EditProject extends EditRecord
             DeleteAction::make(),
         ];
     }
+
+    /**
+     * After saving, redirect to the view page.
+     */
+    protected function getRedirectUrl(): string
+    {
+        return ProjectResource::getUrl('view', ['record' => $this->record]);
+    }
 }

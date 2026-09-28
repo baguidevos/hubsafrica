@@ -26,6 +26,7 @@ class CoachingSessionForm
                     ->default(fn () => auth()->user()?->entrepreneurProfile?->id),
 
                 Section::make('Détails de la séance')
+                    ->columnSpanFull()
                     ->schema([
                         Grid::make(2)->schema([
                             Select::make('project_id')

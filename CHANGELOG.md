@@ -4,6 +4,48 @@ Toutes les modifications notables apportées au projet **Hub Africa v2** (Stack 
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
+## [2.9.0] - 2026-09-28
+
+### Ajouté (Added) & Amélioré (Improved)
+- **Unicité du Projet Entrepreneur & Expérience Singleton** :
+  - Règle métier stricte : un entrepreneur ne peut désormais créer qu'un seul projet sur la plateforme (`canCreate` vérifiant l'inexistence de projet préalable).
+  - Page `ListProjects` transformée en routeur transparent : auto-redirection immédiate vers `ViewProject` si le projet existe déjà, ou vers `CreateProject` si aucun projet n'a encore été créé.
+  - Garde de sécurité dans `CreateProject::mount` pour empêcher toute création d'un second projet via URL directe.
+  - Redirection automatique post-création et post-mise à jour vers la page de détails du projet (`ViewProject`).
+- **Page de Détails du Projet Haute Fidélité (Portail Entrepreneur)** :
+  - Nouvelle page `ViewProject` adossée à une vue Blade sur-mesure (`view-project.blade.php`).
+  - Hero card avec dégradé émeraude, logo de la startup, nom et badge de statut dynamique avec icône officielle.
+  - 4 métriques clés en cartes compactes : Secteur d'activité, Territoire/Région, Taille de l'équipe et Niveau/Jalon actuel.
+  - Cartes d'offres : Problème identifié (rose/rouge) et Solution proposée (émeraude/vert) côte à côte, Proposition de valeur unique, Produits & Services, Historique de l'entreprise.
+  - Volet d'accompagnement latéral : Cible & Marché visé, Promotion active, Coach assigné avec avatar, Décompte des séances et livrables, Dates clés d'intégration.
+  - Pitch elevator mis en valeur sous forme de citation stylisée.
+- **Refonte & Unification de la Vue Détails des Candidatures (3 Espaces : Entrepreneur, SAE, Coach)** :
+  - Création d'une vue Blade adaptative partagée (`resources/views/filament/common/view-application.blade.php`) mutualisée entre les 3 portails :
+    - Bannière d'en-tête dynamique avec dégradé thématique selon le statut du dossier (`SOUMISE`, `EN_EXAMEN`, `ACCEPTEE`, `EN_ATTENTE`, `REFUSEE`).
+    - Note consolidée du jury sur 100 avec coloration conditionnelle ($\ge 75$ vert, $50-74$ orange, $< 50$ rouge).
+    - Stepper visuel d'avancement à 4 jalons (*1. Soumission*, *2. Éligibilité*, *3. Jury*, *4. Délibération*) avec indicateurs complétés / en cours.
+    - Encadré d'état contextuel avec message adapté au profil connecté (encouragement pour le porteur, consignes d'instruction pour les équipes SAE/Coach).
+    - Carte récapitulative du projet lié avec bouton d'accès direct vers la fiche complète du projet (tenant-aware).
+    - Sections Motivation du porteur, Besoins prioritaires, Réponses au formulaire de sélection spécifique, Grille multicritères avec barres de progression, et GED/documents joints.
+- **Déploiement sur le Panneau SAE (`sae/{tenant}/programmes/applications/{record}`)** :
+  - Nouvelle page `ViewApplication` remplaçant l'ancien slide-over avec actions de délibération dans le header :
+    - 🎓 *Noter le dossier* : Modale interactive d'évaluation critère par critère avec coefficients pondérés.
+    - 🏆 *Accepter* : Validation d'admission et enrôlement direct dans la cohorte.
+    - ⏳ *Liste d'attente* : Mise en réserve du candidat.
+    - ❌ *Refuser* : Rejet avec motif obligatoire.
+    - ✏️ *Modifier* et 💡 *Fiche Projet*.
+  - Carte profil du candidat dans la colonne latérale (coordonnées directes, localisation, formation).
+  - Définition d'un `infolist` structuré sur `ApplicationResource` pour une consultation optimale.
+- **Nouvelle Ressource Candidatures dans le Panneau Coach (`coach/{tenant}/applications`)** :
+  - Création complète d'un espace *Candidatures & Jurys* pour les coaches (`ApplicationResource`, `ListApplications`, `ViewApplication`, `ApplicationsTable`).
+  - Table avec filtres d'instruction (*À évaluer en priorité*) et action directe de notation.
+  - Page `ViewApplication` dédiée permettant au coach d'évaluer le dossier comme membre de jury.
+- **Correction et Compatibilité Filament v5 & PHP 8.4** :
+  - Résolution de l'erreur `Class "Filament\Forms\Components\Actions\Action" not found` migré vers `Filament\Actions\Action`.
+  - Résolution de l'erreur de route `filament.sae.resources.evaluation-forms.index` corrigée vers `filament.sae.impact.resources.evaluation-forms.index`.
+  - Résolution de l'erreur PHP 8.4 FatalError liée à la redéclaration statique de la propriété `$view` dans les pages Filament `ViewRecord`.
+  - Configuration de la largeur de contenu fluide `Width::Full` avec import strict sur les 4 PanelProviders.
+
 ## [2.8.1] - 2026-09-28
 
 ### Corrigé (Fixed) & Amélioré (Improved)
