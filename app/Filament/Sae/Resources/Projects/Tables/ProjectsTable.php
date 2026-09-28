@@ -51,6 +51,26 @@ class ProjectsTable
                     ->alignCenter()
                     ->sortable(),
 
+                TextColumn::make('latestEnrollment.cohort.name')
+                    ->label('Cohorte')
+                    ->badge()
+                    ->color('info')
+                    ->placeholder('Non assignée')
+                    ->toggleable(),
+
+                TextColumn::make('latestApplication.score')
+                    ->label('Note Jury')
+                    ->badge()
+                    ->color(fn ($state) => match (true) {
+                        $state === null => 'gray',
+                        $state >= 75 => 'success',
+                        $state >= 50 => 'warning',
+                        default => 'danger',
+                    })
+                    ->formatStateUsing(fn ($state) => $state !== null ? "{$state} / 100" : '—')
+                    ->alignCenter()
+                    ->toggleable(),
+
                 TextColumn::make('status')
                     ->label('Statut')
                     ->badge()

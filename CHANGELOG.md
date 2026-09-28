@@ -4,6 +4,34 @@ Toutes les modifications notables apportées au projet **Hub Africa v2** (Stack 
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
+## [2.8.1] - 2026-09-28
+
+### Corrigé (Fixed) & Amélioré (Improved)
+- **Correction d'Affichage du Score Jury (Bug Double Suffixe `56/100/100`)** :
+  - Élimination du doublon de suffixe présent dans les colonnes Filament `score` (`ApplicationsTable` SAE et Entrepreneur, relation managers).
+  - Formatage harmonisé avec code couleur dynamique selon la note (vert $\ge 75$, orange $\ge 50$, rouge $< 50$) et affichage propre `XX / 100` ou `Non notée`.
+- **Bascule Automatique du Statut de Candidature selon la Note** :
+  - Implémentation du système de décision automatique (`applyEvaluationDecision`) :
+    - $\ge 75$ : `ACCEPTEE` (Avis favorable du jury).
+    - $50 \text{ à } 74$ : `EN_ATTENTE` (Placée en liste d'attente).
+    - $< 50$ : `REFUSEE` (Dossier non retenu).
+  - Possibilité de dérogation manuelle dans la modale d'évaluation avec sélection du statut (Automatique ou Forcé).
+  - Ajout d'actions rapides en 1 clic sur chaque candidature : *Accepter*, *Liste d'attente*, *Refuser avec motif*.
+- **Propagation Automatique sur le Projet & Enrôlement en Promotion** :
+  - Création/actualisation automatique de l'inscription du projet dans la promotion (`Enrollment`) dès l'acceptation de la candidature.
+  - Bascule du statut du projet en `ACTIF` et alignement automatique sur le palier d'accompagnement (`level_id`) du programme avec historique `ProjectLevelHistory`.
+  - Enregistrement automatique d'un jalon chronologique (`TimelineEvent` de type `MILESTONE` avec badge, score et cohorte) et d'un log d'audit (`ProjectUpdateLog`).
+  - Annulation de l'enrôlement en cas de refus.
+- **Visibilité 360° de la Promotion et du Score sur les Fiches Startups** :
+  - Nouvelles colonnes *Cohorte* et *Note Jury* intégrées à la table principale des projets (`ProjectsTable`).
+  - Fiche détaillée du projet (`ProjectResource::infolist`) enrichie avec la cohorte active et la dernière note du jury.
+  - Nouveau relation manager *Candidatures & Évaluations* (`ApplicationsRelationManager`) attaché à la fiche projet pour consulter l'historique complet des dossiers et notations.
+  - Ajout des relations Eloquent `latestEnrollment` et `latestApplication` sur `Project`, et des méthodes d'aide `isCoach()` et `isEntrepreneur()` sur `User`.
+- **Qualité & Tests de Non-Régression** :
+  - Suite de tests Pest `ApplicationEvaluationAndEnrollmentTest` (5 tests, 33 assertions).
+  - Exécution complète des 62 tests du projet (367 assertions) au vert.
+  - Formatage Pint validé.
+
 ## [2.8.0] - 2026-09-28
 
 ### Ajouté (Added) & Amélioré (Improved)

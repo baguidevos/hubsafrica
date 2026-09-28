@@ -2,6 +2,8 @@
 
 namespace App\Filament\Entrepreneur\Resources\CoachingSessions;
 
+use App\Enums\CoachingSessionStatus;
+use App\Enums\CoachingSessionType;
 use App\Filament\Entrepreneur\Resources\CoachingSessions\Pages\CreateCoachingSession;
 use App\Filament\Entrepreneur\Resources\CoachingSessions\Pages\EditCoachingSession;
 use App\Filament\Entrepreneur\Resources\CoachingSessions\Pages\ListCoachingSessions;
@@ -14,6 +16,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class CoachingSessionResource extends Resource
 {
@@ -60,14 +63,14 @@ class CoachingSessionResource extends Resource
         return $query;
     }
 
-    public static function canEdit(\Illuminate\Database\Eloquent\Model $record): bool
+    public static function canEdit(Model $record): bool
     {
-        return $record->type === \App\Enums\CoachingSessionType::INDIVIDUEL
-            && $record->status === \App\Enums\CoachingSessionStatus::PLANIFIEE
+        return $record->type === CoachingSessionType::INDIVIDUEL
+            && $record->status === CoachingSessionStatus::PLANIFIEE
             && $record->entrepreneur_id === auth()->user()?->entrepreneurProfile?->id;
     }
 
-    public static function canDelete(\Illuminate\Database\Eloquent\Model $record): bool
+    public static function canDelete(Model $record): bool
     {
         return false;
     }

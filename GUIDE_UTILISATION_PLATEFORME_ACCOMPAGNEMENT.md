@@ -171,10 +171,18 @@ Pour illustrer concrètement le fonctionnement de la plateforme, ce cas pratique
    - *Qualité de l'équipe (x2) :* 18 / 20
    - *Impact environnemental (x2) :* 19 / 20
    - *Faisabilité financière (x1) :* 15 / 20
-5. **Calcul Automatique :** Le système calcule automatiquement la note normalisée :
+5. **Calcul Automatique & Décision Intelligente :** Le système calcule automatiquement la note normalisée sur 100 et applique les règles de délibération de la plateforme :
    $$\text{Score} = \frac{(17 \times 3) + (18 \times 2) + (19 \times 2) + (15 \times 1)}{(20 \times 8)} \times 100 = \frac{140}{160} \times 100 = \mathbf{87,5 / 100}$$
-6. La note consolidée s'affiche en **Vert (≥ 75)**. Le responsable sélectionne l'action **« Accepter la candidature »**.
-7. Le projet et l'entrepreneur sont instantanément créés dans le Portefeuille actif de la SAE.
+   - **Bascule Automatique du Statut selon la Note :**
+     - **≥ 75 / 100 (Vert) :** Candidature automatiquement **Acceptée** (*Avis favorable du jury*).
+     - **50 à 74 / 100 (Orange) :** Candidature automatiquement placée en **Liste d'attente**.
+     - **< 50 / 100 (Rouge) :** Candidature automatiquement **Refusée** (*Dossier non retenu*).
+   - **Dérogation & Décision Manuelle :** Le jury ou le responsable SAE peut également forcer la décision via la modale (choix de statut explicite) ou les boutons d'action rapide 1-clic (*Accepter*, *Liste d'attente*, *Refuser avec motif*).
+6. **Propagation Automatique vers le Projet & Enrôlement en Cohorte :**
+   - Dès la validation de l'admission (automatique ou manuelle), le projet est **officiellement et immédiatement enrôlé dans la cohorte** (`Enrollment` actif).
+   - Le statut du projet passe automatiquement à **ACTIF** et son niveau est aligné sur le jalon initial du programme avec historisation (`ProjectLevelHistory`).
+   - Un jalon chronologique officiel d'admission (**Milestone**) est consigné dans la Timeline du projet avec la note du jury et la promotion d'intégration.
+   - La cohorte d'affectation et la note consolidée du jury sont directement visibles dans la table du Portefeuille (`Portefeuille > Projets`) et dans l'onglet relationnel dédié *Candidatures & Évaluations*.
 
 > 📸 **[CAPTURE D'ÉCRAN N°3 : Modale de notation du Jury avec critères pondérés et badge vert]**  
 > - **Emplacement suggéré :** `docs/images/guide/03-jury-scoring.png`  

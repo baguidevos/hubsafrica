@@ -90,7 +90,7 @@ class DataRoomDocumentsTable
                     ->label('Télécharger')
                     ->icon('heroicon-o-arrow-down-tray')
                     ->color('gray')
-                    ->url(fn ($record) => $record->file_path ? asset('storage/' . $record->file_path) : null)
+                    ->url(fn ($record) => $record->file_path ? asset('storage/'.$record->file_path) : null)
                     ->openUrlInNewTab()
                     ->visible(fn ($record) => filled($record->file_path)),
 

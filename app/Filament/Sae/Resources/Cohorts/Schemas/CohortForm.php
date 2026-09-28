@@ -5,8 +5,8 @@ namespace App\Filament\Sae\Resources\Cohorts\Schemas;
 use App\Enums\CohortStatus;
 use App\Models\Form;
 use App\Services\ApplicationFormTemplateService;
+use Filament\Actions\Action;
 use Filament\Facades\Filament;
-use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -80,7 +80,7 @@ class CohortForm
                                 Action::make('manageTemplates')
                                     ->label('Créer / Gérer mes templates')
                                     ->icon('heroicon-m-arrow-top-right-on-square')
-                                    ->url(fn () => Filament::getTenant() ? route('filament.sae.resources.evaluation-forms.index', ['tenant' => Filament::getTenant()]) : null)
+                                    ->url(fn () => Filament::getTenant() ? route('filament.sae.impact.resources.evaluation-forms.index', ['tenant' => Filament::getTenant()]) : null)
                                     ->openUrlInNewTab()
                             ),
                     ]),

@@ -1,6 +1,8 @@
 <?php
 
 use App\Enums\ApplicationStatus;
+use App\Enums\CoachingSessionStatus;
+use App\Enums\CoachingSessionType;
 use App\Enums\DeliverableSubmissionStatus;
 use App\Enums\EntrepreneurStatus;
 use App\Enums\FundingStatus;
@@ -10,6 +12,9 @@ use App\Enums\IndicatorCategory;
 use App\Enums\IndicatorStatus;
 use App\Enums\ProjectStatus;
 use App\Filament\Entrepreneur\Resources\Applications\Pages\ListApplications;
+use App\Filament\Entrepreneur\Resources\CoachingSessions\CoachingSessionResource;
+use App\Filament\Entrepreneur\Resources\DeliverableSubmissions\DeliverableSubmissionResource;
+use App\Filament\Entrepreneur\Resources\Resources\ResourceResource;
 use App\Filament\Entrepreneur\Widgets\EntrepreneurStatsOverviewWidget;
 use App\Filament\Sae\Clusters\ProgrammesCluster;
 use App\Filament\Sae\Resources\Applications\ApplicationResource;
@@ -20,6 +25,7 @@ use App\Models\CoachingSession;
 use App\Models\Cohort;
 use App\Models\DeliverableDefinition;
 use App\Models\DeliverableSubmission;
+use App\Models\Enrollment;
 use App\Models\Entrepreneur;
 use App\Models\FundingRecord;
 use App\Models\Indicator;
@@ -392,4 +398,133 @@ test('sae application resource and cluster display navigation badge for unproces
 
     expect(ApplicationResource::getNavigationBadge())->toBeNull()
         ->and(ProgrammesCluster::getNavigationBadge())->toBeNull();
+});
+
+test('entrepreneur portal alignment: resources visibility, deliverable protection, and coaching queries', function () {
+    $saeOwner = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $saeOwner->id,
+        'name' => 'SAE Alignment Hub',
+        'slug' => 'sae-alignment-hub',
+    ]);
+
+    $userEntrepreneur = User::factory()->create();
+    $entrepreneur = Entrepreneur::create([
+        'user_id' => $userEntrepreneur->id,
+        'sae_id' => $sae->id,
+        'first_name' => 'Moussa',
+        'last_name' => 'Cisse',
+        'email' => $userEntrepreneur->email,
+        'status' => 'ACTIVE',
+    ]);
+
+    $this->actingAs($userEntrepreneur);
+    Filament::setCurrentPanel(Filament::getPanel('entrepreneur'));
+    Filament::setTenant($sae);
+
+    // 1. Resources: verify read-only and visibility scoping
+    $resPublic = App\Models\Resource::create([
+        'sae_id' => $sae->id,
+        'title' => 'Guide Entrepreneur Public',
+        'type' => 'DOCUMENT',
+        'visibility' => 'TOUS',
+    ]);
+
+    $resCoachOnly = App\Models\Resource::create([
+        'sae_id' => $sae->id,
+        'title' => 'Fiche Pédagogique Interne Coach',
+        'type' => 'DOCUMENT',
+        'visibility' => 'COACH_ONLY',
+    ]);
+
+    expect(ResourceResource::canCreate())->toBeFalse()
+        ->and(ResourceResource::canEdit($resPublic))->toBeFalse()
+        ->and(ResourceResource::canDelete($resPublic))->toBeFalse();
+
+    $visibleResources = ResourceResource::getEloquentQuery()->pluck('id')->all();
+    expect($visibleResources)->toContain($resPublic->id)
+        ->and($visibleResources)->not->toContain($resCoachOnly->id);
+
+    // 2. Deliverable submissions: validated submissions cannot be edited or deleted
+    $project = Project::create([
+        'sae_id' => $sae->id,
+        'entrepreneur_id' => $entrepreneur->id,
+        'name' => 'Startup Cisse',
+        'status' => ProjectStatus::ACTIF,
+    ]);
+
+    $definition = DeliverableDefinition::create([
+        'sae_id' => $sae->id,
+        'name' => 'Business Model Canvas',
+    ]);
+
+    $validatedSubmission = DeliverableSubmission::create([
+        'sae_id' => $sae->id,
+        'entrepreneur_id' => $entrepreneur->id,
+        'project_id' => $project->id,
+        'definition_id' => $definition->id,
+        'version' => 1,
+        'file_name' => 'bmc.pdf',
+        'file_path' => 'deliverables/bmc.pdf',
+        'status' => DeliverableSubmissionStatus::VALIDE,
+    ]);
+
+    $draftSubmission = DeliverableSubmission::create([
+        'sae_id' => $sae->id,
+        'entrepreneur_id' => $entrepreneur->id,
+        'project_id' => $project->id,
+        'definition_id' => $definition->id,
+        'version' => 2,
+        'file_name' => 'bmc_v2.pdf',
+        'file_path' => 'deliverables/bmc_v2.pdf',
+        'status' => DeliverableSubmissionStatus::SOUMIS,
+    ]);
+
+    expect(DeliverableSubmissionResource::canEdit($validatedSubmission))->toBeFalse()
+        ->and(DeliverableSubmissionResource::canDelete($validatedSubmission))->toBeFalse()
+        ->and(DeliverableSubmissionResource::canEdit($draftSubmission))->toBeTrue()
+        ->and(DeliverableSubmissionResource::canDelete($draftSubmission))->toBeTrue();
+
+    // 3. Coaching: collective cohort sessions are visible to enrolled entrepreneurs
+    $coach = Coach::create([
+        'sae_id' => $sae->id,
+        'name' => 'Coach Oumar',
+        'email' => 'oumar@test.sn',
+    ]);
+
+    $cohortProgram = Program::create([
+        'sae_id' => $sae->id,
+        'name' => 'Programme Coaching Test',
+        'status' => 'ACTIF',
+    ]);
+
+    $cohort = Cohort::create([
+        'sae_id' => $sae->id,
+        'program_id' => $cohortProgram->id,
+        'name' => 'Cohorte 2026',
+        'code' => 'C-2026',
+    ]);
+
+    Enrollment::create([
+        'sae_id' => $sae->id,
+        'entrepreneur_id' => $entrepreneur->id,
+        'project_id' => $project->id,
+        'cohort_id' => $cohort->id,
+        'status' => 'ACCEPTE',
+    ]);
+
+    $collectiveSession = CoachingSession::create([
+        'sae_id' => $sae->id,
+        'cohort_id' => $cohort->id,
+        'coach_id' => $coach->id,
+        'date' => now()->addDays(2),
+        'duration' => 90,
+        'type' => CoachingSessionType::COLLECTIF,
+        'status' => CoachingSessionStatus::PLANIFIEE,
+    ]);
+
+    $querySessions = CoachingSessionResource::getEloquentQuery()->pluck('id')->all();
+    expect($querySessions)->toContain($collectiveSession->id)
+        ->and(CoachingSessionResource::canDelete($collectiveSession))->toBeFalse()
+        ->and(CoachingSessionResource::canEdit($collectiveSession))->toBeFalse();
 });

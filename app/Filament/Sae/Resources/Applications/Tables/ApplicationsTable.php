@@ -13,6 +13,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Facades\Filament;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
@@ -63,7 +64,6 @@ class ApplicationsTable
 
                 TextColumn::make('score')
                     ->label('Note Jury')
-                    ->suffix(' / 100')
                     ->badge()
                     ->color(fn ($state) => match (true) {
                         $state === null => 'gray',
@@ -160,6 +160,18 @@ class ApplicationsTable
                             }
                         }
 
+                        $components[] = Select::make('decision_status')
+                            ->label('Décision & Statut de la candidature')
+                            ->options([
+                                'AUTO' => 'Automatique selon la note (≥75 Retenue, 50-74 Liste d\'attente, <50 Refusée)',
+                                ApplicationStatus::ACCEPTEE->value => 'Acceptée / Retenue pour la cohorte',
+                                ApplicationStatus::EN_ATTENTE->value => 'Placer sur liste d\'attente',
+                                ApplicationStatus::REFUSEE->value => 'Refusée / Non retenue',
+                                ApplicationStatus::EN_EXAMEN->value => 'Maintenir En examen',
+                            ])
+                            ->default('AUTO')
+                            ->helperText('Actualise automatiquement le statut de la candidature et enrôle le projet dans la cohorte en cas d\'admission.');
+
                         $components[] = Textarea::make('comment')
                             ->label('Commentaire & appréciation globale du jury')
                             ->placeholder('Synthèse des points forts, faiblesses et recommandation du comité...')
@@ -170,9 +182,12 @@ class ApplicationsTable
                     ->action(function ($record, array $data) {
                         $evaluatorId = auth()->id() ?? $record->sae->owner_id ?? 1;
                         $criteria = $record->program?->evaluationCriteria ?? collect();
+                        $decisionChoice = $data['decision_status'] ?? 'AUTO';
+                        $forcedStatus = $decisionChoice !== 'AUTO' ? ApplicationStatus::from($decisionChoice) : null;
 
                         if ($criteria->isEmpty() && isset($data['direct_score'])) {
-                            $record->update(['score' => (int) $data['direct_score']]);
+                            $score = (int) $data['direct_score'];
+                            $record->applyEvaluationDecision($score, $forcedStatus, $data['comment'] ?? null);
                         } else {
                             $evaluation = ApplicationEvaluation::updateOrCreate(
                                 [
@@ -203,12 +218,76 @@ class ApplicationsTable
                             }
 
                             $evaluation->calculateWeightedScore();
+
+                            if ($forcedStatus !== null) {
+                                $freshScore = $record->fresh()->score ?? 0;
+                                $record->fresh()->applyEvaluationDecision($freshScore, $forcedStatus, $data['comment'] ?? null);
+                            }
                         }
 
+                        $fresh = $record->fresh();
                         Notification::make()
                             ->title('Évaluation enregistrée')
-                            ->body("La note a été recalculée avec succès ({$record->fresh()->score} / 100).")
+                            ->body("Note : {$fresh->score} / 100 — Statut : {$fresh->status->getLabel()}. Projet actualisé.")
                             ->success()
+                            ->send();
+                    }),
+                Action::make('accept')
+                    ->label('Accepter')
+                    ->icon('heroicon-o-check-badge')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->modalHeading('Accepter la candidature')
+                    ->modalDescription(fn (Application $record) => "Valider l'admission de {$record->entrepreneur?->full_name} ({$record->project?->name}) dans la cohorte {$record->cohort?->name} ? Le projet sera automatiquement enrôlé et activé.")
+                    ->modalSubmitActionLabel('Confirmer l\'admission')
+                    ->visible(fn (Application $record) => $record->status !== ApplicationStatus::ACCEPTEE)
+                    ->action(function (Application $record) {
+                        $record->applyEvaluationDecision($record->score ?? 80, ApplicationStatus::ACCEPTEE, 'Admission validée par le comité SAE');
+                        Notification::make()
+                            ->title('Candidature acceptée')
+                            ->body("Le projet « {$record->project?->name} » a été admis et enrôlé dans la cohorte {$record->cohort?->name}.")
+                            ->success()
+                            ->send();
+                    }),
+                Action::make('waitlist')
+                    ->label('Liste d\'attente')
+                    ->icon('heroicon-o-clock')
+                    ->color('warning')
+                    ->requiresConfirmation()
+                    ->modalHeading('Mettre en liste d\'attente')
+                    ->modalDescription(fn (Application $record) => "Placer la candidature de {$record->entrepreneur?->full_name} ({$record->project?->name}) sur liste d'attente ?")
+                    ->modalSubmitActionLabel('Placer en attente')
+                    ->visible(fn (Application $record) => in_array($record->status, [ApplicationStatus::SOUMISE, ApplicationStatus::EN_EXAMEN]))
+                    ->action(function (Application $record) {
+                        $record->applyEvaluationDecision($record->score ?? 50, ApplicationStatus::EN_ATTENTE, 'Dossier placé sur liste d\'attente');
+                        Notification::make()
+                            ->title('Candidature en attente')
+                            ->body("Le dossier a été placé sur liste d'attente.")
+                            ->warning()
+                            ->send();
+                    }),
+                Action::make('reject')
+                    ->label('Refuser')
+                    ->icon('heroicon-o-x-circle')
+                    ->color('danger')
+                    ->requiresConfirmation()
+                    ->modalHeading('Refuser la candidature')
+                    ->modalDescription(fn (Application $record) => "Confirmer le rejet de la candidature de {$record->entrepreneur?->full_name} ({$record->project?->name}) ?")
+                    ->modalSubmitActionLabel('Confirmer le refus')
+                    ->form([
+                        Textarea::make('rejection_reason')
+                            ->label('Motif de refus')
+                            ->placeholder('Ex: Projet ne répondant pas aux critères d\'éligibilité du programme...')
+                            ->required(),
+                    ])
+                    ->visible(fn (Application $record) => $record->status !== ApplicationStatus::REFUSEE)
+                    ->action(function (Application $record, array $data) {
+                        $record->update(['rejection_reason' => $data['rejection_reason']]);
+                        $record->applyEvaluationDecision($record->score ?? 40, ApplicationStatus::REFUSEE, $data['rejection_reason']);
+                        Notification::make()
+                            ->title('Candidature refusée')
+                            ->body('La candidature a été marquée comme refusée.')
+                            ->danger()
                             ->send();
                     }),
                 ViewAction::make()->slideOver(),

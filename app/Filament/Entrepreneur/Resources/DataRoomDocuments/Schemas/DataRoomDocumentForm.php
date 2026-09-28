@@ -27,6 +27,7 @@ class DataRoomDocumentForm
                     ->default('RECU'),
 
                 Section::make('Dépôt de pièce / Justificatif')
+                    ->columnSpanFull()
                     ->schema([
                         Grid::make(2)->schema([
                             Select::make('project_id')

@@ -34,9 +34,16 @@ class ApplicationsRelationManager extends RelationManager
                     ->label('Statut')
                     ->badge(),
                 TextColumn::make('score')
-                    ->label('Score')
-                    ->suffix(' / 100')
-                    ->alignRight(),
+                    ->label('Note Jury')
+                    ->badge()
+                    ->color(fn ($state) => match (true) {
+                        $state === null => 'gray',
+                        $state >= 75 => 'success',
+                        $state >= 50 => 'warning',
+                        default => 'danger',
+                    })
+                    ->formatStateUsing(fn ($state) => $state !== null ? "{$state} / 100" : 'Non notée')
+                    ->alignCenter(),
                 TextColumn::make('submitted_at')
                     ->label('Déposée le')
                     ->dateTime('d/m/Y H:i')

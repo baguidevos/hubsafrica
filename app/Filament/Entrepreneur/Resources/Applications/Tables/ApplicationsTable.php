@@ -38,7 +38,6 @@ class ApplicationsTable
 
                 TextColumn::make('score')
                     ->label('Note Jury')
-                    ->suffix(' / 100')
                     ->badge()
                     ->color(fn ($state) => match (true) {
                         $state === null => 'gray',

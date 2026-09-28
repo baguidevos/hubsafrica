@@ -82,6 +82,16 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasTenant
             || $this->roles()->where('name', 'super_admin')->exists();
     }
 
+    public function isCoach(): bool
+    {
+        return $this->coachProfile()->exists() || $this->hasRole('coach');
+    }
+
+    public function isEntrepreneur(): bool
+    {
+        return $this->entrepreneurProfile()->exists() || $this->hasRole('entrepreneur');
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         $panelId = $panel->getId();

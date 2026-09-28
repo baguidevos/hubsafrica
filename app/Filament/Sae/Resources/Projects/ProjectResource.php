@@ -8,6 +8,7 @@ use App\Filament\Sae\Resources\Projects\Pages\CreateProject;
 use App\Filament\Sae\Resources\Projects\Pages\EditProject;
 use App\Filament\Sae\Resources\Projects\Pages\ListProjects;
 use App\Filament\Sae\Resources\Projects\Pages\ViewProject;
+use App\Filament\Sae\Resources\Projects\RelationManagers\ApplicationsRelationManager;
 use App\Filament\Sae\Resources\Projects\RelationManagers\CoachAssignmentsRelationManager;
 use App\Filament\Sae\Resources\Projects\RelationManagers\CoachingSessionsRelationManager;
 use App\Filament\Sae\Resources\Projects\RelationManagers\DeliverableSubmissionsRelationManager;
@@ -82,6 +83,21 @@ class ProjectResource extends Resource
                             TextEntry::make('team_size')
                                 ->label('Taille de l\'équipe')
                                 ->suffix(' personne(s)'),
+                            TextEntry::make('latestEnrollment.cohort.name')
+                                ->label('Cohorte active')
+                                ->badge()
+                                ->color('info')
+                                ->placeholder('Non assignée'),
+                            TextEntry::make('latestApplication.score')
+                                ->label('Dernière note Jury')
+                                ->badge()
+                                ->color(fn ($state) => match (true) {
+                                    $state === null => 'gray',
+                                    $state >= 75 => 'success',
+                                    $state >= 50 => 'warning',
+                                    default => 'danger',
+                                })
+                                ->formatStateUsing(fn ($state) => $state !== null ? "{$state} / 100" : 'Non notée'),
                             TextEntry::make('created_at')
                                 ->label('Date d\'intégration')
                                 ->date('d/m/Y'),
@@ -115,6 +131,7 @@ class ProjectResource extends Resource
     public static function getRelations(): array
     {
         return [
+            ApplicationsRelationManager::class,
             CoachingSessionsRelationManager::class,
             DeliverableSubmissionsRelationManager::class,
             FundingRecordsRelationManager::class,

@@ -7,7 +7,7 @@ return [
     |--------------------------------------------------------------------------
     */
     'name' => env('HUBAFRICA_APP_NAME', 'Hub Africa'),
-    'version' => env('HUBAFRICA_VERSION', '2.8.0'),
+    'version' => env('HUBAFRICA_VERSION', '2.8.1'),
     'tagline' => env('HUBAFRICA_TAGLINE', 'Plateforme Panafricaine d\'Accompagnement et de Suivi de l\'Innovation'),
     'description' => env('HUBAFRICA_DESCRIPTION', 'L\'écosystème institutionnel qui unifie les structures d\'accompagnement (SAE), les mentors experts et les entrepreneurs à fort impact en Afrique.'),
 

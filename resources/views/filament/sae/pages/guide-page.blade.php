@@ -326,8 +326,8 @@
                                 <li>Faisabilité financière (coeff 1) : 15 / 20</li>
                             </ul>
                         </li>
-                        <li><strong>Calcul automatique :</strong> La plateforme calcule le score pondéré : <strong class="text-emerald-600 dark:text-emerald-400">86,5 / 100</strong>. Un badge vert vif s'affiche dans la colonne « Note consolidée ».</li>
-                        <li>Le responsable passe le statut à <strong>« Acceptée »</strong> : l'entrepreneur et son projet sont automatiquement intégrés dans le Portefeuille actif de la SAE.</li>
+                        <li><strong>Calcul automatique & Décision intelligente :</strong> La plateforme calcule le score pondéré : <strong class="text-emerald-600 dark:text-emerald-400">86,5 / 100</strong>. Un badge vert vif s'affiche (≥ 75) et le statut de la candidature bascule automatiquement en <strong>« Acceptée »</strong> (ou en « Liste d'attente » pour un score entre 50 et 74, ou « Refusée » en-dessous de 50, avec possibilité de dérogation manuelle par le jury).</li>
+                        <li><strong>Propagation automatique sur le projet :</strong> Dès la validation, le projet est officiellement enrôlé dans la promotion (<code>Enrollment</code> actif), son statut passe à <strong>« ACTIF »</strong>, son palier d'accompagnement est synchronisé, un jalon chronologique (<em>Milestone</em>) est inscrit dans sa timeline et la promotion s'affiche directement sur sa fiche.</li>
                     </ol>
                 </div>
 
