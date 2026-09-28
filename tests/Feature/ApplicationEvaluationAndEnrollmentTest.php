@@ -210,3 +210,68 @@ test('les relations latestEnrollment et latestApplication fonctionnent sur Proje
         ->and($this->project->latestApplication)->not->toBeNull()
         ->and($this->project->latestApplication->score)->toEqual(85);
 });
+
+test('les seuils de deliberation personnalises par programme prevalent sur ceux de la SAE et de la plateforme', function () {
+    // La SAE a ses seuils par défaut (70 / 45)
+    $this->sae->update([
+        'default_admission_threshold' => 70,
+        'default_waitlist_threshold' => 45,
+    ]);
+
+    // Ce programme spécifique est un programme d'élite très sélectif (85 / 65)
+    $this->program->update([
+        'admission_threshold' => 85,
+        'waitlist_threshold' => 65,
+    ]);
+
+    expect($this->program->getAdmissionThreshold())->toEqual(85)
+        ->and($this->program->getWaitlistThreshold())->toEqual(65)
+        ->and($this->application->getAdmissionThreshold())->toEqual(85)
+        ->and($this->application->getWaitlistThreshold())->toEqual(65);
+
+    // Une note de 80 (qui aurait été admise par la SAE à 70) est ici en LISTE D'ATTENTE car le programme exige 85
+    $this->application->applyEvaluationDecision(score: 80);
+    $this->application->refresh();
+    expect($this->application->status)->toEqual(ApplicationStatus::EN_ATTENTE)
+        ->and($this->application->decision)->toContain('seuil : 65/100');
+
+    // Une note de 86 est admise
+    $this->application->applyEvaluationDecision(score: 86);
+    $this->application->refresh();
+    expect($this->application->status)->toEqual(ApplicationStatus::ACCEPTEE)
+        ->and($this->application->decision)->toContain('seuil : 85/100');
+
+    // Une note de 60 est refusée car inférieure à 65
+    $this->application->applyEvaluationDecision(score: 60);
+    $this->application->refresh();
+    expect($this->application->status)->toEqual(ApplicationStatus::REFUSEE);
+});
+
+test('les seuils par defaut de la SAE s appliquent quand le programme n a pas de surcharge', function () {
+    // La SAE définit ses seuils par défaut (65 / 40)
+    $this->sae->update([
+        'default_admission_threshold' => 65,
+        'default_waitlist_threshold' => 40,
+    ]);
+
+    // Le programme n'a aucune surcharge
+    $this->program->update([
+        'admission_threshold' => null,
+        'waitlist_threshold' => null,
+    ]);
+
+    expect($this->program->getAdmissionThreshold())->toEqual(65)
+        ->and($this->program->getWaitlistThreshold())->toEqual(40)
+        ->and($this->application->getAdmissionThreshold())->toEqual(65)
+        ->and($this->application->getWaitlistThreshold())->toEqual(40);
+
+    // Note de 68 => admise (car >= 65 de la SAE)
+    $this->application->applyEvaluationDecision(score: 68);
+    $this->application->refresh();
+    expect($this->application->status)->toEqual(ApplicationStatus::ACCEPTEE);
+
+    // Note de 45 => liste d'attente (car >= 40 de la SAE)
+    $this->application->applyEvaluationDecision(score: 45);
+    $this->application->refresh();
+    expect($this->application->status)->toEqual(ApplicationStatus::EN_ATTENTE);
+});

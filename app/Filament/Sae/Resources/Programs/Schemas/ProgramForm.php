@@ -83,6 +83,29 @@ class ProgramForm
                                 ->label('Date de clôture prévisionnelle'),
                         ]),
                     ]),
+
+                Section::make('Seuils de Délibération & Admission Jury')
+                    ->description('Personnalisez la sélectivité pour ce programme. Laissez vide pour utiliser les seuils par défaut de votre structure SAE.')
+                    ->collapsible()
+                    ->schema([
+                        Grid::make(2)->schema([
+                            TextInput::make('admission_threshold')
+                                ->label('Seuil d\'admission directe (/100)')
+                                ->placeholder('Défaut SAE (ex: 75)')
+                                ->helperText('Note minimale requise pour que le jury admette automatiquement le projet dans la cohorte.')
+                                ->numeric()
+                                ->minValue(1)
+                                ->maxValue(100),
+
+                            TextInput::make('waitlist_threshold')
+                                ->label('Seuil de liste d\'attente (/100)')
+                                ->placeholder('Défaut SAE (ex: 50)')
+                                ->helperText('Note minimale requise pour la liste d\'attente. En-dessous, le dossier est refusé.')
+                                ->numeric()
+                                ->minValue(0)
+                                ->maxValue(100),
+                        ]),
+                    ]),
             ]);
     }
 }

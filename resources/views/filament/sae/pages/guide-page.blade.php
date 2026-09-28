@@ -332,7 +332,7 @@
                                 <li>Faisabilité financière (coeff 1) : 15 / 20</li>
                             </ul>
                         </li>
-                        <li><strong>Calcul Automatique & Décision Intelligente :</strong> La plateforme calcule le score pondéré : <strong class="text-emerald-600 dark:text-emerald-400">86,5 / 100</strong>. Un badge vert vif s'affiche (≥ 75) et le statut de la candidature bascule automatiquement en <strong>« Acceptée »</strong> (ou « Liste d'attente » pour 50-74, « Refusée » < 50, avec dérogation manuelle possible).</li>
+                        <li><strong>Calcul Automatique & Décision Intelligente en Cascade :</strong> La plateforme calcule le score pondéré : <strong class="text-emerald-600 dark:text-emerald-400">86,5 / 100</strong>. Les règles de sélection s'appliquent en cascade : politique globale de la structure (paramétrable dans <em>Profil de la SAE</em>), surcharge spécifique éventuelle par programme (dans <em>Fiche Programme</em>), ou socle standard Hub Africa (75 / 50). Le statut bascule automatiquement en <strong>« Acceptée »</strong> (≥ seuil d'admission), <strong>« Liste d'attente »</strong> ou <strong>« Refusée »</strong>, avec possibilité de dérogation manuelle par le jury.</li>
                         <li><strong>Propagation Automatique & Enrôlement :</strong> Le projet est instantanément enrôlé dans la promotion (<code>Enrollment</code> actif), son statut passe à <strong>« ACTIF »</strong>, son palier d'entrée est automatiquement figé (<code>initial_level_id</code>), son premier historique de niveau est créé et un jalon chronologique (<em>Milestone</em>) est inscrit dans sa timeline.</li>
                     </ol>
                 </div>

@@ -4,6 +4,28 @@ Toutes les modifications notables apportées au projet **Hub Africa v2** (Stack 
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
+## [2.12.0] - 2026-09-28
+
+### Ajouté (Added) & Amélioré (Improved)
+- **Architecture de Délibération Hybride & Seuils de Sélection en Cascade** :
+  - **Migration & Persistance des Seuils** :
+    - Table `saes` : ajout des colonnes `default_admission_threshold` (75 par défaut) et `default_waitlist_threshold` (50 par défaut).
+    - Table `programs` : ajout des colonnes `admission_threshold` et `waitlist_threshold` (surcharge spécifique par programme).
+  - **Configuration Globale par Structure SAE (`EditSaeProfile`)** :
+    - Ajout des champs dans le profil de la structure (*Seuil d'admission directe par défaut* et *Seuil de liste d'attente par défaut*) permettant d'établir la politique générale de délibération de l'incubateur.
+  - **Personnalisation & Surcharge par Programme (`ProgramForm`)** :
+    - Nouvelle section *« Seuils de Délibération & Admission Jury »* dans la fiche du programme.
+    - Liberté totale : permet d'adapter la sélectivité pour les programmes d'élite (ex: $85 / 65$) ou les programmes inclusifs (ex: $60 / 40$). En l'absence de saisie, le programme hérite automatiquement des seuils par défaut de sa SAE.
+  - **Moteur d'Évaluation en Cascade (`Application::applyEvaluationDecision`)** :
+    - Résolution dynamique de priorité : Programme $\rightarrow$ SAE $\rightarrow$ Standard Hub Africa (75 / 50).
+    - Bascule automatique du statut dès la notation : `ACCEPTEE` dès le seuil d'admission atteint, `EN_ATTENTE` pour le seuil intermédiaire, `REFUSEE` en-dessous.
+  - **Interface Filament Réactive & Feedback Visuel** :
+    - Rappel explicite des seuils actifs et de leur source (programme vs SAE) dans l'action de délibération du jury (`ApplicationsTable::evaluate`).
+    - Coloration dynamique des badges de score selon les seuils actifs applicables au dossier sur l'ensemble des tables et relation managers.
+  - **Documentation & Tests de Validation** :
+    - Suite de tests Pest `ApplicationEvaluationAndEnrollmentTest` enrichie validant la cascade, les priorités de surcharge et les seuils par défaut (7 tests, 48 assertions).
+    - Mise à jour du guide méthodologique `GUIDE_UTILISATION_PLATEFORME_ACCOMPAGNEMENT.md` et du guide in-app `guide-page.blade.php`.
+
 ## [2.11.0] - 2026-09-28
 
 ### Ajouté (Added) & Amélioré (Improved)

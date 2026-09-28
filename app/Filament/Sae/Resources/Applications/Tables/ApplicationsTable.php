@@ -65,10 +65,10 @@ class ApplicationsTable
                 TextColumn::make('score')
                     ->label('Note Jury')
                     ->badge()
-                    ->color(fn ($state) => match (true) {
+                    ->color(fn ($state, $record) => match (true) {
                         $state === null => 'gray',
-                        $state >= 75 => 'success',
-                        $state >= 50 => 'warning',
+                        $state >= ($record?->getAdmissionThreshold() ?? 75) => 'success',
+                        $state >= ($record?->getWaitlistThreshold() ?? 50) => 'warning',
                         default => 'danger',
                     })
                     ->formatStateUsing(fn ($state) => $state !== null ? "{$state} / 100" : 'Non notée')
@@ -162,15 +162,26 @@ class ApplicationsTable
 
                         $components[] = Select::make('decision_status')
                             ->label('Décision & Statut de la candidature')
-                            ->options([
-                                'AUTO' => 'Automatique selon la note (≥75 Retenue, 50-74 Liste d\'attente, <50 Refusée)',
-                                ApplicationStatus::ACCEPTEE->value => 'Acceptée / Retenue pour la cohorte',
-                                ApplicationStatus::EN_ATTENTE->value => 'Placer sur liste d\'attente',
-                                ApplicationStatus::REFUSEE->value => 'Refusée / Non retenue',
-                                ApplicationStatus::EN_EXAMEN->value => 'Maintenir En examen',
-                            ])
+                            ->options(function ($record) {
+                                $adm = $record?->getAdmissionThreshold() ?? 75;
+                                $wait = $record?->getWaitlistThreshold() ?? 50;
+
+                                return [
+                                    'AUTO' => "Automatique selon la note (≥{$adm} Retenue, {$wait}-".($adm - 1)." Liste d'attente, <{$wait} Refusée)",
+                                    ApplicationStatus::ACCEPTEE->value => 'Acceptée / Retenue pour la cohorte',
+                                    ApplicationStatus::EN_ATTENTE->value => 'Placer sur liste d\'attente',
+                                    ApplicationStatus::REFUSEE->value => 'Refusée / Non retenue',
+                                    ApplicationStatus::EN_EXAMEN->value => 'Maintenir En examen',
+                                ];
+                            })
                             ->default('AUTO')
-                            ->helperText('Actualise automatiquement le statut de la candidature et enrôle le projet dans la cohorte en cas d\'admission.');
+                            ->helperText(function ($record) {
+                                $adm = $record?->getAdmissionThreshold() ?? 75;
+                                $wait = $record?->getWaitlistThreshold() ?? 50;
+                                $source = $record?->program?->admission_threshold !== null ? 'spécifique au programme' : 'par défaut de votre SAE';
+
+                                return "Règle active ({$source}) : Admission directe ≥ {$adm}/100, Liste d'attente ≥ {$wait}/100. Enrôle automatiquement le projet en cas d'admission.";
+                            });
 
                         $components[] = Textarea::make('comment')
                             ->label('Commentaire & appréciation globale du jury')

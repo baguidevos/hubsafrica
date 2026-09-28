@@ -185,13 +185,17 @@ Pour illustrer concrètement le fonctionnement de la plateforme, ce cas pratique
    - *Qualité de l'équipe (x2) :* 18 / 20
    - *Impact environnemental (x2) :* 19 / 20
    - *Faisabilité financière (x1) :* 15 / 20
-6. **Calcul Automatique & Décision Intelligente :** Le système calcule automatiquement la note normalisée sur 100 et applique les règles de délibération de la plateforme :
+6. **Calcul Automatique & Décision Intelligente en Cascade :** Le système calcule automatiquement la note normalisée sur 100 et applique les règles de délibération dynamiques définies par la structure :
    $$\text{Score} = \frac{(17 \times 3) + (18 \times 2) + (19 \times 2) + (15 \times 1)}{(20 \times 8)} \times 100 = \frac{140}{160} \times 100 = \mathbf{87,5 / 100}$$
-   - **Bascule Automatique du Statut selon la Note :**
-     - **≥ 75 / 100 (Vert) :** Candidature automatiquement **Acceptée** (*Avis favorable du jury*).
-     - **50 à 74 / 100 (Orange) :** Candidature automatiquement placée en **Liste d'attente**.
-     - **< 50 / 100 (Rouge) :** Candidature automatiquement **Refusée** (*Dossier non retenu*).
-   - **Dérogation & Décision Manuelle :** Le jury ou le responsable SAE peut également forcer la décision via la modale (choix de statut explicite) ou les boutons d'action rapide d'en-tête (*Accepter*, *Liste d'attente*, *Refuser*).
+   - **Architecture de Délibération en Cascade (Flexibilité Maximale) :**
+     - **Niveau SAE (Politique Globale) :** La structure paramètre dans son profil SAE (`Profil de la SAE`) ses seuils par défaut applicables à tous ses programmes (ex: *Admission $\ge 70$*, *Attente $\ge 45$*).
+     - **Niveau Programme (Surcharge Spécifique) :** Pour les programmes particuliers (ex: *Bootcamp d'accélération sélectif* avec fonds d'amorçage), la SAE configure des seuils sur-mesure dans la fiche du programme (ex: *Admission $\ge 85$*, *Attente $\ge 65$*).
+     - **Filet de Sécurité Hub Africa :** En l'absence de personnalisation, le socle de référence panafricain (75 / 50) s'applique par défaut.
+   - **Bascule Automatique du Statut selon les Seuils Actifs :**
+     - **≥ Seuil d'admission (Vert) :** Candidature automatiquement **Acceptée** (*Avis favorable du jury*).
+     - **Entre Seuil d'attente et Seuil d'admission (Orange) :** Candidature automatiquement placée en **Liste d'attente**.
+     - **< Seuil d'attente (Rouge) :** Candidature automatiquement **Refusée** (*Dossier non retenu*).
+   - **Dérogation & Décision Manuelle :** Le jury ou le responsable SAE peut également forcer la décision via la modale (choix de statut explicite avec rappel des seuils actifs) ou les boutons d'action rapide d'en-tête (*Accepter*, *Liste d'attente*, *Refuser*).
 7. **Propagation Automatique vers le Projet & Enrôlement en Cohorte :**
    - Dès la validation de l'admission (automatique ou manuelle), le projet est **officiellement et immédiatement enrôlé dans la cohorte** (`Enrollment` actif).
    - Le statut du projet passe automatiquement à **ACTIF** et son palier initial d'entrée est automatiquement verrouillé (`initial_level_id`).

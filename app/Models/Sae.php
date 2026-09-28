@@ -23,7 +23,27 @@ class Sae extends Model
         'address',
         'logo',
         'status',
+        'default_admission_threshold',
+        'default_waitlist_threshold',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'default_admission_threshold' => 'integer',
+            'default_waitlist_threshold' => 'integer',
+        ];
+    }
+
+    public function getAdmissionThreshold(): int
+    {
+        return $this->default_admission_threshold ?? 75;
+    }
+
+    public function getWaitlistThreshold(): int
+    {
+        return $this->default_waitlist_threshold ?? 50;
+    }
 
     protected static function boot(): void
     {

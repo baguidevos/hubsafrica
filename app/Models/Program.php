@@ -28,6 +28,8 @@ class Program extends Model
         'level_id',
         'eligibility',
         'status',
+        'admission_threshold',
+        'waitlist_threshold',
     ];
 
     protected function casts(): array
@@ -39,7 +41,19 @@ class Program extends Model
             'registration_start' => 'date',
             'registration_end' => 'date',
             'capacity' => 'integer',
+            'admission_threshold' => 'integer',
+            'waitlist_threshold' => 'integer',
         ];
+    }
+
+    public function getAdmissionThreshold(): int
+    {
+        return $this->admission_threshold ?? $this->sae?->getAdmissionThreshold() ?? 75;
+    }
+
+    public function getWaitlistThreshold(): int
+    {
+        return $this->waitlist_threshold ?? $this->sae?->getWaitlistThreshold() ?? 50;
     }
 
     public function level(): BelongsTo

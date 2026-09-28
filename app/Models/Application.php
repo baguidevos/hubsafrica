@@ -148,20 +148,37 @@ class Application extends Model
         return $enrollment;
     }
 
+    public function getAdmissionThreshold(): int
+    {
+        return $this->program?->getAdmissionThreshold()
+            ?? $this->sae?->getAdmissionThreshold()
+            ?? 75;
+    }
+
+    public function getWaitlistThreshold(): int
+    {
+        return $this->program?->getWaitlistThreshold()
+            ?? $this->sae?->getWaitlistThreshold()
+            ?? 50;
+    }
+
     /**
      * Applique la décision d'évaluation, le statut et actualise le projet (enrôlement, timeline, log).
      */
     public function applyEvaluationDecision(int $score, ?ApplicationStatus $status = null, ?string $juryComment = null): void
     {
+        $admissionThreshold = $this->getAdmissionThreshold();
+        $waitlistThreshold = $this->getWaitlistThreshold();
+
         $newStatus = $status ?? match (true) {
-            $score >= 75 => ApplicationStatus::ACCEPTEE,
-            $score >= 50 => ApplicationStatus::EN_ATTENTE,
+            $score >= $admissionThreshold => ApplicationStatus::ACCEPTEE,
+            $score >= $waitlistThreshold => ApplicationStatus::EN_ATTENTE,
             default => ApplicationStatus::REFUSEE,
         };
 
         $decisionText = match ($newStatus) {
-            ApplicationStatus::ACCEPTEE => "Candidature retenue par le jury avec avis favorable (note : {$score}/100)",
-            ApplicationStatus::EN_ATTENTE => "Candidature placée sur liste d'attente (note : {$score}/100)",
+            ApplicationStatus::ACCEPTEE => "Candidature retenue par le jury avec avis favorable (note : {$score}/100, seuil : {$admissionThreshold}/100)",
+            ApplicationStatus::EN_ATTENTE => "Candidature placée sur liste d'attente (note : {$score}/100, seuil : {$waitlistThreshold}/100)",
             ApplicationStatus::REFUSEE => "Dossier non retenu par le comité de sélection (note : {$score}/100)",
             default => "Évalué par le jury (note : {$score}/100)",
         };

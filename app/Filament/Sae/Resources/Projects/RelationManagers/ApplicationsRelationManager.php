@@ -39,10 +39,10 @@ class ApplicationsRelationManager extends RelationManager
                 TextColumn::make('score')
                     ->label('Note Jury')
                     ->badge()
-                    ->color(fn ($state) => match (true) {
+                    ->color(fn ($state, $record) => match (true) {
                         $state === null => 'gray',
-                        $state >= 75 => 'success',
-                        $state >= 50 => 'warning',
+                        $state >= ($record?->getAdmissionThreshold() ?? 75) => 'success',
+                        $state >= ($record?->getWaitlistThreshold() ?? 50) => 'warning',
                         default => 'danger',
                     })
                     ->formatStateUsing(fn ($state) => $state !== null ? "{$state} / 100" : 'Non notée')
