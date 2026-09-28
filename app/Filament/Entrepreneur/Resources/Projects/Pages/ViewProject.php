@@ -25,7 +25,12 @@ class ViewProject extends ViewRecord
     protected function resolveRecord(int|string $key): Model
     {
         return parent::resolveRecord($key)->load([
+            'initialLevel',
             'currentLevel',
+            'exitLevel',
+            'levelHistories.fromLevel',
+            'levelHistories.toLevel',
+            'levelHistories.validator',
             'latestEnrollment.cohort',
             'latestApplication',
             'entrepreneur',

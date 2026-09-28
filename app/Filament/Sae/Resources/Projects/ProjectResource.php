@@ -13,6 +13,7 @@ use App\Filament\Sae\Resources\Projects\RelationManagers\CoachAssignmentsRelatio
 use App\Filament\Sae\Resources\Projects\RelationManagers\CoachingSessionsRelationManager;
 use App\Filament\Sae\Resources\Projects\RelationManagers\DeliverableSubmissionsRelationManager;
 use App\Filament\Sae\Resources\Projects\RelationManagers\FundingRecordsRelationManager;
+use App\Filament\Sae\Resources\Projects\RelationManagers\LevelHistoriesRelationManager;
 use App\Filament\Sae\Resources\Projects\Schemas\ProjectForm;
 use App\Filament\Sae\Resources\Projects\Tables\ProjectsTable;
 use App\Models\Project;
@@ -76,10 +77,25 @@ class ProjectResource extends Resource
                                 ->label('Secteur d\'activité'),
                             TextEntry::make('territory')
                                 ->label('Territoire / Région'),
-                            TextEntry::make('currentLevel.name')
-                                ->label('Niveau / Jalon')
+                            TextEntry::make('initialLevel.name')
+                                ->label('Palier d\'entrée')
                                 ->badge()
-                                ->color('info'),
+                                ->color('gray')
+                                ->placeholder('Non renseigné'),
+                            TextEntry::make('currentLevel.name')
+                                ->label('Palier actuel')
+                                ->badge()
+                                ->color('info')
+                                ->placeholder('Non défini'),
+                            TextEntry::make('exitLevel.name')
+                                ->label('Palier de sortie')
+                                ->badge()
+                                ->color('emerald')
+                                ->visible(fn (?Project $record) => $record?->exit_level_id !== null),
+                            TextEntry::make('exited_at')
+                                ->label('Date de fin parcours')
+                                ->date('d/m/Y')
+                                ->visible(fn (?Project $record) => $record?->exited_at !== null),
                             TextEntry::make('team_size')
                                 ->label('Taille de l\'équipe')
                                 ->suffix(' personne(s)'),
@@ -131,6 +147,7 @@ class ProjectResource extends Resource
     public static function getRelations(): array
     {
         return [
+            LevelHistoriesRelationManager::class,
             ApplicationsRelationManager::class,
             CoachingSessionsRelationManager::class,
             DeliverableSubmissionsRelationManager::class,

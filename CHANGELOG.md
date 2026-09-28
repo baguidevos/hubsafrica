@@ -4,6 +4,32 @@ Toutes les modifications notables apportées au projet **Hub Africa v2** (Stack 
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
+## [2.10.0] - 2026-09-28
+
+### Ajouté (Added) & Amélioré (Improved)
+- **Traçabilité Complète du Niveau d'Entrée, du Niveau de Sortie et Historique Horodaté des Paliers** :
+  - Ajout des colonnes explicites `initial_level_id`, `exit_level_id` et `exited_at` sur la table `projects` pour des requêtes analytiques instantanées O(1).
+  - Migration de rétrocompatibilité pour initialiser les projets existants à partir de leur historique le plus ancien ou niveau actuel.
+  - Cycle de vie Eloquent automatisé (`booted` hooks dans `Project.php`) :
+    - `creating` : initialisation automatique de `initial_level_id` et de `current_level_entered_at`.
+    - `created` : création automatique de l'historique initial dans `project_level_histories`.
+    - `updating` : détection des promotions/changements de `current_level_id`, fermeture horodatée de l'ancien palier (`ended_at`), création du nouveau palier avec traçabilité de l'auteur et motif, et création d'un événement `MILESTONE` dans la timeline du projet.
+    - Clôture de parcours : passage en statut de sortie (`DIPLOME`, `SORTI`, `ABANDONNE`) fixant automatiquement `exit_level_id` et `exited_at`, clôturant les historiques ouverts et consignant l'événement de fin de parcours.
+- **Gestionnaire de Relation Paliers SAE (`LevelHistoriesRelationManager`)** :
+  - Intégration sur la fiche projet SAE d'une table dédiée traçant : Palier d'origine, Nouveau palier, Date d'entrée, Date de sortie, Durée calculée dans le niveau, Validateur, Motif & Contexte.
+  - Action d'en-tête « Promouvoir / Changer de palier » avec modale de sélection du nouveau niveau et motif obligatoire.
+- **Infolist SAE Enrichie (`ProjectResource`)** :
+  - Affichage des badges : Palier d'entrée (Niveau initial), Palier actuel (avec date d'entrée), et Palier de sortie + date de fin de parcours (conditionnels si le projet est clôturé).
+- **Interface Entrepreneur Haute Fidélité (`view-project.blade.php`)** :
+  - Carte métrique actualisée affichant le Palier actuel et rappelant le niveau d'entrée.
+  - Nouveau bloc immersif « Parcours d'accompagnement & Paliers » :
+    - Stepper récapitulatif (Palier d'entrée → Palier actuel [→ Palier de sortie]).
+    - Timeline chronologique stylisée de chaque palier franchi avec calcul automatique de durée, validateur et motif.
+    - Section « Dates clés » enrichie avec la date et le palier de fin d'accompagnement.
+- **Couverture de Tests Pest Automatisée** :
+  - Création de `tests/Feature/ProjectLevelTrackingTest.php` validant l'ensemble du cycle de vie des paliers et de clôture.
+  - 65 tests et 390 assertions validés à 100%.
+
 ## [2.9.0] - 2026-09-28
 
 ### Ajouté (Added) & Amélioré (Improved)
