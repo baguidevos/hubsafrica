@@ -4,6 +4,37 @@ Toutes les modifications notables apportées au projet **Hub Africa v2** (Stack 
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
+## [2.11.0] - 2026-09-28
+
+### Ajouté (Added) & Amélioré (Improved)
+- **Portail Entrepreneur — Catalogue de Ressources en Cartes Interactives & Filtres Multi-critères** :
+  - **Grille responsive en cartes (`contentGrid`)** : Affichage fluide sous forme de cartes (1 col mobile, 2 col tablette, 3 col desktop).
+  - **Fiche ressource immersive** :
+    - Badge et icône dédiés par format (`Document`, `Vidéo`, `Lien web`).
+    - Thématique dynamique (`Entrepreneuriat`, `Finance`, `Juridique`, `Marketing`, `Technique`, `Pitch`...).
+    - Titre mis en avant, description tronquée avec `lineClamp(3)` pour un alignement esthétique.
+    - Badges de niveau recommandé (`level.name`) et mention de l'auteur/source.
+    - Boutons d'action rapide sur chaque carte : « *Consulter* » (ouverture directe du document ou du lien) et « *Détails* » (slide-over complet).
+  - **Filtres ergonomiques au-dessus du contenu (`FiltersLayout::AboveContentCollapsible`)** :
+    - Filtrage combiné par Format, Thématique et Niveau recommandé avec recherche globale instantanée.
+- **Portail Entrepreneur — Alignement sur les Pratiques & la Sécurité SAE** :
+  - **Candidatures** : Suppression stricte de l'action de notation réservée aux jurys/coachs/responsables, verrouillage des actions de mutation (`canCreate`, `canEdit`, `canDelete`), et affichage transparent de la note de délibération.
+  - **Livrables d'Accompagnement** :
+    - Prise en charge des jalons pédagogiques de cohorte (`cohort_phase_id`).
+    - Gestionnaire relationnel GED des versions de documents (`SubmissionDocumentsRelationManager`).
+    - Restitution en lecture seule de la note du coach (`/ 100`), de la décision et de ses retours/conseils.
+    - Verrouillage de sécurité : interdiction de modifier ou supprimer un livrable ayant le statut `VALIDE`.
+  - **Séances de Coaching** :
+    - Extension du scope Eloquent pour inclure les sessions collectives de la cohorte d'inscription (ateliers, formations).
+    - Verrouillage en lecture seule des comptes-rendus (`report`) et actions futures (`next_actions`) rédigés par le coach.
+    - Suppression des suppressions en masse et verrouillage de suppression.
+  - **Data Room Sécurisée** :
+    - Formulaire et table dédiés à l'entrepreneur : attribution automatique au profil connecté sans sélecteur d'entrepreneur.
+    - Contrôle de conformité SAE (`status`, `reviewed_at`) affiché en lecture seule afin d'empêcher l'auto-validation par le candidat.
+    - Protection contre l'altération des pièces déjà validées.
+- **Couverture de Tests Pest** :
+  - Enrichissement de `tests/Feature/PagesAndViewsTest.php` validant l'ensemble des règles de visibilité, de filtrage, de protection des livrables et des requêtes de coaching (65 tests réussis, 397 assertions).
+
 ## [2.10.1] - 2026-09-28
 
 ### Documentation & Manuel d'Utilisation
