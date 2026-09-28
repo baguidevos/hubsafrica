@@ -96,9 +96,10 @@
                         Portefeuille Startups
                     </div>
                     <ul class="mt-3 space-y-1 text-xs text-sky-900 dark:text-sky-300">
-                        <li>• <strong>Projets :</strong> Fiches 360° startups</li>
-                        <li>• <strong>Entrepreneurs :</strong> Profils fondateurs</li>
-                        <li>• <strong>Journal (Timeline) :</strong> Événements clés</li>
+                        <li>• <strong>Projets :</strong> Fiches 360° & Paliers</li>
+                        <li>• <strong>Paliers :</strong> Entrée, Sortie & Durée</li>
+                        <li>• <strong>Entrepreneurs :</strong> Profils uniques porteurs</li>
+                        <li>• <strong>Journal (Timeline) :</strong> Événements & jalons clés</li>
                     </ul>
                 </div>
 
@@ -302,9 +303,9 @@
                         <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-white font-bold text-sm">3</span>
                         <div>
                             <h3 class="text-base font-bold text-gray-900 dark:text-white">
-                                Étape 3 : Candidature de « BioAgri Tech » & Notation Pondérée du Jury
+                                Étape 3 : Candidature de « BioAgri Tech », Vue Unifiée & Notation Pondérée du Jury
                             </h3>
-                            <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold">Cluster : Programmes & Sélection &gt; Candidatures</span>
+                            <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold">Cluster : Programmes & Sélection &gt; Candidatures | Portail Coach &gt; Candidatures & Jurys</span>
                         </div>
                     </div>
                     <span class="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-semibold text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200">
@@ -314,11 +315,16 @@
 
                 <div class="text-sm text-gray-600 dark:text-gray-300 space-y-2">
                     <p>
-                        L'entrepreneur <strong>Amadou Traoré</strong> soumet son dossier pour le projet <em>BioAgri Tech</em>. Le responsable réunit le comité de sélection :
+                        L'entrepreneur <strong>Amadou Traoré</strong> soumet son dossier pour le projet <em>BioAgri Tech</em>. Le responsable et les membres du jury accèdent à une <strong>vue d'instruction unifiée haute fidélité</strong> :
                     </p>
-                    <ol class="list-decimal list-inside space-y-1.5 pl-2 text-xs">
-                        <li>Dans la table des candidatures, le responsable ou le juré repère la ligne <em>BioAgri Tech</em> et clique sur l'action <strong>« Noter »</strong> (icône chapeau).</li>
-                        <li>La modale d'évaluation s'ouvre, préremplie avec la grille du programme :
+                    <ol class="list-decimal list-inside space-y-2 pl-2 text-xs">
+                        <li><strong>Vue Détaillée Harmonisée (3 Espaces) :</strong> En ouvrant le dossier, la page affiche le bandeau de statut, le stepper d'avancement à 4 étapes (*Soumission*, *Éligibilité*, *Jury*, *Délibération*) et la note consolidée du jury sur 100 avec coloration dynamique.</li>
+                        <li><strong>Actions Rapides de Délibération (En-tête) :</strong>
+                            Le responsable et les jurés disposent de boutons d'action immédiats :
+                            <em>« 🎓 Noter le dossier »</em> (modale critère par critère), <em>« 🏆 Accepter »</em> (enrôlement direct en cohorte), <em>« ⏳ Mettre en attente »</em>, <em>« ❌ Refuser »</em> (avec motif obligatoire) et <em>« 💡 Fiche Projet »</em>.
+                        </li>
+                        <li><strong>Espace Jurys pour les Coachs :</strong> Les coachs disposent d'un menu dédié <code>/coach/{tenant}/applications</code> pour évaluer les dossiers sans avoir accès aux fonctions d'administration de la structure.</li>
+                        <li><strong>Notation Critères Pondérés :</strong> La modale d'évaluation charge automatiquement la grille du programme :
                             <ul class="list-disc list-inside pl-4 text-[11px] text-gray-500 dark:text-gray-400 mt-1">
                                 <li>Innovation & Scalabilité (coeff 3) : 17 / 20</li>
                                 <li>Qualité de l'équipe (coeff 2) : 18 / 20</li>
@@ -326,8 +332,8 @@
                                 <li>Faisabilité financière (coeff 1) : 15 / 20</li>
                             </ul>
                         </li>
-                        <li><strong>Calcul automatique & Décision intelligente :</strong> La plateforme calcule le score pondéré : <strong class="text-emerald-600 dark:text-emerald-400">86,5 / 100</strong>. Un badge vert vif s'affiche (≥ 75) et le statut de la candidature bascule automatiquement en <strong>« Acceptée »</strong> (ou en « Liste d'attente » pour un score entre 50 et 74, ou « Refusée » en-dessous de 50, avec possibilité de dérogation manuelle par le jury).</li>
-                        <li><strong>Propagation automatique sur le projet :</strong> Dès la validation, le projet est officiellement enrôlé dans la promotion (<code>Enrollment</code> actif), son statut passe à <strong>« ACTIF »</strong>, son palier d'accompagnement est synchronisé, un jalon chronologique (<em>Milestone</em>) est inscrit dans sa timeline et la promotion s'affiche directement sur sa fiche.</li>
+                        <li><strong>Calcul Automatique & Décision Intelligente :</strong> La plateforme calcule le score pondéré : <strong class="text-emerald-600 dark:text-emerald-400">86,5 / 100</strong>. Un badge vert vif s'affiche (≥ 75) et le statut de la candidature bascule automatiquement en <strong>« Acceptée »</strong> (ou « Liste d'attente » pour 50-74, « Refusée » < 50, avec dérogation manuelle possible).</li>
+                        <li><strong>Propagation Automatique & Enrôlement :</strong> Le projet est instantanément enrôlé dans la promotion (<code>Enrollment</code> actif), son statut passe à <strong>« ACTIF »</strong>, son palier d'entrée est automatiquement figé (<code>initial_level_id</code>), son premier historique de niveau est créé et un jalon chronologique (<em>Milestone</em>) est inscrit dans sa timeline.</li>
                     </ol>
                 </div>
 
@@ -343,14 +349,14 @@
                                     📸 Capture d'Écran N°3 à insérer
                                 </h4>
                                 <span class="rounded bg-indigo-100 px-2 py-0.5 text-[11px] font-semibold text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200">
-                                    Recommandation : 1200 &times; 750 px &middot; PNG
+                                    Recommandation : 1440 &times; 850 px &middot; PNG
                                 </span>
                             </div>
                             <p class="text-xs font-semibold text-gray-900 dark:text-white">
-                                Fenêtre modale de notation Jury en cours de saisie et résultat du score consolidé (86.5/100).
+                                Vue unifiée de candidature avec bandeau de statut, note jury sur 100, boutons de délibération d'en-tête et modale d'évaluation.
                             </p>
                             <p class="text-[11px] text-gray-600 dark:text-gray-400">
-                                <em>Contenu à capturer :</em> La boîte de dialogue modale avec les champs curseurs/chiffres des critères pondérés, le champ « Avis général » et le badge de note verte sur la table.
+                                <em>Contenu à capturer :</em> La page détaillée de candidature affichant les critères pondérés, les actions de décision rapide (Accepter, Refuser) et la note globale verte.
                             </p>
                         </div>
                     </div>
@@ -364,25 +370,28 @@
                         <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-600 text-white font-bold text-sm">4</span>
                         <div>
                             <h3 class="text-base font-bold text-gray-900 dark:text-white">
-                                Étape 4 : Intégration au Portefeuille & Attribution du Coach Référent
+                                Étape 4 : Intégration au Portefeuille, Traçabilité des Paliers & Attribution du Coach
                             </h3>
-                            <span class="text-xs text-sky-600 dark:text-sky-400 font-semibold">Clusters : Portefeuille Startups &gt; Projets | Accompagnement &gt; Coachs</span>
+                            <span class="text-xs text-sky-600 dark:text-sky-400 font-semibold">Clusters : Portefeuille Startups &gt; Projets | Accompagnement &gt; Coachs | Espace Entrepreneur</span>
                         </div>
                     </div>
                     <span class="rounded-full bg-sky-100 px-2.5 py-0.5 text-xs font-semibold text-sky-800 dark:bg-sky-900 dark:text-sky-200">
-                        Affectation Coach
+                        Traçabilité Paliers & Coach
                     </span>
                 </div>
 
                 <div class="text-sm text-gray-600 dark:text-gray-300 space-y-2">
                     <p>
-                        Une fois la startup sélectionnée, elle apparaît dans le <strong>Portefeuille</strong>. Le responsable désigne son mentor :
+                        Le projet <strong>BioAgri Tech</strong> fait désormais partie du portefeuille actif de la SAE. L'équipe pilote son évolution avec une traçabilité intégrale :
                     </p>
-                    <ol class="list-decimal list-inside space-y-1.5 pl-2 text-xs">
-                        <li>Vérifier dans <em>Accompagnement &gt; Coachs</em> la charge du mentor : <strong>Dr. Koffi N'Guessan</strong> accompagne 4 startups sur une capacité maximale autorisée de 6 (aucun risque de saturation).</li>
-                        <li>Dans <em>Portefeuille &gt; Projets</em>, ouvrir la fiche de <strong>BioAgri Tech</strong> et assigner Dr. Koffi en tant que <strong>Coach Référent</strong>.</li>
-                        <li>Associer le niveau initial : <em>« Phase 1 : Diagnostic & Boot Camp »</em>.</li>
-                        <li>Le coach reçoit immédiatement l'accès au dossier sur son espace dédié (<code>/coach</code>).</li>
+                    <ol class="list-decimal list-inside space-y-2 pl-2 text-xs">
+                        <li><strong>Vérification Charge & Mentorat :</strong> Dans <em>Accompagnement &gt; Coachs</em>, vérifier que <strong>Dr. Koffi N'Guessan</strong> suit 4 startups sur un plafond de 6. Ouvrir la fiche du projet dans <em>Portefeuille &gt; Projets</em> et lui assigner la startup comme <strong>Coach Référent</strong>.</li>
+                        <li><strong>Traçabilité Automatique du Niveau d'Entrée :</strong> La plateforme verrouille automatiquement le <strong>Palier d'entrée</strong> (<code>initial_level_id</code> = <em>Phase 1 : Diagnostic & Boot Camp</em>) ainsi que la date d'entrée (<code>current_level_entered_at</code>).</li>
+                        <li><strong>Onglet « Historique des Paliers » & Bouton Promotion :</strong> Dans l'onglet dédié de la fiche projet SAE, chaque jalon est consigné de façon immuable (palier initial, date d'entrée, durée calculée, validateur). Le bouton <strong>« Promouvoir / Changer de palier »</strong> permet de passer la startup au niveau supérieur (<em>Phase 2 : Structuration MVP</em>) avec saisie obligatoire d'un motif. La plateforme clôture l'ancien palier, ouvre le nouveau et insère un événement <em>MILESTONE</em> dans la Timeline.</li>
+                        <li><strong>Traçabilité Automatique du Palier de Sortie :</strong> Dès que le projet termine son parcours (statut <em>Diplômé</em>, <em>Sorti</em> ou <em>Abandonné</em>), son <strong>Palier de sortie</strong> (<code>exit_level_id</code>) et sa date exacte de fin (<code>exited_at</code>) sont automatiquement archivés.</li>
+                        <li><strong>Expérience Immersive Porteur (Vue 360°) :</strong>
+                            Côté porteur de projet (<code>/entrepreneur</code>), la règle d'unicité stricte (1 entrepreneur = 1 projet actif) oriente immédiatement l'utilisateur vers sa <strong>fiche projet 360°</strong> arborant un <strong>bloc dynamique « Parcours d'accompagnement & Paliers »</strong> avec stepper visuel (<em>Entrée &rarr; Actuel &rarr; Sortie</em>) et timeline chronologique des passages validés.
+                        </li>
                     </ol>
                 </div>
 
@@ -398,14 +407,14 @@
                                     📸 Capture d'Écran N°4 à insérer
                                 </h4>
                                 <span class="rounded bg-sky-100 px-2 py-0.5 text-[11px] font-semibold text-sky-800 dark:bg-sky-900 dark:text-sky-200">
-                                    Recommandation : 1440 &times; 750 px &middot; PNG
+                                    Recommandation : 1440 &times; 850 px &middot; PNG
                                 </span>
                             </div>
                             <p class="text-xs font-semibold text-gray-900 dark:text-white">
-                                Fiche détaillée du projet BioAgri Tech avec affectation du Coach Référent et indicateur de capacité.
+                                Fiche détaillée du projet BioAgri Tech avec l'onglet « Historique des Paliers » et l'action « Promouvoir / Changer de palier ».
                             </p>
                             <p class="text-[11px] text-gray-600 dark:text-gray-400">
-                                <em>Contenu à capturer :</em> Formulaire d'édition du projet avec les sélecteurs de coach, cohorte, statut d'accompagnement (« Actif ») et niveau de maturité.
+                                <em>Contenu à capturer :</em> Formulaire et onglet relationnel des paliers montrant les dates de début/fin, la durée calculée et le coach référent assigné.
                             </p>
                         </div>
                     </div>
@@ -695,13 +704,13 @@
 
                     <div class="rounded-lg border border-gray-100 bg-gray-50/50 p-4 dark:border-gray-800 dark:bg-gray-800/40 space-y-2">
                         <h4 class="font-bold text-indigo-700 dark:text-indigo-300 uppercase tracking-wide">
-                            Candidatures &amp; Notation Jury
+                            Candidatures, Notation Jury &amp; Espace Coach
                         </h4>
                         <ul class="space-y-1.5 text-gray-600 dark:text-gray-300">
-                            <li>• <strong>Affectation des jurys :</strong> Désigner les évaluateurs habilités à examiner chaque dossier.</li>
-                            <li>• <strong>Notation dynamique :</strong> Action <em>« Noter »</em> en table pour saisir les scores critère par critère.</li>
-                            <li>• <strong>Calcul pondéré instantané :</strong> Score normalisé sur 100 avec code couleur (vert &ge; 75, orange 50-74, rouge &lt; 50).</li>
-                            <li>• <strong>Admission en 1 clic :</strong> Passer le statut à « Acceptée » pour basculer le projet dans le Portefeuille actif.</li>
+                            <li>• <strong>Vue unifiée 3 espaces :</strong> Fiche haute fidélité partagée (SAE, Coachs jurys, Candidats) avec stepper 4 jalons (*Soumission*, *Éligibilité*, *Jury*, *Délibération*).</li>
+                            <li>• <strong>Actions de délibération d'en-tête :</strong> Boutons rapides *« Noter le dossier »*, *« Accepter »* (enrôlement direct en cohorte), *« Mettre en attente »*, *« Refuser »* (avec motif obligatoire) et *« Fiche projet »*.</li>
+                            <li>• <strong>Portail Jurys Coachs :</strong> Espace dédié <code>/coach/{tenant}/applications</code> pour évaluer les dossiers avec la grille multicritères pondérée.</li>
+                            <li>• <strong>Calcul pondéré &amp; Décision auto :</strong> Score sur 100 avec code couleur (vert &ge; 75, orange 50-74, rouge &lt; 50) et propagation automatique d'admission.</li>
                         </ul>
                     </div>
 
@@ -730,24 +739,25 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                     <div class="rounded-lg border border-gray-100 bg-gray-50/50 p-4 dark:border-gray-800 dark:bg-gray-800/40 space-y-2">
                         <h4 class="font-bold text-sky-700 dark:text-sky-300 uppercase tracking-wide">
-                            Fiche Projet 360° &amp; Cycle de Vie
+                            Fiche Projet 360° &amp; Traçabilité des Paliers
                         </h4>
                         <ul class="space-y-1.5 text-gray-600 dark:text-gray-300">
-                            <li>• <strong>Statut opérationnel :</strong> Piloter l'état d'accompagnement (Actif, Diplômé, En pause, Abandonné).</li>
-                            <li>• <strong>Coach référent :</strong> Désigner le mentor principal responsable de la trajectoire.</li>
-                            <li>• <strong>Niveau d'avancement :</strong> Mettre à jour le niveau de maturité au fil des comités d'étape.</li>
-                            <li>• <strong>Secteur &amp; Coordonnées :</strong> Classifier par domaine d'activité et zone géographique.</li>
+                            <li>• <strong>Palier d'entrée &amp; Palier de sortie :</strong> Traçabilité automatique du niveau initial (<code>initial_level_id</code>) et du niveau final à la clôture (<code>exit_level_id</code>, <code>exited_at</code>).</li>
+                            <li>• <strong>Onglet « Historique des Paliers » :</strong> Tableau chronologique des transitions de niveaux avec calcul automatique de la durée passée dans chaque jalon.</li>
+                            <li>• <strong>Bouton « Promouvoir / Changer de palier » :</strong> Action rapide en table avec saisie obligatoire d'un motif et journalisation <em>MILESTONE</em> automatique.</li>
+                            <li>• <strong>Coach référent &amp; Statut :</strong> Mentorat assigné, charge contrôlée et gestion des états (Actif, Diplômé, Sorti, Abandonné).</li>
                         </ul>
                     </div>
 
                     <div class="rounded-lg border border-gray-100 bg-gray-50/50 p-4 dark:border-gray-800 dark:bg-gray-800/40 space-y-2">
                         <h4 class="font-bold text-sky-700 dark:text-sky-300 uppercase tracking-wide">
-                            Entrepreneurs &amp; Journal d'Événements
+                            Entrepreneurs &amp; Expérience Porteur 360°
                         </h4>
                         <ul class="space-y-1.5 text-gray-600 dark:text-gray-300">
-                            <li>• <strong>Profil sociodémographique :</strong> Genre, tranche d'âge, niveau d'étude, situation professionnelle.</li>
-                            <li>• <strong>Timeline / Journal chronologique :</strong> Consigner les pivots, dépôts de brevets, levées de fonds ou passages de jalons.</li>
-                            <li>• <strong>Historique immuable :</strong> Traçabilité des évolutions pour alimenter les audits institutionnels.</li>
+                            <li>• <strong>Unicité stricte du projet :</strong> 1 entrepreneur = 1 projet actif sur la plateforme avec redirection automatique directe.</li>
+                            <li>• <strong>Page de détails immersive (`view-project`) :</strong> Hero card startup, métriques clés, blocs problème/solution et pitch elevator.</li>
+                            <li>• <strong>Bloc « Parcours des Paliers » :</strong> Stepper dynamique (*Entrée &rarr; Actuel &rarr; Sortie*) et timeline des étapes franchies visible par le porteur.</li>
+                            <li>• <strong>Timeline / Journal chronologique :</strong> Consigner les pivots, levées de fonds, passages de jalons et clôtures de parcours.</li>
                         </ul>
                     </div>
                 </div>

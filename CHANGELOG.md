@@ -4,6 +4,23 @@ Toutes les modifications notables apportées au projet **Hub Africa v2** (Stack 
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
+## [2.10.1] - 2026-09-28
+
+### Documentation & Manuel d'Utilisation
+- **Mise à Jour Intégrale du Manuel d'Utilisation & Guide Pratique (`GUIDE_UTILISATION_PLATEFORME_ACCOMPAGNEMENT.md`)** :
+  - **Étape 3 (Candidatures, Vue Unifiée & Jurys)** : Documentation de la vue d'instruction mutualisée (SAE, Jurys Coachs, Candidats), stepper d'avancement à 4 étapes, actions rapides de délibération d'en-tête (*Noter*, *Accepter*, *Mettre en attente*, *Refuser*), portail dédié des coachs évaluateurs (`/coach/{tenant}/applications`), décision automatique selon le score et enrôlement direct.
+  - **Étape 4 (Portefeuille, Paliers & Attribution Coach)** : Documentation complète du système de traçabilité des paliers :
+    - Palier d'entrée initial verrouillé (`initial_level_id`)
+    - Historique horodaté et calcul automatique de la durée passée dans chaque jalon
+    - Gestionnaire relationnel « Historique des Paliers » (`LevelHistoriesRelationManager`) avec action assistée *« Promouvoir / Changer de palier »* et motif obligatoire
+    - Palier de sortie et date d'achèvement (`exit_level_id`, `exited_at`) lors du passage en statut diplômé/sorti
+    - Expérience porteur 360° avec règle d'unicité (1 porteur = 1 projet actif) et bloc d'avancement des paliers.
+  - **Répertoire d'Actions par Cluster** : Enrichissement des clusters *Programmes & Sélection* et *Portefeuille Startups*, et ajout des sections dédiées au *Portail Coach* et au *Portail Entrepreneur*.
+  - **Index des Captures d'Écran** : Actualisation des captures n°3 et n°4 intégrant la nouvelle ergonomie d'instruction et de progression.
+- **Synchronisation du Guide Interactif Embarqué (`guide-page.blade.php`)** :
+  - Mise à jour des étapes 3 et 4 du fil rouge BioAgri Tech pour refléter fidèlement les nouvelles interfaces.
+  - Actualisation des fiches pratiques des Clusters 1 & 2 et des résumés de modules.
+
 ## [2.10.0] - 2026-09-28
 
 ### Ajouté (Added) & Amélioré (Improved)

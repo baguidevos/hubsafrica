@@ -157,57 +157,93 @@ Pour illustrer concrètement le fonctionnement de la plateforme, ce cas pratique
 
 ---
 
-### Étape 3 : Candidature de « BioAgri Tech » & Notation Matricielle du Jury
+### Étape 3 : Candidature de « BioAgri Tech », Vue Unifiée & Notation Matricielle du Jury
 
-**Menu :** `Programmes & Sélection > Candidatures` (`/sae/{tenant}/programmes/applications`)
+**Menus :**
+- Responsable SAE : `Programmes & Sélection > Candidatures` (`/sae/{tenant}/programmes/applications`)
+- Membre du Jury / Coach : `Candidatures & Jurys` (`/coach/{tenant}/applications`)
+- Porteur de projet : `Candidatures` (`/entrepreneur/applications`)
 
 #### Actions du Responsable & des Jurys :
 1. La candidature de la startup **BioAgri Tech** (portée par Amadou Traoré) est reçue sur la plateforme. Le modèle de formulaire utilisé est immédiatement identifié par un badge (`Dossier Standard Hub Africa` ou template spécifique de la SAE).
-2. Dans la fiche détaillée de la candidature, la section **« Réponses au questionnaire spécifique »** affiche sous forme de tableau interactif toutes les réponses saisies par le candidat aux questions complémentaires posées par la structure.
-3. Le responsable assigne les évaluateurs du jury dans l'onglet *Évaluateurs assignés*.
-3. Les membres du jury cliquent sur l'action **« Noter »** (icône chapeau académique) sur la ligne de candidature.
-4. La modale interactive charge la grille du programme :
+2. **Nouvelle Vue Unifiée Haute Fidélité :**
+   En ouvrant le dossier, le responsable et les membres du jury accèdent à une page d'instruction complète et harmonisée :
+   - **Bannière d'en-tête dynamique :** arborant la couleur du statut (`SOUMISE`, `EN_EXAMEN`, `ACCEPTEE`, `EN_ATTENTE`, `REFUSEE`) et la note consolidée du jury sur 100 avec coloration conditionnelle ($\ge 75$ vert, $50-74$ orange, $< 50$ rouge).
+   - **Stepper visuel à 4 jalons :** *1. Soumission*, *2. Éligibilité*, *3. Jury*, *4. Délibération*.
+   - **Boutons d'action rapide d'en-tête (SAE & Jury) :**
+     - 🎓 **« Noter le dossier »** : ouvre la grille multicritères pondérée.
+     - 🏆 **« Accepter »** : validation d'admission immédiate et enrôlement direct dans la cohorte.
+     - ⏳ **« Mettre en attente »** : placement en liste de réserve.
+     - ❌ **« Refuser »** : rejet formel avec saisie obligatoire d'un motif explicatif.
+     - 💡 **« Fiche Projet »** : accès 1-clic à la fiche 360° de la startup.
+   - **Questionnaire & GED :** affichage structuré des motivations, besoins prioritaires, réponses au questionnaire spécifique SAE et pièces jointes téléchargeables.
+3. **Espace Dédié pour les Coachs / Jurys :**
+   Les experts et mentors disposent de leur propre menu **« Candidatures & Jurys »** (`/coach/{tenant}/applications`) leur permettant d'examiner les dossiers qui leur sont confiés et d'enregistrer leurs notes et observations sans accéder aux fonctions d'administration SAE.
+4. Les membres du jury cliquent sur l'action **« Noter »** (dans la table ou depuis le bandeau d'en-tête).
+5. La modale interactive charge la grille du programme :
    - *Innovation & Scalabilité (x3) :* 17 / 20
    - *Qualité de l'équipe (x2) :* 18 / 20
    - *Impact environnemental (x2) :* 19 / 20
    - *Faisabilité financière (x1) :* 15 / 20
-5. **Calcul Automatique & Décision Intelligente :** Le système calcule automatiquement la note normalisée sur 100 et applique les règles de délibération de la plateforme :
+6. **Calcul Automatique & Décision Intelligente :** Le système calcule automatiquement la note normalisée sur 100 et applique les règles de délibération de la plateforme :
    $$\text{Score} = \frac{(17 \times 3) + (18 \times 2) + (19 \times 2) + (15 \times 1)}{(20 \times 8)} \times 100 = \frac{140}{160} \times 100 = \mathbf{87,5 / 100}$$
    - **Bascule Automatique du Statut selon la Note :**
      - **≥ 75 / 100 (Vert) :** Candidature automatiquement **Acceptée** (*Avis favorable du jury*).
      - **50 à 74 / 100 (Orange) :** Candidature automatiquement placée en **Liste d'attente**.
      - **< 50 / 100 (Rouge) :** Candidature automatiquement **Refusée** (*Dossier non retenu*).
-   - **Dérogation & Décision Manuelle :** Le jury ou le responsable SAE peut également forcer la décision via la modale (choix de statut explicite) ou les boutons d'action rapide 1-clic (*Accepter*, *Liste d'attente*, *Refuser avec motif*).
-6. **Propagation Automatique vers le Projet & Enrôlement en Cohorte :**
+   - **Dérogation & Décision Manuelle :** Le jury ou le responsable SAE peut également forcer la décision via la modale (choix de statut explicite) ou les boutons d'action rapide d'en-tête (*Accepter*, *Liste d'attente*, *Refuser*).
+7. **Propagation Automatique vers le Projet & Enrôlement en Cohorte :**
    - Dès la validation de l'admission (automatique ou manuelle), le projet est **officiellement et immédiatement enrôlé dans la cohorte** (`Enrollment` actif).
-   - Le statut du projet passe automatiquement à **ACTIF** et son niveau est aligné sur le jalon initial du programme avec historisation (`ProjectLevelHistory`).
+   - Le statut du projet passe automatiquement à **ACTIF** et son palier initial d'entrée est automatiquement verrouillé (`initial_level_id`).
+   - Un premier historique de palier est automatiquement généré (`ProjectLevelHistory`).
    - Un jalon chronologique officiel d'admission (**Milestone**) est consigné dans la Timeline du projet avec la note du jury et la promotion d'intégration.
-   - La cohorte d'affectation et la note consolidée du jury sont directement visibles dans la table du Portefeuille (`Portefeuille > Projets`) et dans l'onglet relationnel dédié *Candidatures & Évaluations*.
+   - La cohorte d'affectation et la note consolidée du jury sont directement visibles dans la table du Portefeuille (`Portefeuille > Projets`) et dans l'infolist détaillée du projet.
 
-> 📸 **[CAPTURE D'ÉCRAN N°3 : Modale de notation du Jury avec critères pondérés et badge vert]**  
+> 📸 **[CAPTURE D'ÉCRAN N°3 : Vue unifiée de candidature avec stepper d'avancement, note jury et modale d'évaluation]**  
 > - **Emplacement suggéré :** `docs/images/guide/03-jury-scoring.png`  
-> - **Résolution recommandée :** 1200 &times; 750 px  
-> - **Ce qui doit être visible :** La modale d'évaluation ouverte avec les critères préremplis, les curseurs de note, l'avis textuel et le badge de note verte sur la table des candidatures.
+> - **Résolution recommandée :** 1440 &times; 850 px  
+> - **Ce qui doit être visible :** La page détaillée de candidature affichant le bandeau de statut, la note sur 100 avec badge vert, les boutons de délibération d'en-tête et la modale de saisie critère par critère.
 
 ---
 
-### Étape 4 : Intégration au Portefeuille & Affectation du Coach Référent
+### Étape 4 : Intégration au Portefeuille, Traçabilité Horodatée des Paliers & Attribution du Coach
 
 **Menus :**  
 - `Portefeuille Startups > Projets` (`/sae/{tenant}/portefeuille/projects`)
 - `Accompagnement & Mentorat > Coachs & Mentors` (`/sae/{tenant}/accompagnement/coaches`)
+- Espace Entrepreneur : `Mon Projet` (`/entrepreneur/projects`)
 
-#### Actions du Responsable SAE :
+#### Actions du Responsable SAE & Traçabilité des Paliers :
 1. Dans `Accompagnement > Coachs`, vérifier la charge de travail des mentors : **Dr. Koffi N'Guessan** suit 3 projets sur un plafond autorisé de 6 (charge de 50%).
 2. Ouvrir la fiche du projet **BioAgri Tech** dans `Portefeuille > Projets`.
 3. Assigner **Dr. Koffi N'Guessan** comme *Coach Référent*.
-4. Fixer le statut d'accompagnement à *« Actif »* et assigner le niveau initial *« Phase 1 : Diagnostic & Boot Camp »*.
-5. Dr. Koffi est notifié et retrouve la startup dans son espace personnel (`/coach`).
+4. **Traçabilité Rigoureuse des Paliers d'Accompagnement (Niveau d'Entrée & Sortie) :**
+   - **Palier Initial d'Entrée (`initial_level_id`) :** À la création ou admission du projet, la plateforme fige automatiquement son niveau initial (*Phase 1 : Diagnostic & Boot Camp*). Ce niveau reste gravé dans la base pour mesurer la progression globale.
+   - **Palier Actuel & Date d'Entrée :** Le projet indique en permanence son palier actif et la date précise d'entrée dans ce jalon (`current_level_entered_at`).
+   - **Historique Horodaté & Temps Passé (`project_level_histories`) :**
+     Dans l'onglet relationnel **« Historique des Paliers »** de la fiche projet, chaque palier franchi est tracé de façon immuable :
+     - Palier d'origine $\rightarrow$ Nouveau palier
+     - Date de début (`started_at`) et date de fin (`ended_at`)
+     - Calcul automatique de la durée passée dans le palier (ex : *« 1 mois et 3 semaines »*)
+     - Nom de l'utilisateur validateur et motif / contexte de passage
+   - **Action Rapide « Promouvoir / Changer de palier » :**
+     En tête du tableau de l'historique des paliers, le responsable clique sur le bouton d'action pour faire évoluer le projet vers le niveau supérieur (*Phase 2 : Structuration MVP*). Une modale impose la saisie du motif pédagogique. La plateforme ferme automatiquement le palier précédent (`ended_at = now()`), ouvre le nouveau palier et consigne l'événement `MILESTONE` dans la Timeline du projet.
+   - **Palier de Sortie & Date de Clôture (`exit_level_id` & `exited_at`) :**
+     Lorsque la startup termine son parcours et passe en statut **« Diplômé »** (`DIPLOME`), **« Sorti »** (`SORTI`) ou **« Abandonné »** (`ABANDONNE`), la plateforme enregistre automatiquement son palier de sortie, fige la date de fin d'accompagnement, clôture l'historique en cours et crée un jalon de fin de parcours dans la timeline.
+5. **Expérience 360° Côté Entrepreneur & Unicité du Projet :**
+   - **Unicité stricte :** Un porteur de projet ne peut avoir qu'un seul projet actif sur la plateforme. Dès qu'il clique sur *« Mon Projet »*, il est directement orienté vers sa page de détails immersive (ou vers le formulaire de création s'il débute).
+   - **Page de détails haute fidélité (`view-project.blade.php`) :** L'entrepreneur dispose d'une vue synthétique complète avec :
+     - Hero card avec logo et badge officiel.
+     - 4 cartes d'indicateurs clés (Secteur, Territoire, Taille de l'équipe, Palier actuel avec mention du palier d'entrée).
+     - **Bloc « Parcours d'accompagnement & Paliers » :**
+       - Stepper visuel à 3 étapes : *1. Palier d'entrée* (date d'intégration) $\rightarrow$ *2. Palier actuel* (durée depuis entrée) $\rightarrow$ *3. Palier de sortie* (si clôturé).
+       - Timeline chronologique dynamique affichant chaque étape franchie, la durée passée, le motif et la validation du responsable.
+     - Cartes Problème / Solution, Proposition de valeur, Marché & Cible, et fiche du coach assigné.
 
-> 📸 **[CAPTURE D'ÉCRAN N°4 : Fiche projet du Portefeuille avec attribution du Coach Référent]**  
+> 📸 **[CAPTURE D'ÉCRAN N°4 : Fiche projet SAE avec onglet « Historique des Paliers » et vue Entrepreneur 360°]**  
 > - **Emplacement suggéré :** `docs/images/guide/04-project-coach-assign.png`  
-> - **Résolution recommandée :** 1440 &times; 750 px  
-> - **Ce qui doit être visible :** Le formulaire du projet BioAgri Tech avec les champs Coach Référent, Cohorte associée, Niveau de maturité et Statut actif.
+> - **Résolution recommandée :** 1440 &times; 850 px  
+> - **Ce qui doit être visible :** La fiche du projet avec l'onglet « Historique des Paliers » affichant les transitions, durées, validateur et le bouton « Promouvoir / Changer de palier », ainsi que le bloc d'évolution des paliers visible côté porteur.
 
 ---
 
@@ -330,10 +366,12 @@ Pour illustrer concrètement le fonctionnement de la plateforme, ce cas pratique
   - Visualisation centralisée de l'ensemble des jalons de promotions.
   - Filtres par cohorte et par statut (*À venir*, *En cours*, *Terminé*).
   - Ajustement rapide des dates d'ouverture (`starts_on`) et d'échéance (`ends_on`).
-- **Candidatures :**
-  - Affecter les membres du jury d'admission.
-  - Saisir les notes critères par critères dans la modale interactive d'évaluation.
-  - Exploiter le score pondéré sur 100 et le code couleur pour statuer (Admise, En attente, Rejetée).
+- **Candidatures & Instruction Jury (Vue Unifiée 3 Espaces) :**
+  - Fiche détaillée unifiée (`view-application`) partagée et contextualisée entre SAE, Coachs (jurys) et Candidats.
+  - Bandeau d'en-tête dynamique avec note consolidée /100 et stepper d'avancement à 4 étapes (*Soumission*, *Éligibilité*, *Jury*, *Délibération*).
+  - Actions rapides d'en-tête : *Noter le dossier* (grille multicritères pondérée), *Accepter* (enrôlement direct en cohorte), *Mettre en attente*, *Refuser* (avec motif obligatoire), *Fiche projet*.
+  - Décision automatique selon la note ($\ge 75$ Acceptée, 50-74 Attente, $<50$ Refusée) avec dérogation manuelle possible.
+  - Espace dédié pour les jurys coachs (`/coach/{tenant}/applications`) avec filtre sur les dossiers prioritaires.
 - **Partenaires :**
   - Tenir à jour l'annuaire des bailleurs, sponsors et partenaires techniques.
 - **Niveaux de maturité :**
@@ -341,12 +379,31 @@ Pour illustrer concrètement le fonctionnement de la plateforme, ce cas pratique
 
 ### Cluster 2 : Portefeuille Startups
 - **Projets :**
-  - Fiche d'identité complète de chaque entreprise accompagnée.
-  - Attribution du coach référent et mise à jour du statut d'accompagnement (Actif, Diplômé, Abandon).
+  - Fiche d'identité complète et infolist 360° de chaque entreprise accompagnée.
+  - Attribution du coach référent et mise à jour du statut d'accompagnement (Actif, Diplômé, Sorti, Abandonné).
+  - **Traçabilité des Paliers d'Accompagnement (Niveau d'Entrée & Sortie) :**
+    - Enregistrement immuable du **Palier d'entrée** (`initial_level_id`).
+    - Capture automatique du **Palier de sortie** (`exit_level_id`) et de la date de fin d'accompagnement (`exited_at`) lors du passage en statut diplômé/sorti.
+  - **Gestionnaire « Historique des Paliers » (`LevelHistoriesRelationManager`) :**
+    - Table horodatée des transitions de niveaux (palier source, nouveau palier, dates, validateur, motif).
+    - Calcul automatique du temps passé dans chaque palier.
+    - Action rapide **« Promouvoir / Changer de palier »** avec sélection du nouveau jalon et justification pédagogique obligatoire.
+    - Événement *MILESTONE* automatiquement journalisé dans la Timeline.
 - **Entrepreneurs :**
   - Fiches des porteurs de projet (coordonnées, genre, tranche d'âge, formation, rôle au sein de l'équipe).
+  - Règle stricte d'**unicité du projet** : 1 entrepreneur = 1 projet actif.
 - **Journal chronologique (Timeline) :**
-  - Historisation des événements majeurs : levées de fonds, signatures de contrats, obtention de labels ou brevets.
+  - Historisation des événements majeurs : admission en cohorte, changements de paliers, levées de fonds, labellisations et clôture de parcours.
+
+### Espaces Spécifiques : Coachs & Entrepreneurs
+- **Portail Coach (`/coach/{tenant}`) :**
+  - **Candidatures & Jurys :** Évaluation des dossiers candidats assignés avec notation critère par critère.
+  - **Mes Projets :** Suivi direct des startups mentorées et des séances planifiées.
+  - **Émargement & Livrables :** Validation des livrables (notes et retours) et gestion des feuilles d'émargement.
+- **Portail Entrepreneur (`/entrepreneur`) :**
+  - **Mon Projet (Fiche Immersive 360°) :** Vue synthétique unique avec hero card, indicateurs clés et pitch elevator.
+  - **Parcours d'Accompagnement & Paliers :** Stepper synthétique (*Entrée → Actuel → Sortie*) et timeline chronologique des paliers franchis avec durée et statut actif.
+  - **Dépôt de Livrables & GED :** Téléversement des versions, suivi des statuts de révision et notation.
 
 ### Cluster 3 : Accompagnement & Mentorat
 - **Séances de coaching :**
@@ -397,8 +454,8 @@ Pour finaliser la documentation visuelle de votre SAE, insérez les captures d'�
 | :---: | :--- | :--- | :---: | :--- |
 | **01** | Édition du Programme & Onglets Pédagogiques | `docs/images/guide/01-program-setup.png` | 1440 &times; 850 | Phases ordonnées, critères pondérés et bailleur |
 | **02** | Fiche Cohorte & Bouton Synchroniser | `docs/images/guide/02-cohort-sync.png` | 1440 &times; 700 | Tableau des phases calculées automatiquement |
-| **03** | Modale de Notation Jury & Note Consolidée | `docs/images/guide/03-jury-scoring.png` | 1200 &times; 750 | Saisie des notes critères et badge vert 87.5/100 |
-| **04** | Fiche Projet Portefeuille & Coach Référent | `docs/images/guide/04-project-coach-assign.png` | 1440 &times; 750 | Attribution du mentor et niveau de maturité |
+| **03** | Vue Unifiée Candidature & Délibération Jury | `docs/images/guide/03-jury-scoring.png` | 1440 &times; 850 | Stepper 4 étapes, note sur 100, actions de délibération et grille |
+| **04** | Fiche Projet, Historique Paliers & Vue Entrepreneur | `docs/images/guide/04-project-coach-assign.png` | 1440 &times; 850 | Suivi des paliers (entrée/actuel/sortie), onglet relationnel et vue 360° |
 | **05** | Calendrier Global & Émargement | `docs/images/guide/05-calendar-attendance.png` | 1440 &times; 800 | Vue mensuelle unifiée (séances, jalons, cohortes) et émargement |
 | **06** | Fiche Livrable & Historique GED (v1, v2) | `docs/images/guide/06-deliverable-ged-versions.png` | 1440 &times; 750 | Onglet GED avec versions archivées téléchargeables |
 | **07** | Relevés Périodiques KPI & Financement | `docs/images/guide/07-impact-kpi-funding.png` | 1440 &times; 800 | Évolution temporelle du CA et décaissement subvention |
@@ -406,4 +463,4 @@ Pour finaliser la documentation visuelle de votre SAE, insérez les captures d'�
 
 ---
 
-*Hub Africa V2 — Manuel d'utilisation SAE officiel révisé selon l'organisation par Clusters (Septembre 2026).*
+*Hub Africa V2 — Manuel d'utilisation de la plateforme d'accompagnement (Version 2.10.0 — Septembre 2026).*
