@@ -31,8 +31,9 @@ class ApplicationFormTemplateService
                 'submit_label' => 'Déposer ma Candidature',
                 'success_message' => 'Félicitations, votre dossier de candidature a été transmis avec succès au comité de sélection.',
                 'settings' => [
-                    'mode' => 'single',
-                    'layout' => 'vertical',
+                    'mode' => 'wizard',
+                    'wizard_progress' => true,
+                    'step_navigation' => true,
                 ],
                 'fields' => $this->getStandardFieldsDefinition(),
             ]
@@ -40,157 +41,236 @@ class ApplicationFormTemplateService
     }
 
     /**
-     * Définition exhaustive des champs du socle commun Hub Africa.
+     * Définition exhaustive des sections et champs du socle commun Hub Africa
+     * structurée pour le moteur natif Packstub FormBuilder.
+     *
+     * @return array<int, array<string, mixed>>
      */
     public function getStandardFieldsDefinition(): array
     {
         return [
             // Étape 1 : Profil du Porteur
             [
-                'type' => 'text',
+                'type' => 'section',
                 'data' => [
-                    'key' => 'first_name',
-                    'label' => 'Prénom du porteur de projet',
-                    'required' => true,
-                    'placeholder' => 'Ex: Amadou',
-                ],
-            ],
-            [
-                'type' => 'text',
-                'data' => [
-                    'key' => 'last_name',
-                    'label' => 'Nom de famille',
-                    'required' => true,
-                    'placeholder' => 'Ex: Diallo',
-                ],
-            ],
-            [
-                'type' => 'email',
-                'data' => [
-                    'key' => 'email',
-                    'label' => 'Adresse email',
-                    'required' => true,
-                    'placeholder' => 'amadou.diallo@startup.africa',
-                ],
-            ],
-            [
-                'type' => 'text',
-                'data' => [
-                    'key' => 'phone',
-                    'label' => 'Numéro de téléphone (WhatsApp)',
-                    'required' => true,
-                    'placeholder' => '+221 77 000 00 00',
-                ],
-            ],
-            [
-                'type' => 'select',
-                'data' => [
-                    'key' => 'gender',
-                    'label' => 'Genre',
-                    'required' => true,
-                    'choices' => [
-                        'M' => 'Homme',
-                        'F' => 'Femme',
+                    'key' => 'profil_porteur',
+                    'label' => '1. Profil du Porteur de Projet',
+                    'description' => 'Coordonnées personnelles et professionnelles du candidat.',
+                    'fields' => [
+                        [
+                            'type' => 'text',
+                            'data' => [
+                                'key' => 'first_name',
+                                'label' => 'Prénom du porteur de projet',
+                                'required' => true,
+                                'placeholder' => 'Ex: Amadou',
+                                'width' => 'half',
+                            ],
+                        ],
+                        [
+                            'type' => 'text',
+                            'data' => [
+                                'key' => 'last_name',
+                                'label' => 'Nom de famille',
+                                'required' => true,
+                                'placeholder' => 'Ex: Diallo',
+                                'width' => 'half',
+                            ],
+                        ],
+                        [
+                            'type' => 'email',
+                            'data' => [
+                                'key' => 'email',
+                                'label' => 'Adresse email',
+                                'required' => true,
+                                'placeholder' => 'amadou.diallo@startup.africa',
+                                'width' => 'half',
+                            ],
+                        ],
+                        [
+                            'type' => 'phone',
+                            'data' => [
+                                'key' => 'phone',
+                                'label' => 'Numéro de téléphone (WhatsApp)',
+                                'required' => true,
+                                'placeholder' => '+221 77 000 00 00',
+                                'width' => 'half',
+                            ],
+                        ],
+                        [
+                            'type' => 'select',
+                            'data' => [
+                                'key' => 'gender',
+                                'label' => 'Genre',
+                                'required' => true,
+                                'choices' => [
+                                    'M' => 'Homme',
+                                    'F' => 'Femme',
+                                ],
+                                'options' => [
+                                    ['value' => 'M', 'label' => 'Homme'],
+                                    ['value' => 'F', 'label' => 'Femme'],
+                                ],
+                                'width' => 'half',
+                            ],
+                        ],
+                        [
+                            'type' => 'text',
+                            'data' => [
+                                'key' => 'city',
+                                'label' => 'Ville / Pays de résidence',
+                                'required' => false,
+                                'placeholder' => 'Ex: Dakar, Sénégal',
+                                'width' => 'half',
+                            ],
+                        ],
                     ],
-                    'options' => [
-                        ['value' => 'M', 'label' => 'Homme'],
-                        ['value' => 'F', 'label' => 'Femme'],
-                    ],
-                ],
-            ],
-            [
-                'type' => 'text',
-                'data' => [
-                    'key' => 'city',
-                    'label' => 'Ville / Pays de résidence',
-                    'required' => false,
-                    'placeholder' => 'Ex: Dakar, Sénégal',
                 ],
             ],
 
             // Étape 2 : Projet & Startup
             [
-                'type' => 'text',
+                'type' => 'section',
                 'data' => [
-                    'key' => 'project_name',
-                    'label' => 'Nom du projet ou de la startup',
-                    'required' => true,
-                    'placeholder' => 'Ex: AgriSolar Tech',
-                ],
-            ],
-            [
-                'type' => 'text',
-                'data' => [
-                    'key' => 'sector',
-                    'label' => 'Secteur d\'activité principal',
-                    'required' => true,
-                    'placeholder' => 'Ex: AgTech, FinTech, Santé, Énergie...',
-                ],
-            ],
-            [
-                'type' => 'textarea',
-                'data' => [
-                    'key' => 'pitch',
-                    'label' => 'Pitch synthétique du projet (Problème / Solution / Valeur)',
-                    'required' => true,
-                    'placeholder' => 'Décrivez votre solution en quelques lignes...',
-                ],
-            ],
-            [
-                'type' => 'number',
-                'data' => [
-                    'key' => 'team_size',
-                    'label' => 'Taille de l\'équipe (nombre de fondateurs et employés)',
-                    'required' => false,
-                    'placeholder' => '1',
-                ],
-            ],
-            [
-                'type' => 'text',
-                'data' => [
-                    'key' => 'website',
-                    'label' => 'Site internet ou lien vers un prototype',
-                    'required' => false,
-                    'placeholder' => 'https://monprojet.africa',
+                    'key' => 'startup_projet',
+                    'label' => '2. Projet & Startup',
+                    'description' => 'Présentation de votre entreprise, de son secteur et de sa maturité.',
+                    'fields' => [
+                        [
+                            'type' => 'text',
+                            'data' => [
+                                'key' => 'project_name',
+                                'label' => 'Nom du projet ou de la startup',
+                                'required' => true,
+                                'placeholder' => 'Ex: AgriSolar Tech',
+                            ],
+                        ],
+                        [
+                            'type' => 'text',
+                            'data' => [
+                                'key' => 'sector',
+                                'label' => 'Secteur d\'activité principal',
+                                'required' => true,
+                                'placeholder' => 'Ex: AgTech, FinTech, Santé, Énergie...',
+                                'width' => 'half',
+                            ],
+                        ],
+                        [
+                            'type' => 'number',
+                            'data' => [
+                                'key' => 'team_size',
+                                'label' => 'Taille de l\'équipe (nombre de fondateurs et employés)',
+                                'required' => false,
+                                'placeholder' => '1',
+                                'width' => 'half',
+                            ],
+                        ],
+                        [
+                            'type' => 'textarea',
+                            'data' => [
+                                'key' => 'pitch',
+                                'label' => 'Pitch synthétique du projet (Problème / Solution / Valeur)',
+                                'required' => true,
+                                'placeholder' => 'Décrivez votre solution en quelques lignes...',
+                                'rows' => 4,
+                            ],
+                        ],
+                        [
+                            'type' => 'url',
+                            'data' => [
+                                'key' => 'website',
+                                'label' => 'Site internet ou lien vers un prototype',
+                                'required' => false,
+                                'placeholder' => 'https://monprojet.africa',
+                            ],
+                        ],
+                    ],
                 ],
             ],
 
             // Étape 3 : Motivation & Pièces Jointes
             [
-                'type' => 'textarea',
+                'type' => 'section',
                 'data' => [
-                    'key' => 'motivation',
-                    'label' => 'Motivation pour intégrer ce programme d\'accompagnement',
-                    'required' => true,
-                    'placeholder' => 'Expliquez pourquoi vous candidatez et ce que vous attendez des mentors...',
-                ],
-            ],
-            [
-                'type' => 'file',
-                'data' => [
-                    'key' => 'pitch_deck',
-                    'label' => 'Pitch Deck ou présentation du projet (PDF / PPTX, max 15 Mo)',
-                    'required' => false,
-                    'accept' => 'pdf, pptx, ppt',
-                    'max_kb' => 15360,
-                    'multiple' => false,
-                ],
-            ],
-            [
-                'type' => 'hidden',
-                'data' => [
-                    'key' => 'program_id',
-                    'label' => 'Programme ID',
-                ],
-            ],
-            [
-                'type' => 'hidden',
-                'data' => [
-                    'key' => 'cohort_id',
-                    'label' => 'Cohorte ID',
+                    'key' => 'motivation_pieces',
+                    'label' => '3. Motivation & Pièces Jointes',
+                    'description' => 'Vos attentes envers le programme et les documents d\'évaluation.',
+                    'fields' => [
+                        [
+                            'type' => 'textarea',
+                            'data' => [
+                                'key' => 'motivation',
+                                'label' => 'Motivation pour intégrer ce programme d\'accompagnement',
+                                'required' => true,
+                                'placeholder' => 'Expliquez pourquoi vous candidatez et ce que vous attendez des mentors...',
+                                'rows' => 4,
+                            ],
+                        ],
+                        [
+                            'type' => 'checkboxes',
+                            'data' => [
+                                'key' => 'needs',
+                                'label' => 'Besoins d\'accompagnement prioritaires',
+                                'choices' => [
+                                    'financement' => 'Levée de fonds & Financement',
+                                    'marches' => 'Accès aux marchés & Ventes',
+                                    'produit' => 'Développement Produit & Tech',
+                                    'mentoring' => 'Mentorat stratégique & Gouvernance',
+                                    'juridique' => 'Structuration juridique & Fiscale',
+                                ],
+                                'required' => false,
+                            ],
+                        ],
+                        [
+                            'type' => 'file',
+                            'data' => [
+                                'key' => 'pitch_deck',
+                                'label' => 'Pitch Deck ou présentation du projet (PDF / PPTX, max 15 Mo)',
+                                'required' => false,
+                                'accept' => 'pdf, pptx, ppt',
+                                'max_kb' => 15360,
+                                'multiple' => false,
+                            ],
+                        ],
+                        [
+                            'type' => 'hidden',
+                            'data' => [
+                                'key' => 'program_id',
+                                'label' => 'Programme ID',
+                            ],
+                        ],
+                        [
+                            'type' => 'hidden',
+                            'data' => [
+                                'key' => 'cohort_id',
+                                'label' => 'Cohorte ID',
+                            ],
+                        ],
+                    ],
                 ],
             ],
         ];
+    }
+
+    /**
+     * Retourne la liste à plat de tous les champs standards (dépliés des sections).
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function getFlattenedStandardFields(): array
+    {
+        $flattened = [];
+        foreach ($this->getStandardFieldsDefinition() as $item) {
+            if (($item['type'] ?? null) === 'section') {
+                foreach ($item['data']['fields'] ?? [] as $subField) {
+                    $flattened[] = $subField;
+                }
+            } else {
+                $flattened[] = $item;
+            }
+        }
+
+        return $flattened;
     }
 
     /**

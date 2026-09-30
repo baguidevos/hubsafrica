@@ -51,7 +51,11 @@ test('le template standardise officiel hub africa est cree avec les bons attribu
         ->and($this->standardTemplate->sae_id)->toBeNull();
 
     expect($this->standardTemplate->fields)->toBeArray()
-        ->and(count($this->standardTemplate->fields))->toBeGreaterThan(5);
+        ->and(count($this->standardTemplate->fields))->toBeGreaterThanOrEqual(3);
+
+    expect($this->standardTemplate->hasSections())->toBeTrue();
+    expect($this->standardTemplate->isWizard())->toBeTrue();
+    expect($this->standardTemplate->inputFields()->count())->toBeGreaterThan(5);
 });
 
 test('une cohorte est liee a son formulaire de candidature obligatoire', function () {

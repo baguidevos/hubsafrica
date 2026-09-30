@@ -61,6 +61,27 @@ test('la page publique de candidature affiche le composant livewire form-builder
     $response->assertSeeLivewire('form-builder');
 });
 
+test('la structure json du template standardisé contient des sections conformes au moteur packstub form builder', function () {
+    $form = $this->standardTemplate;
+
+    expect($form->hasSections())->toBeTrue();
+    expect($form->isWizard())->toBeTrue();
+    expect($form->sections())->toHaveCount(3);
+
+    $sectionKeys = $form->sections()->map(fn ($s) => $s->key)->all();
+    expect($sectionKeys)->toEqual(['profil_porteur', 'startup_projet', 'motivation_pieces']);
+
+    $sectionLabels = $form->sections()->map(fn ($s) => $s->label)->all();
+    expect($sectionLabels[0])->toContain('Profil du Porteur');
+    expect($sectionLabels[1])->toContain('Projet & Startup');
+    expect($sectionLabels[2])->toContain('Motivation & Pièces');
+
+    $inputKeys = $form->inputFields()->keys()->all();
+    expect($inputKeys)->toContain('first_name', 'last_name', 'email', 'phone', 'gender', 'city');
+    expect($inputKeys)->toContain('project_name', 'sector', 'team_size', 'pitch', 'website');
+    expect($inputKeys)->toContain('motivation', 'needs', 'pitch_deck', 'program_id', 'cohort_id');
+});
+
 test('le listener de candidature traite automatiquement une soumission du form builder natif', function () {
     $submissionData = [
         'first_name' => 'Moussa',

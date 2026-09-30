@@ -107,9 +107,20 @@ class ProgramApplicationWizard extends Component
             $this->applicationForm = $service->getOrCreateStandardTemplate();
         }
 
-        $standardKeys = ['first_name', 'last_name', 'email', 'phone', 'gender', 'city', 'project_name', 'sector', 'pitch', 'team_size', 'website', 'motivation', 'needs', 'pitch_deck'];
+        $standardKeys = ['first_name', 'last_name', 'email', 'phone', 'gender', 'city', 'project_name', 'sector', 'pitch', 'team_size', 'website', 'motivation', 'needs', 'pitch_deck', 'program_id', 'cohort_id'];
         if ($this->applicationForm && ! empty($this->applicationForm->fields)) {
-            foreach ($this->applicationForm->fields as $field) {
+            $fieldsToScan = [];
+            foreach ($this->applicationForm->fields as $item) {
+                if (($item['type'] ?? null) === 'section') {
+                    foreach ($item['data']['fields'] ?? [] as $subField) {
+                        $fieldsToScan[] = $subField;
+                    }
+                } else {
+                    $fieldsToScan[] = $item;
+                }
+            }
+
+            foreach ($fieldsToScan as $field) {
                 $key = $field['data']['key'] ?? $field['data']['name'] ?? $field['name'] ?? null;
                 if ($key && ! in_array($key, $standardKeys)) {
                     $this->custom_fields[] = $field;
