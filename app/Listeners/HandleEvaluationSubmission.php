@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Enums\FormType;
 use App\Enums\FormUnlockStatus;
 use App\Models\Entrepreneur;
 use App\Models\FormUnlock;
@@ -15,6 +16,12 @@ class HandleEvaluationSubmission
     public function handle(SubmissionReceived $event): void
     {
         $form = $event->form;
+
+        // Les candidatures sont traitées par HandleCandidatureSubmission
+        if ($form->type === FormType::CANDIDATURE) {
+            return;
+        }
+
         $submission = $event->submission;
 
         // Retrieve user ID from submission context or current session

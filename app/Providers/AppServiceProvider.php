@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Listeners\HandleCandidatureSubmission;
 use App\Listeners\HandleEvaluationSubmission;
 use Carbon\CarbonImmutable;
 use Filament\Support\Facades\FilamentView;
@@ -35,6 +36,11 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(
             SubmissionReceived::class,
             HandleEvaluationSubmission::class,
+        );
+
+        Event::listen(
+            SubmissionReceived::class,
+            HandleCandidatureSubmission::class,
         );
 
         if (class_exists(FilamentView::class) && class_exists(PanelsRenderHook::class)) {

@@ -30,6 +30,10 @@ class ApplicationFormTemplateService
                 'sae_id' => null, // Template universel commun
                 'submit_label' => 'Déposer ma Candidature',
                 'success_message' => 'Félicitations, votre dossier de candidature a été transmis avec succès au comité de sélection.',
+                'settings' => [
+                    'mode' => 'single',
+                    'layout' => 'vertical',
+                ],
                 'fields' => $this->getStandardFieldsDefinition(),
             ]
         );
@@ -84,6 +88,10 @@ class ApplicationFormTemplateService
                     'key' => 'gender',
                     'label' => 'Genre',
                     'required' => true,
+                    'choices' => [
+                        'M' => 'Homme',
+                        'F' => 'Femme',
+                    ],
                     'options' => [
                         ['value' => 'M', 'label' => 'Homme'],
                         ['value' => 'F', 'label' => 'Femme'],
@@ -163,6 +171,23 @@ class ApplicationFormTemplateService
                     'key' => 'pitch_deck',
                     'label' => 'Pitch Deck ou présentation du projet (PDF / PPTX, max 15 Mo)',
                     'required' => false,
+                    'accept' => 'pdf, pptx, ppt',
+                    'max_kb' => 15360,
+                    'multiple' => false,
+                ],
+            ],
+            [
+                'type' => 'hidden',
+                'data' => [
+                    'key' => 'program_id',
+                    'label' => 'Programme ID',
+                ],
+            ],
+            [
+                'type' => 'hidden',
+                'data' => [
+                    'key' => 'cohort_id',
+                    'label' => 'Cohorte ID',
                 ],
             ],
         ];

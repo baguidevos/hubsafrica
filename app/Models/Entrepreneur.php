@@ -25,6 +25,7 @@ class Entrepreneur extends Model
         'birth_date',
         'country',
         'territory',
+        'city',
         'education_level',
         'profession',
         'professional_status',
@@ -41,6 +42,16 @@ class Entrepreneur extends Model
             'gender' => Gender::class,
             'birth_date' => 'date',
         ];
+    }
+
+    public function getCityAttribute(): ?string
+    {
+        return $this->attributes['territory'] ?? null;
+    }
+
+    public function setCityAttribute(?string $value): void
+    {
+        $this->attributes['territory'] = $value;
     }
 
     public function getFullNameAttribute(): string
