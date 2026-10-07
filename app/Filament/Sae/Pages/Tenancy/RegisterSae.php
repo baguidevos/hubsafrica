@@ -4,6 +4,7 @@ namespace App\Filament\Sae\Pages\Tenancy;
 
 use App\Models\Sae;
 use App\Services\SaeOnboardingService;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -98,10 +99,14 @@ class RegisterSae extends RegisterTenant
                                     ->maxLength(255)
                                     ->placeholder('https://www.incubateur.africa'),
 
-                                TextInput::make('logo')
-                                    ->label('URL du logo (optionnel)')
-                                    ->maxLength(255)
-                                    ->placeholder('https://.../logo.png'),
+                                FileUpload::make('logo')
+                                    ->label('Logo officiel (optionnel)')
+                                    ->image()
+                                    ->disk('public')
+                                    ->directory('saes/logos')
+                                    ->visibility('public')
+                                    ->imageEditor()
+                                    ->helperText('Format PNG, JPG ou SVG'),
                             ]),
 
                             Textarea::make('address')

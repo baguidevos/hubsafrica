@@ -29,6 +29,11 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->id('admin')
             ->path('admin')
+            ->brandName('Hub Africa')
+            ->brandLogo(fn () => asset('images/koworkers.png'))
+            ->darkModeBrandLogo(fn () => asset('images/logo.png'))
+            ->brandLogoHeight('2.25rem')
+            ->favicon(asset('images/logo.png'))
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->maxContentWidth(Width::Full)
             ->login()

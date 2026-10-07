@@ -17,6 +17,7 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Width;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -34,6 +35,15 @@ class SaePanelProvider extends PanelProvider
             ->default()
             ->id('sae')
             ->path('sae')
+            ->brandName('Hub Africa')
+            ->brandLogo(fn () => asset('images/koworkers.png'))
+            ->darkModeBrandLogo(fn () => asset('images/logo.png'))
+            ->brandLogoHeight('2.25rem')
+            ->favicon(asset('images/logo.png'))
+            ->renderHook(
+                PanelsRenderHook::SIDEBAR_FOOTER,
+                fn () => view('filament.sae.hooks.sidebar-tenant-badge'),
+            )
             ->viteTheme('resources/css/filament/sae/theme.css')
             ->maxContentWidth(Width::Full)
             ->spa(hasPrefetching: true)

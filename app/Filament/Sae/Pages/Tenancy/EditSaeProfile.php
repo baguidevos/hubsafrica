@@ -2,6 +2,7 @@
 
 namespace App\Filament\Sae\Pages\Tenancy;
 
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -19,6 +20,17 @@ class EditSaeProfile extends EditTenantProfile
     {
         return $schema
             ->components([
+                FileUpload::make('logo')
+                    ->label('Logo officiel de la structure (SAE)')
+                    ->image()
+                    ->disk('public')
+                    ->directory('saes/logos')
+                    ->visibility('public')
+                    ->imageEditor()
+                    ->circleCropper()
+                    ->helperText('Ce logo apparaîtra comme avatar officiel de votre structure dans le menu et la barre latérale.')
+                    ->columnSpanFull(),
+
                 TextInput::make('name')
                     ->label('Nom de la structure')
                     ->required()

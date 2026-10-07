@@ -27,6 +27,11 @@ class CoachPanelProvider extends PanelProvider
         return $panel
             ->id('coach')
             ->path('coach')
+            ->brandName('Hub Africa')
+            ->brandLogo(fn () => asset('images/koworkers.png'))
+            ->darkModeBrandLogo(fn () => asset('images/logo.png'))
+            ->brandLogoHeight('2.25rem')
+            ->favicon(asset('images/logo.png'))
             ->viteTheme('resources/css/filament/coach/theme.css')
             ->maxContentWidth(Width::Full)
             ->login()

@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class Sae extends Model
+class Sae extends Model implements HasAvatar
 {
     use HasFactory;
 
@@ -48,6 +50,19 @@ class Sae extends Model
     public function getWaitlistThreshold(): int
     {
         return $this->default_waitlist_threshold ?? 50;
+    }
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        if (blank($this->logo)) {
+            return null;
+        }
+
+        if (str_starts_with($this->logo, 'http://') || str_starts_with($this->logo, 'https://')) {
+            return $this->logo;
+        }
+
+        return Storage::disk('public')->url($this->logo);
     }
 
     protected static function boot(): void
