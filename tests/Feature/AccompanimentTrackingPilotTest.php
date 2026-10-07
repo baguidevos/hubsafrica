@@ -175,3 +175,15 @@ test('accompaniment templates page loads successfully', function () {
         ->assertSuccessful()
         ->assertSee('Startup Loop (Afric\'innov / SAE)');
 });
+
+test('accompaniment templates deploy action mounts cleanly with arguments', function () {
+    Livewire::test(AccompanimentTemplatesPage::class)
+        ->mountAction('deploy', [
+            'template_key' => 'startup-loop-africinnov',
+            'template_title' => 'Startup Loop (Afric\'innov / SAE)',
+        ])
+        ->assertActionMounted('deploy')
+        ->assertActionDataSet([
+            'template_key' => 'startup-loop-africinnov',
+        ]);
+});

@@ -44,9 +44,12 @@ class AccompanimentTemplatesPage extends Page
             ->slideOver()
             ->modalHeading(fn (array $arguments) => 'Déployer le pack : '.($arguments['template_title'] ?? 'Modèle'))
             ->modalDescription('Initialise automatiquement les 6 phases, les livrables startups, les livrables SAEI et les critères de notation.')
+            ->fillForm(fn (array $arguments): array => [
+                'template_key' => $arguments['template_key'] ?? 'startup-loop-africinnov',
+            ])
             ->form([
                 Hidden::make('template_key')
-                    ->default(fn (array $arguments) => $arguments['template_key'] ?? 'startup-loop-africinnov'),
+                    ->default('startup-loop-africinnov'),
 
                 Radio::make('program_mode')
                     ->label('Programme de destination')
