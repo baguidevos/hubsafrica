@@ -11,7 +11,11 @@ use App\Models\DeliverableDefinition;
 use App\Models\DeliverableSubmission;
 use App\Models\Enrollment;
 use App\Models\Project;
+use App\Services\AccompanimentTemplateService;
 use BackedEnum;
+use Filament\Actions\Action;
+use Filament\Forms\Components\Select;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -32,6 +36,57 @@ class AccompanimentMonitoringDashboard extends Page
     public ?string $selectedCohortId = null;
 
     public string $activeTab = 'startups'; // 'startups' | 'programme' | 'phases' | 'alerts'
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('applyMethodologyTemplate')
+                ->label('Appliquer un pack méthodologique')
+                ->icon('heroicon-o-sparkles')
+                ->color('emerald')
+                ->slideOver()
+                ->modalHeading('Déployer une méthodologie d\'accompagnement')
+                ->modalDescription('Initialise automatiquement les 6 phases, les livrables startups, les livrables SAEI et synchronise le tableau de bord.')
+                ->form([
+                    Select::make('template_key')
+                        ->label('Modèle d\'accompagnement')
+                        ->options(fn (AccompanimentTemplateService $service) => $service->asSelectOptions())
+                        ->default('startup-loop-africinnov')
+                        ->required(),
+
+                    Select::make('cohort_id')
+                        ->label('Cohorte cible')
+                        ->options(fn () => Cohort::pluck('name', 'id'))
+                        ->default(fn () => $this->selectedCohortId)
+                        ->required(),
+                ])
+                ->action(function (array $data, AccompanimentTemplateService $service) {
+                    $sae = filament()->getTenant();
+                    $cohort = Cohort::findOrFail($data['cohort_id']);
+                    $program = $cohort->program;
+
+                    if (! $program) {
+                        Notification::make()
+                            ->title('Erreur')
+                            ->body('La cohorte doit être rattachée à un programme.')
+                            ->danger()
+                            ->send();
+
+                        return;
+                    }
+
+                    $summary = $service->apply($data['template_key'], $sae, $program, $cohort);
+
+                    $this->selectedCohortId = (string) $cohort->id;
+
+                    Notification::make()
+                        ->title('Méthodologie déployée avec succès !')
+                        ->success()
+                        ->body("La cohorte {$cohort->name} a été synchronisée avec {$summary['phases']} phases et {$summary['startup_deliverables']} livrables.")
+                        ->send();
+                }),
+        ];
+    }
 
     public function mount(): void
     {

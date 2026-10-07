@@ -42,6 +42,15 @@
                     </div>
 
                     <button
+                        wire:click="mountAction('applyMethodologyTemplate')"
+                        type="button"
+                        class="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-bold rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm transition"
+                    >
+                        <x-heroicon-o-sparkles class="w-4 h-4 text-emerald-100" />
+                        <span>Appliquer un Template Méthodologique</span>
+                    </button>
+
+                    <button
                         wire:click="exportCsv"
                         type="button"
                         class="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-bold rounded-xl border border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-200 hover:bg-stone-50 dark:hover:bg-stone-700 shadow-sm transition"
@@ -52,6 +61,8 @@
                 </div>
             </div>
         </div>
+
+        <x-filament-actions::modals />
 
         <!-- 6 Cartes KPI Majeures (Directement inspirées des onglets Synthèse & Récap Mensuelle) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">

@@ -7,14 +7,18 @@ use App\Enums\DeliverableSubmissionStatus;
 use App\Enums\DeliverableTarget;
 use App\Enums\SessionPeriodOfDay;
 use App\Filament\Sae\Pages\AccompanimentMonitoringDashboard;
+use App\Filament\Sae\Pages\AccompanimentTemplatesPage;
 use App\Models\Coach;
 use App\Models\CoachingSession;
 use App\Models\Cohort;
+use App\Models\CohortPhase;
 use App\Models\DeliverableDefinition;
 use App\Models\DeliverableSubmission;
 use App\Models\Program;
+use App\Models\ProgramPhase;
 use App\Models\Sae;
 use App\Models\User;
+use App\Services\AccompanimentTemplateService;
 use Filament\Facades\Filament;
 use Livewire\Livewire;
 
@@ -134,4 +138,40 @@ test('accompaniment monitoring dashboard can export CSV summary', function () {
     $response = $component->call('exportCsv');
 
     expect($response)->not->toBeNull();
+});
+
+test('accompaniment template service applies full pack to program and cohort', function () {
+    $service = app(AccompanimentTemplateService::class);
+    expect($service->all())->toHaveKey('startup-loop-africinnov');
+
+    $program = Program::create([
+        'sae_id' => $this->sae->id,
+        'name' => 'Programme Test Déploiement Template',
+        'status' => 'ACTIF',
+    ]);
+
+    $cohort = Cohort::create([
+        'sae_id' => $this->sae->id,
+        'program_id' => $program->id,
+        'name' => 'Promotion Test Template',
+        'status' => CohortStatus::EN_COURS,
+    ]);
+
+    $summary = $service->apply('startup-loop-africinnov', $this->sae, $program, $cohort);
+
+    expect($summary['phases'])->toBe(6)
+        ->and($summary['startup_deliverables'])->toBe(18)
+        ->and($summary['programme_deliverables'])->toBe(14);
+
+    // Vérification que les 6 phases sont créées pour ce programme
+    expect(ProgramPhase::where('program_id', $program->id)->count())->toBe(6);
+
+    // Vérification que les phases sont synchronisées sur la cohorte
+    expect(CohortPhase::where('cohort_id', $cohort->id)->count())->toBe(6);
+});
+
+test('accompaniment templates page loads successfully', function () {
+    Livewire::test(AccompanimentTemplatesPage::class)
+        ->assertSuccessful()
+        ->assertSee('Startup Loop (Afric\'innov / SAE-Acte)');
 });

@@ -4,6 +4,7 @@ namespace App\Filament\Sae\Resources\Cohorts\Tables;
 
 use App\Enums\CohortStatus;
 use App\Models\Cohort;
+use App\Services\AccompanimentTemplateService;
 use App\Services\AttendanceService;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
@@ -11,6 +12,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Tables\Columns\TextColumn;
@@ -76,6 +78,37 @@ class CohortsTable
                     ->relationship('program', 'name'),
             ])
             ->recordActions([
+                Action::make('applyTemplate')
+                    ->label('Template')
+                    ->icon('heroicon-o-sparkles')
+                    ->color('emerald')
+                    ->tooltip('Déployer le pack méthodologique sur cette cohorte')
+                    ->slideOver()
+                    ->modalHeading(fn (Cohort $record) => "Appliquer un modèle d'accompagnement à {$record->name}")
+                    ->form([
+                        Select::make('template_key')
+                            ->label('Modèle méthodologique')
+                            ->options(fn (AccompanimentTemplateService $service) => $service->asSelectOptions())
+                            ->default('startup-loop-africinnov')
+                            ->required(),
+                    ])
+                    ->action(function (Cohort $record, array $data, AccompanimentTemplateService $service) {
+                        $sae = filament()->getTenant();
+                        $program = $record->program;
+                        if (! $program) {
+                            Notification::make()->title('Erreur')->body('La cohorte doit être rattachée à un programme.')->danger()->send();
+
+                            return;
+                        }
+
+                        $summary = $service->apply($data['template_key'], $sae, $program, $record);
+
+                        Notification::make()
+                            ->title('Modèle méthodologique appliqué !')
+                            ->success()
+                            ->body("Cohorte {$record->name} synchronisée : {$summary['phases']} phases et {$summary['startup_deliverables']} livrables générés.")
+                            ->send();
+                    }),
                 Action::make('syncPhases')
                     ->label('Phases')
                     ->icon('heroicon-o-arrow-path')
