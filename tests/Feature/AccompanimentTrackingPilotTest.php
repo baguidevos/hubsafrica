@@ -173,5 +173,5 @@ test('accompaniment template service applies full pack to program and cohort', f
 test('accompaniment templates page loads successfully', function () {
     Livewire::test(AccompanimentTemplatesPage::class)
         ->assertSuccessful()
-        ->assertSee('Startup Loop (Afric\'innov / SAE-Acte)');
+        ->assertSee('Startup Loop (Afric\'innov / SAE)');
 });

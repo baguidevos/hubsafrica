@@ -9,29 +9,29 @@
     @endphp
 
     <div class="space-y-6">
-        <!-- Bannière d'en-tête & Filtre Cohorte -->
-        <div class="relative overflow-hidden rounded-2xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 p-6 shadow-sm">
+        <!-- Bannière d'en-tête & Filtre Cohorte avec support natif du thème -->
+        <x-filament::section>
             <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                 <div class="space-y-1">
                     <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        Dispositif M&E — Méthodologie Afric'innov / SAE-Acte
+                        Dispositif M&E — Méthodologie Afric'innov / SAE
                     </div>
-                    <h2 class="text-xl lg:text-2xl font-bold tracking-tight text-stone-900 dark:text-white">
+                    <h2 class="text-xl lg:text-2xl font-bold tracking-tight text-gray-950 dark:text-white">
                         Tableau de Bord de Suivi & d'Accompagnement
                     </h2>
-                    <p class="text-xs lg:text-sm text-stone-500 dark:text-stone-400 max-w-2xl">
-                        Supervision opérationnelle des 6 phases d'incubation : émargements aux formations, séances de coaching individuel (C1 & C2), livrables critiques et alertes de décrochage (< 75%).
+                    <p class="text-xs lg:text-sm text-gray-500 dark:text-gray-400 max-w-2xl">
+                        Supervision opérationnelle des 6 phases d'incubation : émargements aux formations, séances de coaching individuel (C1 & C2), livrables critiques et alertes de décrochage (&lt; 75%).
                     </p>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-3">
                     <div class="flex items-center gap-2">
-                        <label for="cohortSelect" class="text-xs font-semibold text-stone-600 dark:text-stone-300">Cohorte :</label>
+                        <label for="cohortSelect" class="text-xs font-semibold text-gray-700 dark:text-gray-300">Cohorte :</label>
                         <select
                             id="cohortSelect"
                             wire:model.live="selectedCohortId"
-                            class="text-xs rounded-xl border-stone-300 dark:border-stone-700 dark:bg-stone-800 text-stone-900 dark:text-white font-medium py-2 px-3 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
+                            class="text-xs rounded-xl border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white font-medium py-2 px-3 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
                         >
                             @forelse($this->cohorts as $c)
                                 <option value="{{ $c->id }}">{{ $c->name }} ({{ $c->program?->name ?? 'Général' }})</option>
@@ -41,145 +41,147 @@
                         </select>
                     </div>
 
-                    <button
+                    <x-filament::button
                         wire:click="mountAction('applyMethodologyTemplate')"
+                        color="primary"
+                        icon="heroicon-o-sparkles"
+                        size="sm"
                         type="button"
-                        class="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-bold rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm transition"
                     >
-                        <x-heroicon-o-sparkles class="w-4 h-4 text-emerald-100" />
-                        <span>Appliquer un Template Méthodologique</span>
-                    </button>
+                        Appliquer un Template Méthodologique
+                    </x-filament::button>
 
-                    <button
+                    <x-filament::button
                         wire:click="exportCsv"
+                        color="gray"
+                        icon="heroicon-o-arrow-down-tray"
+                        size="sm"
                         type="button"
-                        class="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-bold rounded-xl border border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-200 hover:bg-stone-50 dark:hover:bg-stone-700 shadow-sm transition"
                     >
-                        <x-heroicon-o-arrow-down-tray class="w-4 h-4 text-emerald-600" />
-                        <span>Exporter Synthèse (CSV)</span>
-                    </button>
+                        Exporter Synthèse (CSV)
+                    </x-filament::button>
                 </div>
             </div>
-        </div>
+        </x-filament::section>
 
         <x-filament-actions::modals />
 
         <!-- 6 Cartes KPI Majeures (Directement inspirées des onglets Synthèse & Récap Mensuelle) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
             <!-- 1. Avancement Programme (SAEI) -->
-            <div class="rounded-2xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 p-4 shadow-sm flex flex-col justify-between">
+            <x-filament::section class="flex flex-col justify-between">
                 <div>
-                    <div class="flex items-center justify-between text-xs text-stone-500 dark:text-stone-400 font-medium">
+                    <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 font-medium">
                         <span>Avancement SAEI</span>
                         <x-heroicon-m-building-office class="w-4 h-4 text-indigo-500" />
                     </div>
                     <div class="mt-2 flex items-baseline gap-2">
-                        <span class="text-2xl font-black text-stone-900 dark:text-white">{{ $kpis['avancement_programme'] }}%</span>
-                        <span class="text-[11px] text-stone-400">({{ $kpis['livrables_programme_valides'] }}/{{ $kpis['livrables_programme_total'] }})</span>
+                        <span class="text-2xl font-black text-gray-950 dark:text-white">{{ $kpis['avancement_programme'] }}%</span>
+                        <span class="text-[11px] text-gray-400">({{ $kpis['livrables_programme_valides'] }}/{{ $kpis['livrables_programme_total'] }})</span>
                     </div>
                 </div>
                 <div class="mt-3">
-                    <div class="w-full bg-stone-100 dark:bg-stone-800 h-2 rounded-full overflow-hidden">
+                    <div class="w-full bg-gray-200 dark:bg-white/10 h-2 rounded-full overflow-hidden">
                         <div class="bg-indigo-600 h-full rounded-full transition-all duration-500" style="width: {{ $kpis['avancement_programme'] }}%"></div>
                     </div>
-                    <span class="text-[10px] text-stone-400 mt-1 block">42 livrables de pilotage</span>
+                    <span class="text-[10px] text-gray-400 mt-1 block">42 livrables de pilotage</span>
                 </div>
-            </div>
+            </x-filament::section>
 
             <!-- 2. Avancement Startups -->
-            <div class="rounded-2xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 p-4 shadow-sm flex flex-col justify-between">
+            <x-filament::section class="flex flex-col justify-between">
                 <div>
-                    <div class="flex items-center justify-between text-xs text-stone-500 dark:text-stone-400 font-medium">
+                    <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 font-medium">
                         <span>Livrables Startups</span>
                         <x-heroicon-m-rocket-launch class="w-4 h-4 text-emerald-500" />
                     </div>
                     <div class="mt-2 flex items-baseline gap-2">
-                        <span class="text-2xl font-black text-stone-900 dark:text-white">{{ $kpis['avancement_startups'] }}%</span>
-                        <span class="text-[11px] text-stone-400">({{ $kpis['livrables_startups_valides'] }}/{{ $kpis['livrables_startups_total'] }})</span>
+                        <span class="text-2xl font-black text-gray-950 dark:text-white">{{ $kpis['avancement_startups'] }}%</span>
+                        <span class="text-[11px] text-gray-400">({{ $kpis['livrables_startups_valides'] }}/{{ $kpis['livrables_startups_total'] }})</span>
                     </div>
                 </div>
                 <div class="mt-3">
-                    <div class="w-full bg-stone-100 dark:bg-stone-800 h-2 rounded-full overflow-hidden">
+                    <div class="w-full bg-gray-200 dark:bg-white/10 h-2 rounded-full overflow-hidden">
                         <div class="bg-emerald-600 h-full rounded-full transition-all duration-500" style="width: {{ $kpis['avancement_startups'] }}%"></div>
                     </div>
-                    <span class="text-[10px] text-stone-400 mt-1 block">20 livrables / entreprise</span>
+                    <span class="text-[10px] text-gray-400 mt-1 block">20 livrables / entreprise</span>
                 </div>
-            </div>
+            </x-filament::section>
 
             <!-- 3. Taux Présence Formations (F1 & F2) -->
-            <div class="rounded-2xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 p-4 shadow-sm flex flex-col justify-between">
+            <x-filament::section class="flex flex-col justify-between">
                 <div>
-                    <div class="flex items-center justify-between text-xs text-stone-500 dark:text-stone-400 font-medium">
+                    <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 font-medium">
                         <span>Présence Formations</span>
                         <x-heroicon-m-academic-cap class="w-4 h-4 text-blue-500" />
                     </div>
                     <div class="mt-2 flex items-baseline gap-2">
-                        <span class="text-2xl font-black text-stone-900 dark:text-white">{{ $kpis['taux_presence_formation'] }}%</span>
+                        <span class="text-2xl font-black text-gray-950 dark:text-white">{{ $kpis['taux_presence_formation'] }}%</span>
                     </div>
                 </div>
                 <div class="mt-3">
-                    <div class="w-full bg-stone-100 dark:bg-stone-800 h-2 rounded-full overflow-hidden">
+                    <div class="w-full bg-gray-200 dark:bg-white/10 h-2 rounded-full overflow-hidden">
                         <div class="bg-blue-600 h-full rounded-full transition-all duration-500" style="width: {{ $kpis['taux_presence_formation'] }}%"></div>
                     </div>
-                    <span class="text-[10px] text-stone-400 mt-1 block">6 créneaux J1 à J3</span>
+                    <span class="text-[10px] text-gray-400 mt-1 block">6 créneaux J1 à J3</span>
                 </div>
-            </div>
+            </x-filament::section>
 
             <!-- 4. Taux Présence Coaching (C1 & C2) -->
-            <div class="rounded-2xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 p-4 shadow-sm flex flex-col justify-between">
+            <x-filament::section class="flex flex-col justify-between">
                 <div>
-                    <div class="flex items-center justify-between text-xs text-stone-500 dark:text-stone-400 font-medium">
+                    <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 font-medium">
                         <span>Présence Coaching</span>
                         <x-heroicon-m-user-group class="w-4 h-4 text-amber-500" />
                     </div>
                     <div class="mt-2 flex items-baseline gap-2">
-                        <span class="text-2xl font-black {{ $kpis['taux_presence_coaching'] < 75 ? 'text-rose-600' : 'text-stone-900 dark:text-white' }}">
+                        <span class="text-2xl font-black {{ $kpis['taux_presence_coaching'] < 75 ? 'text-rose-600' : 'text-gray-950 dark:text-white' }}">
                             {{ $kpis['taux_presence_coaching'] }}%
                         </span>
                     </div>
                 </div>
                 <div class="mt-3">
-                    <div class="w-full bg-stone-100 dark:bg-stone-800 h-2 rounded-full overflow-hidden">
+                    <div class="w-full bg-gray-200 dark:bg-white/10 h-2 rounded-full overflow-hidden">
                         <div class="{{ $kpis['taux_presence_coaching'] < 75 ? 'bg-rose-500' : 'bg-amber-500' }} h-full rounded-full transition-all duration-500" style="width: {{ $kpis['taux_presence_coaching'] }}%"></div>
                     </div>
-                    <span class="text-[10px] text-stone-400 mt-1 block">Seuil alerte : < 75%</span>
+                    <span class="text-[10px] text-gray-400 mt-1 block">Seuil alerte : &lt; 75%</span>
                 </div>
-            </div>
+            </x-filament::section>
 
             <!-- 5. Heures Coaching Délivrées -->
-            <div class="rounded-2xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 p-4 shadow-sm flex flex-col justify-between">
+            <x-filament::section class="flex flex-col justify-between">
                 <div>
-                    <div class="flex items-center justify-between text-xs text-stone-500 dark:text-stone-400 font-medium">
+                    <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 font-medium">
                         <span>Heures Coaching</span>
                         <x-heroicon-m-clock class="w-4 h-4 text-purple-500" />
                     </div>
                     <div class="mt-2 flex items-baseline gap-2">
-                        <span class="text-2xl font-black text-stone-900 dark:text-white">{{ $kpis['heures_coaching_total'] }}</span>
-                        <span class="text-xs font-semibold text-stone-400">heures</span>
+                        <span class="text-2xl font-black text-gray-950 dark:text-white">{{ $kpis['heures_coaching_total'] }}</span>
+                        <span class="text-xs font-semibold text-gray-400">heures</span>
                     </div>
                 </div>
                 <div class="mt-3">
-                    <span class="text-[10px] text-stone-500 dark:text-stone-400 font-medium">Volume effectif réalisé</span>
-                    <span class="text-[10px] text-stone-400 block mt-0.5">8h (C1) + 8h (C2) visées</span>
+                    <span class="text-[10px] text-gray-500 dark:text-gray-400 font-medium">Volume effectif réalisé</span>
+                    <span class="text-[10px] text-gray-400 block mt-0.5">8h (C1) + 8h (C2) visées</span>
                 </div>
-            </div>
+            </x-filament::section>
 
             <!-- 6. Alertes & Risque d'abandon -->
-            <div class="rounded-2xl border {{ $kpis['alertes_presence_count'] > 0 ? 'border-rose-300 dark:border-rose-800 bg-rose-50/50 dark:bg-rose-950/20' : 'border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900' }} p-4 shadow-sm flex flex-col justify-between">
+            <div class="rounded-2xl border {{ $kpis['alertes_presence_count'] > 0 ? 'border-rose-300 dark:border-rose-800 bg-rose-50/50 dark:bg-rose-950/20' : 'border-gray-200/70 dark:border-white/10 bg-white dark:bg-white/5' }} p-4 shadow-sm flex flex-col justify-between">
                 <div>
-                    <div class="flex items-center justify-between text-xs {{ $kpis['alertes_presence_count'] > 0 ? 'text-rose-700 dark:text-rose-400 font-bold' : 'text-stone-500 dark:text-stone-400 font-medium' }}">
+                    <div class="flex items-center justify-between text-xs {{ $kpis['alertes_presence_count'] > 0 ? 'text-rose-700 dark:text-rose-400 font-bold' : 'text-gray-500 dark:text-gray-400 font-medium' }}">
                         <span>Alertes M&E</span>
-                        <x-heroicon-m-exclamation-triangle class="w-4 h-4 {{ $kpis['alertes_presence_count'] > 0 ? 'text-rose-600 animate-bounce' : 'text-stone-400' }}" />
+                        <x-heroicon-m-exclamation-triangle class="w-4 h-4 {{ $kpis['alertes_presence_count'] > 0 ? 'text-rose-600 animate-bounce' : 'text-gray-400' }}" />
                     </div>
                     <div class="mt-2 flex items-baseline gap-2">
-                        <span class="text-2xl font-black {{ $kpis['alertes_presence_count'] > 0 ? 'text-rose-600' : 'text-stone-900 dark:text-white' }}">
+                        <span class="text-2xl font-black {{ $kpis['alertes_presence_count'] > 0 ? 'text-rose-600' : 'text-gray-950 dark:text-white' }}">
                             {{ $kpis['alertes_presence_count'] }}
                         </span>
-                        <span class="text-xs text-stone-500">startup(s) < 75%</span>
+                        <span class="text-xs text-gray-500">&lt; 75% assiduité</span>
                     </div>
                 </div>
                 <div class="mt-3">
-                    <span class="text-[10px] {{ $kpis['soumissions_en_retard'] > 0 ? 'text-amber-600 font-semibold' : 'text-stone-400' }}">
+                    <span class="text-[10px] {{ $kpis['soumissions_en_retard'] > 0 ? 'text-amber-600 font-semibold' : 'text-gray-400' }}">
                         {{ $kpis['soumissions_en_retard'] }} dépôt(s) en retard
                     </span>
                 </div>
@@ -187,11 +189,11 @@
         </div>
 
         <!-- Onglets de Navigation Intégrés -->
-        <div class="border-b border-stone-200 dark:border-stone-800 flex items-center gap-6 text-sm font-semibold">
+        <div class="border-b border-gray-200 dark:border-white/10 flex items-center gap-6 text-sm font-semibold">
             <button
                 type="button"
                 wire:click="$set('activeTab', 'startups')"
-                class="pb-3 border-b-2 flex items-center gap-2 transition {{ $activeTab === 'startups' ? 'border-emerald-600 text-emerald-600 dark:text-emerald-400' : 'border-transparent text-stone-500 hover:text-stone-800 dark:hover:text-stone-300' }}"
+                class="pb-3 border-b-2 flex items-center gap-2 transition {{ $activeTab === 'startups' ? 'border-emerald-600 text-emerald-600 dark:text-emerald-400' : 'border-transparent text-gray-500 hover:text-gray-800 dark:hover:text-gray-300' }}"
             >
                 <x-heroicon-o-table-cells class="w-4 h-4" />
                 <span>Matrice de Suivi Startups ({{ count($matrix) }})</span>
@@ -200,7 +202,7 @@
             <button
                 type="button"
                 wire:click="$set('activeTab', 'programme')"
-                class="pb-3 border-b-2 flex items-center gap-2 transition {{ $activeTab === 'programme' ? 'border-emerald-600 text-emerald-600 dark:text-emerald-400' : 'border-transparent text-stone-500 hover:text-stone-800 dark:hover:text-stone-300' }}"
+                class="pb-3 border-b-2 flex items-center gap-2 transition {{ $activeTab === 'programme' ? 'border-emerald-600 text-emerald-600 dark:text-emerald-400' : 'border-transparent text-gray-500 hover:text-gray-800 dark:hover:text-gray-300' }}"
             >
                 <x-heroicon-o-clipboard-document-check class="w-4 h-4" />
                 <span>Livrables SAEI & Programme (42)</span>
@@ -209,7 +211,7 @@
             <button
                 type="button"
                 wire:click="$set('activeTab', 'phases')"
-                class="pb-3 border-b-2 flex items-center gap-2 transition {{ $activeTab === 'phases' ? 'border-emerald-600 text-emerald-600 dark:text-emerald-400' : 'border-transparent text-stone-500 hover:text-stone-800 dark:hover:text-stone-300' }}"
+                class="pb-3 border-b-2 flex items-center gap-2 transition {{ $activeTab === 'phases' ? 'border-emerald-600 text-emerald-600 dark:text-emerald-400' : 'border-transparent text-gray-500 hover:text-gray-800 dark:hover:text-gray-300' }}"
             >
                 <x-heroicon-o-arrow-trending-up class="w-4 h-4" />
                 <span>Jalons des 6 Phases</span>
@@ -218,7 +220,7 @@
             <button
                 type="button"
                 wire:click="$set('activeTab', 'alerts')"
-                class="pb-3 border-b-2 flex items-center gap-2 transition {{ $activeTab === 'alerts' ? 'border-emerald-600 text-emerald-600 dark:text-emerald-400' : 'border-transparent text-stone-500 hover:text-stone-800 dark:hover:text-stone-300' }}"
+                class="pb-3 border-b-2 flex items-center gap-2 transition {{ $activeTab === 'alerts' ? 'border-emerald-600 text-emerald-600 dark:text-emerald-400' : 'border-transparent text-gray-500 hover:text-gray-800 dark:hover:text-gray-300' }}"
             >
                 <x-heroicon-o-bell-alert class="w-4 h-4" />
                 <span>Alertes de Décrochage ({{ count($alerts) }})</span>
@@ -230,22 +232,24 @@
 
         <!-- CONTENU DU TAB 1 : MATRICE STARTUPS -->
         @if($activeTab === 'startups')
-            <div class="rounded-2xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 shadow-sm overflow-hidden">
-                <div class="px-6 py-4 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between">
-                    <div>
-                        <h3 class="text-sm font-bold text-stone-900 dark:text-white uppercase tracking-wider">
-                            Matrice de Suivi Individuel — Startups de la Cohorte
-                        </h3>
-                        <p class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
-                            Reconstitution directe du tableau « Suivi Startups » du modèle Excel Afric'innov.
-                        </p>
+            <x-filament::section>
+                <x-slot name="heading">
+                    <div class="flex items-center justify-between w-full">
+                        <div>
+                            <span class="text-sm font-bold uppercase tracking-wider">Matrice de Suivi Individuel — Startups de la Cohorte</span>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 font-normal">
+                                Reconstitution directe du tableau « Suivi Startups » du modèle Excel Afric'innov.
+                            </p>
+                        </div>
+                        <x-filament::badge color="gray">
+                            {{ count($matrix) }} startup(s) active(s)
+                        </x-filament::badge>
                     </div>
-                    <span class="text-xs font-semibold text-stone-400">{{ count($matrix) }} startup(s) active(s)</span>
-                </div>
+                </x-slot>
 
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto -mx-6 -mb-6">
                     <table class="w-full text-left text-xs">
-                        <thead class="bg-stone-50 dark:bg-stone-800/60 text-stone-500 dark:text-stone-400 font-bold border-b border-stone-200 dark:border-stone-800 uppercase tracking-wider">
+                        <thead class="bg-gray-50/80 dark:bg-white/5 text-gray-500 dark:text-gray-400 font-bold border-b border-gray-200/70 dark:border-white/10 uppercase tracking-wider">
                             <tr>
                                 <th class="px-4 py-3">Startup & Secteur</th>
                                 <th class="px-4 py-3">Fondateur</th>
@@ -259,54 +263,54 @@
                                 <th class="px-4 py-3 text-right">Action</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-stone-100 dark:divide-stone-800">
+                        <tbody class="divide-y divide-gray-100 dark:divide-white/5">
                             @forelse($matrix as $row)
-                                <tr class="hover:bg-stone-50/50 dark:hover:bg-stone-800/40 transition">
-                                    <td class="px-4 py-3 font-semibold text-stone-900 dark:text-white">
+                                <tr class="hover:bg-gray-50/50 dark:hover:bg-white/5 transition">
+                                    <td class="px-4 py-3 font-semibold text-gray-950 dark:text-white">
                                         <div>{{ $row['project_name'] }}</div>
-                                        <div class="text-[10px] font-normal text-stone-400">{{ $row['sector'] }}</div>
+                                        <div class="text-[10px] font-normal text-gray-400">{{ $row['sector'] }}</div>
                                     </td>
-                                    <td class="px-4 py-3 text-stone-600 dark:text-stone-300">
+                                    <td class="px-4 py-3 text-gray-600 dark:text-gray-300">
                                         <div>{{ $row['entrepreneur_name'] }}</div>
                                         @if($row['entrepreneur_phone'])
-                                            <div class="text-[10px] text-stone-400">{{ $row['entrepreneur_phone'] }}</div>
+                                            <div class="text-[10px] text-gray-400">{{ $row['entrepreneur_phone'] }}</div>
                                         @endif
                                     </td>
                                     <td class="px-4 py-3">
-                                        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-medium">
-                                            <x-heroicon-m-user class="w-3 h-3 text-stone-400" />
+                                        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-gray-300 font-medium">
+                                            <x-heroicon-m-user class="w-3 h-3 text-gray-400" />
                                             {{ $row['coach_name'] }}
                                         </span>
                                     </td>
-                                    <td class="px-4 py-3 text-center font-semibold text-stone-700 dark:text-stone-300">
-                                        <span class="px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300">
+                                    <td class="px-4 py-3 text-center font-semibold text-gray-700 dark:text-gray-300">
+                                        <span class="px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 font-bold">
                                             {{ $row['c1_done'] }} / 8
                                         </span>
                                     </td>
-                                    <td class="px-4 py-3 text-center font-semibold text-stone-700 dark:text-stone-300">
-                                        <span class="px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300">
+                                    <td class="px-4 py-3 text-center font-semibold text-gray-700 dark:text-gray-300">
+                                        <span class="px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 font-bold">
                                             {{ $row['c2_done'] }} / 8
                                         </span>
                                     </td>
-                                    <td class="px-4 py-3 text-center font-bold text-stone-900 dark:text-white">
+                                    <td class="px-4 py-3 text-center font-bold text-gray-950 dark:text-white">
                                         {{ $row['coaching_sessions_done'] }} / 16
                                     </td>
-                                    <td class="px-4 py-3 text-right font-black text-stone-900 dark:text-white">
+                                    <td class="px-4 py-3 text-right font-black text-gray-950 dark:text-white">
                                         {{ $row['coaching_hours'] }} h
                                     </td>
                                     <td class="px-4 py-3">
                                         <div class="flex items-center gap-2">
-                                            <div class="w-20 bg-stone-100 dark:bg-stone-800 h-2 rounded-full overflow-hidden">
+                                            <div class="w-20 bg-gray-200 dark:bg-white/10 h-2 rounded-full overflow-hidden">
                                                 <div class="bg-emerald-500 h-full rounded-full" style="width: {{ $row['livrables_taux'] }}%"></div>
                                             </div>
-                                            <span class="font-bold text-stone-700 dark:text-stone-300">{{ $row['livrables_valides'] }}/{{ $row['livrables_total'] }}</span>
+                                            <span class="font-bold text-gray-700 dark:text-gray-300">{{ $row['livrables_valides'] }}/{{ $row['livrables_total'] }}</span>
                                         </div>
                                     </td>
                                     <td class="px-4 py-3 text-center">
                                         @if($row['status'] === 'ALERTE_PRESENCE')
                                             <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 dark:bg-rose-950/80 dark:text-rose-300">
                                                 <x-heroicon-m-exclamation-triangle class="w-3 h-3 text-rose-600" />
-                                                Risque abandon (< 75%)
+                                                Risque abandon (&lt; 75%)
                                             </span>
                                         @elseif($row['status'] === 'RETARD')
                                             <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300">
@@ -314,7 +318,7 @@
                                                 Retard Livrable
                                             </span>
                                         @elseif($row['status'] === 'VIGILANCE')
-                                            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-semibold bg-stone-100 text-stone-700 dark:bg-stone-800 dark:text-stone-300">
+                                            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-semibold bg-gray-100 text-gray-700 dark:bg-white/10 dark:text-gray-300">
                                                 Vigilance ({{ $row['coaching_presence_rate'] }}%)
                                             </span>
                                         @else
@@ -326,8 +330,8 @@
                                     </td>
                                     <td class="px-4 py-3 text-right">
                                         <a
-                                            href="{{ route('filament.sae.resources.projects.view', ['tenant' => filament()->getTenant(), 'record' => $row['project_id']]) }}"
-                                            class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 transition font-medium"
+                                            href="{{ \App\Filament\Sae\Resources\Projects\ProjectResource::getUrl('view', ['record' => $row['project_id']]) }}"
+                                            class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 transition font-medium"
                                         >
                                             <span>Détails</span>
                                             <x-heroicon-m-chevron-right class="w-3 h-3" />
@@ -336,7 +340,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="10" class="px-6 py-8 text-center text-stone-400">
+                                    <td colspan="10" class="px-6 py-8 text-center text-gray-400">
                                         Aucune startup enregistrée dans cette cohorte.
                                     </td>
                                 </tr>
@@ -344,33 +348,33 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </x-filament::section>
         @endif
 
         <!-- CONTENU DU TAB 2 : LIVRABLES PROGRAMME / SAEI (42 LIVRABLES) -->
         @if($activeTab === 'programme')
-            <div class="rounded-2xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 shadow-sm overflow-hidden">
-                <div class="px-6 py-4 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between">
-                    <div>
-                        <h3 class="text-sm font-bold text-stone-900 dark:text-white uppercase tracking-wider">
-                            Suivi des Livrables Programme (42 Livrables SAEI)
-                        </h3>
-                        <p class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
-                            Matrice de contrôle des livrables institutionnels : conventions, diagnostics initiaux, émargements, synthèses mi-parcours et bilans finaux.
-                        </p>
+            <x-filament::section>
+                <x-slot name="heading">
+                    <div class="flex items-center justify-between w-full">
+                        <div>
+                            <span class="text-sm font-bold uppercase tracking-wider">Suivi des Livrables Programme (42 Livrables SAEI)</span>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 font-normal">
+                                Matrice de contrôle des livrables institutionnels : conventions, diagnostics initiaux, émargements, synthèses mi-parcours et bilans finaux.
+                            </p>
+                        </div>
+                        <a
+                            href="{{ \App\Filament\Sae\Resources\DeliverableDefinitions\DeliverableDefinitionResource::getUrl('create') }}"
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-bold hover:bg-emerald-700 transition"
+                        >
+                            <x-heroicon-m-plus class="w-4 h-4" />
+                            <span>Nouveau Livrable</span>
+                        </a>
                     </div>
-                    <a
-                        href="{{ route('filament.sae.resources.deliverable-definitions.create', ['tenant' => filament()->getTenant()]) }}"
-                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-bold hover:bg-emerald-700 transition"
-                    >
-                        <x-heroicon-m-plus class="w-4 h-4" />
-                        <span>Nouveau Livrable</span>
-                    </a>
-                </div>
+                </x-slot>
 
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto -mx-6 -mb-6">
                     <table class="w-full text-left text-xs">
-                        <thead class="bg-stone-50 dark:bg-stone-800/60 text-stone-500 dark:text-stone-400 font-bold border-b border-stone-200 dark:border-stone-800 uppercase tracking-wider">
+                        <thead class="bg-gray-50/80 dark:bg-white/5 text-gray-500 dark:text-gray-400 font-bold border-b border-gray-200/70 dark:border-white/10 uppercase tracking-wider">
                             <tr>
                                 <th class="px-4 py-3 w-12 text-center">N°</th>
                                 <th class="px-4 py-3">Livrable Institutionnel</th>
@@ -381,24 +385,24 @@
                                 <th class="px-4 py-3 text-right">Fichier / Dépôt</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-stone-100 dark:divide-stone-800">
+                        <tbody class="divide-y divide-gray-100 dark:divide-white/5">
                             @forelse($progDeliverables as $item)
-                                <tr class="hover:bg-stone-50/50 dark:hover:bg-stone-800/40 transition">
-                                    <td class="px-4 py-3 text-center font-bold text-stone-400">
+                                <tr class="hover:bg-gray-50/50 dark:hover:bg-white/5 transition">
+                                    <td class="px-4 py-3 text-center font-bold text-gray-400">
                                         {{ $item['order'] }}
                                     </td>
-                                    <td class="px-4 py-3 font-semibold text-stone-900 dark:text-white">
+                                    <td class="px-4 py-3 font-semibold text-gray-950 dark:text-white">
                                         {{ $item['name'] }}
                                     </td>
-                                    <td class="px-4 py-3 text-stone-500 dark:text-stone-400">
+                                    <td class="px-4 py-3 text-gray-500 dark:text-gray-400">
                                         {{ $item['phase'] }}
                                     </td>
                                     <td class="px-4 py-3">
-                                        <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
+                                        <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-gray-300">
                                             {{ $item['role'] }}
                                         </span>
                                     </td>
-                                    <td class="px-4 py-3 text-stone-500 dark:text-stone-400">
+                                    <td class="px-4 py-3 text-gray-500 dark:text-gray-400">
                                         {{ $item['deadline'] }}
                                     </td>
                                     <td class="px-4 py-3 text-center">
@@ -412,7 +416,7 @@
                                                 Déposé ({{ $item['status'] }})
                                             </span>
                                         @else
-                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-stone-100 text-stone-500 dark:bg-stone-800 dark:text-stone-400">
+                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-gray-100 text-gray-500 dark:bg-white/5 dark:text-gray-400">
                                                 En attente
                                             </span>
                                         @endif
@@ -433,8 +437,8 @@
                                             </a>
                                         @else
                                             <a
-                                                href="{{ route('filament.sae.resources.deliverable-submissions.create', ['tenant' => filament()->getTenant()]) }}"
-                                                class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border border-stone-200 dark:border-stone-700 text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 font-medium"
+                                                href="{{ \App\Filament\Sae\Resources\DeliverableSubmissions\DeliverableSubmissionResource::getUrl('create') }}"
+                                                class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 font-medium"
                                             >
                                                 <x-heroicon-m-arrow-up-tray class="w-3 h-3" />
                                                 <span>Déposer</span>
@@ -444,7 +448,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="px-6 py-8 text-center text-stone-400">
+                                    <td colspan="7" class="px-6 py-8 text-center text-gray-400">
                                         Aucun livrable programme configuré. Définissez les livrables institutionnels dans le menu Livrables.
                                     </td>
                                 </tr>
@@ -452,43 +456,43 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </x-filament::section>
         @endif
 
         <!-- CONTENU DU TAB 3 : JALONS DES 6 PHASES (STARTUP LOOP) -->
         @if($activeTab === 'phases')
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($phases as $phase)
-                    <div class="rounded-2xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 p-5 shadow-sm flex flex-col justify-between hover:border-emerald-500/50 transition">
+                    <x-filament::section class="flex flex-col justify-between hover:border-emerald-500/50 transition">
                         <div>
                             <div class="flex items-center justify-between">
-                                <span class="px-2 py-0.5 rounded text-[11px] font-black uppercase tracking-wider bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
+                                <span class="px-2 py-0.5 rounded text-[11px] font-black uppercase tracking-wider bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-gray-300">
                                     {{ $phase['weeks'] }}
                                 </span>
-                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold {{ $phase['status'] === 'EN_COURS' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300' : 'bg-stone-100 text-stone-500 dark:bg-stone-800 dark:text-stone-400' }}">
+                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold {{ $phase['status'] === 'EN_COURS' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300' : 'bg-gray-100 text-gray-500 dark:bg-white/10 dark:text-gray-400' }}">
                                     {{ $phase['status'] === 'EN_COURS' ? 'Phase Active' : ($phase['status'] === 'TERMINEE' ? 'Complétée' : 'À Venir') }}
                                 </span>
                             </div>
 
-                            <h4 class="text-base font-bold text-stone-900 dark:text-white mt-3">
+                            <h4 class="text-base font-bold text-gray-950 dark:text-white mt-3">
                                 {{ $phase['name'] }}
                             </h4>
 
-                            <p class="text-xs text-stone-500 dark:text-stone-400 mt-2 leading-relaxed">
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-2 leading-relaxed">
                                 {{ $phase['description'] }}
                             </p>
                         </div>
 
-                        <div class="mt-5 pt-4 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs font-medium text-stone-500 dark:text-stone-400">
+                        <div class="mt-5 pt-4 border-t border-gray-100 dark:border-white/10 flex items-center justify-between text-xs font-medium text-gray-500 dark:text-gray-400">
                             <div class="flex items-center gap-1.5">
-                                <x-heroicon-m-calendar class="w-4 h-4 text-stone-400" />
+                                <x-heroicon-m-calendar class="w-4 h-4 text-gray-400" />
                                 <span>{{ $phase['starts_on'] }} — {{ $phase['ends_on'] }}</span>
                             </div>
-                            <div class="flex items-center gap-1 text-emerald-600 font-bold">
+                            <div class="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-bold">
                                 <span>{{ $phase['deliverables_count'] }} livrables</span>
                             </div>
                         </div>
-                    </div>
+                    </x-filament::section>
                 @endforeach
             </div>
         @endif
@@ -503,14 +507,14 @@
                                 <x-heroicon-m-exclamation-triangle class="w-6 h-6" />
                             </div>
                             <div>
-                                <h4 class="text-sm font-bold text-stone-900 dark:text-white">
+                                <h4 class="text-sm font-bold text-gray-950 dark:text-white">
                                     {{ $alert['title'] }}
                                 </h4>
-                                <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">
+                                <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">
                                     {{ $alert['message'] }}
                                 </p>
                                 @if($alert['phone'])
-                                    <div class="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-stone-700 dark:text-stone-300">
+                                    <div class="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-gray-700 dark:text-gray-300">
                                         <x-heroicon-m-phone class="w-3.5 h-3.5 text-emerald-600" />
                                         <span>Contact : {{ $alert['phone'] }}</span>
                                     </div>
@@ -520,13 +524,13 @@
 
                         <div class="flex items-center gap-2">
                             <a
-                                href="{{ route('filament.sae.resources.projects.view', ['tenant' => filament()->getTenant(), 'record' => $alert['project_id']]) }}"
-                                class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-200 hover:bg-stone-50 shadow-sm transition"
+                                href="{{ \App\Filament\Sae\Resources\Projects\ProjectResource::getUrl('view', ['record' => $alert['project_id']]) }}"
+                                class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white dark:bg-white/10 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-200 hover:bg-gray-50 shadow-sm transition"
                             >
                                 Voir dossier startup
                             </a>
                             <a
-                                href="{{ route('filament.sae.resources.coaching-sessions.create', ['tenant' => filament()->getTenant()]) }}"
+                                href="{{ \App\Filament\Sae\Resources\CoachingSessions\CoachingSessionResource::getUrl('create') }}"
                                 class="px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm transition"
                             >
                                 Planifier remédiation
@@ -534,15 +538,15 @@
                         </div>
                     </div>
                 @empty
-                    <div class="rounded-2xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 p-12 text-center">
-                        <div class="inline-flex p-3 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-600 mb-3">
+                    <x-filament::section class="text-center py-12">
+                        <div class="inline-flex p-3 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-600 mb-3 mx-auto">
                             <x-heroicon-o-check-badge class="w-8 h-8" />
                         </div>
-                        <h4 class="text-base font-bold text-stone-900 dark:text-white">Aucune alerte active</h4>
-                        <p class="text-xs text-stone-500 dark:text-stone-400 mt-1 max-w-md mx-auto">
+                        <h4 class="text-base font-bold text-gray-950 dark:text-white">Aucune alerte active</h4>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 max-w-md mx-auto">
                             Toutes les startups de la cohorte présentent une assiduité supérieure à 75% et leurs livrables sont soumis conformément au chronogramme.
                         </p>
-                    </div>
+                    </x-filament::section>
                 @endforelse
             </div>
         @endif

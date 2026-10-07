@@ -25,9 +25,9 @@ class AccompanimentMonitoringDashboard extends Page
 
     protected static string|\UnitEnum|null $navigationGroup = 'Pilotage';
 
-    protected static ?string $navigationLabel = 'Tableau de bord M&E (SAE-Acte)';
+    protected static ?string $navigationLabel = 'Tableau de bord M&E (SAE)';
 
-    protected static ?string $title = 'Tableau de bord de Suivi & Évaluation (SAE-Acte / Afric\'innov)';
+    protected static ?string $title = 'Tableau de bord de Suivi & Évaluation (SAE / Afric\'innov)';
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-presentation-chart-line';
 
@@ -111,7 +111,7 @@ class AccompanimentMonitoringDashboard extends Page
     }
 
     /**
-     * Calcule les KPIs globaux consolidés (identiques à l'onglet "Synthèse" et "Récap mensuelle" du classeur Excel SAE-Acte)
+     * Calcule les KPIs globaux consolidés (identiques à l'onglet "Synthèse" et "Récap mensuelle" du classeur Excel SAE)
      */
     public function getKpisProperty(): array
     {
@@ -459,7 +459,7 @@ class AccompanimentMonitoringDashboard extends Page
     {
         $cohort = $this->selectedCohort;
         $matrix = $this->startupsMatrix;
-        $filename = 'suivi_sae_acte_'.($cohort?->slug ?? 'cohorte').'_'.now()->format('Ymd_His').'.csv';
+        $filename = 'suivi_sae_'.($cohort?->slug ?? 'cohorte').'_'.now()->format('Ymd_His').'.csv';
 
         return response()->streamDownload(function () use ($matrix) {
             $handle = fopen('php://output', 'w');

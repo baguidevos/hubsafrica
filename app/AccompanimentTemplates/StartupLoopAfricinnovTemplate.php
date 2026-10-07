@@ -22,7 +22,7 @@ class StartupLoopAfricinnovTemplate implements AccompanimentTemplateInterface
 
     public function getTitle(): string
     {
-        return 'Startup Loop (Afric\'innov / SAE-Acte)';
+        return 'Startup Loop (Afric\'innov / SAE)';
     }
 
     public function getSubtitle(): string
