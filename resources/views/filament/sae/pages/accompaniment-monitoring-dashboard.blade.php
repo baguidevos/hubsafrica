@@ -31,7 +31,7 @@
                         <select
                             id="cohortSelect"
                             wire:model.live="selectedCohortId"
-                            class="text-xs rounded-xl border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-white font-medium py-2 px-3 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
+                            class="text-xs rounded-xl border-gray-300 dark:border-white/10 bg-gray-50/50 dark:bg-white/5 text-gray-900 dark:text-white font-medium py-2 px-3 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
                         >
                             @forelse($this->cohorts as $c)
                                 <option value="{{ $c->id }}">{{ $c->name }} ({{ $c->program?->name ?? 'Général' }})</option>
@@ -167,7 +167,7 @@
             </x-filament::section>
 
             <!-- 6. Alertes & Risque d'abandon -->
-            <div class="rounded-2xl border {{ $kpis['alertes_presence_count'] > 0 ? 'border-rose-300 dark:border-rose-800 bg-rose-50/50 dark:bg-rose-950/20' : 'border-gray-200/70 dark:border-white/10 bg-white dark:bg-white/5' }} p-4 shadow-sm flex flex-col justify-between">
+            <x-filament::section class="flex flex-col justify-between {{ $kpis['alertes_presence_count'] > 0 ? '!border-rose-300 dark:!border-rose-800 !bg-rose-50/50 dark:!bg-rose-950/20' : '' }}">
                 <div>
                     <div class="flex items-center justify-between text-xs {{ $kpis['alertes_presence_count'] > 0 ? 'text-rose-700 dark:text-rose-400 font-bold' : 'text-gray-500 dark:text-gray-400 font-medium' }}">
                         <span>Alertes M&E</span>
@@ -185,7 +185,7 @@
                         {{ $kpis['soumissions_en_retard'] }} dépôt(s) en retard
                     </span>
                 </div>
-            </div>
+            </x-filament::section>
         </div>
 
         <!-- Onglets de Navigation Intégrés -->
@@ -362,13 +362,15 @@
                                 Matrice de contrôle des livrables institutionnels : conventions, diagnostics initiaux, émargements, synthèses mi-parcours et bilans finaux.
                             </p>
                         </div>
-                        <a
-                            href="{{ \App\Filament\Sae\Resources\DeliverableDefinitions\DeliverableDefinitionResource::getUrl('create') }}"
-                            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-bold hover:bg-emerald-700 transition"
+                        <x-filament::button
+                            tag="a"
+                            :href="\App\Filament\Sae\Resources\DeliverableDefinitions\DeliverableDefinitionResource::getUrl('create')"
+                            color="primary"
+                            icon="heroicon-m-plus"
+                            size="sm"
                         >
-                            <x-heroicon-m-plus class="w-4 h-4" />
-                            <span>Nouveau Livrable</span>
-                        </a>
+                            Nouveau Livrable
+                        </x-filament::button>
                     </div>
                 </x-slot>
 
@@ -523,18 +525,22 @@
                         </div>
 
                         <div class="flex items-center gap-2">
-                            <a
-                                href="{{ \App\Filament\Sae\Resources\Projects\ProjectResource::getUrl('view', ['record' => $alert['project_id']]) }}"
-                                class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white dark:bg-white/10 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-200 hover:bg-gray-50 shadow-sm transition"
+                            <x-filament::button
+                                tag="a"
+                                :href="\App\Filament\Sae\Resources\Projects\ProjectResource::getUrl('view', ['record' => $alert['project_id']])"
+                                color="gray"
+                                size="sm"
                             >
                                 Voir dossier startup
-                            </a>
-                            <a
-                                href="{{ \App\Filament\Sae\Resources\CoachingSessions\CoachingSessionResource::getUrl('create') }}"
-                                class="px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm transition"
+                            </x-filament::button>
+                            <x-filament::button
+                                tag="a"
+                                :href="\App\Filament\Sae\Resources\CoachingSessions\CoachingSessionResource::getUrl('create')"
+                                color="primary"
+                                size="sm"
                             >
                                 Planifier remédiation
-                            </a>
+                            </x-filament::button>
                         </div>
                     </div>
                 @empty
