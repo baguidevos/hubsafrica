@@ -19,6 +19,7 @@ class DeliverableSubmission extends Model
         'sae_id',
         'definition_id',
         'cohort_phase_id',
+        'cohort_id',
         'project_id',
         'entrepreneur_id',
         'submitted_by_id',
@@ -27,6 +28,7 @@ class DeliverableSubmission extends Model
         'file_name',
         'comment',
         'status',
+        'is_late',
         'submitted_at',
     ];
 
@@ -34,9 +36,24 @@ class DeliverableSubmission extends Model
     {
         return [
             'status' => DeliverableSubmissionStatus::class,
+            'is_late' => 'boolean',
             'version' => 'integer',
             'submitted_at' => 'datetime',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::saving(function (self $submission) {
+            if ($submission->submitted_at && ! $submission->is_late && $submission->definition?->deadline) {
+                $submission->is_late = $submission->submitted_at->isAfter($submission->definition->deadline);
+            }
+        });
+    }
+
+    public function cohort(): BelongsTo
+    {
+        return $this->belongsTo(Cohort::class, 'cohort_id');
     }
 
     public function definition(): BelongsTo

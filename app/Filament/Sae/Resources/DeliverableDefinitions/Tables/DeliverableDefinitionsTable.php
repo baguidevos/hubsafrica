@@ -2,6 +2,8 @@
 
 namespace App\Filament\Sae\Resources\DeliverableDefinitions\Tables;
 
+use App\Enums\DeliverableResponsibleRole;
+use App\Enums\DeliverableTarget;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -19,11 +21,29 @@ class DeliverableDefinitionsTable
     {
         return $table
             ->columns([
+                TextColumn::make('sequence_order')
+                    ->label('N°')
+                    ->sortable()
+                    ->alignCenter()
+                    ->width('60px')
+                    ->placeholder('-'),
+
                 TextColumn::make('name')
                     ->label('Intitulé du livrable')
                     ->weight('bold')
                     ->searchable()
                     ->sortable(),
+
+                TextColumn::make('target_type')
+                    ->label('Cible')
+                    ->badge()
+                    ->sortable(),
+
+                TextColumn::make('responsible_role')
+                    ->label('Responsable')
+                    ->badge()
+                    ->sortable()
+                    ->placeholder('-'),
 
                 TextColumn::make('program.name')
                     ->label('Programme')
@@ -59,6 +79,14 @@ class DeliverableDefinitionsTable
                     ->sortable(),
             ])
             ->filters([
+                SelectFilter::make('target_type')
+                    ->label('Cible')
+                    ->options(DeliverableTarget::class),
+
+                SelectFilter::make('responsible_role')
+                    ->label('Responsable')
+                    ->options(DeliverableResponsibleRole::class),
+
                 SelectFilter::make('program_id')
                     ->label('Programme')
                     ->relationship('program', 'name'),

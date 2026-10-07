@@ -2,6 +2,8 @@
 
 namespace App\Filament\Sae\Resources\DeliverableDefinitions\Schemas;
 
+use App\Enums\DeliverableResponsibleRole;
+use App\Enums\DeliverableTarget;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -20,6 +22,22 @@ class DeliverableDefinitionForm
                 Section::make('Cadrage & Programme')
                     ->schema([
                         Grid::make(3)->schema([
+                            Select::make('target_type')
+                                ->label('Destinataire / Cible')
+                                ->options(DeliverableTarget::class)
+                                ->default(DeliverableTarget::STARTUP->value)
+                                ->required(),
+
+                            Select::make('responsible_role')
+                                ->label('Rôle responsable')
+                                ->options(DeliverableResponsibleRole::class)
+                                ->default(DeliverableResponsibleRole::FONDATEUR->value),
+
+                            TextInput::make('sequence_order')
+                                ->label('N° Chronogramme')
+                                ->numeric()
+                                ->placeholder('Ex: 1 à 42'),
+
                             Select::make('program_id')
                                 ->label('Programme')
                                 ->relationship('program', 'name')

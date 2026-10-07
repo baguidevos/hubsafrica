@@ -14,8 +14,10 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
 class DeliverableSubmissionsTable
@@ -24,21 +26,38 @@ class DeliverableSubmissionsTable
     {
         return $table
             ->columns([
+                TextColumn::make('definition.sequence_order')
+                    ->label('N°')
+                    ->sortable()
+                    ->alignCenter()
+                    ->width('50px')
+                    ->placeholder('-'),
+
                 TextColumn::make('definition.name')
                     ->label('Livrable')
                     ->weight('bold')
                     ->searchable()
                     ->sortable(),
 
+                TextColumn::make('cohort.name')
+                    ->label('Cohorte')
+                    ->badge()
+                    ->color('info')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+
                 TextColumn::make('project.name')
                     ->label('Projet')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->placeholder('Livrable SAEI / Programme'),
 
                 TextColumn::make('entrepreneur.full_name')
                     ->label('Entrepreneur')
                     ->searchable(['first_name', 'last_name'])
-                    ->default('—'),
+                    ->default('—')
+                    ->toggleable(),
 
                 TextColumn::make('version')
                     ->label('Version')
@@ -52,15 +71,31 @@ class DeliverableSubmissionsTable
                     ->badge()
                     ->sortable(),
 
+                IconColumn::make('is_late')
+                    ->label('En retard')
+                    ->boolean()
+                    ->trueIcon('heroicon-s-exclamation-triangle')
+                    ->falseIcon('heroicon-s-check-circle')
+                    ->trueColor('danger')
+                    ->falseColor('gray')
+                    ->sortable(),
+
                 TextColumn::make('submitted_at')
                     ->label('Déposé le')
                     ->dateTime('d/m/Y H:i')
                     ->sortable(),
             ])
             ->filters([
+                SelectFilter::make('cohort_id')
+                    ->label('Cohorte')
+                    ->relationship('cohort', 'name'),
+
                 SelectFilter::make('status')
                     ->label('Statut')
                     ->options(DeliverableSubmissionStatus::class),
+
+                TernaryFilter::make('is_late')
+                    ->label('Retard de soumission'),
 
                 SelectFilter::make('definition_id')
                     ->label('Livrable')

@@ -4,6 +4,7 @@ namespace App\Filament\Sae\Resources\CoachingSessions\Tables;
 
 use App\Enums\CoachingSessionStatus;
 use App\Enums\CoachingSessionType;
+use App\Enums\SessionPeriodOfDay;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -19,6 +20,13 @@ class CoachingSessionsTable
     {
         return $table
             ->columns([
+                TextColumn::make('session_number')
+                    ->label('N°')
+                    ->sortable()
+                    ->alignCenter()
+                    ->width('50px')
+                    ->placeholder('-'),
+
                 TextColumn::make('date')
                     ->label('Date & heure')
                     ->dateTime('d/m/Y H:i')
@@ -28,6 +36,13 @@ class CoachingSessionsTable
                     ->label('Type')
                     ->badge()
                     ->sortable(),
+
+                TextColumn::make('period_of_day')
+                    ->label('Créneau')
+                    ->badge()
+                    ->color('gray')
+                    ->toggleable()
+                    ->placeholder('-'),
 
                 TextColumn::make('theme')
                     ->label('Thème')
@@ -43,13 +58,15 @@ class CoachingSessionsTable
                 TextColumn::make('project.name')
                     ->label('Projet')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->placeholder('Atelier collectif'),
 
-                TextColumn::make('duration')
-                    ->label('Durée')
-                    ->suffix(' min')
+                TextColumn::make('hours_delivered')
+                    ->label('Heures')
+                    ->suffix(' h')
                     ->alignRight()
-                    ->sortable(),
+                    ->sortable()
+                    ->placeholder(fn ($record) => round($record->duration / 60, 1).' h'),
 
                 TextColumn::make('status')
                     ->label('Statut')
@@ -57,9 +74,17 @@ class CoachingSessionsTable
                     ->sortable(),
             ])
             ->filters([
+                SelectFilter::make('cohort_id')
+                    ->label('Cohorte')
+                    ->relationship('cohort', 'name'),
+
                 SelectFilter::make('type')
                     ->label('Type de séance')
                     ->options(CoachingSessionType::class),
+
+                SelectFilter::make('period_of_day')
+                    ->label('Créneau')
+                    ->options(SessionPeriodOfDay::class),
 
                 SelectFilter::make('status')
                     ->label('Statut')

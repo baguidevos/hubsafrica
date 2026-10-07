@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\DeliverableResponsibleRole;
+use App\Enums\DeliverableTarget;
 use App\Models\Concerns\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,6 +19,9 @@ class DeliverableDefinition extends Model
         'program_id',
         'level_id',
         'program_phase_id',
+        'target_type',
+        'responsible_role',
+        'sequence_order',
         'name',
         'description',
         'instructions',
@@ -30,6 +35,9 @@ class DeliverableDefinition extends Model
     protected function casts(): array
     {
         return [
+            'target_type' => DeliverableTarget::class,
+            'responsible_role' => DeliverableResponsibleRole::class,
+            'sequence_order' => 'integer',
             'is_required' => 'boolean',
             'max_score' => 'integer',
             'passing_score' => 'integer',

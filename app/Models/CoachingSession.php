@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\CoachingSessionStatus;
 use App\Enums\CoachingSessionType;
+use App\Enums\SessionPeriodOfDay;
 use App\Models\Concerns\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,6 +25,9 @@ class CoachingSession extends Model
         'cohort_phase_id',
         'date',
         'duration',
+        'session_number',
+        'period_of_day',
+        'hours_delivered',
         'type',
         'theme',
         'report',
@@ -37,6 +41,9 @@ class CoachingSession extends Model
         return [
             'status' => CoachingSessionStatus::class,
             'type' => CoachingSessionType::class,
+            'period_of_day' => SessionPeriodOfDay::class,
+            'session_number' => 'integer',
+            'hours_delivered' => 'decimal:2',
             'date' => 'datetime',
             'duration' => 'integer',
         ];

@@ -9,6 +9,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -29,12 +30,18 @@ class DeliverableSubmissionForm
                                 ->preload()
                                 ->required(),
 
+                            Select::make('cohort_id')
+                                ->label('Cohorte')
+                                ->relationship('cohort', 'name')
+                                ->searchable()
+                                ->preload(),
+
                             Select::make('project_id')
                                 ->label('Projet associé')
                                 ->relationship('project', 'name')
                                 ->searchable()
                                 ->preload()
-                                ->required(),
+                                ->helperText('Laisser vide pour les livrables SAEI / Programme transversaux'),
 
                             Select::make('entrepreneur_id')
                                 ->label('Entrepreneur déposant')
@@ -79,7 +86,7 @@ class DeliverableSubmissionForm
 
                 Section::make('Statut & Date')
                     ->schema([
-                        Grid::make(2)->schema([
+                        Grid::make(3)->schema([
                             Select::make('status')
                                 ->label('Statut de la soumission')
                                 ->options(DeliverableSubmissionStatus::class)
@@ -90,6 +97,11 @@ class DeliverableSubmissionForm
                                 ->label('Date & heure de dépôt')
                                 ->default(now())
                                 ->required(),
+
+                            Toggle::make('is_late')
+                                ->label('En retard ?')
+                                ->helperText('Indique si le livrable a été déposé après la date limite')
+                                ->inline(false),
                         ]),
                     ]),
             ]);

@@ -4,6 +4,7 @@ namespace App\Filament\Sae\Resources\CoachingSessions\Schemas;
 
 use App\Enums\CoachingSessionStatus;
 use App\Enums\CoachingSessionType;
+use App\Enums\SessionPeriodOfDay;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -62,17 +63,36 @@ class CoachingSessionForm
                                 ->preload()
                                 ->helperText('Phase du programme au cours de laquelle s\'inscrit l\'atelier'),
 
+                            TextInput::make('session_number')
+                                ->label('Séance N°')
+                                ->numeric()
+                                ->placeholder('Ex: 1 à 8')
+                                ->helperText('Numéro séquentiel dans le cycle de coaching (C1 / C2)'),
+
+                            Select::make('period_of_day')
+                                ->label('Créneau horaire')
+                                ->options(SessionPeriodOfDay::class)
+                                ->placeholder('Sélectionner le créneau'),
+
                             DateTimePicker::make('date')
                                 ->label('Date & heure planifiée')
                                 ->required()
                                 ->default(now()),
 
                             TextInput::make('duration')
-                                ->label('Durée')
+                                ->label('Durée prévue')
                                 ->numeric()
                                 ->suffix('minutes')
                                 ->default(60)
                                 ->required(),
+
+                            TextInput::make('hours_delivered')
+                                ->label('Heures délivrées')
+                                ->numeric()
+                                ->step('0.25')
+                                ->suffix('h')
+                                ->placeholder('Ex: 1.5')
+                                ->helperText('Volume horaire effectif pour le décompte M&E'),
 
                             TextInput::make('theme')
                                 ->label('Thématique / Intitulé de l\'atelier')
