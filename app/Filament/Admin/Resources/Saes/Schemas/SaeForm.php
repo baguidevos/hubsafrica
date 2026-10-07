@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Saes\Schemas;
 
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -27,6 +28,10 @@ class SaeForm
                     ->label('Email address')
                     ->email()
                     ->default(null),
+                TextInput::make('website')
+                    ->label('Site Web')
+                    ->url()
+                    ->default(null),
                 TextInput::make('phone')
                     ->tel()
                     ->default(null),
@@ -38,6 +43,18 @@ class SaeForm
                 TextInput::make('status')
                     ->required()
                     ->default('ACTIVE'),
+                RichEditor::make('vision')
+                    ->label('Vision')
+                    ->columnSpanFull(),
+                RichEditor::make('mission')
+                    ->label('Mission')
+                    ->columnSpanFull(),
+                RichEditor::make('objectives')
+                    ->label('Objectifs')
+                    ->columnSpanFull(),
+                RichEditor::make('services')
+                    ->label('Services & Offre')
+                    ->columnSpanFull(),
             ]);
     }
 }

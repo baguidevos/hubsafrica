@@ -19,12 +19,17 @@ class Sae extends Model
         'slug',
         'description',
         'email',
+        'website',
         'phone',
         'address',
         'logo',
         'status',
         'default_admission_threshold',
         'default_waitlist_threshold',
+        'vision',
+        'mission',
+        'objectives',
+        'services',
     ];
 
     protected function casts(): array

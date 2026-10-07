@@ -17,7 +17,7 @@
                     $isWarning = $f['raw'] >= 30 && $f['raw'] < 60;
                     $toneClass = $isGood ? 'text-emerald-600' : ($isWarning ? 'text-amber-600' : 'text-rose-600');
                 @endphp
-                <div class="rounded-xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 p-3 shadow-sm transition hover:shadow-md flex flex-col justify-between">
+                <div class="rounded-xl border border-stone-200 dark:border-stone-100 p-3 shadow-sm transition hover:shadow-md flex flex-col justify-between">
                     <div>
                         <p class="text-[11px] font-semibold leading-tight text-stone-600 dark:text-stone-400 line-clamp-2 min-h-[2rem]">
                             {{ $f['label'] }}

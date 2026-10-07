@@ -18,6 +18,7 @@ use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Nagi\FilamentDaisyUiThemes\FilamentDaisyUiThemesPlugin;
 
 class CoachPanelProvider extends PanelProvider
 {
@@ -45,6 +46,10 @@ class CoachPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Coach/Widgets'), for: 'App\Filament\Coach\Widgets')
             ->widgets([])
+            ->plugins([
+                FilamentDaisyUiThemesPlugin::make()
+                    ->allThemes(),
+            ])
             ->databaseNotifications()
             ->middleware([
                 EncryptCookies::class,

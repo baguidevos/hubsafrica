@@ -2,6 +2,7 @@
 
 namespace App\Filament\Sae\Pages\Tenancy;
 
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Tenancy\EditTenantProfile;
@@ -31,13 +32,50 @@ class EditSaeProfile extends EditTenantProfile
                     ->label('Téléphone')
                     ->tel(),
 
+                TextInput::make('website')
+                    ->label('Site web institutionnel')
+                    ->url()
+                    ->placeholder('https://www.incubateur.africa'),
+
                 Textarea::make('address')
                     ->label('Adresse')
                     ->rows(2),
 
                 Textarea::make('description')
-                    ->label('Description & Mission')
-                    ->rows(4)
+                    ->label('Présentation synthétique')
+                    ->rows(3)
+                    ->columnSpanFull(),
+
+                RichEditor::make('vision')
+                    ->label('Vision stratégique')
+                    ->helperText('Quelle est la vision à long terme de votre structure ?')
+                    ->toolbarButtons([
+                        'bold', 'italic', 'underline', 'bulletList', 'orderedList', 'link', 'undo', 'redo',
+                    ])
+                    ->columnSpanFull(),
+
+                RichEditor::make('mission')
+                    ->label('Mission & Raison d\'être')
+                    ->helperText('Quelle est la mission opérationnelle auprès des startups ?')
+                    ->toolbarButtons([
+                        'bold', 'italic', 'underline', 'bulletList', 'orderedList', 'link', 'undo', 'redo',
+                    ])
+                    ->columnSpanFull(),
+
+                RichEditor::make('objectives')
+                    ->label('Objectifs prioritaires & Piliers d\'impact')
+                    ->helperText('Objectifs qualitatifs et quantitatifs (emplois, levées de fonds, parité, etc.).')
+                    ->toolbarButtons([
+                        'bold', 'italic', 'underline', 'bulletList', 'orderedList', 'link', 'undo', 'redo',
+                    ])
+                    ->columnSpanFull(),
+
+                RichEditor::make('services')
+                    ->label('Services & Offre d\'accompagnement')
+                    ->helperText('Mentorat, bootcamps, mise en relation investisseurs, fablab, hébergement...')
+                    ->toolbarButtons([
+                        'bold', 'italic', 'underline', 'bulletList', 'orderedList', 'link', 'undo', 'redo',
+                    ])
                     ->columnSpanFull(),
 
                 TextInput::make('default_admission_threshold')

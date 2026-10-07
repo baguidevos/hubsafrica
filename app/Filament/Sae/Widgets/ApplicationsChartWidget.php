@@ -11,6 +11,8 @@ class ApplicationsChartWidget extends ChartWidget
 
     protected ?string $heading = 'Candidatures — 6 derniers mois';
 
+    protected ?string $maxHeight = '300px';
+
     protected int|string|array $columnSpan = [
         'default' => 'full',
         'lg' => 2,

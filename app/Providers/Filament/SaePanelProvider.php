@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Sae\Pages\Auth\RegisterSaeUser;
 use App\Filament\Sae\Pages\Tenancy\EditSaeProfile;
 use App\Filament\Sae\Pages\Tenancy\RegisterSae;
 use App\Filament\Sae\Resources\EvaluationForms\EvaluationFormResource;
@@ -22,6 +23,7 @@ use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Nagi\FilamentDaisyUiThemes\FilamentDaisyUiThemesPlugin;
 use Packstub\FormBuilder\FormBuilderPlugin;
 
 class SaePanelProvider extends PanelProvider
@@ -36,6 +38,7 @@ class SaePanelProvider extends PanelProvider
             ->maxContentWidth(Width::Full)
             ->spa(hasPrefetching: true)
             ->login()
+            ->registration(RegisterSaeUser::class)
             ->colors([
                 'primary' => Color::Teal,
             ])
@@ -58,6 +61,8 @@ class SaePanelProvider extends PanelProvider
                 FormBuilderPlugin::make()
                     ->resource(EvaluationFormResource::class),
                 FilamentShieldPlugin::make(),
+                FilamentDaisyUiThemesPlugin::make()
+                    ->allThemes(),
             ])
             ->databaseNotifications()
             ->middleware([

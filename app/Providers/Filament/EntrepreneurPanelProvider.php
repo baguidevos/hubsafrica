@@ -18,6 +18,7 @@ use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Nagi\FilamentDaisyUiThemes\FilamentDaisyUiThemesPlugin;
 
 class EntrepreneurPanelProvider extends PanelProvider
 {
@@ -46,6 +47,10 @@ class EntrepreneurPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Entrepreneur/Widgets'), for: 'App\Filament\Entrepreneur\Widgets')
             ->widgets([])
+            ->plugins([
+                FilamentDaisyUiThemesPlugin::make()
+                    ->allThemes(),
+            ])
             ->databaseNotifications()
             ->middleware([
                 EncryptCookies::class,

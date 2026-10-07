@@ -107,14 +107,20 @@
 
                 <div class="pt-8 space-y-3">
                     <a
-                        href="/sae"
+                        href="/sae/register"
                         class="block w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs text-center shadow-xs transition"
                     >
-                        Connexion Espace SAE &rarr;
+                        Enregistrer ma structure SAE &rarr;
+                    </a>
+                    <a
+                        href="/sae"
+                        class="block w-full py-2.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-xs text-center transition"
+                    >
+                        Déjà inscrit ? Connexion Espace SAE
                     </a>
                     <a
                         href="{{ route('public.structures') }}"
-                        class="block w-full py-2.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-xs text-center transition"
+                        class="block w-full py-2 rounded-xl text-slate-500 hover:text-slate-800 text-[11px] text-center transition"
                     >
                         Consulter l'annuaire des membres
                     </a>

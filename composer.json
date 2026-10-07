@@ -18,6 +18,7 @@
         "livewire/blaze": "^1.0",
         "livewire/livewire": "^4.1",
         "matondojk/filament-event-calendar": "^1.1",
+        "osamanagi/filament-daisy-ui-themes": "^1.1",
         "packstub/filament-form-builder": "^1.2"
     },
     "require-dev": {

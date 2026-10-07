@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5d41aef0d77887ba39bb0883de019404",
+    "content-hash": "0a84f2614bad46f013b2595683215694",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -4351,6 +4351,84 @@
                 }
             ],
             "time": "2025-09-03T16:03:54+00:00"
+        },
+        {
+            "name": "osamanagi/filament-daisy-ui-themes",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/osamanagi/filament-daisy-ui-themes.git",
+                "reference": "1c1c7fdf8f880240e58d718cf306a166f800e1a0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/osamanagi/filament-daisy-ui-themes/zipball/1c1c7fdf8f880240e58d718cf306a166f800e1a0",
+                "reference": "1c1c7fdf8f880240e58d718cf306a166f800e1a0",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^4.0 || ^5.0",
+                "php": "^8.2",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^8.0",
+                "orchestra/testbench": "^9.0|^10.0|^11.0",
+                "pestphp/pest": "^3.7|^4.0",
+                "pestphp/pest-plugin-arch": "^3.0|^4.0",
+                "pestphp/pest-plugin-laravel": "^3.0|^4.0",
+                "rector/rector": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "FilamentDaisyUiThemes": "Nagi\\FilamentDaisyUiThemes\\Facades\\FilamentDaisyUiThemes"
+                    },
+                    "providers": [
+                        "Nagi\\FilamentDaisyUiThemes\\FilamentDaisyUiThemesServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Nagi\\FilamentDaisyUiThemes\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "osamanagi",
+                    "email": "osamanagiworks@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Integrating Daisy Ui themes into Filament apps",
+            "homepage": "https://github.com/osamanagi/filament-daisy-ui-themes",
+            "keywords": [
+                "filament",
+                "filament-daisy-ui-themes",
+                "filament-plugin",
+                "filamentphp",
+                "laravel",
+                "osamanagi"
+            ],
+            "support": {
+                "issues": "https://github.com/osamanagi/filament-daisy-ui-themes/issues",
+                "source": "https://github.com/osamanagi/filament-daisy-ui-themes"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/osamanagi",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-10-01T19:11:54+00:00"
         },
         {
             "name": "packstub/filament-form-builder",
