@@ -78,8 +78,15 @@
                         </div>
                     </div>
 
-                    <div class="mt-6 pt-4 border-t border-gray-100 dark:border-white/5 flex items-center justify-between">
-                        <span class="text-xs font-medium text-gray-400 dark:text-gray-500">Prêt au déploiement</span>
+                    <div class="mt-6 pt-4 border-t border-gray-100 dark:border-white/5 flex flex-wrap items-center justify-between gap-2">
+                        <a
+                            href="{{ \App\Filament\Sae\Pages\AccompanimentTemplateDetailPage::getUrl(['templateKey' => $key]) }}"
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-700 hover:text-gray-950 bg-gray-100 hover:bg-gray-200 dark:text-gray-300 dark:bg-white/5 dark:hover:bg-white/10 transition"
+                        >
+                            <x-heroicon-m-book-open class="w-3.5 h-3.5 text-primary-500" />
+                            <span>Guide A-Z &amp; Liens Drive</span>
+                        </a>
+
                         <x-filament::button
                             wire:click="mountAction('deploy', { template_key: '{{ $key }}', template_title: '{{ addslashes($template->getTitle()) }}' })"
                             color="primary"

@@ -207,6 +207,83 @@ class StartupLoopAfricinnovTemplate implements AccompanimentTemplateInterface
         ];
     }
 
+    public function getOfficialDriveResources(): array
+    {
+        return [
+            [
+                'title' => 'Kit Pédagogique Officiel Afric\'innov & GIZ',
+                'description' => 'Dossier Drive contenant l\'ensemble des canevas méthodologiques : Problem-Solution Fit, Product-Market Fit, Empathy Maps et Personas.',
+                'url' => 'https://drive.google.com/drive/folders/1AfricinnovStartupLoopKitPedagogiqueExemple',
+                'type' => 'FOLDER',
+                'is_official' => true,
+            ],
+            [
+                'title' => 'Matrice Excel de Suivi M&E & Feuilles d\'Émargement',
+                'description' => 'Classeur de supervision opérationnelle des 16 séances de coaching individuel (8 C1 + 8 C2) et pointage hybride.',
+                'url' => 'https://docs.google.com/spreadsheets/d/1AfricinnovSuiviMonitoringEvaluationCoachingExemple',
+                'type' => 'SPREADSHEET',
+                'is_official' => true,
+            ],
+            [
+                'title' => 'Grille d\'Audit & Diagnostic Initial 6 Dimensions (6D)',
+                'description' => 'Grille d\'évaluation de maturité préalable de la startup sur les 6 dimensions clés d\'Afric\'innov.',
+                'url' => 'https://docs.google.com/spreadsheets/d/1AfricinnovGrilleAudit6DimensionsExemple',
+                'type' => 'SPREADSHEET',
+                'is_official' => true,
+            ],
+        ];
+    }
+
+    public function getDetailedGuide(): array
+    {
+        return [
+            'overview' => [
+                'origin' => 'Programme Afric\'innov soutenu par l\'Agence Française de Développement (AFD) et la GIZ.',
+                'philosophy' => 'Approche itérative centrée sur le Problem-Solution Fit (PSF) puis le Product-Market Fit (PMF), avec obligation de confrontation terrain.',
+                'target_audience' => 'Startups innovantes ou projets en amorçage à fort potentiel technologique ou d\'usage en Afrique subsaharienne.',
+                'rhythm' => 'Cycle semestriel intensif (26 semaines) combinant 2 bootcamps de formation (F1 & F2) et 16 séances de coaching individuel (C1 & C2).',
+            ],
+            'rules' => [
+                'Seuil de présence minimale' => 'Tout bénéficiaire ayant un taux d\'assiduité inférieur à 75% aux séances de coaching individuel déclenche une alerte de décrochage.',
+                'Validation des livrables' => 'Chaque livrable startup doit atteindre une note minimale de 70/100 pour être validé par le coach référent.',
+                'Emargements obligatoires' => 'Les 6 créneaux de formation collective (J1-J3 matin/après-midi) font l\'objet d\'une feuille d\'émargement signée et archivée en GED.',
+                'Comité de clôture' => 'La certification finale est décernée après franchissement des seuils d\'auto-évaluation sur les 5 axes d\'impact.',
+            ],
+            'pedagogical_phases' => [
+                [
+                    'phase' => 'Phase 1 : Préparation & Sélection',
+                    'detail' => 'Audit 360° via le Diagnostic Canvas 6 dimensions. Établissement de la fiche d\'engagement et signature de la convention d\'incubation tripartite.',
+                    'coach_tips' => 'Vérifier la disponibilité à plein temps des fondateurs et leur clarté sur le problème initial.',
+                ],
+                [
+                    'phase' => 'Phase 2 : Formation 1 (Problem-Solution Fit)',
+                    'detail' => 'Bootcamp intensif de 3 jours (6 créneaux émargés). Formalisation du Problem Statement, des personas, de l\'Empathy Map et du plan de test du MVP.',
+                    'coach_tips' => 'Insister sur l\'observation terrain des utilisateurs plutôt que sur les suppositions théoriques.',
+                ],
+                [
+                    'phase' => 'Phase 3 : Coaching 1 PSF Terrain',
+                    'detail' => '8 séances individuelles de coaching bimensuel. Obligation de déposer un canevas préparatoire 24h avant et un compte-rendu dans les 48h. Validation des retours de 10 testeurs.',
+                    'coach_tips' => 'Aider le fondateur à analyser les données qualitatives et décider d\'un pivot si nécessaire.',
+                ],
+                [
+                    'phase' => 'Phase 4 : Formation 2 (Product-Market Fit)',
+                    'detail' => 'Bootcamp de 3 jours axé sur les métriques de traction (CAC, LTV, churn), la stratégie d\'acquisition des 100 premiers clients et la modélisation financière.',
+                    'coach_tips' => 'Focaliser les exercices sur les canaux d\'acquisition scalables et peu coûteux.',
+                ],
+                [
+                    'phase' => 'Phase 5 : Coaching 2 PMF Terrain',
+                    'detail' => '8 séances individuelles orientées exécution commerciale, suivi hebdomadaire de traction et structuration du pitch deck d\'investment readiness.',
+                    'coach_tips' => 'Suivre le pipeline commercial et préparer la soutenance devant le jury de certification.',
+                ],
+                [
+                    'phase' => 'Phase 6 : Certification & Clôture',
+                    'detail' => 'Auto-évaluation sur les 5 axes d\'impact, délibération du jury Afric\'innov et plan d\'action post-accompagnement à 6 mois.',
+                    'coach_tips' => 'Consigner le bilan dans le rapport M&E et formaliser les recommandations pour les bailleurs.',
+                ],
+            ],
+        ];
+    }
+
     public function apply(Sae $sae, Program $program, ?Cohort $cohort = null): array
     {
         return DB::transaction(function () use ($sae, $program, $cohort) {

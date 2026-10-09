@@ -7,6 +7,7 @@ use App\Enums\DeliverableSubmissionStatus;
 use App\Enums\DeliverableTarget;
 use App\Enums\SessionPeriodOfDay;
 use App\Filament\Sae\Pages\AccompanimentMonitoringDashboard;
+use App\Filament\Sae\Pages\AccompanimentTemplateDetailPage;
 use App\Filament\Sae\Pages\AccompanimentTemplatesPage;
 use App\Models\Coach;
 use App\Models\CoachingSession;
@@ -16,6 +17,7 @@ use App\Models\DeliverableDefinition;
 use App\Models\DeliverableSubmission;
 use App\Models\Program;
 use App\Models\ProgramPhase;
+use App\Models\Resource;
 use App\Models\Sae;
 use App\Models\User;
 use App\Services\AccompanimentTemplateService;
@@ -226,4 +228,50 @@ test('cube methodology template deploys full pack with PAS, OHADA, and KPITAL IN
 
     expect(ProgramPhase::where('program_id', $program->id)->count())->toBe(6);
     expect(CohortPhase::where('cohort_id', $cohort->id)->count())->toBe(6);
+});
+
+test('accompaniment template detail page loads for startup loop and displays A-Z tabs and drive resources', function () {
+    Livewire::test(AccompanimentTemplateDetailPage::class, ['templateKey' => 'startup-loop-africinnov'])
+        ->assertSuccessful()
+        ->assertSee('Startup Loop (Afric\'innov / SAE)')
+        ->assertSee('Problem-Solution Fit')
+        ->assertSet('activeTab', 'phases')
+        ->call('$set', 'activeTab', 'drive')
+        ->assertSee('Kit Pédagogique Officiel Afric\'innov & GIZ')
+        ->assertSee('Matrice Excel de Suivi M&E & Feuilles d\'Émargement');
+});
+
+test('accompaniment template detail page loads for cube and displays full A-Z methodology and drive links', function () {
+    Livewire::test(AccompanimentTemplateDetailPage::class, ['templateKey' => 'cube-saei-kpital'])
+        ->assertSuccessful()
+        ->assertSee('Méthodologie CUBE (SAEI CUBE & KPITAL INVEST)')
+        ->assertSee('Diagnostic Initial, Sélection & Cadrage (PAS)')
+        ->assertSee('Validation du Modèle Économique Complet')
+        ->assertSee('Accélération & #KPITAL_INVEST')
+        ->call('$set', 'activeTab', 'drive')
+        ->assertSee('Formulaire de Diagnostic Initial d\'Entrée')
+        ->assertSee('Modèle de Plan de Travail & Plan d\'Accompagnement Personnalisé (PAS)')
+        ->assertSee('Virtual Data Room (VDR)');
+});
+
+test('accompaniment template detail page allows adding and deleting custom google drive links', function () {
+    $component = Livewire::test(AccompanimentTemplateDetailPage::class, ['templateKey' => 'cube-saei-kpital'])
+        ->set('newDriveTitle', 'Dossier Drive Test SAE Promotion 2026')
+        ->set('newDriveUrl', 'https://drive.google.com/drive/folders/test12345')
+        ->set('newDriveDescription', 'Dossier partagé contenant les fiches de suivi.')
+        ->call('saveInlineDriveLink')
+        ->assertHasNoErrors();
+
+    $resource = Resource::where('sae_id', $this->sae->id)
+        ->where('title', 'Dossier Drive Test SAE Promotion 2026')
+        ->where('category', 'TEMPLATE_DRIVE_cube-saei-kpital')
+        ->first();
+
+    expect($resource)->not->toBeNull()
+        ->and($resource->url)->toBe('https://drive.google.com/drive/folders/test12345')
+        ->and($resource->type)->toBe('LIEN_EXTERNE');
+
+    $component->call('deleteCustomDriveLink', $resource->id);
+
+    expect(Resource::find($resource->id))->toBeNull();
 });

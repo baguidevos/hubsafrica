@@ -256,6 +256,120 @@ class CubeMethodologyTemplate implements AccompanimentTemplateInterface
         ];
     }
 
+    public function getOfficialDriveResources(): array
+    {
+        return [
+            [
+                'title' => 'Formulaire de Diagnostic Initial d\'Entrée (Dossier Téléchargeable)',
+                'description' => 'Dossier Drive contenant le formulaire d\'inscription et de diagnostic préalable pour auditer la maturité du projet.',
+                'url' => 'https://drive.google.com/drive/folders/1g3R5o3Zrf2YF5I7657kiFvAvUyIuLQVg?usp=sharing',
+                'type' => 'FOLDER',
+                'is_official' => true,
+            ],
+            [
+                'title' => 'Modèle de Plan de Travail & Plan d\'Accompagnement Personnalisé (PAS)',
+                'description' => 'Dossier Drive avec le modèle de Plan de travail individualisé et le modèle de Plan d\'Accompagnement Personnalisé (PAS).',
+                'url' => 'https://drive.google.com/drive/folders/1kbEFq9VVkwgKJOSLLCfxMy1jKrckmsFV?usp=sharing',
+                'type' => 'FOLDER',
+                'is_official' => true,
+            ],
+            [
+                'title' => 'Documents Officiels de Formalisation de l\'Accompagnement',
+                'description' => 'Dossier Drive des conventions d\'incubation, chartes d\'engagement et contrats types de la SAEI CUBE.',
+                'url' => 'https://drive.google.com/drive/folders/1OTCCOJRxTTkcrNKdlvqxmtWO_MWIcjb7?usp=sharing',
+                'type' => 'FOLDER',
+                'is_official' => true,
+            ],
+            [
+                'title' => 'Boîte à Outils Complète d\'Accompagnement Entrepreneuriat CUBE',
+                'description' => 'Dossier Drive des différents outils, canevas et guides pratiques utilisés durant tout le déroulement de l\'accompagnement.',
+                'url' => 'https://drive.google.com/drive/folders/1P5mhRplF599oTEFhHAFbrvroYOld2Y5B?usp=sharing',
+                'type' => 'FOLDER',
+                'is_official' => true,
+            ],
+            [
+                'title' => 'Formulaire d\'Évaluation & Scoring de Projet (Par l\'Entrepreneur-e)',
+                'description' => 'Tableur Google Sheets officiel d\'évaluation et de scoring avec justifications et feedback dans la section Feedback Entrepreneur-e.',
+                'url' => 'https://docs.google.com/spreadsheets/d/1e_6lo4AR_82GcnBrgkhkz9y7nsoZvqx/edit?usp=sharing&ouid=101144735494555714130&rtpof=true&sd=true',
+                'type' => 'SPREADSHEET',
+                'is_official' => true,
+            ],
+            [
+                'title' => 'Formulaire de Checking & Pièces de la Virtual Data Room (VDR)',
+                'description' => 'Tableur Google Sheets de vérification rigoureuse de la présence et conformité de l\'ensemble des pièces du Data Room.',
+                'url' => 'https://docs.google.com/spreadsheets/d/1J95rWQjx2aUIcci2AhrS_NAPHICbHIcW/edit?usp=sharing&ouid=101144735494555714130&rtpof=true&sd=true',
+                'type' => 'SPREADSHEET',
+                'is_official' => true,
+            ],
+            [
+                'title' => 'Support de Formation Officiel Levée de Fonds #KPITAL_INVEST',
+                'description' => 'Support de formation complet sur la levée de fonds, les Business Angels, la valorisation d\'entreprise et le pitch deck.',
+                'url' => 'https://drive.google.com/file/d/1eHz9t2cMzULQchZuGVyuew2GCVwH2cEf/view?usp=sharing',
+                'type' => 'DOCUMENT',
+                'is_official' => true,
+            ],
+        ];
+    }
+
+    public function getDetailedGuide(): array
+    {
+        return [
+            'overview' => [
+                'institution' => 'C.U.B.E. (Centre Urbain de Business et d\'Entrepreneuriat), SAEI et holding immatriculée au Togo.',
+                'entites_liees' => 'CUBE ACADEMY (centre de formation certifiante agréé par l\'État N°2025/101-102), programme #KPITAL_INVEST, PRIME CLASS.',
+                'experience' => 'Plus de 10 ans d\'expertise, plus de 300 projets incubés, plus de 5 000 jeunes et femmes formés, réseau de +50 Business Angels.',
+                'implantation' => 'Siège à Lomé, implantations régionales à Aného, Kpalimé et Kara, partenariats panafricains.',
+                'vision_2028' => 'Devenir une référence africaine incontournable dans l\'accompagnement des startups innovantes, la formation aux compétences digitales et la mobilisation de financements structurants.',
+            ],
+            'valeurs' => [
+                'Discipline' => 'Respect des engagements, rigueur dans l\'exécution, ponctualité, préparation minutieuse des séances et livraison à temps des activités prévues.',
+                'Intégrité' => 'Honnêteté, transparence, responsabilité éthique dans la gestion des ressources, relations saines avec les partenaires et traçabilité des décisions.',
+                'Excellence' => 'Recherche continue de qualité dans les services et livrables, rigueur d\'accompagnement et satisfaction maximale des bénéficiaires.',
+                'Unicité' => 'Valorisation de chaque talent, idée et manière unique de contribuer, conception de solutions originales et adaptées aux réalités africaines.',
+            ],
+            'objectifs_strategiques' => [
+                'Objectif 1 : Accompagner 200 entreprises et startups d\'ici 2028' => 'Sélectionner et suivre un volume croissant de projets à fort potentiel avec un haut taux de rétention et de concrétisation marché.',
+                'Objectif 2 : Mobiliser au moins 20 financements structurants' => 'Préparer les projets à l\'investissement (#KPITAL_INVEST) et connecter les fondateurs aux Business Angels et fonds de capital.',
+                'Objectif 3 : Étendre ses activités dans au moins 5 pays africains' => 'Déployer le modèle CUBE hors du Togo par des partenariats et des promotions pilotes régionales.',
+                'Objectif 4 : Garantir au moins 40 % de femmes bénéficiaires' => 'Ciblage volontariste, aménagements d\'horaires, bourses et suivi désagrégé par genre.',
+                'Objectif 5 : Structurer un fonds d\'investissement interne dédié' => 'Mécanisme d\'amorçage en capital pour accélérer les champions innovants locaux.',
+                'Objectif 6 : Écosystème intégré Formation - Incubation - Financement' => 'Chaîne de valeur unique et fluide de la montée en compétences jusqu\'au passage à l\'échelle.',
+            ],
+            'pedagogical_phases' => [
+                [
+                    'phase' => 'Phase 1 : Diagnostic Initial, Sélection & Cadrage (PAS)',
+                    'detail' => 'L\'accompagnement démarre par le remplissage du diagnostic en ligne (saeicube.com/diagnostic). Formulation du Plan de travail individualisé et du Plan d\'Accompagnement Personnalisé (PAS). Signature de la convention d\'incubation CUBE.',
+                    'coach_tips' => 'Auditer avec rigueur les preuves fournies par le candidat et formaliser des objectifs réalistes et mesurables dans le PAS.',
+                ],
+                [
+                    'phase' => 'Phase 2 : Préincubation — Validation du Business Model Complet (17 étapes)',
+                    'detail' => 'Approche problème et Design Thinking. Segmentation fine de la clientèle, analyse approfondie de la concurrence directe et indirecte, promesse de valeur, spécifications du produit/service, canaux de distribution, relation client (CRM), flux de revenus, structure de coûts, KPIs et avantages compétitifs.',
+                    'coach_tips' => 'Rappeler que partir d\'un problème humain réel sur le continent est la seule garantie de viabilité économique.',
+                ],
+                [
+                    'phase' => 'Phase 3 : Incubation — Organisation, Gouvernance & Équipe',
+                    'detail' => 'Renforcement de la posture et des compétences de l\'entrepreneur. Organigramme de l\'entreprise, gestion des ressources humaines (associés, employés clés, board), conception des fiches de poste et CVs, politique de Responsabilité Sociétale des Entreprises (RSE), propriété intellectuelle et gestion des stocks.',
+                    'coach_tips' => 'Structurer dès l\'incubation les rôles pour éviter les conflits d\'associés et ancrer la culture d\'éthique et de discipline.',
+                ],
+                [
+                    'phase' => 'Phase 4 : Incubation — Gestion Financière, Comptabilité & Juridique OHADA',
+                    'detail' => 'Planification budgétaire, modèle financier prévisionnel sur 3 ans, gestion de trésorerie. Mise en place d\'une comptabilité probante avec traçabilité stricte des pièces justificatives. Choix de la forme juridique adaptée, conformité aux règles OHADA et rédaction des contrats d\'affaires types.',
+                    'coach_tips' => 'Beaucoup d\'entreprises ratent des opportunités faute de traces comptables écrites ; exiger une rigueur documentaire absolue.',
+                ],
+                [
+                    'phase' => 'Phase 5 : Accélération & #KPITAL_INVEST — Préparation à la Levée de Fonds',
+                    'detail' => 'Auto-évaluation et scoring par l\'entrepreneur avec preuves tangibles. Constitution méthodique de la Virtual Data Room (VDR - espace sécurisé regroupant les pièces commerciales, juridiques, techniques et financières). Analyse des typologies d\'investisseurs (Business Angels vs Banques). Valorisation d\'entreprise (distinction essentielle valeur vs prix). Pitch Deck de 10 à 15 diapositives percutantes.',
+                    'coach_tips' => 'Entraîner le porteur aux questions pièges de Due Diligence et adapter le discours au profil de l\'investisseur (impact vs rentabilité financière).',
+                ],
+                [
+                    'phase' => 'Phase 6 : Connexion Investisseurs, Demo Day & Clôture',
+                    'detail' => 'Présentations continues tout au long du cycle devant les investisseurs pour apprendre de ses erreurs. Rencontres avec le réseau de Business Angels (+50 membres). Négociation d\'accords d\'augmentation de capital. Grand événement de clôture en fin d\'année. Remise des certificats CUBE ACADEMY et feuille de route post-incubation.',
+                    'coach_tips' => 'Préparer le closing des transactions et formaliser les contrats de suivi post-programme.',
+                ],
+            ],
+        ];
+    }
+
     public function apply(Sae $sae, Program $program, ?Cohort $cohort = null): array
     {
         return DB::transaction(function () use ($sae, $program, $cohort) {
