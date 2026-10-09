@@ -1,32 +1,70 @@
 <x-filament-panels::page>
     @php
         $d = $this->getAnalyticsData();
+        $tenant = $this->getActiveTenant();
+        $branding = app(\App\Services\ReportExportService::class)->getTenantBranding($tenant);
     @endphp
 
     <div class="space-y-6">
-        <!-- En-tête informatif avec intégration Filament native -->
+        <!-- En-tête informatif avec Logo & Identité du Tenant -->
         <x-filament::section>
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                    <div class="flex items-center gap-2">
-                        <x-heroicon-o-presentation-chart-line class="w-6 h-6 text-primary-600 dark:text-primary-400" />
-                        <h3 class="text-lg font-bold text-gray-950 dark:text-white">
-                            Centre d'analyse & Diagnostic stratégique du portefeuille
-                        </h3>
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+                <div class="flex items-start gap-4">
+                    @if(!empty($branding['src']))
+                        <div class="w-14 h-14 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-gray-900 p-1 flex items-center justify-center shrink-0 shadow-xs">
+                            <img src="{{ $branding['src'] }}" alt="{{ $tenant?->name }}" class="max-h-full max-w-full object-contain">
+                        </div>
+                    @else
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-primary-600 to-teal-700 text-white font-black text-lg flex items-center justify-center shrink-0 shadow-xs">
+                            {{ $branding['initials'] }}
+                        </div>
+                    @endif
+
+                    <div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <h3 class="text-lg font-bold text-gray-950 dark:text-white">
+                                Centre d'analyse & Diagnostic stratégique du portefeuille
+                            </h3>
+                            <x-filament::badge color="primary">
+                                {{ $tenant?->name ?? 'Hub Africa SAE' }}
+                            </x-filament::badge>
+                        </div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 max-w-2xl">
+                            Tableaux croisés de l'entonnoir d'admission, de l'inclusion démographique (parité genre, territoires), de l'intensité d'accompagnement et des volumes de financement mobilisés.
+                        </p>
                     </div>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 max-w-2xl">
-                        Tableaux croisés de l'entonnoir d'admission, de l'inclusion démographique (parité genre, territoires), de l'intensité d'accompagnement et des volumes de financement mobilisés.
-                    </p>
                 </div>
-                <div class="flex items-center gap-2">
+
+                <div class="flex flex-wrap items-center gap-2.5">
                     <x-filament::button
+                        :href="$this->getCsvUrl()"
+                        tag="a"
                         color="gray"
+                        icon="heroicon-o-table-cells"
+                        size="sm"
+                    >
+                        Export CSV
+                    </x-filament::button>
+
+                    <x-filament::button
+                        :href="$this->getDownloadUrl()"
+                        tag="a"
+                        color="gray"
+                        icon="heroicon-o-arrow-down-tray"
+                        size="sm"
+                    >
+                        Télécharger (.html)
+                    </x-filament::button>
+
+                    <x-filament::button
+                        :href="$this->getPrintUrl()"
+                        tag="a"
+                        target="_blank"
+                        color="primary"
                         icon="heroicon-o-printer"
                         size="sm"
-                        onclick="window.print()"
-                        type="button"
                     >
-                        Imprimer la synthèse
+                        Imprimer / Export PDF
                     </x-filament::button>
                 </div>
             </div>

@@ -9,6 +9,8 @@ use App\Enums\SessionPeriodOfDay;
 use App\Filament\Sae\Pages\AccompanimentMonitoringDashboard;
 use App\Filament\Sae\Pages\AccompanimentTemplateDetailPage;
 use App\Filament\Sae\Pages\AccompanimentTemplatesPage;
+use App\Filament\Sae\Pages\AnalyticsPage;
+use App\Filament\Sae\Pages\ReportsPage;
 use App\Models\Coach;
 use App\Models\CoachingSession;
 use App\Models\Cohort;
@@ -31,6 +33,10 @@ beforeEach(function () {
     ]);
 
     $this->user = User::first() ?? User::factory()->create();
+    if (! $this->user->canAccessTenant($this->sae)) {
+        $this->user->saes()->syncWithoutDetaching([$this->sae->id => ['role' => 'RESPONSABLE']]);
+    }
+
     $this->actingAs($this->user);
 
     Filament::setTenant($this->sae);
@@ -274,4 +280,80 @@ test('accompaniment template detail page allows adding and deleting custom googl
     $component->call('deleteCustomDriveLink', $resource->id);
 
     expect(Resource::find($resource->id))->toBeNull();
+});
+
+test('reports page and analytics page load successfully with tenant branding and action buttons', function () {
+    // S'assurer que le user a accès au tenant
+    if (! $this->user->saes->contains($this->sae)) {
+        $this->user->saes()->syncWithoutDetaching([$this->sae->id => ['role' => 'RESPONSABLE']]);
+    }
+
+    Livewire::test(ReportsPage::class)
+        ->assertSuccessful()
+        ->assertSee($this->sae->name)
+        ->assertSee('Export CSV')
+        ->assertSee('Télécharger (.html)')
+        ->assertSee('Imprimer / Export PDF');
+
+    Livewire::test(AnalyticsPage::class)
+        ->assertSuccessful()
+        ->assertSee($this->sae->name)
+        ->assertSee('Diagnostic')
+        ->assertSee('Export CSV')
+        ->assertSee('Télécharger (.html)')
+        ->assertSee('Imprimer / Export PDF');
+});
+
+test('printable impact report view and download endpoints return high fidelity content with tenant logo', function () {
+    if (! $this->user->saes->contains($this->sae)) {
+        $this->user->saes()->syncWithoutDetaching([$this->sae->id => ['role' => 'RESPONSABLE']]);
+    }
+
+    $printUrl = route('sae.reports.impact.print', ['tenant' => $this->sae->slug]);
+    $response = $this->get($printUrl);
+
+    $response->assertSuccessful()
+        ->assertSee($this->sae->name)
+        ->assertSee('Suivi-Évaluation')
+        ->assertSee('Hub Africa')
+        ->assertSee('admission au programme');
+
+    $downloadUrl = route('sae.reports.impact.download', ['tenant' => $this->sae->slug]);
+    $downloadResponse = $this->get($downloadUrl);
+
+    $downloadResponse->assertSuccessful()
+        ->assertHeader('content-type', 'text/html; charset=UTF-8');
+
+    $csvUrl = route('sae.reports.impact.csv', ['tenant' => $this->sae->slug]);
+    $csvResponse = $this->get($csvUrl);
+
+    $csvResponse->assertSuccessful()
+        ->assertHeader('content-type', 'text/csv; charset=UTF-8');
+});
+
+test('printable analytics report view and download endpoints return high fidelity content with tenant logo', function () {
+    if (! $this->user->saes->contains($this->sae)) {
+        $this->user->saes()->syncWithoutDetaching([$this->sae->id => ['role' => 'RESPONSABLE']]);
+    }
+
+    $printUrl = route('sae.reports.analytics.print', ['tenant' => $this->sae->slug]);
+    $response = $this->get($printUrl);
+
+    $response->assertSuccessful()
+        ->assertSee($this->sae->name)
+        ->assertSee('Diagnostic Stratégique & Performance du Portefeuille')
+        ->assertSee('Entonnoir de Sélection & Taux de Conversion')
+        ->assertSee('Hub Africa');
+
+    $downloadUrl = route('sae.reports.analytics.download', ['tenant' => $this->sae->slug]);
+    $downloadResponse = $this->get($downloadUrl);
+
+    $downloadResponse->assertSuccessful()
+        ->assertHeader('content-type', 'text/html; charset=UTF-8');
+
+    $csvUrl = route('sae.reports.analytics.csv', ['tenant' => $this->sae->slug]);
+    $csvResponse = $this->get($csvUrl);
+
+    $csvResponse->assertSuccessful()
+        ->assertHeader('content-type', 'text/csv; charset=UTF-8');
 });

@@ -7,6 +7,7 @@ use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\OrientationController;
 use App\Http\Controllers\Public\ProgramPublicController;
 use App\Http\Controllers\Public\StructurePublicController;
+use App\Http\Controllers\Sae\ReportPrintController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -56,3 +57,14 @@ Route::get('/comptes-test', [DevLoginController::class, 'index'])->name('dev.com
 Route::get('/demo', [DevLoginController::class, 'index'])->name('dev.demo');
 Route::get('/demo/login', [DevLoginController::class, 'login'])->name('dev.login');
 Route::get('/demo/logout', [DevLoginController::class, 'logout'])->name('dev.logout');
+
+// Édition & Exportation des Rapports Institutionnels SAE (Impression haute fidélité, HTML autonome & CSV)
+Route::middleware(['auth'])->prefix('sae/{tenant:slug}/rapports')->name('sae.reports.')->group(function () {
+    Route::get('/impact/print', [ReportPrintController::class, 'impactPrint'])->name('impact.print');
+    Route::get('/impact/download', [ReportPrintController::class, 'impactDownload'])->name('impact.download');
+    Route::get('/impact/csv', [ReportPrintController::class, 'impactCsv'])->name('impact.csv');
+
+    Route::get('/analytics/print', [ReportPrintController::class, 'analyticsPrint'])->name('analytics.print');
+    Route::get('/analytics/download', [ReportPrintController::class, 'analyticsDownload'])->name('analytics.download');
+    Route::get('/analytics/csv', [ReportPrintController::class, 'analyticsCsv'])->name('analytics.csv');
+});

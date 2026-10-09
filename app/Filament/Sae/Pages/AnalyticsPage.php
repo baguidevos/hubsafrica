@@ -2,15 +2,12 @@
 
 namespace App\Filament\Sae\Pages;
 
-use App\Enums\CoachingSessionType;
-use App\Models\Application;
-use App\Models\CoachingSession;
-use App\Models\Enrollment;
-use App\Models\Entrepreneur;
-use App\Models\FundingRecord;
-use App\Models\Project;
+use App\Models\Sae;
+use App\Services\ReportExportService;
 use BackedEnum;
+use Filament\Facades\Filament;
 use Filament\Pages\Page;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AnalyticsPage extends Page
 {
@@ -26,92 +23,56 @@ class AnalyticsPage extends Page
 
     protected static ?int $navigationSort = 3;
 
+    public function getActiveTenant(): ?Sae
+    {
+        return Filament::getTenant();
+    }
+
     public function getAnalyticsData(): array
     {
-        // 1. Entonnoir de sélection
-        $deposees = Application::where('status', '!=', 'BROUILLON')->count();
-        $examinees = Application::whereNotNull('reviewed_at')->count();
-        if ($examinees === 0 && $deposees > 0) {
-            $examinees = $deposees;
-        }
-        $acceptees = Application::where('status', 'ACCEPTEE')->count();
-        $integrees = Enrollment::count();
-        if ($integrees === 0 && $acceptees > 0) {
-            $integrees = min($acceptees, 15);
+        $tenant = $this->getActiveTenant();
+        $service = app(ReportExportService::class);
+
+        if ($tenant) {
+            return $service->getAnalyticsData($tenant);
         }
 
-        $funnel = [
-            ['stage' => 'Candidatures déposées', 'count' => max($deposees, 1), 'pct' => 100],
-            ['stage' => 'Candidatures examinées', 'count' => $examinees, 'pct' => $deposees > 0 ? round(($examinees / max(1, $deposees)) * 100) : 0],
-            ['stage' => 'Candidatures admises', 'count' => $acceptees, 'pct' => $deposees > 0 ? round(($acceptees / max(1, $deposees)) * 100) : 0],
-            ['stage' => 'Intégrés en cohorte', 'count' => $integrees, 'pct' => $deposees > 0 ? round(($integrees / max(1, $deposees)) * 100) : 0],
-        ];
+        return $service->getAnalyticsData(new Sae(['name' => 'Hub Africa SAE', 'slug' => 'sae']));
+    }
 
-        // 2. Démographie & Parité
-        $totalEnt = max(Entrepreneur::count(), 1);
-        $femmes = Entrepreneur::where('gender', 'F')->count();
-        $hommes = Entrepreneur::where('gender', 'M')->count();
-        $pctFemmes = round(($femmes / $totalEnt) * 100);
-        $pctHommes = round(($hommes / $totalEnt) * 100);
+    public function getPrintUrl(): string
+    {
+        $tenant = $this->getActiveTenant();
 
-        $territoires = Entrepreneur::whereNotNull('territory')
-            ->selectRaw('territory, count(*) as count')
-            ->groupBy('territory')
-            ->orderByDesc('count')
-            ->limit(5)
-            ->get();
+        return route('sae.reports.analytics.print', [
+            'tenant' => $tenant?->slug ?? 'default',
+        ]);
+    }
 
-        $niveauxEtudes = Entrepreneur::whereNotNull('education_level')
-            ->selectRaw('education_level, count(*) as count')
-            ->groupBy('education_level')
-            ->orderByDesc('count')
-            ->limit(5)
-            ->get();
+    public function getDownloadUrl(): string
+    {
+        $tenant = $this->getActiveTenant();
 
-        // 3. Intensité d'accompagnement
-        $totalSessions = CoachingSession::count();
-        $totalMinutes = (int) CoachingSession::sum('duration');
-        $totalHeures = round($totalMinutes / 60);
+        return route('sae.reports.analytics.download', [
+            'tenant' => $tenant?->slug ?? 'default',
+        ]);
+    }
 
-        $typesSeance = CoachingSession::selectRaw('type, count(*) as count')
-            ->groupBy('type')
-            ->orderByDesc('count')
-            ->get()
-            ->mapWithKeys(function ($r) {
-                $key = $r->type instanceof CoachingSessionType ? $r->type->getLabel() : (string) $r->type;
+    public function getCsvUrl(): string
+    {
+        $tenant = $this->getActiveTenant();
 
-                return [$key => $r->count];
-            });
+        return route('sae.reports.analytics.csv', [
+            'tenant' => $tenant?->slug ?? 'default',
+        ]);
+    }
 
-        // 4. Financement
-        $financements = FundingRecord::selectRaw('type, sum(amount_obtained) as total')
-            ->whereIn('status', ['ACCORDE', 'DECAISSE', 'INVESTI'])
-            ->groupBy('type')
-            ->orderByDesc('total')
-            ->get();
+    public function exportCsv(): StreamedResponse
+    {
+        $tenant = $this->getActiveTenant() ?? new Sae(['name' => 'Hub Africa', 'slug' => 'hubafrica']);
+        $service = app(ReportExportService::class);
+        $data = $this->getAnalyticsData();
 
-        $totalFinancement = (float) FundingRecord::whereIn('status', ['ACCORDE', 'DECAISSE', 'INVESTI'])->sum('amount_obtained');
-
-        // 5. Santé du portefeuille
-        $statutsProjets = Project::selectRaw('status, count(*) as count')
-            ->groupBy('status')
-            ->orderByDesc('count')
-            ->get();
-
-        return [
-            'funnel' => $funnel,
-            'femmes' => $femmes,
-            'hommes' => $hommes,
-            'pctFemmes' => $pctFemmes,
-            'pctHommes' => $pctHommes,
-            'territoires' => $territoires,
-            'niveauxEtudes' => $niveauxEtudes,
-            'totalSessions' => $totalSessions,
-            'totalHeures' => $totalHeures,
-            'typesSeance' => $typesSeance,
-            'financements' => $financements,
-            'totalFinancement' => $totalFinancement,
-            'statutsProjets' => $statutsProjets,
-        ];
+        return $service->exportAnalyticsCsv($tenant, $data);
     }
 }

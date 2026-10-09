@@ -152,7 +152,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasTenant
             return true;
         }
 
-        return $this->saes->contains($tenant);
+        if ($this->relationLoaded('saes') && $this->saes->contains('id', $tenant->id)) {
+            return true;
+        }
+
+        return $this->saes()->where('saes.id', $tenant->id)->exists();
     }
 
     public function getFilamentAvatarUrl(): ?string
