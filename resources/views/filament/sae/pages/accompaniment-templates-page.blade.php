@@ -92,56 +92,24 @@
                     </div>
                 </x-filament::section>
             @endforeach
-
-            <!-- Carte Emplacement pour le Second Guide -->
-            <x-filament::section class="flex flex-col justify-between border-dashed">
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between">
-                        <x-filament::badge color="info" icon="heroicon-m-clock">
-                            Emplacement Prêt — Guide N°2
-                        </x-filament::badge>
-                        <span class="text-xs font-bold text-gray-400 dark:text-gray-500">
-                            Second Guide à intégrer
-                        </span>
-                    </div>
-
-                    <div>
-                        <h3 class="text-lg font-bold text-gray-950 dark:text-white">
-                            Second Guide Méthodologique (En attente de vos fichiers)
-                        </h3>
-                        <p class="text-xs font-semibold text-primary-600 dark:text-primary-400 mt-0.5">
-                            Architecture extensible & plug-and-play
-                        </p>
-                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-2 leading-relaxed">
-                            Cet emplacement est configuré pour accueillir le deuxième guide d'accompagnement que vous allez fournir. Dès réception du document, son pack sera encapsulé dans un template dédié et déployable en un seul clic, avec ses propres livrables et jalons.
-                        </p>
-                    </div>
-
-                    <div class="p-4 rounded-xl border border-gray-200/60 dark:border-white/10 bg-gray-50/50 dark:bg-white/5 text-xs text-gray-700 dark:text-gray-300 space-y-1.5">
-                        <div class="font-bold flex items-center gap-1.5 text-gray-900 dark:text-white">
-                            <x-heroicon-m-information-circle class="w-4 h-4 text-primary-600 dark:text-primary-400" />
-                            <span>Comment ajouter le 2ᵉ guide :</span>
-                        </div>
-                        <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed">
-                            Fournissez simplement le document ou classeur Excel lors de votre prochain message. Le moteur créera automatiquement sa classe dérivée sans toucher aux autres fonctionnalités.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="mt-6 pt-4 border-t border-gray-100 dark:border-white/5 flex items-center justify-between">
-                    <span class="text-xs font-medium text-gray-400 dark:text-gray-500">En attente des données</span>
-                    <x-filament::button
-                        color="gray"
-                        icon="heroicon-m-lock-closed"
-                        size="sm"
-                        disabled
-                        type="button"
-                    >
-                        Fournir le second guide
-                    </x-filament::button>
-                </div>
-            </x-filament::section>
         </div>
+
+        {{-- Notice d'extensibilité de la bibliothèque --}}
+        <x-filament::section compact>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-gray-500 dark:text-gray-400">
+                <div class="flex items-center gap-2">
+                    <x-heroicon-m-check-badge class="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>
+                        <strong class="text-gray-900 dark:text-white">2 Méthodologies Officielles Actives :</strong>
+                        <strong>Startup Loop</strong> (Afric'innov / GIZ) et <strong>Méthodologie CUBE</strong> (SAEI CUBE &amp; KPITAL INVEST).
+                    </span>
+                </div>
+                <div class="inline-flex items-center gap-1.5 text-[11px] text-gray-400 dark:text-gray-500">
+                    <x-heroicon-m-information-circle class="w-3.5 h-3.5" />
+                    <span>Déploiement 1-clic : phases, livrables, critères jury et indicateurs M&amp;E synchronisés.</span>
+                </div>
+            </div>
+        </x-filament::section>
 
         <x-filament-actions::modals />
     </div>

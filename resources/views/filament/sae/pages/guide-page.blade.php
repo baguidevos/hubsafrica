@@ -11,14 +11,14 @@
                     Guide Méthodologique & Pratique de l'Accompagnateur SAE
                 </h1>
                 <p class="text-base text-teal-100/90 leading-relaxed">
-                    Ce guide interactif détaille l'organisation par <strong>Clusters</strong> de la plateforme, l'intégration des <strong>Templates Méthodologiques (Afric'innov / Startup Loop)</strong> et le <strong>Dispositif M&E de Suivi Opérationnel</strong>. Suivez le cas pratique complet d'un accompagnement de A à Z avec la startup <strong>BioAgri Tech</strong>, depuis l'appel à projets jusqu'à la mesure d'impact final et la restitution aux bailleurs.
+                    Ce guide interactif détaille l'organisation par <strong>Clusters</strong> de la plateforme, l'intégration des <strong>Templates Méthodologiques (Afric'innov / Startup Loop &amp; SAEI CUBE / KPITAL INVEST)</strong> et le <strong>Dispositif M&E de Suivi Opérationnel</strong>. Suivez le cas pratique complet d'un accompagnement de A à Z avec la startup <strong>BioAgri Tech</strong>, depuis l'appel à projets jusqu'à la mesure d'impact final et la restitution aux bailleurs.
                 </p>
                 <div class="pt-2 flex flex-wrap gap-3 text-xs font-medium">
                     <span class="inline-flex items-center gap-1.5 rounded-lg bg-white/10 px-3 py-1.5 backdrop-blur-sm border border-white/10">
                         <x-heroicon-o-squares-2x2 class="h-4 w-4 text-teal-300" /> 4 Clusters Métiers &amp; Module Pilotage M&E
                     </span>
                     <span class="inline-flex items-center gap-1.5 rounded-lg bg-white/10 px-3 py-1.5 backdrop-blur-sm border border-white/10">
-                        <x-heroicon-o-sparkles class="h-4 w-4 text-emerald-300" /> Templates Méthodologiques (6 phases, 42 livrables)
+                        <x-heroicon-o-sparkles class="h-4 w-4 text-emerald-300" /> Templates Méthodologiques (Afric'innov &amp; CUBE)
                     </span>
                     <span class="inline-flex items-center gap-1.5 rounded-lg bg-white/10 px-3 py-1.5 backdrop-blur-sm border border-white/10">
                         <x-heroicon-o-academic-cap class="h-4 w-4 text-amber-300" /> Cas Pratique BioAgri Tech (8 étapes)
@@ -831,10 +831,10 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
                     <div class="rounded-lg border border-gray-200/60 dark:border-white/10 bg-gray-50/50 dark:bg-white/5 p-4 space-y-2">
                         <h4 class="font-bold text-teal-700 dark:text-teal-300 uppercase tracking-wide">
-                            Templates Méthodologiques (Afric'innov)
+                            Templates Méthodologiques (Afric'innov &amp; CUBE)
                         </h4>
                         <ul class="space-y-1.5 text-gray-600 dark:text-gray-300">
-                            <li>• <strong>Catalogue prêt à l'emploi :</strong> Modèle complet <em>Startup Loop Afric'innov</em> (6 phases, 42 livrables institutionnels, 20 livrables startups).</li>
+                            <li>• <strong>Catalogue prêt à l'emploi :</strong> Modèles <em>Startup Loop Afric'innov</em> (6 phases, 18 livrables startups, 14 livrables SAEI) et <em>Méthodologie CUBE / KPITAL INVEST</em> (6 phases, diagnostic PAS, Business Model 17 étapes, conformité OHADA, 24 livrables startups, 15 livrables SAEI, Virtual Data Room).</li>
                             <li>• <strong>Déploiement 1-clic :</strong> Action pour instancier automatiquement toutes les phases, livrables et formats de coaching sur une promotion.</li>
                             <li>• <strong>Personnalisation possible :</strong> Dupliquer un template officiel pour créer la trame spécifique à votre incubateur.</li>
                         </ul>

@@ -170,10 +170,12 @@ test('accompaniment template service applies full pack to program and cohort', f
     expect(CohortPhase::where('cohort_id', $cohort->id)->count())->toBe(6);
 });
 
-test('accompaniment templates page loads successfully', function () {
+test('accompaniment templates page loads successfully and displays both templates', function () {
     Livewire::test(AccompanimentTemplatesPage::class)
         ->assertSuccessful()
-        ->assertSee('Startup Loop (Afric\'innov / SAE)');
+        ->assertSee('Startup Loop (Afric\'innov / SAE)')
+        ->assertSee('Méthodologie CUBE (SAEI CUBE & KPITAL INVEST)')
+        ->assertSee('CUBE & KPITAL INVEST');
 });
 
 test('accompaniment templates deploy action mounts cleanly with arguments', function () {
@@ -186,4 +188,42 @@ test('accompaniment templates deploy action mounts cleanly with arguments', func
         ->assertActionDataSet([
             'template_key' => 'startup-loop-africinnov',
         ]);
+});
+
+test('cube methodology template deploys full pack with PAS, OHADA, and KPITAL INVEST to program and cohort', function () {
+    $service = app(AccompanimentTemplateService::class);
+    expect($service->all())->toHaveKey('cube-saei-kpital');
+
+    $cubeTemplate = $service->get('cube-saei-kpital');
+    expect($cubeTemplate->getBadge())->toBe('CUBE & KPITAL INVEST')
+        ->and($cubeTemplate->getDurationWeeks())->toBe(26)
+        ->and(count($cubeTemplate->getPhases()))->toBe(6)
+        ->and(count($cubeTemplate->getStartupDeliverables()))->toBe(24)
+        ->and(count($cubeTemplate->getProgrammeDeliverables()))->toBe(15)
+        ->and(count($cubeTemplate->getEvaluationCriteria()))->toBe(5)
+        ->and(count($cubeTemplate->getMneIndicators()))->toBe(6);
+
+    $program = Program::create([
+        'sae_id' => $this->sae->id,
+        'name' => 'Programme CUBE Incubateur 2026',
+        'status' => 'ACTIF',
+    ]);
+
+    $cohort = Cohort::create([
+        'sae_id' => $this->sae->id,
+        'program_id' => $program->id,
+        'name' => 'Promotion CUBE Togo 1',
+        'status' => CohortStatus::EN_COURS,
+    ]);
+
+    $summary = $service->apply('cube-saei-kpital', $this->sae, $program, $cohort);
+
+    expect($summary['phases'])->toBe(6)
+        ->and($summary['startup_deliverables'])->toBe(24)
+        ->and($summary['programme_deliverables'])->toBe(15)
+        ->and($summary['criteria'])->toBe(5)
+        ->and($summary['indicators'])->toBe(6);
+
+    expect(ProgramPhase::where('program_id', $program->id)->count())->toBe(6);
+    expect(CohortPhase::where('cohort_id', $cohort->id)->count())->toBe(6);
 });

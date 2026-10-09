@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\AccompanimentTemplates\AccompanimentTemplateInterface;
+use App\AccompanimentTemplates\CubeMethodologyTemplate;
 use App\AccompanimentTemplates\StartupLoopAfricinnovTemplate;
 use App\Models\Cohort;
 use App\Models\Program;
@@ -20,6 +21,7 @@ class AccompanimentTemplateService
     {
         // Enregistrement des modèles disponibles
         $this->register(new StartupLoopAfricinnovTemplate);
+        $this->register(new CubeMethodologyTemplate);
     }
 
     public function register(AccompanimentTemplateInterface $template): self
