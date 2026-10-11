@@ -236,4 +236,19 @@ class Project extends Model
     {
         return $this->hasMany(IndicatorEntry::class, 'project_id');
     }
+
+    public function coachAssignments(): HasMany
+    {
+        return $this->assignments();
+    }
+
+    public function deliverableSubmissions(): HasMany
+    {
+        return $this->submissions();
+    }
+
+    public function entrepreneurs(): BelongsTo
+    {
+        return $this->entrepreneur();
+    }
 }

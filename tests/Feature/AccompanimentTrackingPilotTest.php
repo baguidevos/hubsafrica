@@ -1,10 +1,12 @@
 <?php
 
+use App\Enums\CoachAssignmentStatus;
 use App\Enums\CoachingSessionStatus;
 use App\Enums\CohortStatus;
 use App\Enums\DeliverableResponsibleRole;
 use App\Enums\DeliverableSubmissionStatus;
 use App\Enums\DeliverableTarget;
+use App\Enums\ProjectStatus;
 use App\Enums\SessionPeriodOfDay;
 use App\Filament\Sae\Pages\AccompanimentMonitoringDashboard;
 use App\Filament\Sae\Pages\AccompanimentTemplateDetailPage;
@@ -12,13 +14,17 @@ use App\Filament\Sae\Pages\AccompanimentTemplatesPage;
 use App\Filament\Sae\Pages\AnalyticsPage;
 use App\Filament\Sae\Pages\ReportsPage;
 use App\Models\Coach;
+use App\Models\CoachAssignment;
 use App\Models\CoachingSession;
 use App\Models\Cohort;
 use App\Models\CohortPhase;
 use App\Models\DeliverableDefinition;
 use App\Models\DeliverableSubmission;
+use App\Models\Enrollment;
+use App\Models\Entrepreneur;
 use App\Models\Program;
 use App\Models\ProgramPhase;
+use App\Models\Project;
 use App\Models\Resource;
 use App\Models\Sae;
 use App\Models\User;
@@ -138,6 +144,73 @@ test('accompaniment monitoring dashboard component loads and calculates KPIs cor
             'alertes_presence_count',
             'soumissions_en_retard',
         ]);
+});
+
+test('accompaniment monitoring dashboard loads and renders matrix when cohort has enrolled projects and entrepreneurs', function () {
+    $program = Program::create([
+        'sae_id' => $this->sae->id,
+        'name' => 'Programme Suivi Cohorte Test',
+        'status' => 'ACTIF',
+    ]);
+
+    $cohort = Cohort::create([
+        'sae_id' => $this->sae->id,
+        'program_id' => $program->id,
+        'name' => 'Promotion Test Réelle',
+        'status' => CohortStatus::EN_COURS,
+    ]);
+
+    $entrepreneur = Entrepreneur::create([
+        'sae_id' => $this->sae->id,
+        'first_name' => 'Amina',
+        'last_name' => 'Diallo',
+        'email' => 'amina.diallo@test.sn',
+        'phone' => '+221 77 999 88 77',
+    ]);
+
+    $project = Project::create([
+        'sae_id' => $this->sae->id,
+        'entrepreneur_id' => $entrepreneur->id,
+        'name' => 'AgriTech Sénégal',
+        'status' => ProjectStatus::ACTIF,
+    ]);
+
+    Enrollment::create([
+        'sae_id' => $this->sae->id,
+        'cohort_id' => $cohort->id,
+        'project_id' => $project->id,
+        'entrepreneur_id' => $entrepreneur->id,
+    ]);
+
+    $coach = Coach::create([
+        'sae_id' => $this->sae->id,
+        'name' => 'Mentor Référent',
+        'email' => 'mentor@test.sn',
+        'status' => 'ACTIF',
+    ]);
+
+    CoachAssignment::create([
+        'sae_id' => $this->sae->id,
+        'cohort_id' => $cohort->id,
+        'project_id' => $project->id,
+        'coach_id' => $coach->id,
+        'status' => CoachAssignmentStatus::ACTIF,
+    ]);
+
+    $component = Livewire::test(AccompanimentMonitoringDashboard::class, [
+        'selectedCohortId' => (string) $cohort->id,
+    ]);
+
+    $component->assertSuccessful()
+        ->assertSee('AgriTech Sénégal')
+        ->assertSee('Amina Diallo');
+
+    $matrix = $component->get('startupsMatrix');
+    expect($matrix)->toBeArray()
+        ->and(count($matrix))->toBeGreaterThanOrEqual(1)
+        ->and($matrix[0]['project_name'])->toBe('AgriTech Sénégal')
+        ->and($matrix[0]['entrepreneur_name'])->toBe('Amina Diallo')
+        ->and($matrix[0]['coach_name'])->toBe('Mentor Référent');
 });
 
 test('accompaniment monitoring dashboard can export CSV summary', function () {

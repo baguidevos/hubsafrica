@@ -2,6 +2,7 @@
 
 namespace App\Filament\Sae\Pages;
 
+use App\Enums\CoachAssignmentStatus;
 use App\Enums\CoachingSessionStatus;
 use App\Enums\DeliverableSubmissionStatus;
 use App\Enums\DeliverableTarget;
@@ -107,7 +108,7 @@ class AccompanimentMonitoringDashboard extends Page
             return null;
         }
 
-        return Cohort::query()->with(['program', 'phases', 'enrollments.project.entrepreneurs'])->find($this->selectedCohortId);
+        return Cohort::query()->with(['program', 'phases', 'enrollments.project.entrepreneur'])->find($this->selectedCohortId);
     }
 
     /**
@@ -231,7 +232,7 @@ class AccompanimentMonitoringDashboard extends Page
         }
 
         $enrollments = Enrollment::where('cohort_id', $cohort->id)
-            ->with(['project.entrepreneurs', 'project.coachAssignments.coach', 'project.deliverableSubmissions.definition'])
+            ->with(['project.entrepreneur', 'project.assignments.coach', 'project.submissions.definition'])
             ->get();
 
         $rows = [];
@@ -246,8 +247,8 @@ class AccompanimentMonitoringDashboard extends Page
                 continue;
             }
 
-            $entrepreneur = $project->entrepreneurs->first();
-            $coach = $project->coachAssignments->where('status', 'ACTIF')->first()?->coach;
+            $entrepreneur = $project->entrepreneur;
+            $coach = $project->assignments->first(fn ($a) => $a->status === CoachAssignmentStatus::ACTIF || $a->status === 'ACTIF')?->coach;
 
             // Sessions de coaching individuelles
             $sessions = CoachingSession::where('project_id', $project->id)->get();
@@ -267,7 +268,7 @@ class AccompanimentMonitoringDashboard extends Page
             }
 
             // Livrables validés
-            $submissions = $project->deliverableSubmissions;
+            $submissions = $project->submissions;
             $valides = $submissions->whereIn('status', [DeliverableSubmissionStatus::VALIDE, DeliverableSubmissionStatus::VALIDEE])->count();
             $enRetard = $submissions->where('is_late', true)->count();
             $tauxLivrables = round(($valides / $totalExpectedDefs) * 100);
