@@ -4,6 +4,56 @@ Toutes les modifications notables apportées au projet **Hub Africa v2** (Stack 
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
+## [2.15.0] - 2026-10-11
+
+### Ajouté (Added) & Amélioré (Improved)
+- **Tableau de Bord Administrateur — Mesures de Traction Panafricaines de Hub Africa (`/admin`)** :
+  - **Widget Synthétique de Traction (`PlatformTractionOverviewWidget`)** :
+    - 8 cartes de statistiques temps réel avec sparklines et alertes colorées.
+    - Structures d'Accompagnement (SAE) raccordées et actives.
+    - Entrepreneurs accompagnés avec calcul automatique du pourcentage de femmes dirigeantes (parité **ODD 5**).
+    - Portefeuille global de startups et projets actifs.
+    - Déploiement des programmes et cohortes à l'échelle du continent.
+    - Réseau d'experts et mentors mobilisés sur le terrain.
+    - Volume d'heures et séances de coaching individuel et collectif tracées.
+    - Volume de candidatures reçues, admises et taux de sélection des jurys.
+    - Volume global des financements et capitaux mobilisés (subventions, dettes, levées) en FCFA.
+  - **Bandeau Stratégique des Ratios d'Impact (`PlatformTractionKpiBannerWidget`)** :
+    - Vue panoramique reprenant les badges officiels des Objectifs de Développement Durable (**ODD 8 : Travail Décent**, **ODD 5 : Genre & Parité**, **ODD 9 : Tech Panafricaine**).
+    - 6 ratios clés d'efficacité opérationnelle : Taux de féminisation (ODD 5), taux de rétention/survie des projets, sélectivité des jurys, ratio d'encadrement mentor/startup, couverture territoriale (nombre de pays et liste des territoires actifs) et ticket moyen décaissé par projet soutenu.
+  - **Graphique d'Évolution Mensuelle (`PlatformMonthlyGrowthChartWidget`)** :
+    - Graphique linéaire consolidant la dynamique de traction sur 6 mois (inscriptions d'entrepreneurs, structures partenaires raccordées et nouveaux projets incubés).
+  - **Ventilation Sectorielle du Portefeuille (`PlatformSectorDistributionChartWidget`)** :
+    - Diagramme en anneau (*Doughnut chart*) présentant la répartition des startups par secteur d'activité (AgriTech, FinTech, Énergie verte, BTP, Numérique, etc.).
+  - **Tableau Récapitulatif des SAE Partenaires (`PlatformTopSaesWidget`)** :
+    - Tableau immersif répertoriant les structures d'accompagnement de la plateforme avec logo, typologie, ville/pays, nombre de startups hébergées, nombre de coachs, cohortes et lien d'accès direct vers leur espace dédié (`/sae/{slug}`).
+  - **Optimisation du Rendu Dashboard (`AdminPanelProvider`)** :
+    - Désactivation du lazy-loading sur les widgets stratégiques (`$isLazy = false`) pour un affichage instantané dès l'ouverture du back-office.
+    - Nettoyage des widgets par défaut pour concentrer l'affichage sur la traction de la plateforme.
+  - **Tests Automatisés Pest (`AdminPlatformTractionDashboardTest.php`)** :
+    - Couverture intégrale du rendu HTTP GET `/admin` et de chacun des widgets Livewire avec 15 assertions réussies à 100%.
+
+- **Dossier Officiel de Préparation à la Levée de Fonds — 100% Centré sur Hub Africa** :
+  - **Pitch Deck Officiel (`PITCH_DECK_HUB_AFRICA_CUBE.md`)** :
+    - 13 diapositives calibrées pour une présentation orale de 2 minutes chrono.
+    - Scripts orateurs mot à mot, nomenclature graphique des visuels à insérer, prévisions financières (N-1 à N+3) et diapositives d'annexe (Q&A).
+  - **Résumé Exécutif (`RESUME_EXECUTIF_HUB_AFRICA.md`)** :
+    - Document de synthèse managériale en 2 pages pour les investisseurs : énoncé du problème (85% des incubateurs sur Excel/WhatsApp), solution SaaS à 3 portails, modèle économique, traction terrain et offre de 75 000 000 FCFA pour 20% du capital.
+  - **Business Model en 17 Étapes (`BUSINESS_MODEL_17_ETAPES_HUB_AFRICA.md`)** :
+    - Application rigoureuse de la méthodologie CUBE en 17 étapes logiques au logiciel Hub Africa v2.
+    - Matrice Business Model Canvas (BMC), grille tarifaire en FCFA (*Starter 25k*, *Pro 60k*, *Enterprise 120k*), licences institutionnelles et économie unitaire (ratio LTV / CAC > 9x).
+  - **Liste Qualifiée des Investisseurs & Stratégie (`LISTE_DES_INVESTISSEURS_ET_STRATEGIE_CIBLAGE.md`)** :
+    - Arguments levant les 5 réticences majeures des Business Angels, modalités d'investissement (BSA-AIR / Equity), annuaire de plus de 25 investisseurs cibles en Afrique (ABAN, Launch Africa, Saviu, etc.) et séquence de prospection en 6 étapes.
+  - **Document des Besoins Financiers & Budget (`DOCUMENT_DES_BESOINS_ET_ALLOCATION_FONDS.md`)** :
+    - Justification poste par poste des 75M FCFA (Commerce 40%, R&D 30%, Marketing 20%, Réserve 10%), ventilation CAPEX/OPEX, décaissement en 3 tranches conditionnées, valorisation pré-money de 300M FCFA et scénarios de sortie (TRI de 34% à 86%/an).
+  - **Data Room Checklist & Auto-Évaluation (`DATA_ROOM_CHECKLIST_ET_DOCUMENTS_PREPARATION.md`)** :
+    - Formulaire d'auto-évaluation noté à 90,5/100 (statut *Investment-Ready d'Excellence*), checklist complète de la Virtual Data Room en 6 dossiers et guide des clauses clés du Pacte d'Associés.
+  - **Master Index du Dossier (`INDEX_DOSSIER_LEVEE_DE_FONDS.md`)** :
+    - Guide centralisateur de l'ensemble des documents avec conseils graphiques et typographiques pour la mise en page.
+
+- **Outillage d'Importation & Migration de Données V1** :
+  - Commande Artisan `ImportV1DatabaseCommand` (`php artisan hubafrica:import-v1-database`) assurant le parsing, la normalisation et la migration complète des données historiques JSON/SQL vers les entités relationnelles multi-tenants de Hub Africa v2.
+
 ## [2.14.0] - 2026-10-11
 
 ### Ajouté (Added) & Amélioré (Improved)
