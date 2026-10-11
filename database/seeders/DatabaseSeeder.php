@@ -25,6 +25,7 @@ use App\Models\ProjectLevelHistory;
 use App\Models\Resource;
 use App\Models\Role;
 use App\Models\Sae;
+use App\Models\SaeType;
 use App\Models\TimelineEvent;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -34,6 +35,9 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        // 0. Types de SAEs
+        $this->call(SaeTypeSeeder::class);
+
         // 1. Rôles globaux (sae_id = 0 pour les rôles système)
         setPermissionsTeamId(0);
         $superAdminRole = Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => 'web']);
@@ -78,6 +82,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
         $fatou->saes()->syncWithoutDetaching([$teranga->id => ['role' => 'RESPONSABLE', 'status' => 'ACTIVE']]);
+        $teranga->types()->syncWithoutDetaching(SaeType::whereIn('slug', ['incubateur', 'accelerateur', 'tiers-lieu'])->pluck('id'));
 
         setPermissionsTeamId($teranga->id);
         $fatou->assignRole($responsableRole);
@@ -106,6 +111,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
         $amadou->saes()->syncWithoutDetaching([$jokkolabs->id => ['role' => 'RESPONSABLE', 'status' => 'ACTIVE']]);
+        $jokkolabs->types()->syncWithoutDetaching(SaeType::whereIn('slug', ['espace-coworking', 'couveuse', 'pepiniere'])->pluck('id'));
 
         setPermissionsTeamId($jokkolabs->id);
         $amadou->assignRole($responsableRole);

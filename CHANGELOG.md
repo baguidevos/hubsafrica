@@ -4,6 +4,46 @@ Toutes les modifications notables apportées au projet **Hub Africa v2** (Stack 
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
+## [2.13.0] - 2026-10-11
+
+### Ajouté (Added) & Amélioré (Improved)
+- **Gestion Multitype des Structures d'Accompagnement (SAE)** :
+  - **Migration & Pivot `sae_sae_type`** :
+    - Création de la table `sae_types` (`name`, `slug`, `description`, `color`, `icon`, `is_active`).
+    - Création de la table pivot `sae_sae_type` permettant l'association de plusieurs types à une même structure (ex: *Couveuse*, *Espace de coworking*, *Pépinière*, *Incubateur*...).
+  - **Modèles Eloquent & Relation Many-to-Many** :
+    - Modèle `App\Models\SaeType` avec auto-génération de slug et relation `saes()`.
+    - Modèle `App\Models\Sae` enrichi avec relation `types()`, accesseur `logo_url` unifié et compatibilité avatar Filament.
+  - **Seeder Canonique & Factory** :
+    - `Database\Seeders\SaeTypeSeeder` : peuplement initial de 10 typologies d'accompagnement de référence en Afrique avec descriptions et codes couleurs.
+    - `Database\Factories\SaeTypeFactory` et mise à jour de `DatabaseSeeder`.
+  - **Administration Webmaster (`/admin`)** :
+    - Ressource complète `App\Filament\Admin\Resources\SaeTypes\SaeTypeResource` (liste, création, édition) sous le groupe navigation *Système*.
+    - Formulaire d'administration des SAE `SaeForm` réorganisé en 4 sections claires : *Identité & Statut* (avec sélection multiple des types et propriétaire), *Coordonnées & Contact*, *Orientation Stratégique & Offre* (éditeurs riches pour Vision, Mission, Objectifs, Services), et *Paramètres de Délibération*.
+    - Hook `afterSave` dans `EditSae` garantissant la synchronisation du rôle `RESPONSABLE` pour le propriétaire de la SAE.
+    - Colonnes et badges dans `SaesTable` avec prévisualisation des logos, statut et typologies.
+  - **Inscription & Profil SAE (`/sae`)** :
+    - Mise à jour du formulaire d'onboarding à l'inscription (`RegisterSae`) avec étape de sélection des types.
+    - Mise à jour du profil de la structure (`EditSaeProfile`) permettant au responsable de modifier ses types actifs.
+  - **Tableaux de Bord SAE & Coach** :
+    - Nouveau widget `SaeIdentityWidget` sur le dashboard de la SAE affichant son logo officiel, son statut et ses badges de typologie.
+    - Nouveau widget `CoachSaeIdentityWidget` sur le dashboard Coach affichant la structure d'accueil avec son logo et ses typologies.
+    - Ajout des badges de typologies dans le menu latéral tenant (`sidebar-tenant-badge`).
+- **Portail Public & Fiche Détaillée des Structures** :
+  - **Fiche Structure Réorganisée (`structure-detail.blade.php`)** :
+    - Remplacement du bloc de description unique par des sections structurées et différenciées.
+    - Cartes contrastées dédiées pour **Notre Vision** (*Perspective & Avenir*) et **Notre Mission** (*Action & Impact*) avec icônes et styles visuels propres.
+    - Sections distinctes pour les **Objectifs & Piliers d'Intervention** et les **Services & Offre d'Accompagnement**.
+    - Affichage des programmes d'accompagnement actifs et de l'équipe de mentors/experts mobilisés.
+    - Sidebar d'informations de contact enrichie avec typologies, email, téléphone, adresse, lien direct vers le site web officiel, et CTA entrepreneur.
+  - **Annuaire des Structures (`structures.blade.php`)** :
+    - Filtres dynamiques en pills par typologie de SAE avec compteurs de structures.
+    - Rendu du logo officiel de la SAE avec fallback propre sur les initiales de deux lettres (`substr($name, 0, 2)`).
+  - **Page d'Accueil & Détail Programme** :
+    - Intégration du logo avec fallback et des badges de types sur les cartes partenaires de la page d'accueil (`home.blade.php`), la fiche programme (`programme-detail.blade.php`), le catalogue Livewire et la page de cohorte (`cohort-join.blade.php`).
+- **Tests Automatisés Pest** :
+  - Suite de tests `tests/Feature/SaeTypeTest.php` (12 tests réussis, 90 assertions) couvrant le cycle complet : seeders, relations many-to-many, CRUD webmaster, onboarding SAE, widgets de dashboard, filtrage de l'annuaire, fallback de logo et sections Vision / Mission.
+
 ## [2.12.0] - 2026-09-28
 
 ### Ajouté (Added) & Amélioré (Improved)

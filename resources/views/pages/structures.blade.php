@@ -13,15 +13,41 @@
         </div>
     </section>
 
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-8">
+        {{-- Filtres par type de structure --}}
+        <div class="flex flex-wrap items-center gap-2 pb-2 border-b border-slate-200/80">
+            <span class="text-xs font-bold text-slate-500 mr-2">Filtrer par type :</span>
+            <a
+                href="{{ route('public.structures') }}"
+                class="px-3 py-1.5 rounded-full text-xs font-semibold transition {{ blank($selectedType) ? 'bg-[#2F3284] text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' }}"
+            >
+                Tous les types
+            </a>
+            @foreach($types as $t)
+                @if($t->saes_count > 0 || $selectedType === $t->slug)
+                    <a
+                        href="{{ route('public.structures', ['type' => $t->slug]) }}"
+                        class="px-3 py-1.5 rounded-full text-xs font-semibold transition flex items-center gap-1.5 {{ $selectedType === $t->slug ? 'bg-[#2F3284] text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' }}"
+                    >
+                        <span>{{ $t->name }}</span>
+                        <span class="text-[10px] opacity-75 font-normal">({{ $t->saes_count }})</span>
+                    </a>
+                @endif
+            @endforeach
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             @forelse($saes as $sae)
                 <article class="bg-white rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-lg transition-all duration-200 flex flex-col justify-between overflow-hidden">
                     <div class="p-6 sm:p-7 space-y-4">
                         <div class="flex items-center gap-4">
-                            <div class="w-13 h-13 rounded-xl bg-slate-100 text-[#2F3284] font-extrabold text-xl flex items-center justify-center border border-slate-200 shrink-0">
-                                {{ substr($sae->name, 0, 2) }}
-                            </div>
+                            @if($sae->logo_url)
+                                <img src="{{ $sae->logo_url }}" alt="{{ $sae->name }}" class="w-13 h-13 rounded-xl object-contain bg-white border border-slate-200 p-1 shrink-0 shadow-xs">
+                            @else
+                                <div class="w-13 h-13 rounded-xl bg-slate-100 text-[#2F3284] font-extrabold text-xl flex items-center justify-center border border-slate-200 shrink-0">
+                                    {{ substr($sae->name, 0, 2) }}
+                                </div>
+                            @endif
                             <div class="min-w-0 flex-1">
                                 <h3 class="text-base font-bold text-slate-900 hover:text-[#2F3284] transition truncate">
                                     {{ $sae->name }}
@@ -31,6 +57,16 @@
                                 </p>
                             </div>
                         </div>
+
+                        @if($sae->types->isNotEmpty())
+                            <div class="flex flex-wrap gap-1.5">
+                                @foreach($sae->types as $type)
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-[#2F3284]/10 text-[#2F3284]">
+                                        {{ $type->name }}
+                                    </span>
+                                @endforeach
+                            </div>
+                        @endif
 
                         <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
                             {{ $sae->description ?: 'Structure d\'incubation partenaire déployant les programmes d\'accompagnement et de suivi de l\'innovation Hub Africa.' }}

@@ -288,11 +288,24 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             @foreach($featuredSaes as $sae)
                 <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs hover:border-[#F8B81D]/60 hover:shadow-md transition flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-slate-100 text-[#2F3284] font-extrabold flex items-center justify-center text-base shrink-0 border border-slate-200">
-                        {{ substr($sae->name, 0, 2) }}
-                    </div>
+                    @if($sae->logo_url)
+                        <img src="{{ $sae->logo_url }}" alt="{{ $sae->name }}" class="w-12 h-12 rounded-xl object-contain bg-white border border-slate-200 p-1 shrink-0 shadow-xs">
+                    @else
+                        <div class="w-12 h-12 rounded-xl bg-slate-100 text-[#2F3284] font-extrabold flex items-center justify-center text-base shrink-0 border border-slate-200">
+                            {{ substr($sae->name, 0, 2) }}
+                        </div>
+                    @endif
                     <div class="min-w-0 flex-1">
                         <h4 class="font-bold text-xs sm:text-sm text-slate-900 truncate">{{ $sae->name }}</h4>
+                        @if($sae->types->isNotEmpty())
+                            <div class="flex flex-wrap gap-1 my-1">
+                                @foreach($sae->types->take(2) as $type)
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-[#2F3284]/10 text-[#2F3284]">
+                                        {{ $type->name }}
+                                    </span>
+                                @endforeach
+                            </div>
+                        @endif
                         <p class="text-[11px] text-slate-500 truncate mt-0.5">{{ $sae->address ?: 'Pôle d\'innovation régional' }}</p>
                         <a href="{{ route('public.structure.detail', $sae->id) }}" class="text-[11px] font-semibold text-[#2F3284] hover:text-[#e5a510] mt-1 inline-block">
                             Voir les programmes &rarr;

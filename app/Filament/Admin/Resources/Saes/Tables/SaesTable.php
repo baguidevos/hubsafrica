@@ -2,10 +2,14 @@
 
 namespace App\Filament\Admin\Resources\Saes\Tables;
 
+use App\Models\Sae;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class SaesTable
@@ -14,35 +18,84 @@ class SaesTable
     {
         return $table
             ->columns([
-                TextColumn::make('owner.name')
-                    ->searchable(),
+                ImageColumn::make('logo')
+                    ->label('Logo')
+                    ->circular()
+                    ->disk('public')
+                    ->defaultImageUrl(fn () => asset('images/logo.png')),
+
                 TextColumn::make('name')
-                    ->searchable(),
-                TextColumn::make('slug')
-                    ->searchable(),
-                TextColumn::make('email')
-                    ->label('Email address')
-                    ->searchable(),
-                TextColumn::make('phone')
-                    ->searchable(),
-                TextColumn::make('logo')
-                    ->searchable(),
+                    ->label('Nom de la SAE')
+                    ->searchable()
+                    ->sortable()
+                    ->weight('bold'),
+
+                TextColumn::make('types.name')
+                    ->label('Types de SAE')
+                    ->badge()
+                    ->separator(', '),
+
+                TextColumn::make('owner.name')
+                    ->label('Responsable')
+                    ->searchable()
+                    ->sortable()
+                    ->placeholder('Aucun propriétaire assigné'),
+
                 TextColumn::make('status')
-                    ->searchable(),
+                    ->label('Statut')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'ACTIVE' => 'success',
+                        'SUSPENDED' => 'danger',
+                        'INACTIVE' => 'gray',
+                        default => 'info',
+                    })
+                    ->sortable(),
+
+                TextColumn::make('email')
+                    ->label('Email officiel')
+                    ->searchable()
+                    ->toggleable(),
+
+                TextColumn::make('phone')
+                    ->label('Téléphone')
+                    ->searchable()
+                    ->toggleable(),
+
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Créée le')
+                    ->dateTime('d/m/Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('Modifiée le')
+                    ->dateTime('d/m/Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->label('Statut')
+                    ->options([
+                        'ACTIVE' => 'Active',
+                        'INACTIVE' => 'Inactive',
+                        'SUSPENDED' => 'Suspendue',
+                    ]),
+
+                SelectFilter::make('types')
+                    ->label('Type de SAE')
+                    ->relationship('types', 'name'),
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->label('Modifier'),
+                Action::make('view_public')
+                    ->label('Voir en ligne')
+                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->color('gray')
+                    ->url(fn (Sae $record) => route('public.structure.detail', $record->id))
+                    ->openUrlInNewTab(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

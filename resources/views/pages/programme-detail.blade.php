@@ -291,14 +291,32 @@
                         Structure d'Accueil (SAE)
                     </div>
 
-                    <div class="space-y-2">
-                        <h4 class="font-extrabold text-base text-slate-900">{{ $program->sae?->name }}</h4>
-                        @if($program->sae?->description)
-                            <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
-                                {{ $program->sae->description }}
-                            </p>
+                    <div class="flex items-center gap-3">
+                        @if($program->sae?->logo_url)
+                            <img src="{{ $program->sae->logo_url }}" alt="{{ $program->sae->name }}" class="w-12 h-12 rounded-xl object-contain bg-white border border-slate-200 p-1 shrink-0 shadow-xs">
+                        @else
+                            <div class="w-12 h-12 rounded-xl bg-slate-100 text-[#2F3284] font-black text-base flex items-center justify-center border border-slate-200 shrink-0">
+                                {{ substr($program->sae?->name ?: 'HA', 0, 2) }}
+                            </div>
                         @endif
+                        <div class="min-w-0 flex-1">
+                            <h4 class="font-extrabold text-base text-slate-900 truncate">{{ $program->sae?->name }}</h4>
+                            @if($program->sae?->types && $program->sae->types->isNotEmpty())
+                                <div class="flex flex-wrap gap-1 mt-1">
+                                    @foreach($program->sae->types as $t)
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold bg-[#2F3284]/10 text-[#2F3284]">
+                                            {{ $t->name }}
+                                        </span>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
                     </div>
+                    @if($program->sae?->description)
+                        <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
+                            {{ $program->sae->description }}
+                        </p>
+                    @endif
 
                     <div class="space-y-2 text-xs text-slate-600 pt-2 border-t border-slate-100">
                         @if($program->sae?->email)

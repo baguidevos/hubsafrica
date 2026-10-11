@@ -105,7 +105,7 @@ class ProgrammesCatalog extends Component
 
     public function render()
     {
-        $query = Program::with(['sae', 'level', 'cohorts'])
+        $query = Program::with(['sae.types', 'level', 'cohorts'])
             ->withCount('cohorts');
 
         // Filtre Recherche

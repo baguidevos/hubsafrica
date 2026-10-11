@@ -47,11 +47,28 @@
                         {{ $cohort->name }}
                     </h1>
 
+                    @php
+                        $hostSae = $cohort->sae ?: $cohort->program?->sae;
+                    @endphp
                     <p class="text-xs sm:text-sm text-slate-400 flex items-center gap-2">
                         <span>Programme : <strong class="text-white">{{ $cohort->program->name }}</strong></span>
                         <span>&bull;</span>
-                        <span>Organisé par <strong class="text-[#F8B81D]">{{ $cohort->sae?->name ?: $cohort->program->sae?->name }}</strong></span>
+                        <span class="inline-flex items-center gap-1.5">
+                            @if($hostSae?->logo_url)
+                                <img src="{{ $hostSae->logo_url }}" alt="{{ $hostSae->name }}" class="w-4 h-4 rounded object-contain bg-white border border-slate-700 shrink-0">
+                            @endif
+                            <span>Organisé par <strong class="text-[#F8B81D]">{{ $hostSae?->name }}</strong></span>
+                        </span>
                     </p>
+                    @if($hostSae && $hostSae->types->isNotEmpty())
+                        <div class="flex flex-wrap gap-1.5 pt-1">
+                            @foreach($hostSae->types as $t)
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-white/10 text-slate-200 border border-white/20">
+                                    {{ $t->name }}
+                                </span>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
 
                 {{-- Badges Dates & Capacité --}}

@@ -65,6 +65,11 @@ class Sae extends Model implements HasAvatar
         return Storage::disk('public')->url($this->logo);
     }
 
+    public function getLogoUrlAttribute(): ?string
+    {
+        return $this->getFilamentAvatarUrl();
+    }
+
     protected static function boot(): void
     {
         parent::boot();
@@ -85,6 +90,12 @@ class Sae extends Model implements HasAvatar
     {
         return $this->belongsToMany(User::class, 'sae_users')
             ->withPivot(['role', 'status'])
+            ->withTimestamps();
+    }
+
+    public function types(): BelongsToMany
+    {
+        return $this->belongsToMany(SaeType::class, 'sae_sae_type')
             ->withTimestamps();
     }
 

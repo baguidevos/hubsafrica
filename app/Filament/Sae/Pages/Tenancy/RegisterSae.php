@@ -3,9 +3,11 @@
 namespace App\Filament\Sae\Pages\Tenancy;
 
 use App\Models\Sae;
+use App\Models\SaeType;
 use App\Services\SaeOnboardingService;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Tenancy\RegisterTenant;
@@ -107,6 +109,15 @@ class RegisterSae extends RegisterTenant
                                     ->visibility('public')
                                     ->imageEditor()
                                     ->helperText('Format PNG, JPG ou SVG'),
+
+                                Select::make('types')
+                                    ->label('Types de structure (SAE)')
+                                    ->options(fn () => SaeType::where('is_active', true)->pluck('name', 'id'))
+                                    ->multiple()
+                                    ->preload()
+                                    ->searchable()
+                                    ->helperText('Ex: Couveuse, Incubateur, Espace coworking, Pépinière... Vous pouvez en sélectionner plusieurs.')
+                                    ->columnSpanFull(),
                             ]),
 
                             Textarea::make('address')
@@ -213,10 +224,17 @@ class RegisterSae extends RegisterTenant
             abort(403, 'Vous ne pouvez créer qu\'une seule structure d\'accompagnement.');
         }
 
+        $types = $data['types'] ?? [];
+        unset($data['types']);
+
         $data['owner_id'] = $user->id;
         $data['status'] = 'ACTIVE';
 
         $sae = Sae::create($data);
+
+        if (! empty($types)) {
+            $sae->types()->sync($types);
+        }
 
         // Rattachement de l'utilisateur comme RESPONSABLE de la SAE
         $user->saes()->attach($sae->id, [

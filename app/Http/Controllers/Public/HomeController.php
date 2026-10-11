@@ -41,7 +41,8 @@ class HomeController extends Controller
             ->get();
 
         // Structures d'Accompagnement (SAEs) phares
-        $featuredSaes = Sae::latest()
+        $featuredSaes = Sae::with(['types'])
+            ->latest()
             ->limit(6)
             ->get();
 

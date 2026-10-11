@@ -24,7 +24,7 @@ class CohortPublicController extends Controller
      */
     public function join(int $id): View|RedirectResponse
     {
-        $cohort = Cohort::with(['program.sae', 'program.level'])
+        $cohort = Cohort::with(['sae.types', 'program.sae.types', 'program.level'])
             ->findOrFail($id);
 
         $isClosed = $cohort->status === CohortStatus::CLOTUREE;

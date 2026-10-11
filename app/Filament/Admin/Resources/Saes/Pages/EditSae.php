@@ -16,4 +16,17 @@ class EditSae extends EditRecord
             DeleteAction::make(),
         ];
     }
+
+    protected function afterSave(): void
+    {
+        $owner = $this->record->owner;
+        if ($owner) {
+            $this->record->members()->syncWithoutDetaching([
+                $owner->id => [
+                    'role' => 'RESPONSABLE',
+                    'status' => 'ACTIVE',
+                ],
+            ]);
+        }
+    }
 }

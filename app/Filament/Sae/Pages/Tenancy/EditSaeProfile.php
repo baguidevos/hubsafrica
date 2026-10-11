@@ -4,6 +4,7 @@ namespace App\Filament\Sae\Pages\Tenancy;
 
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Tenancy\EditTenantProfile;
@@ -35,6 +36,15 @@ class EditSaeProfile extends EditTenantProfile
                     ->label('Nom de la structure')
                     ->required()
                     ->maxLength(255),
+
+                Select::make('types')
+                    ->label('Types de structure (SAE)')
+                    ->relationship('types', 'name', fn ($query) => $query->where('is_active', true))
+                    ->multiple()
+                    ->preload()
+                    ->searchable()
+                    ->helperText('Indiquez les types correspondant à votre activité (ex: Couveuse, Espace coworking, Pépinière, Incubateur...). Une SAE peut avoir plusieurs types.')
+                    ->columnSpanFull(),
 
                 TextInput::make('email')
                     ->label('Email de contact')

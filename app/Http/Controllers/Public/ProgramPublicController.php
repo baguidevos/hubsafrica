@@ -29,7 +29,7 @@ class ProgramPublicController extends Controller
      */
     public function show(int $id): View
     {
-        $program = Program::with(['sae', 'level', 'cohorts', 'deliverableDefinitions'])
+        $program = Program::with(['sae.types', 'level', 'cohorts', 'deliverableDefinitions'])
             ->findOrFail($id);
 
         Head::title("{$program->name} — Programme d'Accompagnement | Hub Africa")

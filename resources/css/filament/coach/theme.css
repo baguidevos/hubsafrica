@@ -2,3 +2,5 @@
 
 @source '../../../../app/Filament/Coach/**/*';
 @source '../../../../resources/views/filament/coach/**/*';
+@source '../../../../resources/views/filament/**/*';
+
