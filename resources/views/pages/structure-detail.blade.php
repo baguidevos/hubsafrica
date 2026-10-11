@@ -27,9 +27,23 @@
                             <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wide uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                                 Réseau Vérifié
                             </span>
+                            @if($sae->origin_type && $sae->isUniversity())
+                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/10 text-amber-300 border border-amber-500/30">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+                                    <span>Universitaire{{ $sae->university_name ? ' — ' . $sae->university_name : '' }}</span>
+                                </span>
+                            @elseif($sae->origin_type && $sae->origin_type->value !== 'INDEPENDANTE')
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-white/10 text-slate-300 border border-white/20">
+                                    {{ $sae->origin_type->getLabel() }}
+                                </span>
+                            @else
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">
+                                    Structure Indépendante
+                                </span>
+                            @endif
                         </div>
                         <p class="text-xs sm:text-sm text-slate-400">
-                            {{ $sae->address ?: 'Structure d\'Accompagnement labellisée Hub Africa' }}
+                            {{ $sae->provenance_label ?: ($sae->address ?: 'Structure d\'Accompagnement labellisée Hub Africa') }}
                         </p>
                         @if($sae->types->isNotEmpty())
                             <div class="flex flex-wrap gap-1.5 pt-1">
@@ -275,6 +289,26 @@
                                             {{ $t->name }}
                                         </span>
                                     @endforeach
+                                </div>
+                            </div>
+                        @endif
+
+                        @if($sae->isUniversity() && $sae->university_name)
+                            <div class="flex items-start gap-2.5">
+                                <svg class="w-4 h-4 text-amber-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+                                <div>
+                                    <span class="text-slate-400 block text-[10px] font-semibold uppercase">Tutelle Universitaire</span>
+                                    <span class="text-slate-800 font-semibold">{{ $sae->university_name }}</span>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if($sae->country || $sae->city)
+                            <div class="flex items-start gap-2.5">
+                                <svg class="w-4 h-4 text-slate-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <div>
+                                    <span class="text-slate-400 block text-[10px] font-semibold uppercase">Provenance / Pays</span>
+                                    <span class="text-slate-800 font-semibold">{{ $sae->provenance_label }}</span>
                                 </div>
                             </div>
                         @endif

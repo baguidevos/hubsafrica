@@ -53,20 +53,26 @@
                                     {{ $sae->name }}
                                 </h3>
                                 <p class="text-xs text-slate-500 truncate mt-0.5">
-                                    {{ $sae->address ?: 'Siège régional' }}
+                                    {{ $sae->provenance_label ?: ($sae->address ?: 'Siège régional') }}
                                 </p>
                             </div>
                         </div>
 
-                        @if($sae->types->isNotEmpty())
-                            <div class="flex flex-wrap gap-1.5">
+                        <div class="flex flex-wrap gap-1.5 items-center">
+                            @if($sae->isUniversity())
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+                                    <span>Universitaire</span>
+                                </span>
+                            @endif
+                            @if($sae->types->isNotEmpty())
                                 @foreach($sae->types as $type)
                                     <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-[#2F3284]/10 text-[#2F3284]">
                                         {{ $type->name }}
                                     </span>
                                 @endforeach
-                            </div>
-                        @endif
+                            @endif
+                        </div>
 
                         <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
                             {{ $sae->description ?: 'Structure d\'incubation partenaire déployant les programmes d\'accompagnement et de suivi de l\'innovation Hub Africa.' }}

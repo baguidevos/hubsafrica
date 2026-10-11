@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Saes\Schemas;
 
+use App\Enums\SaeOriginType;
 use App\Models\Sae;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
@@ -20,7 +21,7 @@ class SaeForm
         return $schema
             ->components([
                 Section::make('Identité & Statut de la Structure')
-                    ->description('Informations générales, typologies et responsable de la SAE')
+                    ->description('Informations générales, typologies, origine et responsable de la SAE')
                     ->schema([
                         FileUpload::make('logo')
                             ->label('Logo officiel de la structure')
@@ -52,6 +53,22 @@ class SaeForm
                                 ->maxLength(255)
                                 ->unique(Sae::class, 'slug', ignoreRecord: true)
                                 ->helperText('Identifiant dans l\'URL du portail et des espaces dédiés.'),
+
+                            Select::make('origin_type')
+                                ->label('Origine institutionnelle / Statut')
+                                ->options(SaeOriginType::class)
+                                ->default(SaeOriginType::INDEPENDANTE->value)
+                                ->formatStateUsing(fn ($state) => $state ?? SaeOriginType::INDEPENDANTE->value)
+                                ->required()
+                                ->live()
+                                ->helperText('Précisez si la structure est indépendante ou rattachée à une université / établissement d\'enseignement supérieur.'),
+
+                            TextInput::make('university_name')
+                                ->label('Nom de l\'université de rattachement')
+                                ->placeholder('Ex: Université de Lomé, Université Cheikh Anta Diop (UCAD), 2iE...')
+                                ->visible(fn ($get) => $get('origin_type') === SaeOriginType::UNIVERSITAIRE || $get('origin_type') === SaeOriginType::UNIVERSITAIRE->value)
+                                ->required(fn ($get) => $get('origin_type') === SaeOriginType::UNIVERSITAIRE || $get('origin_type') === SaeOriginType::UNIVERSITAIRE->value)
+                                ->maxLength(255),
 
                             Select::make('owner_id')
                                 ->label('Utilisateur Propriétaire / Responsable')
@@ -89,9 +106,19 @@ class SaeForm
                     ]),
 
                 Section::make('Coordonnées & Contact officiel')
-                    ->description('Canaux de communication institutionnels')
+                    ->description('Canaux de communication institutionnels et provenance géographique')
                     ->schema([
                         Grid::make(2)->schema([
+                            TextInput::make('country')
+                                ->label('Pays de provenance / d\'implantation')
+                                ->placeholder('Ex: Togo, Sénégal, Côte d\'Ivoire, Bénin, Cameroun...')
+                                ->maxLength(100),
+
+                            TextInput::make('city')
+                                ->label('Ville de provenance')
+                                ->placeholder('Ex: Lomé, Dakar, Abidjan, Cotonou...')
+                                ->maxLength(100),
+
                             TextInput::make('email')
                                 ->label('Email de contact officiel')
                                 ->email()
@@ -111,7 +138,7 @@ class SaeForm
                                 ->placeholder('https://www.incubateur.africa'),
 
                             Textarea::make('address')
-                                ->label('Adresse physique / Ville / Pays')
+                                ->label('Adresse physique / Localisation')
                                 ->rows(2)
                                 ->placeholder('Ex: Point E, Boulevard de l\'Est, Dakar, Sénégal'),
                         ]),

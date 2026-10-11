@@ -2,6 +2,7 @@
 
 namespace App\Filament\Sae\Pages\Tenancy;
 
+use App\Enums\SaeOriginType;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
@@ -37,6 +38,32 @@ class EditSaeProfile extends EditTenantProfile
                     ->required()
                     ->maxLength(255),
 
+                Select::make('origin_type')
+                    ->label('Origine institutionnelle / Statut')
+                    ->options(SaeOriginType::class)
+                    ->default(SaeOriginType::INDEPENDANTE->value)
+                    ->formatStateUsing(fn ($state) => $state ?? SaeOriginType::INDEPENDANTE->value)
+                    ->required()
+                    ->live()
+                    ->helperText('Précisez si votre structure est indépendante ou rattachée à une université / établissement d\'enseignement supérieur.'),
+
+                TextInput::make('university_name')
+                    ->label('Nom de l\'université de rattachement')
+                    ->placeholder('Ex: Université de Lomé, Université Cheikh Anta Diop (UCAD), 2iE...')
+                    ->visible(fn ($get) => $get('origin_type') === SaeOriginType::UNIVERSITAIRE || $get('origin_type') === SaeOriginType::UNIVERSITAIRE->value)
+                    ->required(fn ($get) => $get('origin_type') === SaeOriginType::UNIVERSITAIRE || $get('origin_type') === SaeOriginType::UNIVERSITAIRE->value)
+                    ->maxLength(255),
+
+                TextInput::make('country')
+                    ->label('Pays de provenance')
+                    ->placeholder('Ex: Togo, Sénégal, Côte d\'Ivoire, Bénin, Cameroun...')
+                    ->maxLength(100),
+
+                TextInput::make('city')
+                    ->label('Ville de provenance')
+                    ->placeholder('Ex: Lomé, Dakar, Abidjan, Cotonou...')
+                    ->maxLength(100),
+
                 Select::make('types')
                     ->label('Types de structure (SAE)')
                     ->relationship('types', 'name', fn ($query) => $query->where('is_active', true))
@@ -60,7 +87,7 @@ class EditSaeProfile extends EditTenantProfile
                     ->placeholder('https://www.incubateur.africa'),
 
                 Textarea::make('address')
-                    ->label('Adresse')
+                    ->label('Adresse physique / Localisation')
                     ->rows(2),
 
                 Textarea::make('description')

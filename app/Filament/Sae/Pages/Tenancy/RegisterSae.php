@@ -2,6 +2,7 @@
 
 namespace App\Filament\Sae\Pages\Tenancy;
 
+use App\Enums\SaeOriginType;
 use App\Models\Sae;
 use App\Models\SaeType;
 use App\Services\SaeOnboardingService;
@@ -65,7 +66,7 @@ class RegisterSae extends RegisterTenant
                 Wizard::make([
                     Step::make('Identité & Coordonnées')
                         ->icon('heroicon-o-building-office-2')
-                        ->description('Informations générales et contacts officiels')
+                        ->description('Informations générales, provenance et contacts officiels')
                         ->schema([
                             Grid::make(2)->schema([
                                 TextInput::make('name')
@@ -82,6 +83,31 @@ class RegisterSae extends RegisterTenant
                                     ->unique(Sae::class, 'slug')
                                     ->maxLength(255)
                                     ->helperText('Identifiant dans l\'URL (ex: sae/{slug})'),
+
+                                Select::make('origin_type')
+                                    ->label('Origine institutionnelle / Statut')
+                                    ->options(SaeOriginType::class)
+                                    ->default(SaeOriginType::INDEPENDANTE->value)
+                                    ->required()
+                                    ->live()
+                                    ->helperText('Précisez si votre structure est indépendante ou rattachée à une université.'),
+
+                                TextInput::make('university_name')
+                                    ->label('Nom de l\'université de rattachement')
+                                    ->placeholder('Ex: Université de Lomé, Université Cheikh Anta Diop (UCAD), 2iE...')
+                                    ->visible(fn ($get) => $get('origin_type') === SaeOriginType::UNIVERSITAIRE || $get('origin_type') === SaeOriginType::UNIVERSITAIRE->value)
+                                    ->required(fn ($get) => $get('origin_type') === SaeOriginType::UNIVERSITAIRE || $get('origin_type') === SaeOriginType::UNIVERSITAIRE->value)
+                                    ->maxLength(255),
+
+                                TextInput::make('country')
+                                    ->label('Pays de provenance')
+                                    ->placeholder('Ex: Togo, Sénégal, Côte d\'Ivoire, Bénin, Cameroun...')
+                                    ->maxLength(100),
+
+                                TextInput::make('city')
+                                    ->label('Ville de provenance')
+                                    ->placeholder('Ex: Lomé, Dakar, Abidjan, Cotonou, Yaoundé...')
+                                    ->maxLength(100),
 
                                 TextInput::make('email')
                                     ->label('Email de contact officiel')
@@ -121,7 +147,7 @@ class RegisterSae extends RegisterTenant
                             ]),
 
                             Textarea::make('address')
-                                ->label('Adresse physique / Ville / Pays')
+                                ->label('Adresse physique / Localisation')
                                 ->rows(2)
                                 ->placeholder('Ex: Boulevard de l\'Est, Point E, Dakar, Sénégal')
                                 ->columnSpanFull(),

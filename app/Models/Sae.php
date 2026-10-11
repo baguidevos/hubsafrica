@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\SaeOriginType;
 use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +16,10 @@ class Sae extends Model implements HasAvatar
 {
     use HasFactory;
 
+    protected $attributes = [
+        'origin_type' => 'INDEPENDANTE',
+    ];
+
     protected $fillable = [
         'owner_id',
         'name',
@@ -24,6 +29,10 @@ class Sae extends Model implements HasAvatar
         'website',
         'phone',
         'address',
+        'country',
+        'city',
+        'origin_type',
+        'university_name',
         'logo',
         'status',
         'default_admission_threshold',
@@ -37,6 +46,7 @@ class Sae extends Model implements HasAvatar
     protected function casts(): array
     {
         return [
+            'origin_type' => SaeOriginType::class,
             'default_admission_threshold' => 'integer',
             'default_waitlist_threshold' => 'integer',
         ];
@@ -68,6 +78,32 @@ class Sae extends Model implements HasAvatar
     public function getLogoUrlAttribute(): ?string
     {
         return $this->getFilamentAvatarUrl();
+    }
+
+    public function isUniversity(): bool
+    {
+        return $this->origin_type === SaeOriginType::UNIVERSITAIRE;
+    }
+
+    public function isIndependent(): bool
+    {
+        return $this->origin_type === SaeOriginType::INDEPENDANTE || is_null($this->origin_type);
+    }
+
+    public function getOriginLabelAttribute(): string
+    {
+        if ($this->origin_type instanceof SaeOriginType) {
+            return $this->origin_type->getLabel();
+        }
+
+        return 'Structure indépendante';
+    }
+
+    public function getProvenanceLabelAttribute(): string
+    {
+        $parts = array_filter([$this->city, $this->country]);
+
+        return ! empty($parts) ? implode(', ', $parts) : ($this->address ?: 'Non renseigné');
     }
 
     protected static function boot(): void

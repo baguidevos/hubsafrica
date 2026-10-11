@@ -4,6 +4,33 @@ Toutes les modifications notables apportées au projet **Hub Africa v2** (Stack 
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
+## [2.14.0] - 2026-10-11
+
+### Ajouté (Added) & Amélioré (Improved)
+- **Provenance Géographique & Origine Institutionnelle des SAE (Structure Indépendante vs Universitaire)** :
+  - **Enum `App\Enums\SaeOriginType`** :
+    - Définition des statuts d'origine : `INDEPENDANTE` (*Structure Indépendante*), `UNIVERSITAIRE` (*Incubateur / Pôle Universitaire*), `PUBLIQUE` (*Structure Publique / Institutionnelle*), `ENTREPRISE` (*Incubateur Corporate / Entreprise*).
+    - Implémentation des interfaces Filament `HasLabel`, `HasColor` et `HasIcon`.
+  - **Migration de Schéma (`add_origin_and_provenance_to_saes_table`)** :
+    - Ajout des colonnes `origin_type` (valeur par défaut `'INDEPENDANTE'`), `university_name` (nullable), `country` (nullable) et `city` (nullable).
+  - **Modèle Eloquent `App\Models\Sae`** :
+    - Définition de `$attributes` avec `'origin_type' => 'INDEPENDANTE'`.
+    - Cast natif d'`origin_type` vers `SaeOriginType`.
+    - Méthodes helpers et accesseurs : `isUniversity(): bool`, `isIndependent(): bool`, `getOriginLabelAttribute(): string`, `getProvenanceLabelAttribute(): ?string`.
+  - **Formulaire d'Inscription & Onboarding (`RegisterSae`)** :
+    - Intégration du sélecteur d'origine institutionnelle à l'étape 1 (Identité & Coordonnées).
+    - Champ conditionnel réactif pour le *Nom de l'université de rattachement* (actif et obligatoire uniquement si `UNIVERSITAIRE` est sélectionné).
+    - Ajout des champs *Pays de provenance* et *Ville de provenance*.
+  - **Gestion de Profil & Administration Globale (`EditSaeProfile`, `SaeForm`, `SaesTable`)** :
+    - Possibilité pour le responsable de la SAE de modifier son statut d'origine, son université de rattachement et sa localisation géographique depuis son profil.
+    - Administration complète par les webmasters super-administrateurs avec support multi-tenant SQLite / MySQL.
+    - Colonnes `Origine` et `Pays` avec filtre de recherche dans la table des SAE (`SaesTable`).
+  - **Portail Public Front-Office (`structures.blade.php`, `structure-detail.blade.php`)** :
+    - Annuaire des structures : badge ambre *Universitaire* distinctif et affichage de la ville et du pays de provenance (`provenance_label`).
+    - Fiche détaillée de la structure : badge de statut dans le hero header, bloc dédié *Tutelle Universitaire* et bloc *Provenance / Pays* dans la colonne latérale.
+  - **Tests Automatisés Pest (`SaeOriginAndProvenanceTest.php`)** :
+    - Couverture complète de la logique modèle, formulaire Livewire d'inscription, formulaire d'édition, back-office administrateur et rendu des pages publiques (6 tests réussis, 48 assertions).
+
 ## [2.13.0] - 2026-10-11
 
 ### Ajouté (Added) & Amélioré (Improved)

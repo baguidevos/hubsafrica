@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Saes\Tables;
 
+use App\Enums\SaeOriginType;
 use App\Models\Sae;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
@@ -40,6 +41,19 @@ class SaesTable
                     ->searchable()
                     ->sortable()
                     ->placeholder('Aucun propriétaire assigné'),
+
+                TextColumn::make('origin_type')
+                    ->label('Origine')
+                    ->badge()
+                    ->formatStateUsing(fn ($state, Sae $record) => $record->university_name ? "Univ: {$record->university_name}" : ($state?->getLabel() ?? 'Indépendante'))
+                    ->toggleable(),
+
+                TextColumn::make('country')
+                    ->label('Pays')
+                    ->searchable()
+                    ->sortable()
+                    ->placeholder('Non renseigné')
+                    ->toggleable(),
 
                 TextColumn::make('status')
                     ->label('Statut')
@@ -82,6 +96,10 @@ class SaesTable
                         'INACTIVE' => 'Inactive',
                         'SUSPENDED' => 'Suspendue',
                     ]),
+
+                SelectFilter::make('origin_type')
+                    ->label('Origine institutionnelle')
+                    ->options(SaeOriginType::class),
 
                 SelectFilter::make('types')
                     ->label('Type de SAE')
