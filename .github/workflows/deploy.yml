@@ -1,0 +1,129 @@
+name: CI/CD Pipeline - Fichiers Modifiés
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  FTP-Deploy:
+    name: Déployer fichiers modifiés via FTP
+    runs-on: ubuntu-latest
+    env:
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: "true"
+    steps:
+      # 1. Récupérer le code avec historique
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      # 2. Identifier les fichiers modifiés ET nouveaux
+      - name: Détecter fichiers modifiés
+        id: changed-files
+        uses: tj-actions/changed-files@v41
+        with:
+          files: |
+            app/**
+            config/**
+            database/migrations/**
+            public/**
+            resources/**
+            routes/**
+            .env.production
+          files_ignore: |
+            **/.git/**
+            **/node_modules/**
+            **/.DS_Store
+            **/tests/**
+            **/.github/**
+
+      # 3. Installer PHP pour Composer
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: mbstring, pdo, pdo_mysql, bcmath
+
+      # 4. Installer Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      # 5. Installer dépendances Composer
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      # 6. Installer NPM et compiler les assets
+      - name: Build assets (Inertia.js & Vite)
+        run: |
+          npm ci || npm install
+          npm run build
+
+      # 7. Lister les fichiers qui seront déployés
+      - name: Afficher fichiers modifiés
+        run: |
+          echo "=== FICHIERS À DÉPLOYER ==="
+          echo "${{ steps.changed-files.outputs.all_changed_files }}"
+
+      # 8. Déployer les fichiers modifiés via FTP
+      - name: Deploy modified files via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          server-dir: ./
+          port: ${{ secrets.FTP_PORT || 21 }}
+          protocol: ftp
+          exclude: |
+            **/.git/**
+            **/node_modules/**
+            **/vendor/**
+            **/tests/**
+            **/.env
+            **/.deploy.yml
+            **/.SEEDERS_FACTORIES_SUMMARY.md
+            **/run-seeder.bat
+            **/run-seeder.ps1
+            **/.env.local
+            **/.gitignore
+            **/package-lock.json
+            **/.DS_Store
+            **/README.md
+            **/.github/**
+            **/.vscode/**
+            **/storage/**
+            **/bootstrap/cache/**
+            **/_bmad/**
+            **/.agent/**
+            **/_bmad-output/**
+            **.claude/**
+            **ARCHITECTURE.md**
+
+      # 9. Exécuter les migrations si des fichiers de migration ont changé
+      - name: Run database migrations
+        if: contains(steps.changed-files.outputs.all_changed_files, 'database/migrations/')
+        run: php artisan migrate --force
+
+      # 10. Vider et régénérer le cache Laravel
+      - name: Clear & Cache Laravel
+        if: contains(steps.changed-files.outputs.all_changed_files, 'app/') || contains(steps.changed-files.outputs.all_changed_files, 'config/') || contains(steps.changed-files.outputs.all_changed_files, 'routes/')
+        run: |
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+
+      # 11. Notification de succès
+      - name: ✅ Success Notification
+        if: success()
+        run: echo "Déploiement réussi !"
+
+      # 12. Notification d'erreur
+      - name: ❌ Failure Notification
+        if: failure()
+        run: echo "Erreur lors du déploiement !"
