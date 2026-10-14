@@ -4,6 +4,40 @@ Toutes les modifications notables apportées au projet **Hub Africa v2** (Stack 
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
+## [2.16.0] - 2026-10-14
+
+### Ajouté (Added) & Amélioré (Improved)
+- **Pipeline CI/CD & Déploiement FTP Automatisé (`.github/workflows/deploy.yml`)** :
+  - **Correction du paramètre serveur FTP** : Résolution de l'erreur `Input required and not supplied: server` grâce à un fallback automatique sur les alias de secrets (`FTP_SERVER || SERVER || FTP_HOST`, `FTP_USERNAME || USERNAME || FTP_USER`, `FTP_PASSWORD || PASSWORD`, `FTP_PORT || PORT || 21`).
+  - **Étape de pré-contrôle (Pre-flight check)** : Vérification préalable de la présence des identifiants FTP avec affichage d'un message guidé et de l'URL directe vers les secrets GitHub en cas de configuration manquante.
+  - **Exclusion rigoureuse de production (`exclude`)** : Nettoyage exhaustif évitant le transfert de fichiers sensibles ou superflus :
+    - Fichiers d'environnement (`**/.env*`) pour protéger les variables du serveur distant.
+    - Outils de test et linters (`**/tests/**`, `**/phpunit.xml`, `**/.phpunit.cache/**`, `**/phpstan.neon`, `**/pint.json`).
+    - Dépendances et configurations Node/NPM (`**/node_modules/**`, `**/package.json`, `**/package-lock.json`, `**/vite.config.js`), tout en préservant le déploiement des assets compilés (`public/build/**`).
+    - Fichiers de documentation interne, pitch decks et tableurs (`**/*.md`, `**/*.pdf`, `**/*.xlsx`).
+    - Dumps SQL et exports de données de développement (`**/*.sql`, `**/database_v1_full.json`).
+    - Caches runtime, logs et dossiers assistants/éditeurs (`**/.git/**`, `**/.github/**`, `**/.agents/**`, `**/.claude/**`, `**/.kilo/**`, `**/.vscode/**`, `**/storage/logs/**`, `**/storage/framework/**`, `**/bootstrap/cache/*.php`).
+  - **Assainissement des étapes runner** : Suppression de l'exécution locale de `php artisan migrate` et `php artisan config:cache` sur le conteneur GitHub Actions pour éviter les blocages sans base de données distante.
+
+- **Nettoyage & Sécurisation de l'Interface Publique & Authentification** :
+  - **Retrait du bouton « Comptes de Test (1-Clic) »** du bandeau supérieur institutionnel (`header`), du menu déroulant « Espaces Dédiés » et du tiroir mobile dans [`public.blade.php`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/resources/views/components/layouts/public.blade.php).
+  - **Désactivation du Render Hook Filament `quick-login`** : Suppression du pavé de pré-remplissage des formulaires de connexion (`/admin/login`, `/sae/login`, `/coach/login`, `/portal/login`) dans [`AppServiceProvider.php`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Providers/AppServiceProvider.php) pour afficher des formulaires d'authentification 100% professionnels et sécurisés.
+  - **Discrétion du portail d'administration** : Retrait du lien direct Super Admin du menu déroulant public.
+
+- **Modernisation Graphique de la Vitrine Publique (`home.blade.php`, `public.blade.php`)** :
+  - **Hero Section immersif** : Arrière-plan enrichi d'halos lumineux d'ambiance aux couleurs officielles Hub Africa (Bleu Nuit `#2F3284` et Or `#F8B81D`), trame en pointillés fins, badge officiel pulsant et bouton CTA doré à fort impact.
+  - **Indicateurs d'impact valorisés** : Cartes statistiques en verre dépoli (`backdrop-blur-md`) avec bordures lumineuses au survol (`hover:border-[#F8B81D]/40`) et micro-élévation.
+  - **Cartes des programmes phares & Parcours en 4 étapes** : Design revisité avec coins adoucis (`rounded-3xl`), tags de maturité nets, micro-animations sur les étapes clés (Diagnostic, Mentorat, Structuration, Financement & Marchés) et bannière finale en dégradé nuit profond.
+
+- **Socle d'Initialisation de Production (`ProductionSeeder.php`)** :
+  - Création du seeder officiel [`ProductionSeeder.php`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/database/seeders/ProductionSeeder.php) 100% idempotent pour initialiser une base vierge en production sans données de démo parasites :
+    - Population des 10 typologies officielles de SAE via `SaeTypeSeeder`.
+    - Création des 4 rôles applicatifs Spatie (`super_admin`, `responsable`, `coach`, `entrepreneur`) sous scope global (`sae_id = 0`).
+    - Création du compte Super Administrateur initial avec identifiants configurables via `.env` (`INITIAL_ADMIN_EMAIL`, `INITIAL_ADMIN_PASSWORD`).
+
+- **Matrice de Conformité Référentiel DIL (Digital Innovation Loop)** :
+  - Validation et documentation de l'adéquation fonctionnelle native de Hub Africa v2 pour le pilotage complet du référentiel DIL d'accompagnement à la digitalisation des TPME et coopératives.
+
 ## [2.15.0] - 2026-10-11
 
 ### Ajouté (Added) & Amélioré (Improved)

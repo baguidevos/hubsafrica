@@ -5,8 +5,6 @@ namespace App\Providers;
 use App\Listeners\HandleCandidatureSubmission;
 use App\Listeners\HandleEvaluationSubmission;
 use Carbon\CarbonImmutable;
-use Filament\Support\Facades\FilamentView;
-use Filament\View\PanelsRenderHook;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
@@ -43,12 +41,6 @@ class AppServiceProvider extends ServiceProvider
             HandleCandidatureSubmission::class,
         );
 
-        if (class_exists(FilamentView::class) && class_exists(PanelsRenderHook::class)) {
-            FilamentView::registerRenderHook(
-                PanelsRenderHook::AUTH_LOGIN_FORM_AFTER,
-                fn () => view('filament.hooks.quick-login'),
-            );
-        }
     }
 
     /**
