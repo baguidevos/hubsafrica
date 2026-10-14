@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar, HasTenants
@@ -78,8 +79,18 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasTenant
 
     public function isSuperAdmin(): bool
     {
-        return $this->email === 'admin@hubafrica.org'
-            || $this->roles()->where('name', 'super_admin')->exists();
+        $initialAdmin = env('INITIAL_ADMIN_EMAIL', 'admin@hubafrica.org');
+
+        if ($this->email === 'admin@hubafrica.org' || ($initialAdmin && $this->email === $initialAdmin)) {
+            return true;
+        }
+
+        return DB::table('model_has_roles')
+            ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
+            ->where('model_has_roles.model_id', $this->id)
+            ->where('model_has_roles.model_type', static::class)
+            ->where('roles.name', 'super_admin')
+            ->exists();
     }
 
     public function isCoach(): bool

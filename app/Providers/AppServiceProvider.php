@@ -8,11 +8,13 @@ use App\Models\Application;
 use App\Models\CoachAssignment;
 use App\Models\CoachingSession;
 use App\Models\DeliverableSubmission;
+use App\Notifications\FilamentResetPassword;
 use App\Observers\ApplicationObserver;
 use App\Observers\CoachAssignmentObserver;
 use App\Observers\CoachingSessionObserver;
 use App\Observers\DeliverableSubmissionObserver;
 use Carbon\CarbonImmutable;
+use Filament\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
@@ -28,7 +30,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            ResetPassword::class,
+            FilamentResetPassword::class,
+        );
     }
 
     /**
