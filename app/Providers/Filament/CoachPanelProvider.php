@@ -35,6 +35,7 @@ class CoachPanelProvider extends PanelProvider
             ->viteTheme('resources/css/filament/coach/theme.css')
             ->maxContentWidth(Width::Full)
             ->login()
+            ->passwordReset()
             ->colors([
                 'primary' => Color::Indigo,
             ])

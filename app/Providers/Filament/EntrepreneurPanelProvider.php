@@ -35,6 +35,7 @@ class EntrepreneurPanelProvider extends PanelProvider
             ->viteTheme('resources/css/filament/entrepreneur/theme.css')
             ->maxContentWidth(Width::Full)
             ->login()
+            ->passwordReset()
             ->spa(hasPrefetching: true)
             ->colors([
                 'primary' => Color::Emerald,

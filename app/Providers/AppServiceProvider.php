@@ -4,6 +4,14 @@ namespace App\Providers;
 
 use App\Listeners\HandleCandidatureSubmission;
 use App\Listeners\HandleEvaluationSubmission;
+use App\Models\Application;
+use App\Models\CoachAssignment;
+use App\Models\CoachingSession;
+use App\Models\DeliverableSubmission;
+use App\Observers\ApplicationObserver;
+use App\Observers\CoachAssignmentObserver;
+use App\Observers\CoachingSessionObserver;
+use App\Observers\DeliverableSubmissionObserver;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -41,6 +49,10 @@ class AppServiceProvider extends ServiceProvider
             HandleCandidatureSubmission::class,
         );
 
+        Application::observe(ApplicationObserver::class);
+        CoachAssignment::observe(CoachAssignmentObserver::class);
+        CoachingSession::observe(CoachingSessionObserver::class);
+        DeliverableSubmission::observe(DeliverableSubmissionObserver::class);
     }
 
     /**

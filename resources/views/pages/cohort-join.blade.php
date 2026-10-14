@@ -201,9 +201,13 @@
                     </form>
 
                     <div class="pt-4 border-t border-slate-100 text-center">
-                        <span class="text-[11px] text-slate-400">
-                            Mot de passe oublié ? Contactez l'incubateur organisateur pour réinitialiser vos accès.
-                        </span>
+                        <a
+                            href="{{ route('filament.entrepreneur.auth.password-reset.request') }}"
+                            class="text-xs text-[#2F3284] hover:text-[#25286a] font-semibold hover:underline inline-flex items-center gap-1.5 transition"
+                        >
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                            <span>Mot de passe oublié ?</span>
+                        </a>
                     </div>
                 </div>
 

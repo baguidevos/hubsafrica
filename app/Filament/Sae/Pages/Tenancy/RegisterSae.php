@@ -3,6 +3,7 @@
 namespace App\Filament\Sae\Pages\Tenancy;
 
 use App\Enums\SaeOriginType;
+use App\Mail\SaeManagerWelcomeMail;
 use App\Models\Sae;
 use App\Models\SaeType;
 use App\Services\SaeOnboardingService;
@@ -19,6 +20,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Enums\Width;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
@@ -267,6 +269,10 @@ class RegisterSae extends RegisterTenant
             'role' => 'RESPONSABLE',
             'status' => 'ACTIVE',
         ]);
+
+        // Envoi de l'email de bienvenue au responsable de la SAE
+        Mail::to($user->email)
+            ->queue(new SaeManagerWelcomeMail($user, $sae));
 
         // Initialisation automatique : Formulaire de candidature propre à la SAE, Paliers & Rôles
         app(SaeOnboardingService::class)->initializeSaeDefaults($sae, $user);

@@ -36,6 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->maxContentWidth(Width::Full)
             ->login()
+            ->passwordReset()
             ->colors([
                 'primary' => Color::Slate,
             ])

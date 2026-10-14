@@ -50,9 +50,9 @@ return [
     |--------------------------------------------------------------------------
     */
     'contact' => [
-        'email' => env('HUBAFRICA_CONTACT_EMAIL', 'contact@hubafrica.org'),
-        'phone' => env('HUBAFRICA_CONTACT_PHONE', '+221 33 800 00 00'),
-        'address' => env('HUBAFRICA_CONTACT_ADDRESS', 'Secrétariat Régional Panafricain — Dakar, Sénégal'),
+        'email' => env('HUBAFRICA_CONTACT_EMAIL', 'teamhubafrica@gmail.com'),
+        'phone' => env('HUBAFRICA_CONTACT_PHONE', '+228 70 76 76 94'),
+        'address' => env('HUBAFRICA_CONTACT_ADDRESS', 'TOGO, Lomé.'),
     ],
 
     /*

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Public;
 
 use App\Enums\CohortStatus;
 use App\Http\Controllers\Controller;
+use App\Mail\FounderWelcomeMail;
 use App\Models\Cohort;
 use App\Models\Entrepreneur;
 use App\Models\User;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 use Laravel\Head\Facades\Head;
 
@@ -131,6 +133,8 @@ class CohortPublicController extends Controller
             }
 
             DB::commit();
+
+            Mail::to($user->email)->queue(new FounderWelcomeMail($user));
 
             Auth::login($user);
             $request->session()->regenerate();

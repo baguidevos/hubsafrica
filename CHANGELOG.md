@@ -4,6 +4,48 @@ Toutes les modifications notables apportées au projet **Hub Africa v2** (Stack 
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
+## [2.17.0] - 2026-10-14
+
+### Ajouté (Added) & Amélioré (Improved)
+- **Infrastructure Complète de Notifications & Emails Transactionnels** :
+  - **Gabarit HTML responsive standardisé (`components/emails/layouts/hubafrica.blade.php`)** :
+    - Design moderne aux couleurs institutionnelles Hub Africa (Bleu Nuit `#2F3284` & Or Panafricain `#F8B81D`).
+    - Compatible avec l'ensemble des clients de messagerie (structure en tables imbriquées, inline styles, responsive).
+    - En-tête multi-tenant dynamique affichant le logo et le nom de la SAE émettrice avec fallback Hub Africa.
+    - Pied de page complet avec coordonnées du support, mentions d'hébergement panafricain et liens sécurisés.
+  - **Emails de bienvenue & embarquement aux inscriptions** :
+    - [`FounderWelcomeMail`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Mail/FounderWelcomeMail.php) : Envoyé au fondateur dès la soumission de sa première candidature, avec ses identifiants et le lien vers l'espace entrepreneur `/portal`.
+    - [`CoachWelcomeMail`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Mail/CoachWelcomeMail.php) : Envoyé au coach / mentor lors de la finalisation de son inscription, avec accès immédiat à l'espace `/coach`.
+    - [`SaeManagerWelcomeMail`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Mail/SaeManagerWelcomeMail.php) : Envoyé au responsable de SAE lors de l'enregistrement de sa structure, récapitulant les étapes clés de pilotage dans `/sae`.
+  - **Cycle de candidature & d'admission en cohorte** :
+    - [`ApplicationReceivedMail`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Mail/ApplicationReceivedMail.php) : Accusé de réception avec numéro de dossier et récapitulatif du programme pour le porteur de projet.
+    - [`NewApplicationAlertMail`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Mail/NewApplicationAlertMail.php) : Notification instantanée à l'équipe de l'incubateur pour chaque nouveau dossier candidat.
+    - [`ApplicationAdmittedMail`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Mail/ApplicationAdmittedMail.php) : Félicitations et notification officielle d'admission en cohorte (`statut = ACCEPTEE`) déclenchée automatiquement par l'observateur Eloquent [`ApplicationObserver`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Observers/ApplicationObserver.php).
+    - [`ApplicationDecisionMail`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Mail/ApplicationDecisionMail.php) : Notification bienveillante pour les dossiers placés sur liste d'attente (`EN_ATTENTE`) ou non retenus (`REFUSEE`), avec retour et motifs du jury.
+  - **Cycle de vie de l'accompagnement (Déclencheurs automatiques par Observers)** :
+    - **Affectation Coach - Startup** ([`CoachAssignmentObserver`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Observers/CoachAssignmentObserver.php)) : Envoi simultané de [`CoachAssignedStartupMail`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Mail/CoachAssignedStartupMail.php) au coach et de [`StartupAssignedToCoachMail`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Mail/StartupAssignedToCoachMail.php) à l'entrepreneur dès validation d'un binôme.
+    - **Planification des séances de coaching** ([`CoachingSessionObserver`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Observers/CoachingSessionObserver.php)) : Envoi automatique de [`CoachingSessionScheduledMail`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Mail/CoachingSessionScheduledMail.php) au fondateur avec la date, l'horaire, le lien de visioconférence et l'ordre du jour.
+    - **Suivi des livrables pédagogiques** ([`DeliverableSubmissionObserver`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Observers/DeliverableSubmissionObserver.php)) : Envoi immédiat de [`DeliverableStatusMail`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Mail/DeliverableStatusMail.php) à l'entrepreneur lors de la validation ou demande de correction d'un livrable, incluant les remarques et conseils du mentor.
+
+- **Candidature Spontanée & Workflow d'Invitation des Coachs / Mentors** :
+  - **Table & Modèle dédié** : Création de la migration `2026_10_14_214241_create_coach_join_requests_table.php`, du modèle [`CoachJoinRequest`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Models/CoachJoinRequest.php) et de l'énumération [`CoachJoinRequestStatus`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Enums/CoachJoinRequestStatus.php) (`PENDING`, `ACCEPTED`, `REJECTED`).
+  - **Formulaire public de candidature coach** : Route `/coach/postuler` ([`CoachJoinRequestPublicController`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Http/Controllers/Public/CoachJoinRequestPublicController.php)) et vue ergonomique [`coach-join-request.blade.php`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/resources/views/pages/coach-join-request.blade.php) permettant aux mentors de postuler auprès d'une SAE en renseignant leur parcours, LinkedIn et expertises.
+  - **Intégration vitrine** : Ajout du lien et de la carte d'accès coach sur la page publique `/rejoindre`.
+  - **Gestion par les incubateurs dans Filament SAE** ([`CoachJoinRequestResource`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Filament/Sae/Resources/CoachJoinRequests/CoachJoinRequestResource.php)) :
+    - Consultation des demandes avec badges de statut et filtres.
+    - Action d'acceptation en 1 clic : validation automatique, création du jeton d'invitation sécurisé ([`CoachInvitation`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Models/CoachInvitation.php)) et expédition de l'email [`CoachJoinRequestAcceptedMail`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Mail/CoachJoinRequestAcceptedMail.php) avec le lien unique d'invitation.
+    - Action manuelle "Envoyer email" et expédition automatique à la création d'invitation manuelle dans [`CoachInvitationsTable`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Filament/Sae/Resources/CoachInvitations/Tables/CoachInvitationsTable.php).
+
+- **Réinitialisation Sécurisée de Mot de Passe ("Mot de passe oublié")** :
+  - **Activation sur l'ensemble des 4 panels Filament** : Ajout de la méthode native `->passwordReset()` dans [`AdminPanelProvider`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Providers/Filament/AdminPanelProvider.php), [`SaePanelProvider`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Providers/Filament/SaePanelProvider.php), [`EntrepreneurPanelProvider`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Providers/Filament/EntrepreneurPanelProvider.php) et [`CoachPanelProvider`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Providers/Filament/CoachPanelProvider.php).
+  - Enregistrement automatique des formulaires de demande (`/admin/password-reset/request`, `/sae/password-reset/request`, `/portal/password-reset/request`, `/coach/password-reset/request`) et de réinitialisation (`.../password-reset/reset`) avec envoi du jeton sécurisé par notification.
+  - Remplacement du texte statique par un lien direct cliquable "Mot de passe oublié ?" sur la page de candidature en cohorte [`cohort-join.blade.php`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/resources/views/pages/cohort-join.blade.php).
+
+- **Tests de Régression & Qualité** :
+  - 13 nouveaux tests fonctionnels automatisés ([`NotificationAndEmailLifecycleTest`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/tests/Feature/NotificationAndEmailLifecycleTest.php) et [`PasswordResetLifecycleTest`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/tests/Feature/PasswordResetLifecycleTest.php)).
+  - **123 tests Pest exécutés avec succès (788 assertions)** sans aucune régression.
+  - Formatage strict du code selon les règles Laravel Pint.
+
 ## [2.16.0] - 2026-10-14
 
 ### Ajouté (Added) & Amélioré (Improved)

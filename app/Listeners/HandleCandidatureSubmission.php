@@ -6,6 +6,9 @@ use App\Enums\ApplicationStatus;
 use App\Enums\FormType;
 use App\Enums\Gender;
 use App\Enums\ProjectStatus;
+use App\Mail\ApplicationReceivedMail;
+use App\Mail\FounderWelcomeMail;
+use App\Mail\NewApplicationAlertMail;
 use App\Models\Application;
 use App\Models\Cohort;
 use App\Models\Entrepreneur;
@@ -17,6 +20,7 @@ use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Packstub\FormBuilder\Events\SubmissionReceived;
 
@@ -222,14 +226,22 @@ class HandleCandidatureSubmission
                 Auth::login($user);
             }
 
-            // 11. Notification in-app pour l'entrepreneur
+            // 11. Notification in-app & Email pour l'entrepreneur
             Notification::make()
                 ->title('Candidature enregistrée avec succès')
                 ->body("Votre dossier de candidature pour le programme {$program?->name} a été officiellement transmis.")
                 ->success()
                 ->sendToDatabase($user);
 
-            // 12. Notification in-app aux responsables de la SAE
+            if ($user->wasRecentlyCreated) {
+                Mail::to($user->email)
+                    ->queue(new FounderWelcomeMail($user, $entrepreneur));
+            }
+
+            Mail::to($user->email)
+                ->queue(new ApplicationReceivedMail($application));
+
+            // 12. Notification in-app & Email aux responsables de la SAE
             if ($saeId) {
                 $saeUsers = User::whereHas('saes', fn ($q) => $q->where('saes.id', $saeId))->get();
                 foreach ($saeUsers as $saeUser) {
@@ -242,6 +254,11 @@ class HandleCandidatureSubmission
                         ->icon('heroicon-o-clipboard-document-check')
                         ->info()
                         ->sendToDatabase($saeUser);
+
+                    if ($saeUser->email) {
+                        Mail::to($saeUser->email)
+                            ->queue(new NewApplicationAlertMail($application));
+                    }
                 }
             }
         } catch (\Throwable $e) {

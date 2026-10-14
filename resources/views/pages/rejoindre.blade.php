@@ -74,14 +74,17 @@
 
                 <div class="pt-8 space-y-3">
                     <a
-                        href="/mentor"
+                        href="{{ route('public.coach.join') }}"
                         class="block w-full py-3 rounded-xl bg-[#2F3284] hover:bg-[#1e2167] text-white font-bold text-xs text-center shadow-xs transition"
                     >
-                        Connexion Espace Mentor &rarr;
+                        Postuler auprès d'une SAE &rarr;
                     </a>
-                    <div class="p-2.5 rounded-xl bg-slate-50 text-[11px] text-slate-500 text-center">
-                        Intégration sur invitation directe d'une structure SAE
-                    </div>
+                    <a
+                        href="/mentor"
+                        class="block w-full py-2.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-xs text-center transition"
+                    >
+                        Déjà Coach ? Connexion Espace Mentor
+                    </a>
                 </div>
             </div>
 

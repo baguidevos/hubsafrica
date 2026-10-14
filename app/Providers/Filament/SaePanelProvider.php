@@ -48,6 +48,7 @@ class SaePanelProvider extends PanelProvider
             ->maxContentWidth(Width::Full)
             ->spa(hasPrefetching: true)
             ->login()
+            ->passwordReset()
             ->registration(RegisterSaeUser::class)
             ->colors([
                 'primary' => Color::Teal,

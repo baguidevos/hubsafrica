@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CoachInvitationController;
 use App\Http\Controllers\DevLoginController;
+use App\Http\Controllers\Public\CoachJoinRequestPublicController;
 use App\Http\Controllers\Public\CohortPublicController;
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\OrientationController;
@@ -38,6 +39,10 @@ Route::get('/structures/{id}', [StructurePublicController::class, 'show'])->name
 Route::get('/rejoindre', [OrientationController::class, 'index'])->name('public.rejoindre');
 Route::redirect('/account-type-selection', '/rejoindre');
 
+// Candidature Coach / Demande d'adhésion à une structure SAE
+Route::get('/coach/postuler', [CoachJoinRequestPublicController::class, 'create'])->name('public.coach.join');
+Route::post('/coach/postuler', [CoachJoinRequestPublicController::class, 'store'])->name('public.coach.join.store');
+
 // Parcours d'inscription Coach via lien d'invitation sécurisé
 Route::get('/coach/invite/{token}', [CoachInvitationController::class, 'show'])->name('coach.invite');
 Route::post('/coach/invite/{token}', [CoachInvitationController::class, 'register'])->name('coach.invite.register');
@@ -46,7 +51,7 @@ Route::get('/register/coach', function (Request $request) {
 
     return $token
         ? redirect()->route('coach.invite', ['token' => $token])
-        : redirect()->route('public.rejoindre');
+        : redirect()->route('public.coach.join');
 });
 
 // Redirection conviviale pour l'espace Coach/Mentor

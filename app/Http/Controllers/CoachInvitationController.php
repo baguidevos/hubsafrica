@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CoachWelcomeMail;
 use App\Models\Coach;
 use App\Models\CoachInvitation;
 use App\Models\User;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 
 class CoachInvitationController extends Controller
@@ -95,6 +97,9 @@ class CoachInvitationController extends Controller
         });
 
         Auth::login($user);
+
+        $coach = Coach::where('user_id', $user->id)->first();
+        Mail::to($user->email)->queue(new CoachWelcomeMail($user, $coach, $invitation->sae));
 
         return redirect(filament()->getPanel('coach')->getUrl($invitation->sae));
     }

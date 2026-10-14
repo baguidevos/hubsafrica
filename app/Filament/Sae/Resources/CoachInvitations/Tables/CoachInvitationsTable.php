@@ -3,6 +3,7 @@
 namespace App\Filament\Sae\Resources\CoachInvitations\Tables;
 
 use App\Enums\CoachInvitationStatus;
+use App\Mail\CoachDirectInvitationMail;
 use App\Models\CoachInvitation;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
@@ -10,10 +11,12 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Notifications\Notification;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Mail;
 
 class CoachInvitationsTable
 {
@@ -65,6 +68,23 @@ class CoachInvitationsTable
                     ->options(CoachInvitationStatus::class),
             ])
             ->recordActions([
+                Action::make('send_email')
+                    ->label('Envoyer email')
+                    ->icon('heroicon-o-paper-airplane')
+                    ->color('primary')
+                    ->requiresConfirmation()
+                    ->modalHeading('Envoyer le lien d\'invitation par email')
+                    ->modalDescription(fn (CoachInvitation $record) => "L'email contenant le lien d'activation sécurisé sera transmis à {$record->email}.")
+                    ->action(function (CoachInvitation $record) {
+                        Mail::to($record->email)
+                            ->queue(new CoachDirectInvitationMail($record));
+
+                        Notification::make()
+                            ->title('Email transmis')
+                            ->body("L'invitation a été envoyée par email à {$record->email}.")
+                            ->success()
+                            ->send();
+                    }),
                 Action::make('copy_link')
                     ->label('Lien d\'invitation')
                     ->icon('heroicon-o-link')
