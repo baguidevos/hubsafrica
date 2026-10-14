@@ -69,61 +69,85 @@ jobs:
           echo "=== FICHIERS À DÉPLOYER ==="
           echo "${{ steps.changed-files.outputs.all_changed_files }}"
 
-      # 8. Déployer les fichiers modifiés via FTP
+      # 8. Valider les secrets FTP avant la tentative de connexion
+      - name: Vérifier la configuration des secrets FTP
+        run: |
+          if [ -z "${{ secrets.FTP_SERVER || secrets.SERVER || secrets.FTP_HOST }}" ]; then
+            echo "::error::Le secret FTP_SERVER (ou SERVER) est introuvable dans les secrets GitHub du dépôt !"
+            echo "👉 Rendez-vous sur https://github.com/${{ github.repository }}/settings/secrets/actions et ajoutez 'FTP_SERVER'."
+            exit 1
+          fi
+          if [ -z "${{ secrets.FTP_USERNAME || secrets.USERNAME || secrets.FTP_USER }}" ]; then
+            echo "::error::Le secret FTP_USERNAME (ou USERNAME) est introuvable dans les secrets GitHub du dépôt !"
+            echo "👉 Rendez-vous sur https://github.com/${{ github.repository }}/settings/secrets/actions et ajoutez 'FTP_USERNAME'."
+            exit 1
+          fi
+          if [ -z "${{ secrets.FTP_PASSWORD || secrets.PASSWORD }}" ]; then
+            echo "::error::Le secret FTP_PASSWORD (ou PASSWORD) est introuvable dans les secrets GitHub du dépôt !"
+            echo "👉 Rendez-vous sur https://github.com/${{ github.repository }}/settings/secrets/actions et ajoutez 'FTP_PASSWORD'."
+            exit 1
+          fi
+          echo "✓ Tous les identifiants FTP requis sont configurés."
+
+      # 9. Déployer les fichiers modifiés via FTP avec exclusions complètes
       - name: Deploy modified files via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
+          server: ${{ secrets.FTP_SERVER || secrets.SERVER || secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME || secrets.USERNAME || secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD || secrets.PASSWORD }}
+          port: ${{ secrets.FTP_PORT || secrets.PORT || 21 }}
           local-dir: ./
           server-dir: ./
-          port: ${{ secrets.FTP_PORT || 21 }}
           protocol: ftp
           exclude: |
             **/.git/**
+            **/.github/**
+            **/.gitignore
+            **/.gitattributes
+            **/.editorconfig
+            **/.npmrc
+            **/.env*
             **/node_modules/**
             **/vendor/**
             **/tests/**
-            **/.env
-            **/.deploy.yml
-            **/.SEEDERS_FACTORIES_SUMMARY.md
-            **/run-seeder.bat
-            **/run-seeder.ps1
-            **/.env.local
-            **/.gitignore
+            **/phpunit.xml
+            **/.phpunit.cache/**
+            **/phpstan.neon
+            **/pint.json
+            **/package.json
             **/package-lock.json
-            **/.DS_Store
-            **/README.md
-            **/.github/**
+            **/vite.config.js
+            **/*.md
+            **/*.markdown
+            **/*.pdf
+            **/*.xlsx
+            **/*.sql
+            **/database_v1_full.json
+            **/.agents/**
+            **/.claude/**
+            **/.kilo/**
             **/.vscode/**
-            **/storage/**
-            **/bootstrap/cache/**
+            **/.idea/**
+            **/boost.json
+            **/opencode*.json*
+            **/storage/logs/**
+            **/storage/framework/cache/**
+            **/storage/framework/sessions/**
+            **/storage/framework/views/**
+            **/bootstrap/cache/*.php
+            **/.DS_Store
+            **/Thumbs.db
+            **/run-seeder.*
             **/_bmad/**
-            **/.agent/**
             **/_bmad-output/**
-            **.claude/**
-            **ARCHITECTURE.md**
 
-      # 9. Exécuter les migrations si des fichiers de migration ont changé
-      - name: Run database migrations
-        if: contains(steps.changed-files.outputs.all_changed_files, 'database/migrations/')
-        run: php artisan migrate --force
-
-      # 10. Vider et régénérer le cache Laravel
-      - name: Clear & Cache Laravel
-        if: contains(steps.changed-files.outputs.all_changed_files, 'app/') || contains(steps.changed-files.outputs.all_changed_files, 'config/') || contains(steps.changed-files.outputs.all_changed_files, 'routes/')
-        run: |
-          php artisan config:cache
-          php artisan route:cache
-          php artisan view:cache
-
-      # 11. Notification de succès
+      # 10. Notification de succès
       - name: ✅ Success Notification
         if: success()
-        run: echo "Déploiement réussi !"
+        run: echo "Déploiement FTP exécuté avec succès !"
 
-      # 12. Notification d'erreur
+      # 11. Notification d'erreur
       - name: ❌ Failure Notification
         if: failure()
-        run: echo "Erreur lors du déploiement !"
+        run: echo "Erreur lors du déploiement FTP !"
