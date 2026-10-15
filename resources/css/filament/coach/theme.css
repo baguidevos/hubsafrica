@@ -1,6 +1,7 @@
 @import '../../../../vendor/filament/filament/resources/css/theme.css';
 
 @source '../../../../app/Filament/Coach/**/*';
+@source '../../../../resources/views/**/*';
 @source '../../../../resources/views/filament/coach/**/*';
 @source '../../../../resources/views/filament/**/*';
 
