@@ -30,7 +30,10 @@
                 @if($currentUser)
                     <div class="p-4 rounded-2xl bg-slate-900 border border-slate-700/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-3 h-3 rounded-full bg-emerald-400 animate-ping"></div>
+                            <div class="relative flex h-3 w-3 shrink-0">
+                                <div class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></div>
+                                <div class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></div>
+                            </div>
                             <div class="text-xs">
                                 <span class="text-slate-400">Session active :</span>
                                 <strong class="text-white ml-1">{{ $currentUser->name }}</strong>

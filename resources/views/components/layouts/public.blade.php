@@ -38,26 +38,60 @@
 
     {{-- 1. Bandeau Institutionnel Supérieur --}}
     <header class="bg-slate-950 text-slate-300 text-xs border-b border-slate-800/80">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-col sm:flex-row items-center justify-between gap-2">
-            <div class="flex items-center gap-3">
-                <span class="inline-flex items-center gap-1.5 font-semibold text-[#F8B81D]">
-                    <span class="w-2 h-2 rounded-full bg-[#F8B81D] animate-ping"></span>
-                    Portail Officiel
-                </span>
-                <span class="text-slate-600 hidden sm:inline">&bull;</span>
-                <span class="text-slate-400 text-[11px] sm:text-xs">Réseau Panafricain des Structures d'Accompagnement à l'Entrepreneuriat</span>
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2">
+            {{-- Version Mobile (< sm) : compacte, aérée, sans retour à la ligne cassé ni artefact visuel --}}
+            <div class="flex sm:hidden items-center justify-between gap-2">
+                <div class="flex items-center gap-2 min-w-0">
+                    <span class="inline-flex items-center gap-1.5 font-bold text-[#F8B81D] whitespace-nowrap text-[11px] shrink-0">
+                        <span class="relative flex h-2 w-2 shrink-0">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F8B81D] opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-[#F8B81D]"></span>
+                        </span>
+                        Portail Officiel
+                    </span>
+                    <span class="text-slate-700 shrink-0">&bull;</span>
+                    <span class="text-slate-400 text-[10.5px] truncate font-medium">
+                        Réseau Panafricain SAE
+                    </span>
+                </div>
+
+                <div class="flex items-center gap-2 shrink-0">
+                    <a href="mailto:{{ config('hubafrica.contact.email') }}" class="inline-flex items-center gap-1.5 text-[11px] text-slate-300 hover:text-[#F8B81D] transition py-1 px-2.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-[#F8B81D]/30" title="{{ config('hubafrica.contact.email') }}">
+                        <svg class="w-3.5 h-3.5 text-[#F8B81D] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <span class="font-medium text-[10.5px]">Contact</span>
+                    </a>
+                </div>
             </div>
 
-            <div class="flex items-center gap-4 text-[11px] text-slate-400">
-                <a href="mailto:{{ config('hubafrica.contact.email') }}" class="hover:text-[#F8B81D] transition flex items-center gap-1.5">
-                    <svg class="w-3.5 h-3.5 text-[#F8B81D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                    <span>{{ config('hubafrica.contact.email') }}</span>
-                </a>
-                <span class="text-slate-700 hidden sm:inline">&bull;</span>
-                <span class="hidden sm:flex items-center gap-1.5">
-                    <svg class="w-3.5 h-3.5 text-[#F9B104]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                    <span>{{ config('hubafrica.contact.phone') }}</span>
-                </span>
+            {{-- Version Desktop & Tablette (>= sm) : vue large complète avec coordonnées --}}
+            <div class="hidden sm:flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3 min-w-0">
+                    <span class="inline-flex items-center gap-1.5 font-semibold text-[#F8B81D] whitespace-nowrap shrink-0">
+                        <span class="relative flex h-2 w-2 shrink-0">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F8B81D] opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-[#F8B81D]"></span>
+                        </span>
+                        Portail Officiel
+                    </span>
+                    <span class="text-slate-600 shrink-0">&bull;</span>
+                    <span class="text-slate-400 text-xs truncate lg:overflow-visible">
+                        Réseau Panafricain des Structures d'Accompagnement à l'Entrepreneuriat
+                    </span>
+                </div>
+
+                <div class="flex items-center gap-4 text-xs text-slate-400 shrink-0">
+                    <a href="mailto:{{ config('hubafrica.contact.email') }}" class="hover:text-[#F8B81D] transition flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5 text-[#F8B81D] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <span>{{ config('hubafrica.contact.email') }}</span>
+                    </a>
+                    @if(config('hubafrica.contact.phone'))
+                        <span class="text-slate-700">&bull;</span>
+                        <a href="tel:{{ config('hubafrica.contact.phone') }}" class="hover:text-[#F9B104] transition flex items-center gap-1.5">
+                            <svg class="w-3.5 h-3.5 text-[#F9B104] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                            <span>{{ config('hubafrica.contact.phone') }}</span>
+                        </a>
+                    @endif
+                </div>
             </div>
         </div>
     </header>
@@ -142,10 +176,14 @@
                     </a>
                 </div>
 
-                {{-- Burger Menu Mobile & Tablette (< lg) --}}
-                <div class="flex lg:hidden items-center">
-                    <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                {{-- Burger Menu Mobile & Tablette (< lg) avec bouton CTA Rejoindre rapide --}}
+                <div class="flex lg:hidden items-center gap-2">
+                    <a href="{{ route('public.rejoindre') }}" class="inline-flex items-center px-3 py-1.5 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 font-bold text-xs shadow-xs transition">
+                        Rejoindre
+                    </a>
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition" aria-label="Menu principal">
+                        <svg x-show="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                        <svg x-show="mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
                 </div>
             </div>
@@ -164,6 +202,20 @@
                 <a href="/sae" class="block w-full text-center px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:text-[#2F3284] hover:bg-slate-50 transition">Portail Structure SAE</a>
                 <a href="/admin" class="block w-full text-center px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:text-[#2F3284] hover:bg-slate-50 transition">Portail Super Admin</a>
                 <a href="{{ route('public.rejoindre') }}" class="block w-full text-center px-4 py-2.5 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 text-xs font-bold shadow transition">Rejoindre / Candidater</a>
+            </div>
+            
+            {{-- Coordonnées institutionnelles en bas de tiroir mobile --}}
+            <div class="pt-3 border-t border-slate-100 text-xs text-slate-500 space-y-2 px-1">
+                <a href="mailto:{{ config('hubafrica.contact.email') }}" class="flex items-center gap-2 text-slate-600 hover:text-[#2F3284]">
+                    <svg class="w-4 h-4 text-[#F8B81D] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <span>{{ config('hubafrica.contact.email') }}</span>
+                </a>
+                @if(config('hubafrica.contact.phone'))
+                <a href="tel:{{ config('hubafrica.contact.phone') }}" class="flex items-center gap-2 text-slate-600 hover:text-[#2F3284]">
+                    <svg class="w-4 h-4 text-[#F9B104] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                    <span>{{ config('hubafrica.contact.phone') }}</span>
+                </a>
+                @endif
             </div>
         </div>
     </nav>

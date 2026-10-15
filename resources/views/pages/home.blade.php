@@ -14,9 +14,12 @@
             <div class="text-center max-w-3xl mx-auto space-y-6">
                 
                 {{-- Badge élégant avec animation douce --}}
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 border border-[#F8B81D]/30 text-[#F8B81D] text-xs font-semibold backdrop-blur-md shadow-sm">
-                    <span class="w-2 h-2 rounded-full bg-[#F8B81D] animate-ping"></span>
-                    <span>Réseau Panafricain des Structures d'Accompagnement</span>
+                <div class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-slate-900/90 border border-[#F8B81D]/30 text-[#F8B81D] text-xs font-semibold backdrop-blur-md shadow-sm max-w-full">
+                    <span class="relative flex h-2 w-2 shrink-0">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F8B81D] opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-[#F8B81D]"></span>
+                    </span>
+                    <span class="truncate">Réseau Panafricain des Structures d'Accompagnement</span>
                 </div>
 
                 {{-- Titre institutionnel & moderne avec or Hub-Africa --}}

@@ -4,6 +4,24 @@ Toutes les modifications notables apportées au projet **Hub Africa v2** (Stack 
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
+## [2.18.0] - 2026-10-15
+
+### Ajouté (Added) & Amélioré (Improved)
+- **Optimisation de la Responsivité Mobile & Expérience Utilisateur Frontend** :
+  - **Bandeau Institutionnel Supérieur (`components/layouts/public.blade.php`)** :
+    - Élimination des retours à la ligne intempestifs sur mobile grâce à une structure flex compacte et fluide (`Portail Officiel • Réseau Panafricain SAE`).
+    - Correction du bug d'artefact visuel et du rond noir causé par un `animate-ping` isolé : mise en place de la structure standard avec point central stable et onde pulsante dorée (`relative flex h-2 w-2`).
+    - Ajout d'un bouton d'action compact `Contact` sur mobile et conservation de l'affichage complet (titre institutionnel long, email complet, numéro d'assistance) sur tablette et desktop.
+  - **Barre Principale de Navigation (Navbar)** :
+    - Intégration d'un bouton d'action rapide "Rejoindre" visible directement sur mobile à côté du menu burger pour optimiser les conversions.
+    - Bascule dynamique de l'icône burger vers une croix de fermeture ("X") lorsque le tiroir mobile est déplié.
+    - Ajout des coordonnées institutionnelles (email et téléphone d'assistance) au bas du tiroir mobile déroulant.
+  - **Harmonisation des Indicateurs Visuels Animés** :
+    - Correction du badge de la section Hero ([`home.blade.php`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/resources/views/pages/home.blade.php)) avec support `truncate` pour éviter les dépassements sur petit écran.
+    - Harmonisation du voyant de session active sur la page des comptes de test ([`comptes-test.blade.php`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/resources/views/pages/comptes-test.blade.php)).
+  - **Sources Tailwind v4 (`resources/css/app.css`)** :
+    - Élargissement des directives `@source` à toutes les vues Blade et classes PHP de l'application pour garantir la détection exhaustive des utilitaires CSS.
+
 ## [2.17.0] - 2026-10-14
 
 ### Ajouté (Added) & Amélioré (Improved)
