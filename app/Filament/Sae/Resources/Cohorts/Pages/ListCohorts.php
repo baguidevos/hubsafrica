@@ -33,7 +33,7 @@ class ListCohorts extends ListRecords
                     Select::make('template_key')
                         ->label('Modèle méthodologique')
                         ->options(fn (AccompanimentTemplateService $service) => $service->asSelectOptions())
-                        ->default('startup-loop-africinnov')
+                        ->default('cube-saei-kpital')
                         ->required(),
 
                     Select::make('program_id')

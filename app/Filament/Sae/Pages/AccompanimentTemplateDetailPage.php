@@ -41,7 +41,7 @@ class AccompanimentTemplateDetailPage extends Page
 
     protected string $view = 'filament.sae.pages.accompaniment-template-detail-page';
 
-    public string $templateKey = 'startup-loop-africinnov';
+    public string $templateKey = 'cube-saei-kpital';
 
     public string $activeTab = 'phases'; // 'overview' | 'phases' | 'startups' | 'programme' | 'evaluation' | 'drive'
 
@@ -54,7 +54,7 @@ class AccompanimentTemplateDetailPage extends Page
 
     public function mount(AccompanimentTemplateService $service, ?string $templateKey = null): void
     {
-        $key = $templateKey ?? request()->query('template') ?? 'startup-loop-africinnov';
+        $key = $templateKey ?? request()->query('template') ?? 'cube-saei-kpital';
 
         if (! $service->get($key)) {
             abort(404, "Modèle d'accompagnement [{$key}] non trouvé.");

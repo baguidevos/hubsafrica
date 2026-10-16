@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use Filament\Facades\Filament;
 use Illuminate\Auth\Notifications\ResetPassword as BaseResetPassword;
 use Illuminate\Notifications\Messages\MailMessage;
 
@@ -28,19 +29,31 @@ class FilamentResetPassword extends BaseResetPassword
 
     protected function resetUrl($notifiable): string
     {
-        return $this->url;
+        if (filled($this->url)) {
+            return $this->url;
+        }
+
+        try {
+            return Filament::getResetPasswordUrl($this->token, $notifiable);
+        } catch (\Throwable) {
+            return url('/admin/password-reset/reset?token='.$this->token.'&email='.urlencode($notifiable->getEmailForPasswordReset() ?? ''));
+        }
     }
 
     public function toMail($notifiable): MailMessage
     {
         $expireMinutes = (int) config('auth.passwords.'.config('auth.defaults.passwords').'.expire', 60);
+        $url = $this->resetUrl($notifiable);
+        $name = $notifiable->name ?? 'Utilisateur';
 
         return (new MailMessage)
             ->subject('Réinitialisation de votre mot de passe — '.config('hubafrica.name', 'Hub Africa'))
-            ->greeting('Bonjour '.($notifiable->name ?? '').',')
-            ->line('Vous recevez cet e-mail car nous avons reçu une demande de réinitialisation de mot de passe pour votre compte.')
-            ->action('Réinitialiser mon mot de passe', $this->resetUrl($notifiable))
-            ->line("Ce lien de réinitialisation expirera dans {$expireMinutes} minutes.")
-            ->line("Si vous n'avez pas demandé de réinitialisation de mot de passe, aucune action supplémentaire n'est requise.");
+            ->view('emails.auth.reset-password', [
+                'user' => $notifiable,
+                'name' => $name,
+                'resetUrl' => $url,
+                'expireMinutes' => $expireMinutes,
+            ])
+            ->action('Réinitialiser mon mot de passe', $url);
     }
 }

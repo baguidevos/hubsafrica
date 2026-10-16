@@ -19,8 +19,9 @@ class AccompanimentTemplateService
 
     public function __construct()
     {
-        // Enregistrement des modèles disponibles
-        $this->register(new StartupLoopAfricinnovTemplate);
+        // Modèles d'accompagnement :
+        // Startup Loop (Afric'innov) désactivé temporairement
+        // $this->register(new StartupLoopAfricinnovTemplate);
         $this->register(new CubeMethodologyTemplate);
     }
 

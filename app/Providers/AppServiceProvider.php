@@ -15,6 +15,8 @@ use App\Observers\CoachingSessionObserver;
 use App\Observers\DeliverableSubmissionObserver;
 use Carbon\CarbonImmutable;
 use Filament\Auth\Notifications\ResetPassword;
+use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
@@ -58,6 +60,34 @@ class AppServiceProvider extends ServiceProvider
         CoachAssignment::observe(CoachAssignmentObserver::class);
         CoachingSession::observe(CoachingSessionObserver::class);
         DeliverableSubmission::observe(DeliverableSubmissionObserver::class);
+
+        $this->configureFilamentAuthHooks();
+    }
+
+    /**
+     * Personnalisation visuelle globale des pages d'authentification Filament.
+     */
+    protected function configureFilamentAuthHooks(): void
+    {
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::HEAD_END,
+            fn () => view('filament.auth.styles'),
+        );
+
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::SIMPLE_LAYOUT_START,
+            fn () => view('filament.auth.header'),
+        );
+
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::SIMPLE_PAGE_START,
+            fn () => view('filament.auth.card-header'),
+        );
+
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::SIMPLE_LAYOUT_END,
+            fn () => view('filament.auth.footer'),
+        );
     }
 
     /**

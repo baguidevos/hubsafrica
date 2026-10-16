@@ -1,5 +1,6 @@
 <?php
 
+use App\AccompanimentTemplates\StartupLoopAfricinnovTemplate;
 use App\Enums\CoachAssignmentStatus;
 use App\Enums\CoachingSessionStatus;
 use App\Enums\CohortStatus;
@@ -223,6 +224,7 @@ test('accompaniment monitoring dashboard can export CSV summary', function () {
 
 test('accompaniment template service applies full pack to program and cohort', function () {
     $service = app(AccompanimentTemplateService::class);
+    $service->register(new StartupLoopAfricinnovTemplate);
     expect($service->all())->toHaveKey('startup-loop-africinnov');
 
     $program = Program::create([
@@ -251,10 +253,10 @@ test('accompaniment template service applies full pack to program and cohort', f
     expect(CohortPhase::where('cohort_id', $cohort->id)->count())->toBe(6);
 });
 
-test('accompaniment templates page loads successfully and displays both templates', function () {
+test('accompaniment templates page loads successfully and displays cube template while startup loop is disabled', function () {
     Livewire::test(AccompanimentTemplatesPage::class)
         ->assertSuccessful()
-        ->assertSee('Startup Loop (Afric\'innov / SAE)')
+        ->assertDontSee('Startup Loop (Afric\'innov / SAE)')
         ->assertSee('Méthodologie CUBE (SAEI CUBE & KPITAL INVEST)')
         ->assertSee('CUBE & KPITAL INVEST');
 });
@@ -262,12 +264,12 @@ test('accompaniment templates page loads successfully and displays both template
 test('accompaniment templates deploy action mounts cleanly with arguments', function () {
     Livewire::test(AccompanimentTemplatesPage::class)
         ->mountAction('deploy', [
-            'template_key' => 'startup-loop-africinnov',
-            'template_title' => 'Startup Loop (Afric\'innov / SAE)',
+            'template_key' => 'cube-saei-kpital',
+            'template_title' => 'Méthodologie CUBE (SAEI CUBE & KPITAL INVEST)',
         ])
         ->assertActionMounted('deploy')
         ->assertActionDataSet([
-            'template_key' => 'startup-loop-africinnov',
+            'template_key' => 'cube-saei-kpital',
         ]);
 });
 
@@ -309,15 +311,9 @@ test('cube methodology template deploys full pack with PAS, OHADA, and KPITAL IN
     expect(CohortPhase::where('cohort_id', $cohort->id)->count())->toBe(6);
 });
 
-test('accompaniment template detail page loads for startup loop and displays A-Z tabs and drive resources', function () {
+test('accompaniment template detail page aborts 404 for disabled startup loop template', function () {
     Livewire::test(AccompanimentTemplateDetailPage::class, ['templateKey' => 'startup-loop-africinnov'])
-        ->assertSuccessful()
-        ->assertSee('Startup Loop (Afric\'innov / SAE)')
-        ->assertSee('Problem-Solution Fit')
-        ->assertSet('activeTab', 'phases')
-        ->call('$set', 'activeTab', 'drive')
-        ->assertSee('Kit Pédagogique Officiel Afric\'innov & GIZ')
-        ->assertSee('Matrice Excel de Suivi M&E & Feuilles d\'Émargement');
+        ->assertNotFound();
 });
 
 test('accompaniment template detail page loads for cube and displays full A-Z methodology and drive links', function () {

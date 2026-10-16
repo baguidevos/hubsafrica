@@ -34,7 +34,7 @@ class ListPrograms extends ListRecords
                     Select::make('template_key')
                         ->label('Modèle méthodologique')
                         ->options(fn (AccompanimentTemplateService $service) => $service->asSelectOptions())
-                        ->default('startup-loop-africinnov')
+                        ->default('cube-saei-kpital')
                         ->required(),
 
                     Radio::make('program_mode')

@@ -45,11 +45,11 @@ class AccompanimentTemplatesPage extends Page
             ->modalHeading(fn (array $arguments) => 'Déployer le pack : '.($arguments['template_title'] ?? 'Modèle'))
             ->modalDescription('Initialise automatiquement les 6 phases, les livrables startups, les livrables SAEI et les critères de notation.')
             ->fillForm(fn (array $arguments): array => [
-                'template_key' => $arguments['template_key'] ?? 'startup-loop-africinnov',
+                'template_key' => $arguments['template_key'] ?? 'cube-saei-kpital',
             ])
             ->form([
                 Hidden::make('template_key')
-                    ->default('startup-loop-africinnov'),
+                    ->default('cube-saei-kpital'),
 
                 Radio::make('program_mode')
                     ->label('Programme de destination')

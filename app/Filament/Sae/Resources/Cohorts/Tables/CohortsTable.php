@@ -89,7 +89,7 @@ class CohortsTable
                         Select::make('template_key')
                             ->label('Modèle méthodologique')
                             ->options(fn (AccompanimentTemplateService $service) => $service->asSelectOptions())
-                            ->default('startup-loop-africinnov')
+                            ->default('cube-saei-kpital')
                             ->required(),
                     ])
                     ->action(function (Cohort $record, array $data, AccompanimentTemplateService $service) {
