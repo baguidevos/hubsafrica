@@ -2,12 +2,26 @@
 
 namespace App\Providers\Filament;
 
+use App\Enums\ApplicationStatus;
+use App\Enums\CoachJoinRequestStatus;
+use App\Enums\DeliverableSubmissionStatus;
+use App\Enums\ProjectStatus;
 use App\Filament\Sae\Pages\Auth\RegisterSaeUser;
 use App\Filament\Sae\Pages\Tenancy\EditSaeProfile;
 use App\Filament\Sae\Pages\Tenancy\RegisterSae;
+use App\Filament\Sae\Resources\Applications\ApplicationResource;
+use App\Filament\Sae\Resources\CoachJoinRequests\CoachJoinRequestResource;
+use App\Filament\Sae\Resources\DeliverableSubmissions\DeliverableSubmissionResource;
 use App\Filament\Sae\Resources\EvaluationForms\EvaluationFormResource;
+use App\Filament\Sae\Resources\Projects\ProjectResource;
+use App\Models\Application;
+use App\Models\CoachJoinRequest;
+use App\Models\DeliverableSubmission;
+use App\Models\Project;
 use App\Models\Sae;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use Filament\Actions\Action;
+use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -18,6 +32,10 @@ use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Width;
 use Filament\View\PanelsRenderHook;
+use HoceineEl\QuickActionDock\Enums\DockLayout;
+use HoceineEl\QuickActionDock\Enums\DockPosition;
+use HoceineEl\QuickActionDock\Enums\DockStyle;
+use HoceineEl\QuickActionDock\QuickActionDockPlugin;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -74,6 +92,51 @@ class SaePanelProvider extends PanelProvider
                 FilamentShieldPlugin::make(),
                 FilamentDaisyUiThemesPlugin::make()
                     ->allThemes(),
+                QuickActionDockPlugin::make()
+                    ->position(DockPosition::BottomEnd)
+                    ->style(DockStyle::Native)
+                    ->layout(DockLayout::SpeedDial)
+                    ->triggerIcon('heroicon-o-view-columns')
+                    ->triggerLabel('Pipelines & Kanbans')
+                    ->showLabels()
+                    ->keyBindings(['mod+.'])
+                    ->group('Pipelines & Kanbans', fn (): array => [
+                        Action::make('kanbanApplications')
+                            ->label('Pipeline Candidatures')
+                            ->icon('heroicon-o-clipboard-document-list')
+                            ->color('warning')
+                            ->keyBindings(['mod+shift+c'])
+                            ->badge(fn () => Filament::getTenant() ? Application::query()->where('status', ApplicationStatus::SOUMISE)->count() ?: null : null)
+                            ->badgeColor('warning')
+                            ->url(fn (): ?string => Filament::getTenant() ? ApplicationResource::getUrl('kanban', ['tenant' => Filament::getTenant()]) : null),
+
+                        Action::make('kanbanProjects')
+                            ->label('Paliers de Maturité')
+                            ->icon('heroicon-o-briefcase')
+                            ->color('info')
+                            ->keyBindings(['mod+shift+p'])
+                            ->badge(fn () => Filament::getTenant() ? Project::query()->where('status', ProjectStatus::ACTIF)->count() ?: null : null)
+                            ->badgeColor('info')
+                            ->url(fn (): ?string => Filament::getTenant() ? ProjectResource::getUrl('kanban', ['tenant' => Filament::getTenant()]) : null),
+
+                        Action::make('kanbanDeliverables')
+                            ->label('Suivi des Livrables')
+                            ->icon('heroicon-o-check-badge')
+                            ->color('success')
+                            ->keyBindings(['mod+shift+l'])
+                            ->badge(fn () => Filament::getTenant() ? DeliverableSubmission::query()->whereIn('status', [DeliverableSubmissionStatus::SOUMIS, DeliverableSubmissionStatus::SOUMISE, DeliverableSubmissionStatus::EN_EVALUATION])->count() ?: null : null)
+                            ->badgeColor('warning')
+                            ->url(fn (): ?string => Filament::getTenant() ? DeliverableSubmissionResource::getUrl('kanban', ['tenant' => Filament::getTenant()]) : null),
+
+                        Action::make('kanbanCoachRequests')
+                            ->label('Recrutement Coachs')
+                            ->icon('heroicon-o-academic-cap')
+                            ->color('purple')
+                            ->keyBindings(['mod+shift+k'])
+                            ->badge(fn () => Filament::getTenant() ? CoachJoinRequest::query()->where('status', CoachJoinRequestStatus::PENDING)->count() ?: null : null)
+                            ->badgeColor('danger')
+                            ->url(fn (): ?string => Filament::getTenant() ? CoachJoinRequestResource::getUrl('kanban', ['tenant' => Filament::getTenant()]) : null),
+                    ]),
             ])
             ->databaseNotifications()
             ->middleware([
