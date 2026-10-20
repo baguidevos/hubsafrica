@@ -6,6 +6,7 @@ use App\Enums\ApplicationStatus;
 use App\Filament\Sae\Clusters\ProgrammesCluster;
 use App\Filament\Sae\Resources\Applications\Pages\CreateApplication;
 use App\Filament\Sae\Resources\Applications\Pages\EditApplication;
+use App\Filament\Sae\Resources\Applications\Pages\KanbanApplications;
 use App\Filament\Sae\Resources\Applications\Pages\ListApplications;
 use App\Filament\Sae\Resources\Applications\Pages\ViewApplication;
 use App\Filament\Sae\Resources\Applications\RelationManagers\ApplicationEvaluationsRelationManager;
@@ -171,6 +172,7 @@ class ApplicationResource extends Resource
     {
         return [
             'index' => ListApplications::route('/'),
+            'kanban' => KanbanApplications::route('/kanban'),
             'create' => CreateApplication::route('/create'),
             'view' => ViewApplication::route('/{record}'),
             'edit' => EditApplication::route('/{record}/edit'),

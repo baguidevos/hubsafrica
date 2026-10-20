@@ -5,6 +5,7 @@ namespace App\Filament\Sae\Resources\DeliverableSubmissions;
 use App\Filament\Sae\Clusters\AccompagnementCluster;
 use App\Filament\Sae\Resources\DeliverableSubmissions\Pages\CreateDeliverableSubmission;
 use App\Filament\Sae\Resources\DeliverableSubmissions\Pages\EditDeliverableSubmission;
+use App\Filament\Sae\Resources\DeliverableSubmissions\Pages\KanbanDeliverableSubmissions;
 use App\Filament\Sae\Resources\DeliverableSubmissions\Pages\ListDeliverableSubmissions;
 use App\Filament\Sae\Resources\DeliverableSubmissions\RelationManagers\SubmissionDocumentsRelationManager;
 use App\Filament\Sae\Resources\DeliverableSubmissions\Schemas\DeliverableSubmissionForm;
@@ -52,6 +53,7 @@ class DeliverableSubmissionResource extends Resource
     {
         return [
             'index' => ListDeliverableSubmissions::route('/'),
+            'kanban' => KanbanDeliverableSubmissions::route('/kanban'),
             'create' => CreateDeliverableSubmission::route('/create'),
             'edit' => EditDeliverableSubmission::route('/{record}/edit'),
         ];

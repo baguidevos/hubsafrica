@@ -6,6 +6,7 @@ use App\Filament\Sae\Clusters\PortefeuilleCluster;
 use App\Filament\Sae\Resources\Applications\RelationManagers\DocumentsRelationManager;
 use App\Filament\Sae\Resources\Projects\Pages\CreateProject;
 use App\Filament\Sae\Resources\Projects\Pages\EditProject;
+use App\Filament\Sae\Resources\Projects\Pages\KanbanProjects;
 use App\Filament\Sae\Resources\Projects\Pages\ListProjects;
 use App\Filament\Sae\Resources\Projects\Pages\ViewProject;
 use App\Filament\Sae\Resources\Projects\RelationManagers\ApplicationsRelationManager;
@@ -161,6 +162,7 @@ class ProjectResource extends Resource
     {
         return [
             'index' => ListProjects::route('/'),
+            'kanban' => KanbanProjects::route('/kanban'),
             'create' => CreateProject::route('/create'),
             'view' => ViewProject::route('/{record}'),
             'edit' => EditProject::route('/{record}/edit'),

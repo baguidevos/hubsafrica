@@ -3,6 +3,7 @@
 namespace App\Filament\Sae\Resources\CoachJoinRequests;
 
 use App\Filament\Sae\Clusters\AccompagnementCluster;
+use App\Filament\Sae\Resources\CoachJoinRequests\Pages\KanbanCoachJoinRequests;
 use App\Filament\Sae\Resources\CoachJoinRequests\Pages\ListCoachJoinRequests;
 use App\Filament\Sae\Resources\CoachJoinRequests\Tables\CoachJoinRequestsTable;
 use App\Models\CoachJoinRequest;
@@ -47,6 +48,7 @@ class CoachJoinRequestResource extends Resource
     {
         return [
             'index' => ListCoachJoinRequests::route('/'),
+            'kanban' => KanbanCoachJoinRequests::route('/kanban'),
         ];
     }
 }

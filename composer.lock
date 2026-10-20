@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0a84f2614bad46f013b2595683215694",
+    "content-hash": "155aa403666943f6586727f7b616ab70",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -1098,6 +1098,72 @@
                 }
             ],
             "time": "2025-10-31T18:51:33+00:00"
+        },
+        {
+            "name": "eduardoribeirodev/filament-kanban",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eduardoribeirodev/filament-kanban.git",
+                "reference": "faf3570efa3ce97fe4b9f58b05bce503a02a3fc9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/eduardoribeirodev/filament-kanban/zipball/faf3570efa3ce97fe4b9f58b05bce503a02a3fc9",
+                "reference": "faf3570efa3ce97fe4b9f58b05bce503a02a3fc9",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^5.0",
+                "illuminate/contracts": "^11.0||^12.0||^13.0",
+                "livewire/livewire": "^4.1",
+                "php": "^8.4",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.14",
+                "orchestra/testbench": "^10.0",
+                "phpunit/phpunit": "^12.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "EduardoRibeiroDev\\FilamentKanban\\FilamentKanbanServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "EduardoRibeiroDev\\FilamentKanban\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Eduardo Ribeiro",
+                    "email": "eduribeiro.films@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Kanban boards for Filament with native filters, actions, infolists, drag and drop, and progressive loading.",
+            "homepage": "https://github.com/eduardoribeirodev/filament-kanban",
+            "keywords": [
+                "drag-and-drop",
+                "filament",
+                "infinite-scroll",
+                "kanban",
+                "laravel",
+                "livewire"
+            ],
+            "support": {
+                "issues": "https://github.com/eduardoribeirodev/filament-kanban/issues",
+                "source": "https://github.com/eduardoribeirodev/filament-kanban"
+            },
+            "time": "2026-10-16T21:32:34+00:00"
         },
         {
             "name": "egulias/email-validator",
