@@ -6,29 +6,29 @@
 
 | **Information Clé** | **Détail du Dossier** |
 | :--- | :--- |
-| **Nom du Produit** | **HUB AFRICA** (Plateforme SaaS Hub Africa v2) |
+| **Nom du Produit** | **HUB AFRICA** (Plateforme SaaS Hub Africa) |
 | **Nature de la Solution** | SaaS B2B Multi-Tenant d'Accompagnement & Suivi-Évaluation (S&E) |
 | **Cible Principale** | Structures d'Accompagnement à l'Entrepreneuriat (**SAE**) : Incubateurs, Accélérateurs, Pépinières, Pôles Universitaires, Agences Nationales PME, Programmes Bailleurs |
 | **Cible Secondaire** | Entrepreneurs accompagnés (Startups / TPME) & Réseau de Coachs / Mentors |
 | **Siège & Rayonnement** | Lomé (Togo) — Déploiement Espace UEMOA, CEMAC & Panafricain |
 | **Stade de Développement** | Produit déployé et testé (Laravel 13 / Filament v5) / Phase de commercialisation et passage à l'échelle |
-| **Besoin de Financement** | **75 000 000 FCFA** (environ **114 335 EUR** / **125 000 USD**) |
+| **Besoin de Financement** | **5 000 000 FCFA** (environ **7 622 EUR** / **8 562 USD**) |
 | **Instrument Ciblé** | Augmentation de capital (Equity) / BSA-AIR (SAFE africain) / Subvention d'amorçage |
-| **Contacts Officiels** | 📧 `contact@hubafrica.org` • `equipedecube@gmail.com` • 📱 WhatsApp : `+228 70 76 76 94` |
-| **Plateforme Déployée** | Portail officiel Hub Africa & Environnements SAE Multi-Tenants (`/sae/{tenant}`) |
+| **Contacts Officiels** | 📧 `teamhubafrica@gmail.com` • `equipedecube@gmail.com` • 📱 WhatsApp : `+228 70 76 76 94` |
+| **Plateforme Déployée** | Portail officiel Hub Africa & Environnements SAE Multi-Tenants (`https://www.hub-africa.com`) |
 
 ---
 
 ## 1. 🎯 Synthèse Managériale : Pourquoi Hub Africa ?
 
-À travers l'Afrique subsaharienne, plus de **750 structures d'accompagnement à l'entrepreneuriat (SAE)** (incubateurs, accélérateurs, technopoles, programmes gouvernementaux et fondations) soutiennent des dizaines de milliers de jeunes pousses. Pourtant, **plus de 85% d'entre elles opèrent encore de façon artisanale** : suivi des cohortes sur des tableurs Excel dispersés, échanges informels sur WhatsApp, absence de traçabilité des livrables et incapacité notoire à produire des rapports d'impact consolidés exigibles par les bailleurs de fonds internationaux (AFD, GIZ, BAD, Union Européenne, Banque Mondiale).
+À travers l'Afrique subsaharienne, plus de **600 structures d'accompagnement à l'entrepreneuriat (SAE)** (incubateurs, accélérateurs, technopoles, programmes gouvernementaux et fondations) soutiennent des dizaines de milliers de jeunes pousses. Pourtant, **plus de 85% d'entre elles opèrent encore de façon artisanale** : suivi des cohortes sur des tableurs Excel dispersés à travers un google drive, échanges informels sur WhatsApp, absence de traçabilité des livrables et difficulté notoire à produire des rapports d'impact consolidés exigibles par les bailleurs de fonds internationaux (AFD, GIZ, BAD, Union Européenne, Banque Mondiale).
 
 En conséquence :
-- **82% des startups accompagnées échouent avant 3 ans** par manque de suivi méthodique continu et d'évaluation rigoureuse de leurs jalons.
+- **plus de 50% des startups accompagnées échouent avant 3 ans** par manque de suivi méthodique continu et d'évaluation rigoureuse de leurs jalons.
 - **Les SAE consacrent 60% de leur temps à des tâches administratives manuelles** au détriment du coaching qualitatif.
 - **Les bailleurs de fonds peinent à mesurer le retour sur investissement social et économique** de leurs programmes d'appui.
 
-**HUB AFRICA** est la **solution SaaS tout-en-un conçue sur mesure pour l'Afrique** qui digitalise, standardise et professionnalise l'intégralité du cycle de vie de l'accompagnement entrepreneurial. Grâce à une architecture multi-tenant native, chaque SAE dispose de son espace privatif pour piloter ses programmes, suivre les séances de mentorat, administrer les questionnaires dynamiques de Suivi & Évaluation (S&E), évaluer les livrables par jury et préparer les startups à la levée de fonds via une Data Room intégrée.
+**HUB AFRICA** est la **solution SaaS tout-en-un conçue sur mesure pour l'Afrique** qui digitalise, standardise et professionnalise l'intégralité du cycle de vie de l'accompagnement entrepreneurial. Grâce à une architecture multi-tenant native, chaque SAE dispose de son espace privatif pour piloter ses programmes, suivre les séances de mentorat, administrer les questionnaires dynamiques de Suivi & Évaluation (S&E), évaluer les livrables par jury et préparer les startups à la levée de fonds via une Data Room intégrée. En plus ils disposent d'un esspace de blog et de diffusion des annonces des programmes pour les entrepreneurs et de publication de résultat et de rapport d'impact.
 
 ---
 
@@ -66,7 +66,7 @@ Développée avec les technologies les plus modernes et robustes (Laravel 13, Fi
 ```
 
 ### Fonctionnalités Clés Uniques de Hub Africa :
-- **Multi-Tenancy Natif (`BelongsToTenant`) :** Chaque incubateur dispose de son identité, son sous-domaine/slug, ses programmes et ses utilisateurs en étanchéité de données totale.
+- **Multi-Tenancy Natif :** Chaque incubateur dispose de son identité, son sous-domaine/slug, ses programmes et ses utilisateurs en étanchéité de données totale.
 - **Moteur de Suivi & Évaluation (CUBE S&E) :** Générateur de formulaires dynamiques, déblocage conditionnel par cohorte, alertes automatiques et relances en 1 clic.
 - **Portefeuille de Livrables & Versioning :** Traçabilité documentaire complète des business plans, études de marché et états financiers déposés par les entrepreneurs.
 - **Data Room Intégrée :** Préparation native des startups à l'audit et à l'entrée d'investisseurs.
@@ -158,7 +158,7 @@ Pour accélérer la commercialisation de la plateforme et verrouiller la place d
 
 ## 10. 📞 Contacts Officiels Hub Africa
 
-- **Email Projet :** `contact@hubafrica.org` • `equipedecube@gmail.com`
+- **Email Projet :** `teamhubafrica@gmail.com` • `equipedecube@gmail.com`
 - **WhatsApp Direct Promoteur :** `+228 70 76 76 94`
-- **Portail Web :** [https://www.hubafrica.org](https://www.hubafrica.org) (et plateformes partenaires [saeicube.com](https://www.saeicube.com))
+- **Portail Web :** [https://www.hub-africa.com](https://www.hub-africa.com) (et plateformes partenaires [saeicube.com](https://www.saeicube.com))
 - **Siège :** Lomé, République Togolaise

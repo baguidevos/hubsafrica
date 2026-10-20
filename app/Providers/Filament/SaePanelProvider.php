@@ -89,13 +89,13 @@ class SaePanelProvider extends PanelProvider
             ->plugins([
                 FormBuilderPlugin::make()
                     ->resource(EvaluationFormResource::class),
-                FilamentShieldPlugin::make(),
+                // FilamentShieldPlugin::make(),
                 FilamentDaisyUiThemesPlugin::make()
                     ->allThemes(),
                 QuickActionDockPlugin::make()
                     ->position(DockPosition::BottomEnd)
-                    ->style(DockStyle::Native)
-                    ->layout(DockLayout::SpeedDial)
+                    ->style(DockStyle::Outline)
+                    ->layout(DockLayout::Bar)
                     ->triggerIcon('heroicon-o-view-columns')
                     ->triggerLabel('Pipelines & Kanbans')
                     ->showLabels()

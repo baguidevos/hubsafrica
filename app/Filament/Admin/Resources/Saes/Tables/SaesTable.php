@@ -76,6 +76,14 @@ class SaesTable
                     ->searchable()
                     ->toggleable(),
 
+                TextColumn::make('website')
+                    ->label('Site web')
+                    ->icon('heroicon-o-globe-alt')
+                    ->url(fn (Sae $record): ?string => $record->website)
+                    ->openUrlInNewTab()
+                    ->placeholder('Non renseigné')
+                    ->toggleable(),
+
                 TextColumn::make('created_at')
                     ->label('Créée le')
                     ->dateTime('d/m/Y')
