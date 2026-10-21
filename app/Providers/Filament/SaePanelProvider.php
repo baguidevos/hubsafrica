@@ -54,10 +54,10 @@ class SaePanelProvider extends PanelProvider
             ->id('sae')
             ->path('sae')
             ->brandName('Hubs Africa')
-            ->brandLogo(fn () => asset('images/koworkers.png'))
-            ->darkModeBrandLogo(fn () => asset('images/logo.png'))
-            ->brandLogoHeight('2.25rem')
-            ->favicon(asset('images/logo.png'))
+            ->brandLogo(fn () => asset('images/logo2.png'))
+            ->darkModeBrandLogo(fn () => asset('images/dark_big.png'))
+            ->brandLogoHeight('3.5rem')
+            ->favicon(asset('favicon/favicon.ico'))
             ->renderHook(
                 PanelsRenderHook::SIDEBAR_FOOTER,
                 fn () => view('filament.sae.hooks.sidebar-tenant-badge'),

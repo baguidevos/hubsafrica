@@ -11,7 +11,7 @@
             <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
                 <div class="flex items-start gap-4">
                     @if(!empty($branding['src']))
-                        <div class="w-14 h-14 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-gray-900 p-1 flex items-center justify-center shrink-0 shadow-xs">
+                        <div class="w-14 h-14 rounded-xl border border-gray-200 dark:border-white/10 p-1 flex items-center justify-center shrink-0 shadow-xs">
                             <img src="{{ $branding['src'] }}" alt="{{ $tenant?->name }}" class="max-h-full max-w-full object-contain">
                         </div>
                     @else

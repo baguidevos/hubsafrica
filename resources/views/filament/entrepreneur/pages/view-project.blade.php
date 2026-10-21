@@ -15,7 +15,7 @@
     <div class="space-y-6">
 
         {{-- Hero Card --}}
-        <div class="relative overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <div class="relative overflow-hidden rounded-2xl border border-gray-200/80 dark:border-white/10 shadow-sm dark:bg-gray-900">
             <div class="absolute inset-x-0 top-0 h-32 bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-700 dark:from-emerald-700 dark:via-emerald-800 dark:to-teal-900"></div>
             <div class="relative px-6 pb-6 pt-20 sm:px-8">
                 <div class="flex flex-col items-start gap-5 sm:flex-row sm:items-end">
@@ -24,9 +24,9 @@
                         @if($project->logo)
                             <img src="{{ Storage::disk('public')->url($project->logo) }}"
                                  alt="{{ $project->name }}"
-                                 class="h-24 w-24 rounded-2xl border-4 border-white bg-white object-cover shadow-lg dark:border-gray-800 dark:bg-gray-800 sm:h-28 sm:w-28">
+                                 class="h-24 w-24 rounded-2xl border-4 border-gray-200/80 object-cover shadow-lg dark:border-gray-800 dark:bg-gray-800 sm:h-28 sm:w-28">
                         @else
-                            <div class="flex h-24 w-24 items-center justify-center rounded-2xl border-4 border-white bg-emerald-100 shadow-lg dark:border-gray-800 dark:bg-emerald-900/30 sm:h-28 sm:w-28">
+                            <div class="flex h-24 w-24 items-center justify-center rounded-2xl border-4 border-gray-200/80 bg-emerald-100 shadow-lg dark:border-gray-800 dark:bg-emerald-900/30 sm:h-28 sm:w-28">
                                 <x-heroicon-o-light-bulb class="h-12 w-12 text-emerald-600 dark:text-emerald-400" />
                             </div>
                         @endif
@@ -68,7 +68,7 @@
         {{-- Key Metrics --}}
         <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
             {{-- Secteur --}}
-            <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+            <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-5 shadow-sm dark:bg-gray-900">
                 <div class="flex items-center gap-3">
                     <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30">
                         <x-heroicon-o-building-storefront class="h-5 w-5 text-blue-600 dark:text-blue-400" />
@@ -81,7 +81,7 @@
             </div>
 
             {{-- Territoire --}}
-            <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+            <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-5 shadow-sm dark:bg-gray-900">
                 <div class="flex items-center gap-3">
                     <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30">
                         <x-heroicon-o-map-pin class="h-5 w-5 text-purple-600 dark:text-purple-400" />
@@ -94,7 +94,7 @@
             </div>
 
             {{-- Équipe --}}
-            <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+            <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-5 shadow-sm dark:bg-gray-900">
                 <div class="flex items-center gap-3">
                     <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100 dark:bg-amber-900/30">
                         <x-heroicon-o-users class="h-5 w-5 text-amber-600 dark:text-amber-400" />
@@ -107,7 +107,7 @@
             </div>
 
             {{-- Niveau --}}
-            <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+            <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-5 shadow-sm dark:bg-gray-900">
                 <div class="flex items-center gap-3">
                     <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-900/30">
                         <x-heroicon-o-chart-bar class="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
@@ -130,7 +130,7 @@
             <div class="lg:col-span-2 space-y-6">
 
                 {{-- Parcours d'accompagnement & Évolution des Paliers --}}
-                <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-6 shadow-sm dark:bg-gray-900">
                     <div class="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-gray-800 mb-6">
                         <div class="flex items-center gap-2.5">
                             <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-900/30">
@@ -288,7 +288,7 @@
 
                 {{-- Proposition de valeur --}}
                 @if($project->value_proposition)
-                    <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-6 shadow-sm dark:bg-gray-900">
                         <div class="flex items-center gap-2 mb-4">
                             <x-heroicon-o-sparkles class="h-5 w-5 text-emerald-500" />
                             <h3 class="text-base font-semibold text-gray-900 dark:text-white">Proposition de valeur</h3>
@@ -323,7 +323,7 @@
 
                 {{-- Produits & Services --}}
                 @if($project->product_service)
-                    <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-6 shadow-sm dark:bg-gray-900">
                         <div class="flex items-center gap-2 mb-4">
                             <x-heroicon-o-cube class="h-5 w-5 text-blue-500" />
                             <h3 class="text-base font-semibold text-gray-900 dark:text-white">Produits & Services</h3>
@@ -334,7 +334,7 @@
 
                 {{-- Description / Historique --}}
                 @if($project->description)
-                    <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-6 shadow-sm dark:bg-gray-900">
                         <div class="flex items-center gap-2 mb-4">
                             <x-heroicon-o-document-text class="h-5 w-5 text-gray-500" />
                             <h3 class="text-base font-semibold text-gray-900 dark:text-white">Historique & Présentation</h3>
@@ -348,7 +348,7 @@
             <div class="space-y-6">
 
                 {{-- Marché & Cible --}}
-                <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-6 shadow-sm dark:bg-gray-900">
                     <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-4">Marché & Cible</h3>
                     <dl class="space-y-4">
                         <div>
@@ -363,7 +363,7 @@
                 </div>
 
                 {{-- Accompagnement --}}
-                <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-6 shadow-sm dark:bg-gray-900">
                     <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-4">Accompagnement</h3>
                     <dl class="space-y-4">
                         <div>
@@ -408,7 +408,7 @@
                 </div>
 
                 {{-- Dates --}}
-                <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-6 shadow-sm dark:bg-gray-900">
                     <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-4">Dates clés</h3>
                     <dl class="space-y-4">
                         <div>

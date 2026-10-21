@@ -39,7 +39,7 @@
             <div class="grid grid-cols-1 gap-2">
                 @foreach($accounts as $key => $acc)
                     @if($currentPanel === 'general' || $acc['panel_id'] === $currentPanel)
-                        <div class="p-2.5 rounded-xl bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 flex items-center justify-between gap-3 shadow-2xs">
+                        <div class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700/80 flex items-center justify-between gap-3 shadow-2xs">
                             <div class="min-w-0 flex-1">
                                 <div class="flex items-center gap-1.5">
                                     <span class="font-bold text-slate-900 dark:text-white truncate text-xs">{{ $acc['name'] }}</span>

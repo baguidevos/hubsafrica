@@ -110,7 +110,7 @@
     <div class="space-y-6">
 
         {{-- Top Hero Card --}}
-        <div class="relative overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <div class="relative overflow-hidden rounded-2xl border border-gray-200/80 dark:border-white/10 shadow-sm dark:bg-gray-900">
             <div class="absolute inset-x-0 top-0 h-32 bg-gradient-to-r {{ $theme['gradient'] }}"></div>
             <div class="relative px-6 pb-6 pt-16 sm:px-8">
                 <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
@@ -123,7 +123,7 @@
                             </span>
 
                             @if($application->program?->sae)
-                                <span class="inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-gray-700 shadow-xs ring-1 ring-gray-200 backdrop-blur-xs dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-700">
+                                <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium text-gray-700 shadow-xs ring-1 ring-gray-200 backdrop-blur-xs dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-700">
                                     <x-heroicon-m-building-office-2 class="h-3.5 w-3.5 text-emerald-500" />
                                     {{ $application->program->sae->name }}
                                 </span>
@@ -186,7 +186,7 @@
         </div>
 
         {{-- Visual Stepper --}}
-        <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-6 shadow-sm dark:bg-gray-900">
             @php
                 $steps = [
                     [
@@ -352,7 +352,7 @@
                     </p>
 
                     @if($application->comment && !empty($application->comment) && $statusValue !== 'SOUMISE' && !str_contains($rawComment, 'Motivation du candidat :'))
-                        <div class="mt-3 rounded-lg bg-white/70 p-3 ring-1 ring-black/5 dark:bg-gray-900/60 dark:ring-white/10">
+                        <div class="mt-3 rounded-lg dark:ring-white/10">
                             <p class="text-xs font-semibold text-gray-700 dark:text-gray-300">Appréciation du comité :</p>
                             <p class="text-xs italic text-gray-600 dark:text-gray-400 mt-0.5">« {{ $application->comment }} »</p>
                         </div>
@@ -369,7 +369,7 @@
 
                 {{-- Project Snapshot Card --}}
                 @if($project)
-                    <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-6 shadow-sm dark:bg-gray-900">
                         <div class="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-gray-800">
                             <div class="flex items-center gap-2.5">
                                 <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
@@ -379,7 +379,7 @@
                             </div>
 
                             <a href="{{ \App\Filament\Entrepreneur\Resources\Projects\ProjectResource::getUrl('view', ['record' => $project]) }}"
-                               class="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-semibold text-gray-700 shadow-xs hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700">
+                               class="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-semibold text-gray-700 shadow-xs hover:bg-gray-50 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-white/5">
                                 <span>Fiche complète</span>
                                 <x-heroicon-m-arrow-top-right-on-square class="h-3.5 w-3.5 text-gray-400" />
                             </a>
@@ -389,7 +389,7 @@
                             @if($project->logo)
                                 <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($project->logo) }}"
                                      alt="{{ $project->name }}"
-                                     class="h-16 w-16 shrink-0 rounded-xl border border-gray-200 object-cover shadow-xs dark:border-gray-700 bg-white">
+                                     class="h-16 w-16 shrink-0 rounded-xl border border-gray-200 object-cover shadow-xs dark:border-gray-700">
                             @else
                                 <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-100 to-teal-100 text-emerald-700 dark:from-emerald-900/40 dark:to-teal-900/40 dark:text-emerald-300 font-bold text-xl shadow-xs">
                                     {{ mb_strtoupper(mb_substr($project->name, 0, 2)) }}
@@ -431,7 +431,7 @@
 
                 {{-- Motivation & Candidate Declaration --}}
                 @if($motivation || $needs)
-                    <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-6 shadow-sm dark:bg-gray-900">
                         <div class="flex items-center gap-2.5 pb-4 border-b border-gray-100 dark:border-gray-800">
                             <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-100 text-teal-600 dark:bg-teal-900/30 dark:text-teal-400">
                                 <x-heroicon-m-chat-bubble-bottom-center-text class="h-4 w-4" />
@@ -451,7 +451,7 @@
                         @if($needs)
                             <div class="mt-4">
                                 <h4 class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2">Besoins prioritaires formulés</h4>
-                                <div class="rounded-xl border border-gray-200 bg-white p-3.5 dark:border-gray-700 dark:bg-gray-800/70">
+                                <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-3.5 dark:bg-gray-800/70">
                                     <p class="text-sm text-gray-800 dark:text-gray-200">{{ $needs }}</p>
                                 </div>
                             </div>
@@ -461,7 +461,7 @@
 
                 {{-- Questionnaire Answers (Form Builder Responses) --}}
                 @if(!empty($application->answers) && is_array($application->answers))
-                    <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-6 shadow-sm dark:bg-gray-900">
                         <div class="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-gray-800">
                             <div class="flex items-center gap-2.5">
                                 <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
@@ -507,7 +507,7 @@
 
                 {{-- Jury Criteria Breakdown (if evaluated with scores) --}}
                 @if($application->evaluations->isNotEmpty())
-                    <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-6 shadow-sm dark:bg-gray-900">
                         <div class="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-gray-800">
                             <div class="flex items-center gap-2.5">
                                 <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
@@ -585,7 +585,7 @@
 
                 {{-- Attached Documents --}}
                 @if($application->documents->isNotEmpty())
-                    <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                    <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-6 shadow-sm dark:bg-gray-900">
                         <div class="flex items-center gap-2.5 pb-4 border-b border-gray-100 dark:border-gray-800">
                             <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400">
                                 <x-heroicon-m-paper-clip class="h-4 w-4" />
@@ -632,7 +632,7 @@
             <div class="space-y-6">
 
                 {{-- Program & Cohort Card --}}
-                <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-6 shadow-sm dark:bg-gray-900">
                     <h3 class="text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-4">
                         Programme visé
                     </h3>
@@ -688,7 +688,7 @@
                 </div>
 
                 {{-- Timeline Milestones --}}
-                <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-6 shadow-sm dark:bg-gray-900">
                     <h3 class="text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-4">
                         Chronologie du dossier
                     </h3>

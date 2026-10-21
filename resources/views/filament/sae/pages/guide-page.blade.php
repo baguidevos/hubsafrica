@@ -32,7 +32,7 @@
         </div>
 
         {{-- Barre de Sommaire / Navigation Rapide --}}
-        <div class="sticky top-4 z-20 rounded-xl border border-gray-200/70 dark:border-white/10 bg-white/90 dark:bg-gray-900/90 p-3 shadow-sm backdrop-blur-md">
+        <div class="sticky top-4 z-20 rounded-xl border border-gray-200/70 dark:border-white/10 p-3 shadow-sm backdrop-blur-md">
             <div class="flex items-center gap-2 text-xs font-medium text-gray-500 dark:text-gray-400 overflow-x-auto pb-1 sm:pb-0">
                 <span class="font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider shrink-0 flex items-center gap-1">
                     <x-heroicon-o-bars-3-bottom-left class="h-4 w-4 text-teal-600 dark:text-teal-400" /> Navigation :

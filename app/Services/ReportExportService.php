@@ -79,8 +79,8 @@ class ReportExportService
     public function getFallbackHubAfricaLogoBase64(): ?string
     {
         $paths = [
-            public_path('images/koworkers.png'),
-            public_path('images/logo.png'),
+            public_path('images/logo2.png'),
+            public_path('images/logo2.png'),
         ];
 
         foreach ($paths as $path) {

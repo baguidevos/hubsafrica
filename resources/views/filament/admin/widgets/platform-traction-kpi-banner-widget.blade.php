@@ -42,7 +42,7 @@
         <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6 pt-2">
 
             {{-- 1. Féminisation --}}
-            <div class="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-3.5 shadow-sm transition hover:shadow-md flex flex-col justify-between">
+            <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-3.5 shadow-xs transition hover:shadow-md flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
                         <span>Féminisation</span>
@@ -58,7 +58,7 @@
             </div>
 
             {{-- 2. Taux de Rétention / Survie --}}
-            <div class="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-3.5 shadow-sm transition hover:shadow-md flex flex-col justify-between">
+            <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-3.5 shadow-xs transition hover:shadow-md flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
                         <span>Taux de Survie</span>
@@ -74,7 +74,7 @@
             </div>
 
             {{-- 3. Sélectivité des Jurys --}}
-            <div class="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-3.5 shadow-sm transition hover:shadow-md flex flex-col justify-between">
+            <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-3.5 shadow-xs transition hover:shadow-md flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
                         <span>Sélectivité</span>
@@ -90,7 +90,7 @@
             </div>
 
             {{-- 4. Intensité Mentorat --}}
-            <div class="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-3.5 shadow-sm transition hover:shadow-md flex flex-col justify-between">
+            <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-3.5 shadow-xs transition hover:shadow-md flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
                         <span>Ratio Mentorat</span>
@@ -106,7 +106,7 @@
             </div>
 
             {{-- 5. Couverture Géographique --}}
-            <div class="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-3.5 shadow-sm transition hover:shadow-md flex flex-col justify-between">
+            <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-3.5 shadow-xs transition hover:shadow-md flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
                         <span>Présence Régionale</span>
@@ -122,7 +122,7 @@
             </div>
 
             {{-- 6. Ticket Moyen Décaissé --}}
-            <div class="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-3.5 shadow-sm transition hover:shadow-md flex flex-col justify-between">
+            <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-3.5 shadow-xs transition hover:shadow-md flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
                         <span>Ticket Moyen</span>

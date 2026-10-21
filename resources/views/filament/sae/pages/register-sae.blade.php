@@ -40,7 +40,7 @@
         </div>
 
         {{-- Conteneur du Wizard --}}
-        <div class="rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl shadow-xl p-6 sm:p-10 transition-all">
+        <div class="rounded-3xl border border-slate-200/80 dark:border-slate-800 backdrop-blur-xl shadow-xl p-6 sm:p-10 transition-all">
             {{ $this->content }}
         </div>
     </div>

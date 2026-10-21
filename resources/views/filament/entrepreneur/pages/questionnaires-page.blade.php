@@ -7,7 +7,7 @@
     <div class="space-y-8">
         {{-- En-tête explicatif & statistiques rapides --}}
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900 flex items-center justify-between">
+            <div class="rounded-2xl border border-gray-200/80 dark:border-white/10 p-5 shadow-sm dark:bg-gray-900 flex items-center justify-between">
                 <div>
                     <span class="text-xs font-medium text-gray-500 dark:text-gray-400">Total formulaires assignés</span>
                     <h3 class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ $totalCount }}</h3>
@@ -53,7 +53,7 @@
             </div>
 
             @if($pendingUnlocks->isEmpty())
-                <div class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 p-10 text-center dark:border-gray-800 bg-white dark:bg-gray-900/50">
+                <div class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 p-10 text-center dark:border-gray-800">
                     <div class="rounded-full bg-emerald-50 p-3 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400">
                         <x-heroicon-o-check-badge class="h-8 w-8" />
                     </div>
@@ -69,7 +69,7 @@
                             $form = $unlock->form;
                             $isOverdue = $unlock->isOverdue();
                         @endphp
-                        <div class="flex flex-col justify-between rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
+                        <div class="flex flex-col justify-between rounded-2xl border border-gray-200/80 dark:border-white/10 p-5 shadow-sm transition hover:shadow-md">
                             <div>
                                 <div class="flex items-center justify-between gap-2 mb-3">
                                     @if($form?->type)
@@ -157,7 +157,7 @@
                         @php
                             $form = $unlock->form;
                         @endphp
-                        <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900 flex flex-col justify-between">
+                        <div class="rounded-2xl border border-gray-200/80 dark:border-white/10 p-5 shadow-sm dark:bg-gray-900 flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between gap-2 mb-2">
                                     @if($form?->type)
@@ -189,7 +189,7 @@
 
                                 @if($form)
                                     <a href="{{ route('filament.entrepreneur.pages.fill-questionnaire', ['tenant' => $tenantSlug, 'slug' => $form->slug]) }}"
-                                       class="inline-flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 transition">
+                                       class="inline-flex items-center gap-1 rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-white/5 transition">
                                         <x-heroicon-o-eye class="w-3.5 h-3.5" />
                                         Voir mes réponses
                                     </a>

@@ -1,6 +1,6 @@
 <x-filament-panels::page>
     <form wire:submit="save" class="space-y-6">
-        <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-6 shadow-sm dark:bg-gray-900">
             <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white mb-4">Informations d'identité</h3>
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-6 shadow-sm dark:bg-gray-900">
             <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white mb-4">Localisation & Situation professionnelle</h3>
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>

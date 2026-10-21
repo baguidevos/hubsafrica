@@ -1,4 +1,4 @@
-<div class="w-full border-b border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-950/70 backdrop-blur-md sticky top-0 z-20">
+<div class="w-full border-b border-slate-200/80 dark:border-slate-800/80 backdrop-blur-md sticky top-0 z-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between text-xs">
         {{-- Lien Retour Accueil avec Logo --}}
         <a href="{{ route('home') }}" class="group inline-flex items-center gap-2.5 text-slate-700 dark:text-slate-300 hover:text-[#2F3284] dark:hover:text-[#F8B81D] font-semibold transition">

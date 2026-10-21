@@ -37,7 +37,7 @@
                         $form = $unlock->form;
                         $isOverdue = $unlock->isOverdue();
                     @endphp
-                    <div class="flex flex-col justify-between rounded-xl border border-amber-200/80 bg-white/90 p-4 shadow-sm backdrop-blur transition hover:border-amber-400 dark:border-gray-800 dark:bg-gray-900/80">
+                    <div class="flex flex-col justify-between rounded-xl border border-amber-200/80 p-4 shadow-sm transition hover:border-amber-400 dark:border-gray-800">
                         <div>
                             <div class="flex items-center justify-between gap-2 mb-2">
                                 @if($form?->type)

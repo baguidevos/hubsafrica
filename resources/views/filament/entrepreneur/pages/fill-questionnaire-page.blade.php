@@ -91,7 +91,7 @@
                         <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">
                             Récapitulatif de vos réponses soumises :
                         </h4>
-                        <div class="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
+                        <div class="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800">
                             <dl class="divide-y divide-gray-200 dark:divide-gray-800 text-xs">
                                 @foreach($unlock->submission->data as $key => $val)
                                     <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4">
@@ -116,7 +116,7 @@
 
                 <div class="mt-6 flex justify-end">
                     <a href="{{ route('filament.entrepreneur.pages.questionnaires-page', ['tenant' => $tenantSlug]) }}"
-                       class="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-xs font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200 dark:ring-gray-700 dark:hover:bg-gray-700 transition">
+                       class="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:text-gray-200 dark:ring-gray-700 dark:hover:bg-white/5 transition">
                         <x-heroicon-m-arrow-left class="w-4 h-4" />
                         Retourner aux questionnaires
                     </a>
@@ -124,7 +124,7 @@
             </div>
         @else
             {{-- Formulaire interactif Packstub Form Builder --}}
-            <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+            <div class="rounded-2xl border border-gray-200/80 dark:border-white/10 p-6 shadow-sm">
                 <livewire:form-builder :form="$evaluationForm" />
             </div>
         @endif

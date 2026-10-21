@@ -18,9 +18,9 @@
 
         <div class="space-y-3 pt-2">
             @forelse($sessions as $s)
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 shadow-sm transition hover:shadow-md {{ $s['accent'] ? 'border-emerald-300 dark:border-emerald-800 bg-emerald-50/20' : '' }}">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-xl border border-stone-200 dark:border-stone-800 shadow-sm transition hover:shadow-md {{ $s['accent'] ? 'border-emerald-300 dark:border-emerald-800 bg-emerald-50/20' : '' }}">
                     <div class="flex items-center gap-3">
-                        <div class="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-xl border bg-white dark:bg-stone-800 leading-none shadow-sm {{ $s['accent'] ? 'border-emerald-300 text-emerald-600' : 'border-stone-200 text-stone-600' }}">
+                        <div class="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-xl border leading-none shadow-sm {{ $s['accent'] ? 'border-emerald-300 text-emerald-600' : 'border-stone-200 text-stone-600' }}">
                             <span class="text-[9px] font-bold uppercase tracking-wider">{{ $s['dayLabel'] }}</span>
                             <span class="mt-0.5 text-sm font-black">{{ $s['dayNum'] }}</span>
                         </div>

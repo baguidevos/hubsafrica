@@ -7,7 +7,7 @@
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div class="flex items-start sm:items-center gap-4">
                 @if($avatar = \Filament\Facades\Filament::getTenantAvatarUrl($sae))
-                    <img src="{{ $avatar }}" alt="{{ $sae->name }}" class="h-14 w-14 shrink-0 rounded-2xl border border-gray-200 bg-white object-contain p-1 shadow-xs dark:border-white/10 dark:bg-white/10">
+                    <img src="{{ $avatar }}" alt="{{ $sae->name }}" class="h-14 w-14 shrink-0 rounded-2xl border border-gray-200 object-contain p-1 shadow-xs dark:border-white/10">
                 @else
                     <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-teal-600 text-lg font-black text-white shadow-xs">
                         {{ strtoupper(substr($sae->name, 0, 2)) }}
@@ -75,7 +75,7 @@
 
             <div class="flex items-center gap-2 self-start sm:self-center">
                 <a href="{{ route('filament.sae.tenant.profile', ['tenant' => $sae]) }}"
-                   class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-700 shadow-xs hover:bg-gray-50 hover:text-gray-900 dark:border-white/10 dark:bg-white/5 dark:text-gray-300 dark:hover:bg-white/10">
+                   class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-700 shadow-xs hover:bg-gray-50 hover:text-gray-900 dark:border-white/10 dark:text-gray-300 dark:hover:bg-white/10">
                     <x-heroicon-m-adjustments-horizontal class="h-4 w-4 text-gray-500 dark:text-gray-400" />
                     <span>Modifier le profil & types</span>
                 </a>

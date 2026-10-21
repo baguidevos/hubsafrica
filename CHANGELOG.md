@@ -4,6 +4,32 @@ Toutes les modifications notables apportées au projet **Hubs Africa v2** (Stack
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
+## [2.20.0] - 2026-10-21
+
+### Modifié (Changed) & Amélioré (Improved)
+- **Harmonisation des Thèmes UI & Suppression des Fonds Forcés (`bg-white`)** :
+  - **Compatibilité Intégrale avec le Sélecteur de Thèmes Filament & DaisyUI** :
+    - Élimination des classes Tailwind `bg-white` et des forçages sombres (`dark:bg-gray-900`, `dark:bg-stone-900`, `dark:bg-slate-900`) sur l'ensemble des pages et widgets personnalisés des panels (`Admin`, `SAE`, `Coach`, `Entrepreneur`).
+    - Les conteneurs adoptent désormais les variables de surface natives Filament / DaisyUI (`border border-gray-200/80 dark:border-white/10`, fond neutre translucide `dark:bg-white/5`), éliminant tout contraste agressif ou bloc blanc opaque lors du changement de thème.
+  - **Widgets & Bannières KPI Rénovés** :
+    - `platform-traction-kpi-banner-widget.blade.php` : cartes métriques épurées avec bordures adaptatives.
+    - `platform-top-saes-widget.blade.php` : retrait du fond blanc rigide sur le corps du tableau.
+    - `upcoming-sessions-widget.blade.php` (SAE, Coach, Entrepreneur) : cartes de session intégrées de manière fluide au conteneur parent.
+    - `entrepreneur-pending-surveys-widget.blade.php` : harmonisation visuelle du rappel d'enquêtes.
+    - Widgets d'identité SAE et Coach : avatars et cartes de profil adaptés au thème actif.
+  - **Pages & Vues Métiers Décloisonnées** :
+    - Fiches de consultation : `view-application.blade.php` et `view-project.blade.php`.
+    - Tableaux de bord et analytics : `reports-page.blade.php`, `analytics-page.blade.php`, `accompaniment-template-detail-page.blade.php`, `guide-page.blade.php`.
+    - Parcours entrepreneur : `questionnaires-page.blade.php`, `fill-questionnaire-page.blade.php`, `profile-page.blade.php`.
+    - Écrans d'authentification et hooks : `header.blade.php`, `footer.blade.php`, `quick-login.blade.php`, `sidebar-tenant-badge.blade.php`, `register-sae.blade.php`.
+- **Harmonisation de la Marque Officielle & Assets Graphiques (Hubs-Africa / HubsAfrica)** :
+  - Harmonisation du nommage officiel avec un "s" (**Hubs-Africa** / **HubsAfrica**) à travers tout le projet (fournisseurs de panels Filament, métadonnées de manifeste, titres SEO, composants publics et exports de rapports).
+  - Déploiement des nouveaux logos officiels (`logo2.png` en mode clair et `dark_big.png` en mode sombre) avec hauteur optimisée (`3.5rem`) sur les 4 panels d'administration (`Admin`, `SAE`, `Coach`, `Entrepreneur`).
+  - Mise à jour du pack complet de favicons multi-résolutions (`favicon.ico`, `favicon-96x96.png`, `apple-touch-icon.png`, `web-app-manifest-192x192.png`, `web-app-manifest-512x512.png`).
+- **Qualité & Couverture de Tests** :
+  - Suite de tests Pest validée à 100% (124 tests passés, 787 assertions).
+  - Formattage validé via Laravel Pint (`pint --format agent`).
+
 ## [2.19.0] - 2026-10-21
 
 ### Ajouté (Added) & Amélioré (Improved)

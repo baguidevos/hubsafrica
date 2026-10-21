@@ -85,7 +85,7 @@
         </div>
 
         {{-- Barre d'Onglets Principale --}}
-        <div class="rounded-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-gray-900 p-1.5 shadow-sm">
+        <div class="rounded-xl border border-gray-200/80 dark:border-white/10 p-1.5 shadow-sm">
             <div class="flex flex-wrap gap-1 text-xs font-semibold">
                 <button
                     type="button"
@@ -200,7 +200,7 @@
                             </h4>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
                                 @foreach($guide['objectifs_strategiques'] as $objTitle => $objDesc)
-                                    <div class="p-2.5 rounded-lg bg-white dark:bg-gray-900 border border-primary-200/50 dark:border-white/10">
+                                    <div class="p-2.5 rounded-lg border border-primary-200/50 dark:border-white/10">
                                         <strong class="text-gray-900 dark:text-white block">{{ $objTitle }}</strong>
                                         <p class="text-gray-600 dark:text-gray-400 mt-1 text-[11px] leading-relaxed">{{ $objDesc }}</p>
                                     </div>
@@ -577,7 +577,7 @@
                     @else
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                             @foreach($customDrives as $customRes)
-                                <div class="p-4 rounded-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-gray-900 flex flex-col justify-between hover:border-primary-500/50 transition">
+                                <div class="p-4 rounded-xl border border-gray-200/80 dark:border-white/10 flex flex-col justify-between hover:border-primary-500/50 transition">
                                     <div class="space-y-1.5">
                                         <div class="flex items-start justify-between gap-2">
                                             <h4 class="font-bold text-gray-950 dark:text-white flex items-center gap-1.5">
@@ -637,7 +637,7 @@
                                             type="text"
                                             wire:model="newDriveTitle"
                                             placeholder="Ex: Dossier Drive Partagé — Cohorte 2026"
-                                            class="w-full rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-gray-900 px-3 py-2 text-xs focus:ring-2 focus:ring-primary-500 focus:outline-none"
+                                            class="w-full rounded-lg border border-gray-300 dark:border-white/10 bg-transparent px-3 py-2 text-xs focus:ring-2 focus:ring-primary-500 focus:outline-none"
                                         />
                                         @error('newDriveTitle') <span class="text-red-500 text-[10px] mt-0.5 block">{{ $message }}</span> @enderror
                                     </div>
@@ -648,7 +648,7 @@
                                             type="url"
                                             wire:model="newDriveUrl"
                                             placeholder="https://drive.google.com/drive/folders/..."
-                                            class="w-full rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-gray-900 px-3 py-2 text-xs focus:ring-2 focus:ring-primary-500 focus:outline-none"
+                                            class="w-full rounded-lg border border-gray-300 dark:border-white/10 bg-transparent px-3 py-2 text-xs focus:ring-2 focus:ring-primary-500 focus:outline-none"
                                         />
                                         @error('newDriveUrl') <span class="text-red-500 text-[10px] mt-0.5 block">{{ $message }}</span> @enderror
                                     </div>
@@ -660,7 +660,7 @@
                                         type="text"
                                         wire:model="newDriveDescription"
                                         placeholder="Ex: Répertoire partagé contenant les canevas adaptés et dossiers de promotion."
-                                        class="w-full rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-gray-900 px-3 py-2 text-xs focus:ring-2 focus:ring-primary-500 focus:outline-none"
+                                        class="w-full rounded-lg border border-gray-300 dark:border-white/10 bg-transparent px-3 py-2 text-xs focus:ring-2 focus:ring-primary-500 focus:outline-none"
                                     />
                                     @error('newDriveDescription') <span class="text-red-500 text-[10px] mt-0.5 block">{{ $message }}</span> @enderror
                                 </div>

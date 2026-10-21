@@ -9,17 +9,17 @@
     {{-- Package officiel laravel/head pour le SEO institutionnel --}}
     @head
 
-    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
-    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
+    {{-- <link rel="icon" href="{{ asset('favicon/favicon.ico') }}" sizes="any">
+    <link rel="icon" href="{{ asset('favicon/favicon.svg') }}" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="{{ asset('favicon/apple-touch-icon.png') }}"> --}}
 
-    {{--
+    
     <link rel="icon" type="image/png" href="{{ asset('favicon/favicon-96x96.png') }}" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon/favicon.svg') }}" />
     <link rel="shortcut icon" href="{{ asset('favicon/favicon.ico') }}" />
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicon/apple-touch-icon.png') }}" />
     <meta name="apple-mobile-web-app-title" content="Hubs-Africa" />
-    <link rel="manifest" href="{{ asset('favicon/site.webmanifest') }}" /> --}}
+    <link rel="manifest" href="{{ asset('favicon/site.webmanifest') }}" />
 
     {{-- Polices officielles Version 1 (DM Sans & Poppins) --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -153,7 +153,7 @@
                 {{-- Logo Officiel Hubs-Africa issu de la Version 1 --}}
                 <div class="flex items-center gap-3">
                     <a href="{{ route('home') }}" class="group flex items-center">
-                        <img src="{{ asset('images/koworkers.png') }}" alt="Hubs-Africa"
+                        <img src="{{ asset('images/logo2.png') }}" alt="Hubs-Africa"
                             class="h-10 sm:h-12 w-auto object-contain group-hover:opacity-90 transition">
                     </a>
                 </div>
@@ -385,7 +385,7 @@
                 <div class="space-y-4">
                     <div>
                         <a href="{{ route('home') }}" class="inline-block">
-                            <img src="{{ asset('images/koworkers.png') }}" alt="Hubs-Africa"
+                            <img src="{{ asset('images/logo2.png') }}" alt="Hubs-Africa"
                                 class="h-10 sm:h-12 w-auto object-contain brightness-105">
                         </a>
                     </div>

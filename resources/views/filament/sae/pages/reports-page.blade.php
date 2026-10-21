@@ -11,7 +11,7 @@
             <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
                 <div class="flex items-start gap-4">
                     @if(!empty($branding['src']))
-                        <div class="w-14 h-14 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-gray-900 p-1 flex items-center justify-center shrink-0 shadow-xs">
+                        <div class="w-14 h-14 rounded-xl border border-gray-200 dark:border-white/10 p-1 flex items-center justify-center shrink-0 shadow-xs">
                             <img src="{{ $branding['src'] }}" alt="{{ $tenant?->name }}" class="max-h-full max-w-full object-contain">
                         </div>
                     @else
@@ -109,7 +109,7 @@
             $fonds = collect($indicators)->firstWhere('name', 'Volume de financements décaissés')['current'] ?? 0;
         @endphp
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="p-4 rounded-xl border border-gray-200/60 dark:border-white/10 bg-white dark:bg-white/5 shadow-xs">
+            <div class="p-4 rounded-xl border border-gray-200/60 dark:border-white/10 shadow-xs">
                 <span class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Sélectivité / Admission</span>
                 <div class="text-2xl font-black text-gray-950 dark:text-white mt-1 tabular-nums">
                     {{ $tauxAdmission }}%
@@ -119,7 +119,7 @@
                 </div>
             </div>
 
-            <div class="p-4 rounded-xl border border-gray-200/60 dark:border-white/10 bg-white dark:bg-white/5 shadow-xs">
+            <div class="p-4 rounded-xl border border-gray-200/60 dark:border-white/10 shadow-xs">
                 <span class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Parité Genre (Femmes)</span>
                 <div class="text-2xl font-black text-pink-600 dark:text-pink-400 mt-1 tabular-nums">
                     {{ $tauxFemmes }}%
@@ -129,7 +129,7 @@
                 </div>
             </div>
 
-            <div class="p-4 rounded-xl border border-gray-200/60 dark:border-white/10 bg-white dark:bg-white/5 shadow-xs">
+            <div class="p-4 rounded-xl border border-gray-200/60 dark:border-white/10 shadow-xs">
                 <span class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Conformité Livrables</span>
                 <div class="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1 tabular-nums">
                     {{ $tauxLivrables }}%
@@ -139,7 +139,7 @@
                 </div>
             </div>
 
-            <div class="p-4 rounded-xl border border-gray-200/60 dark:border-white/10 bg-white dark:bg-white/5 shadow-xs">
+            <div class="p-4 rounded-xl border border-gray-200/60 dark:border-white/10 shadow-xs">
                 <span class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Fonds Mobilisés</span>
                 <div class="text-xl font-black text-blue-600 dark:text-blue-400 mt-1 tabular-nums truncate">
                     {{ number_format((float) $fonds, 0, ',', ' ') }} FCFA

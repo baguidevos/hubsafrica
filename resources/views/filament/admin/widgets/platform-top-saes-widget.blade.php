@@ -47,7 +47,7 @@
                         <th class="py-3 px-6 font-semibold text-right">Espace SAE</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100 dark:divide-gray-800/60 bg-white dark:bg-gray-900">
+                <tbody class="divide-y divide-gray-100 dark:divide-gray-800/60">
                     @forelse($saes as $s)
                         <tr class="hover:bg-gray-50/80 dark:hover:bg-gray-800/40 transition">
                             <td class="py-3.5 px-6">
