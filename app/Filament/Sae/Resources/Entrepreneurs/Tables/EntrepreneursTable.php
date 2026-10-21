@@ -129,7 +129,7 @@ class EntrepreneursTable
 
                                 return Cohort::query()
                                     ->when($tenant, fn ($q) => $q->where('sae_id', $tenant->id))
-                                    ->whereIn('status', [CohortStatus::EN_COURS, CohortStatus::PLANIFIEE])
+                                    ->whereIn('status', [CohortStatus::OUVERTE, CohortStatus::EN_COURS])
                                     ->with('program')
                                     ->get()
                                     ->mapWithKeys(fn (Cohort $c) => [

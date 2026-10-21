@@ -62,8 +62,8 @@ class EntrepreneurInvitationForm
                                     }
 
                                     return $query->whereIn('status', [
+                                        CohortStatus::OUVERTE,
                                         CohortStatus::EN_COURS,
-                                        CohortStatus::PLANIFIEE,
                                     ])->with('program');
                                 }
                             )

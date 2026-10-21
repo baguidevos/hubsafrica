@@ -198,6 +198,25 @@ test('an existing entrepreneur can be directly assigned to an active cohort', fu
     expect($entrepreneur->fresh()->cohorts->pluck('id')->contains($cohort->id))->toBeTrue();
 });
 
+test('sae manager can access the create entrepreneur invitation page without error', function () {
+    $sae = Sae::first() ?? Sae::create([
+        'name' => 'SAE Incubateur Dakar',
+        'slug' => 'sae-incubateur-dakar',
+    ]);
+
+    $user = User::first() ?? User::factory()->create();
+    if (! $user->canAccessTenant($sae)) {
+        $user->saes()->syncWithoutDetaching([$sae->id => ['role' => 'RESPONSABLE']]);
+    }
+
+    $response = $this->actingAs($user)->get("/sae/{$sae->slug}/portefeuille/entrepreneur-invitations/create");
+    $response->assertOk();
+    $response->assertSee('Coordonnées du porteur de projet');
+
+    $listResponse = $this->actingAs($user)->get("/sae/{$sae->slug}/portefeuille/entrepreneurs");
+    $listResponse->assertOk();
+});
+
 test('invalid or expired invitation token is rejected gracefully', function () {
     $response = $this->get(route('entrepreneur.invite', 'token-inexistant-xyz'));
     $response->assertOk();
