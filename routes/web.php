@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CoachInvitationController;
 use App\Http\Controllers\DevLoginController;
+use App\Http\Controllers\EntrepreneurInvitationController;
 use App\Http\Controllers\Public\CoachJoinRequestPublicController;
 use App\Http\Controllers\Public\CohortPublicController;
 use App\Http\Controllers\Public\HomeController;
@@ -46,6 +47,10 @@ Route::post('/coach/postuler', [CoachJoinRequestPublicController::class, 'store'
 // Parcours d'inscription Coach via lien d'invitation sécurisé
 Route::get('/coach/invite/{token}', [CoachInvitationController::class, 'show'])->name('coach.invite');
 Route::post('/coach/invite/{token}', [CoachInvitationController::class, 'register'])->name('coach.invite.register');
+
+// Parcours d'inscription Entrepreneur via lien d'invitation sécurisé
+Route::get('/entrepreneur/invite/{token}', [EntrepreneurInvitationController::class, 'show'])->name('entrepreneur.invite');
+Route::post('/entrepreneur/invite/{token}', [EntrepreneurInvitationController::class, 'register'])->name('entrepreneur.invite.register');
 Route::get('/register/coach', function (Request $request) {
     $token = $request->query('token');
 

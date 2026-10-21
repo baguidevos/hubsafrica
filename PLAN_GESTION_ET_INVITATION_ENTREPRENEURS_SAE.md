@@ -121,42 +121,42 @@ Dans le cycle de vie de la plateforme, deux cas d'usage coexistent :
 
 Suivons ces étapes ensemble de manière progressive et vérifiée :
 
-- [ ] **Étape 1 : Base de données & Modèle**
-  - [ ] Créer la migration `create_entrepreneur_invitations_table`.
-  - [ ] Créer l'enum `App\Enums\EntrepreneurInvitationStatus`.
-  - [ ] Créer le modèle `App\Models\EntrepreneurInvitation` avec relations et helpers de lien.
-  - [ ] Vérifier / assouplir si nécessaire la contrainte `project_id` sur la table `enrollments`.
-  - [ ] Exécuter la migration (`php artisan migrate`).
+- [x] **Étape 1 : Base de données & Modèle**
+  - [x] Créer la migration `create_entrepreneur_invitations_table`.
+  - [x] Créer l'enum `App\Enums\EntrepreneurInvitationStatus`.
+  - [x] Créer le modèle `App\Models\EntrepreneurInvitation` avec relations et helpers de lien.
+  - [x] Assouplir la contrainte `project_id` sur la table `enrollments` (migration exécutée).
+  - [x] Exécuter les migrations (`php artisan migrate`).
 
-- [ ] **Étape 2 : Communication & Emailing**
-  - [ ] Créer le mailable `App\Mail\EntrepreneurDirectInvitationMail`.
-  - [ ] Créer la vue Blade pour l'email responsive (`resources/views/emails/entrepreneur-invitation.blade.php`).
+- [x] **Étape 2 : Communication & Emailing**
+  - [x] Créer le mailable `App\Mail\EntrepreneurDirectInvitationMail`.
+  - [x] Créer la vue Blade pour l'email responsive (`resources/views/emails/entrepreneur-invitation.blade.php`).
 
-- [ ] **Étape 3 : Interface SAE — Gestion des Invitations**
-  - [ ] Créer `App\Filament\Sae\Resources\EntrepreneurInvitations\EntrepreneurInvitationResource`.
-  - [ ] Configurer le formulaire d'invitation avec sélection dynamique des cohortes en cours/planifiées de la SAE.
-  - [ ] Configurer le tableau des invitations avec filtres, badge de statut, bouton de copie de lien et action d'envoi d'email.
+- [x] **Étape 3 : Interface SAE — Gestion des Invitations**
+  - [x] Créer `App\Filament\Sae\Resources\EntrepreneurInvitations\EntrepreneurInvitationResource`.
+  - [x] Configurer le formulaire d'invitation avec sélection dynamique des cohortes en cours/planifiées de la SAE.
+  - [x] Configurer le tableau des invitations avec filtres, badge de statut, bouton de copie de lien et action d'envoi d'email.
 
-- [ ] **Étape 4 : Interface SAE — Amélioration de la Liste des Entrepreneurs**
-  - [ ] Enrichir `App\Filament\Sae\Resources\Entrepreneurs\Tables\EntrepreneursTable` :
-    - [ ] Ajouter la colonne des cohortes / promotion rattachée.
-    - [ ] Ajouter la colonne du projet principal.
-    - [ ] Ajouter le filtre par Cohorte.
-    - [ ] Ajouter l'action directe de ligne « Assigner à une cohorte » (modale d'assignation en direct).
-    - [ ] Ajouter l'action d'en-tête « Inviter un entrepreneur » pour un accès direct en 1 clic.
+- [x] **Étape 4 : Interface SAE — Amélioration de la Liste des Entrepreneurs**
+  - [x] Enrichir `App\Filament\Sae\Resources\Entrepreneurs\Tables\EntrepreneursTable` :
+    - [x] Ajouter la colonne des cohortes / promotion rattachée.
+    - [x] Ajouter la colonne du projet principal.
+    - [x] Ajouter le filtre par Cohorte.
+    - [x] Ajouter l'action directe de ligne « Assigner à une cohorte » (modale d'assignation en direct).
+    - [x] Ajouter l'action d'en-tête « Inviter un entrepreneur » pour un accès direct en 1 clic.
 
-- [ ] **Étape 5 : Portail Public d'Acceptation & Activation**
-  - [ ] Créer `App\Http\Controllers\EntrepreneurInvitationController`.
-  - [ ] Créer la vue publique Blade `resources/views/auth/entrepreneur-invite.blade.php`.
-  - [ ] Créer la vue d'erreur d'invitation `resources/views/auth/entrepreneur-invite-invalid.blade.php`.
-  - [ ] Déclarer les routes dans `routes/web.php` (`/entrepreneur/invite/{token}`).
-  - [ ] Gérer l'onboarding complet : création User + Entrepreneur + Project + Enrollment conditionnel + connexion automatique.
+- [x] **Étape 5 : Portail Public d'Acceptation & Activation**
+  - [x] Créer `App\Http\Controllers\EntrepreneurInvitationController`.
+  - [x] Créer la vue publique Blade `resources/views/auth/entrepreneur-invite.blade.php`.
+  - [x] Créer la vue d'erreur d'invitation `resources/views/auth/entrepreneur-invite-invalid.blade.php`.
+  - [x] Déclarer les routes dans `routes/web.php` (`/entrepreneur/invite/{token}`).
+  - [x] Gérer l'onboarding complet : création User + Entrepreneur + Project + Enrollment conditionnel + connexion automatique.
 
-- [ ] **Étape 6 : Tests & Validation**
-  - [ ] Créer un test Pest validant le cycle d'invitation avec cohorte.
-  - [ ] Créer un test Pest validant le cycle d'invitation sans cohorte.
-  - [ ] Valider l'assignation directe depuis le tableau SAE.
-  - [ ] Exécuter Laravel Pint pour respecter les standards de code.
+- [x] **Étape 6 : Tests & Validation**
+  - [x] Créer un test Pest validant le cycle d'invitation avec cohorte.
+  - [x] Créer un test Pest validant le cycle d'invitation sans cohorte.
+  - [x] Valider l'assignation directe depuis le tableau SAE.
+  - [x] Exécuter Laravel Pint pour respecter les standards de code.
 
 ---
 

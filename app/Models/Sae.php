@@ -145,6 +145,11 @@ class Sae extends Model implements HasAvatar
         return $this->hasMany(CoachInvitation::class, 'sae_id');
     }
 
+    public function entrepreneurInvitations(): HasMany
+    {
+        return $this->hasMany(EntrepreneurInvitation::class, 'sae_id');
+    }
+
     public function coachJoinRequests(): HasMany
     {
         return $this->hasMany(CoachJoinRequest::class, 'sae_id');

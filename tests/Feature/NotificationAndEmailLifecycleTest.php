@@ -10,6 +10,7 @@ use App\Enums\ProjectStatus;
 use App\Mail\ApplicationAdmittedMail;
 use App\Mail\ApplicationDecisionMail;
 use App\Mail\CoachAssignedStartupMail;
+use App\Mail\CoachDirectInvitationMail;
 use App\Mail\CoachingSessionScheduledMail;
 use App\Mail\CoachJoinRequestAcceptedMail;
 use App\Mail\CoachJoinRequestReceivedMail;
@@ -355,4 +356,31 @@ test('sae manager welcome mail can be queued for managers', function () {
     Mail::assertQueued(SaeManagerWelcomeMail::class, function ($mail) {
         return $mail->hasTo('director@sae.com');
     });
+});
+
+test('direct coach invitation can be queued and rendered cleanly', function () {
+    $invitation = CoachInvitation::create([
+        'sae_id' => $this->sae->id,
+        'name' => 'Paul Mensah',
+        'email' => 'paul.mensah@coach.com',
+        'specialties' => ['FinTech', 'Levée de fonds'],
+        'max_capacity' => 5,
+        'is_external' => true,
+    ]);
+
+    expect($invitation->token)->not->toBeEmpty();
+    expect($invitation->getInvitationUrl())->toContain('/coach/invite/'.$invitation->token);
+
+    Mail::to($invitation->email)->queue(new CoachDirectInvitationMail($invitation));
+
+    Mail::assertQueued(CoachDirectInvitationMail::class, function ($mail) use ($invitation) {
+        return $mail->hasTo('paul.mensah@coach.com') && $mail->invitation->id === $invitation->id;
+    });
+
+    $mailable = new CoachDirectInvitationMail($invitation);
+    $html = $mailable->render();
+
+    expect($html)->toContain('Paul Mensah');
+    expect($html)->toContain($invitation->getInvitationUrl());
+    expect($mailable->envelope()->subject)->toContain($this->sae->name);
 });

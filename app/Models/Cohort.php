@@ -69,6 +69,11 @@ class Cohort extends Model
         return $this->hasMany(Enrollment::class, 'cohort_id');
     }
 
+    public function entrepreneurInvitations(): HasMany
+    {
+        return $this->hasMany(EntrepreneurInvitation::class, 'cohort_id');
+    }
+
     public function applications(): HasMany
     {
         return $this->hasMany(Application::class, 'cohort_id');

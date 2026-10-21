@@ -50,7 +50,7 @@ return [
     |--------------------------------------------------------------------------
     */
     'contact' => [
-        'email' => env('HUBS_AFRICA_CONTACT_EMAIL', env('HUBAFRICA_CONTACT_EMAIL', 'teamhubsafrica@gmail.com')),
+        'email' => env('HUBS_AFRICA_CONTACT_EMAIL', env('HUBAFRICA_CONTACT_EMAIL', 'teamhubafrica@gmail.com')),
         'phone' => env('HUBS_AFRICA_CONTACT_PHONE', env('HUBAFRICA_CONTACT_PHONE', '+228 70 76 76 94')),
         'address' => env('HUBS_AFRICA_CONTACT_ADDRESS', env('HUBAFRICA_CONTACT_ADDRESS', 'TOGO, Lomé.')),
     ],

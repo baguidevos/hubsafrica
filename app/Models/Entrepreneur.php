@@ -8,6 +8,7 @@ use App\Models\Concerns\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Entrepreneur extends Model
@@ -92,6 +93,13 @@ class Entrepreneur extends Model
     public function enrollments(): HasMany
     {
         return $this->hasMany(Enrollment::class, 'entrepreneur_id');
+    }
+
+    public function cohorts(): BelongsToMany
+    {
+        return $this->belongsToMany(Cohort::class, 'enrollments', 'entrepreneur_id', 'cohort_id')
+            ->withPivot(['status', 'enrolled_at', 'project_id'])
+            ->withTimestamps();
     }
 
     public function coachingSessions(): HasMany
