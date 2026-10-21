@@ -4,6 +4,47 @@ Toutes les modifications notables apportées au projet **Hub Africa v2** (Stack 
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
+## [2.19.0] - 2026-10-21
+
+### Ajouté (Added) & Amélioré (Improved)
+- **Pipelines Métiers Visuels & Vues Kanban Interactives (Drag & Drop)** :
+  - **Intégration du composant `eduardoribeirodev/filament-kanban`** :
+    - Déploiement d'une gestion visuelle en colonnes avec glisser-déposer en temps réel sur les 4 flux opérationnels vitaux du panel Incubateur / SAE (`/sae`).
+  - **Pipeline Candidatures & Sélection (`KanbanApplications`)** :
+    - Colonnes alignées sur le cycle d'admission : Soumise (`SOUMISE`), En revue (`EN_REVUE`), Entretien (`ENTRETIEN`), Acceptée (`ACCEPTEE`), Liste d'attente (`EN_ATTENTE`), Refusée (`REFUSEE`).
+    - Cartes enrichies : Nom du candidat, email, numéro de téléphone, programme ciblé et note d'évaluation globale du jury.
+  - **Pipeline Projets & Cohortes Incubées (`KanbanProjects`)** :
+    - Colonnes calquées sur les stades de maturité entrepreneuriale : Idéation & Amorçage (`AMORCAGE`), Accélération (`ACCELERATION`), Maturité (`MATURITE`), Sortie & Autonomie (`SORTIE`).
+    - Cartes dynamiques affichant la cohorte d'appartenance, le secteur d'activité, le coach principal référent et le niveau d'avancement.
+  - **Pipeline Livrables & Feuilles de Route Pédagogiques (`KanbanDeliverableSubmissions`)** :
+    - Colonnes de statut de révision : En attente (`PENDING`), En examen mentor (`UNDER_REVIEW`), Validé (`APPROVED`), Corrections requises (`REJECTED`).
+    - Suivi instantané des rendus de devoirs et documents stratégiques déposés par les entrepreneurs.
+  - **Pipeline Recrutement Coachs & Mentors Spontanés (`KanbanCoachJoinRequests`)** :
+    - Colonnes : En attente (`PENDING`), Retenu / Accepté (`ACCEPTED`), Non retenu (`REJECTED`).
+    - Simplification du traitement des candidatures spontanées des experts du réseau panafricain.
+  - **Bascule Ergonomique Vue Tableau / Vue Kanban** :
+    - Bouton d'action d'en-tête dynamique "Vue Kanban" / "Vue Tableau" intégré sur l'ensemble des pages de liste correspondantes (`ListApplications`, `ListProjects`, `ListDeliverableSubmissions`, `ListCoachJoinRequests`).
+
+- **Dock Flottant d'Actions Rapides & Navigation Pipeline (`quick-action-dock`)** :
+  - Barre d'accès rapide flottante positionnée en bas de page dans le panel Incubateur (`SaePanelProvider.php`), aux couleurs officielles Hub Africa (`#2F3284` & `#F8B81D`).
+  - Navigation instantanée en 1 clic vers les 4 pipelines Kanban (Candidatures, Projets, Livrables, Coachs).
+  - Support du raccourci clavier universel (`Cmd/Ctrl + K`) pour ouvrir la modale de saut rapide entre tableaux de bord.
+  - Fichiers d'assets dédiés et légers (`public/css/quick-action-dock.css` et `public/js/quick-action-dock.js`).
+
+- **Ergonomie Super Admin & Liens d'Accompagnement** :
+  - Ajout d'une action directe "Accéder à l'espace SAE" (`open_sae_panel`) dans la table de supervision des SAEs du panel Super Admin ([`SaesTable.php`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Filament/Admin/Resources/Saes/Tables/SaesTable.php)).
+
+- **Documentation & Référentiels d'Équipe** :
+  - **Guide Essentiel et Description du Projet ([`guide_equipe.md`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/guide_equipe.md))** :
+    - Synthèse vulgarisée complète pour les nouveaux collaborateurs, équipes marketing et développeurs.
+    - Fiches personas (Responsable SAE, Coach, Entrepreneur, Super Admin), explicitation du concept de SAE, cycle de vie startup en 6 étapes, arguments de vente et consignes architecturales.
+  - **Mise à jour du Résumé Exécutif ([`RESUME_EXECUTIF_HUB_AFRICA.md`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/RESUME_EXECUTIF_HUB_AFRICA.md))** :
+    - Prise en compte des fonctionnalités de gestion visuelle par pipelines Kanban et des outils de navigation rapide.
+
+- **Conformité & Suite de Tests** :
+  - Suite de tests Pest validée à 100% (124 tests réussis, 787 assertions).
+  - Code formaté et validé par Laravel Pint.
+
 ## [2.18.0] - 2026-10-15
 
 ### Ajouté (Added) & Amélioré (Improved)
