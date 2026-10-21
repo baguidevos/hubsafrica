@@ -27,9 +27,9 @@ class ProductionSeeder extends Seeder
         Role::firstOrCreate(['name' => 'entrepreneur', 'guard_name' => 'web']);
 
         // 3. Super Administrateur initial (paramétrable via .env)
-        $adminEmail = env('INITIAL_ADMIN_EMAIL', 'admin@hubafrica.org');
+        $adminEmail = env('INITIAL_ADMIN_EMAIL', 'admin@hubsafrica.org');
         $adminPassword = env('INITIAL_ADMIN_PASSWORD', 'AdminSecureHub2026!');
-        $adminName = env('INITIAL_ADMIN_NAME', 'Super Administrateur Hub Africa');
+        $adminName = env('INITIAL_ADMIN_NAME', 'Super Administrateur Hubs Africa');
 
         $admin = User::firstOrCreate(
             ['email' => $adminEmail],

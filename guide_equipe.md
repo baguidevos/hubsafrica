@@ -1,6 +1,6 @@
 Viewed README.md:1-60
 
-# 🌍 Hub Africa : Guide Essentiel et Description Détaillée du Projet
+# 🌍 Hubs Africa : Guide Essentiel et Description Détaillée du Projet
 
 > **À destination des nouveaux arrivants, stagiaires en marketing et développeurs.**  
 > *L’objectif de ce document est de vous donner une compréhension limpide, concrète et complète du projet, de ses utilisateurs et de sa valeur, sans jargon technique inutile.*
@@ -9,11 +9,11 @@ Viewed README.md:1-60
 
 ## 1. 🎯 Le Projet en Une Seule Phrase (Le Pitch)
 
-**Hub Africa** est un espace de travail numérique tout-en-un qui aide les incubateurs et accélérateurs d'entreprises en Afrique à sélectionner, accompagner, évaluer et financer les jeunes entrepreneurs africains de manière professionnelle et organisée.
+**Hubs Africa** est un espace de travail numérique tout-en-un qui aide les incubateurs et accélérateurs d'entreprises en Afrique à sélectionner, accompagner, évaluer et financer les jeunes entrepreneurs africains de manière professionnelle et organisée.
 
 ---
 
-## 2. 💡 Le Problème sur le Terrain (Pourquoi Hub Africa existe ?)
+## 2. 💡 Le Problème sur le Terrain (Pourquoi Hubs Africa existe ?)
 
 ### Le constat actuel :
 Partout en Afrique (Sénégal, Côte d'Ivoire, Togo, Cameroun, etc.), il existe des centaines de structures d'aide aux jeunes créateurs d'entreprises. Mais sur le terrain, leur quotidien ressemble à ceci :
@@ -22,7 +22,7 @@ Partout en Afrique (Sénégal, Côte d'Ivoire, Togo, Cameroun, etc.), il existe 
 - **La difficulté à prouver ses résultats aux bailleurs :** des partenaires internationaux (Union Européenne, Banque Mondiale, coopérations allemande ou française, etc.) donnent de l'argent pour former les jeunes. Mais quand ils demandent : *« Combien d'emplois ont été créés ? Combien de femmes ont réussi ? Quel est le chiffre d'affaires généré ? »*, les structures mettent des semaines à fabriquer des rapports approximatifs.
 - **Le taux d'échec élevé :** plus de la moitié des startups africaines meurent avant 3 ans, souvent par manque d'un suivi régulier et structuré.
 
-### La réponse de Hub Africa :
+### La réponse de Hubs Africa :
 Remplacer ce bricolage par une **plateforme unique, moderne et sécurisée**, où chaque acteur sait exactement ce qu'il a à faire.
 
 ---
@@ -42,14 +42,14 @@ Une SAE est tout simplement un organisme qui aide les porteurs de projets à tra
 
 ## 4. 👥 Les 4 Personnages Clés de la Plateforme
 
-Pour imaginer Hub Africa, visualisez ces 4 profils qui interagissent ensemble :
+Pour imaginer Hubs Africa, visualisez ces 4 profils qui interagissent ensemble :
 
-| Personnage | Qui est-ce ? | Que fait-il sur Hub Africa ? |
+| Personnage | Qui est-ce ? | Que fait-il sur Hubs Africa ? |
 | :--- | :--- | :--- |
 | **1. Le Responsable de SAE** *(ex: Fatou)* | Le directeur ou coordinateur de l'incubateur. | Il lance des appels à candidatures, compose ses promotions (cohortes), assigne des mentors aux startups, et édite les rapports d'activité. |
 | **2. Le Coach / Mentor** *(ex: Marie)* | L'expert métier bénévole ou rémunéré (finance, marketing, tech...). | Il planifie ses rendez-vous avec les entrepreneurs, écrit ses comptes-rendus de séance et corrige les devoirs (les livrables). |
 | **3. L'Entrepreneur** *(ex: Ousmane)* | Le porteur de projet ou fondateur de la startup. | Il postule en ligne, dépose ses documents (business plan, logo, pitch...), répond aux enquêtes régulières et consulte ses conseils. |
-| **4. Le Super Administrateur Hub Africa** *(notre équipe)* | L'équipe centrale Hub Africa. | Il supervise toutes les structures du réseau, vérifie la qualité, analyse les tendances globales panafricaines et configure la plateforme. |
+| **4. Le Super Administrateur Hubs Africa** *(notre équipe)* | L'équipe centrale Hubs Africa. | Il supervise toutes les structures du réseau, vérifie la qualité, analyse les tendances globales panafricaines et configure la plateforme. |
 
 ---
 
@@ -62,7 +62,7 @@ Chaque incubateur partenaire dispose de **son propre espace privatif et personna
 
 ---
 
-## 6. 🔄 Le Voyage d'une Startup dans Hub Africa (Le Cycle de Vie)
+## 6. 🔄 Le Voyage d'une Startup dans Hubs Africa (Le Cycle de Vie)
 
 Voici le film complet de ce qui se passe sur la plateforme, étape par étape :
 
@@ -102,7 +102,7 @@ Quand la startup est prête à lever des fonds ou demander une subvention, tous 
 ## 7. 🎯 Ce que l'Équipe Marketing doit savoir et faire
 
 ### Votre mission :
-Convaincre les incubateurs, directeurs de programmes et bailleurs de fonds d'adopter Hub Africa plutôt que de continuer avec Excel et WhatsApp.
+Convaincre les incubateurs, directeurs de programmes et bailleurs de fonds d'adopter Hubs Africa plutôt que de continuer avec Excel et WhatsApp.
 
 ### Nos 4 arguments massue à communiquer :
 1. **Gain de temps spectaculaire :** 60% de tâches administratives manuelles en moins pour les équipes d'incubation.

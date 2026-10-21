@@ -26,7 +26,7 @@
                                 Rapports d'impact & Suivi-Évaluation (M&E)
                             </h3>
                             <x-filament::badge color="primary">
-                                {{ $tenant?->name ?? 'Hub Africa SAE' }}
+                                {{ $tenant?->name ?? 'Hubs Africa SAE' }}
                             </x-filament::badge>
                         </div>
                         <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 max-w-2xl">

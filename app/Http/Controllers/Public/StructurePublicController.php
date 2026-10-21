@@ -16,8 +16,8 @@ class StructurePublicController extends Controller
      */
     public function index(Request $request): View
     {
-        Head::title('Annuaire des Structures d\'Accompagnement (SAEs) | Hub Africa')
-            ->description('Découvrez les incubateurs, accélérateurs, espaces de coworking et technopoles membres du réseau Hub Africa engagés dans l\'accompagnement des startups.');
+        Head::title('Annuaire des Structures d\'Accompagnement (SAEs) | Hubs Africa')
+            ->description('Découvrez les incubateurs, accélérateurs, espaces de coworking et technopoles membres du réseau Hubs Africa engagés dans l\'accompagnement des startups.');
 
         $selectedType = $request->query('type');
 
@@ -58,7 +58,7 @@ class StructurePublicController extends Controller
             ->withCount(['projects', 'coaches'])
             ->findOrFail($id);
 
-        Head::title("{$sae->name} — Structure d'Accompagnement | Hub Africa")
+        Head::title("{$sae->name} — Structure d'Accompagnement | Hubs Africa")
             ->description(strip_tags($sae->description ?: "Découvrez les programmes et mentors de la structure {$sae->name}."));
 
         return view('pages.structure-detail', [

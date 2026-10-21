@@ -45,11 +45,11 @@ class DatabaseSeeder extends Seeder
         $coachRole = Role::firstOrCreate(['name' => 'coach', 'guard_name' => 'web']);
         $entrepreneurRole = Role::firstOrCreate(['name' => 'entrepreneur', 'guard_name' => 'web']);
 
-        // 2. Administrateur Plateforme Hub Africa
+        // 2. Administrateur Plateforme Hubs Africa
         $admin = User::firstOrCreate(
-            ['email' => 'admin@hubafrica.org'],
+            ['email' => 'admin@hubsafrica.org'],
             [
-                'name' => 'Directeur Hub Africa',
+                'name' => 'Directeur Hubs Africa',
                 'password' => Hash::make('password'),
                 'phone' => '+221 77 000 00 01',
                 'status' => 'ACTIVE',
@@ -497,7 +497,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Manuel pratique pour adapter son BMC aux réalités des marchés informels et des flux de paiement mobile.',
             'type' => 'DOCUMENT',
             'category' => 'Entrepreneuriat',
-            'author' => 'Hub Africa Knowledge Hub',
+            'author' => 'Hubs Africa Knowledge Hub',
             'visibility' => 'TOUS',
         ]);
 

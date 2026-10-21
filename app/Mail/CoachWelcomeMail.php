@@ -25,7 +25,7 @@ class CoachWelcomeMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Bienvenue dans le réseau des Mentors & Coachs Hub Africa',
+            subject: 'Bienvenue dans le réseau des Mentors & Coachs Hubs Africa',
         );
     }
 

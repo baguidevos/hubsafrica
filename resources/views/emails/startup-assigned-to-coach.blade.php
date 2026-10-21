@@ -1,10 +1,10 @@
-<x-emails.layouts.hubafrica :sae="$sae" badgeText="Nouveau Projet Assigné">
+<x-emails.layouts.hubsafrica :sae="$sae" badgeText="Nouveau Projet Assigné">
     <h2 style="margin: 0 0 16px 0; font-size: 20px; font-weight: 800; color: #0f172a;">
         Bonjour {{ $coach?->name }},
     </h2>
 
     <p style="margin: 0 0 16px 0; color: #334155; font-size: 15px;">
-        La coordination pédagogique de <strong>{{ $sae?->name ?? 'Hub Africa' }}</strong> vient de vous confier l'accompagnement d'un nouveau projet au sein de votre portefeuille.
+        La coordination pédagogique de <strong>{{ $sae?->name ?? 'Hubs Africa' }}</strong> vient de vous confier l'accompagnement d'un nouveau projet au sein de votre portefeuille.
     </p>
 
     <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin: 20px 0;">
@@ -60,4 +60,4 @@
             </td>
         </tr>
     </table>
-</x-emails.layouts.hubafrica>
+</x-emails.layouts.hubsafrica>

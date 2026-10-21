@@ -5,7 +5,7 @@
             <p class="text-xs text-stone-600">Dossier d'accompagnement entrepreneurial &bull; {{ $record->name }}</p>
         </div>
         <div class="text-right text-[11px] text-stone-500">
-            <p class="font-bold text-stone-800">{{ $record->sae?->name ?? 'Hub Africa' }}</p>
+            <p class="font-bold text-stone-800">{{ $record->sae?->name ?? 'Hubs Africa' }}</p>
             <p>Édité le {{ now()->translatedFormat('d F Y à H:i') }}</p>
         </div>
     </div>
@@ -132,6 +132,6 @@
     </div>
 
     <div class="mt-4 pt-2 border-t border-stone-100 text-center text-[10px] text-stone-400 print:block">
-        Système Intégré de Gestion de l'Accompagnement Entrepreneurial (SIGAE) &bull; Hub Africa &bull; Confidentiel
+        Système Intégré de Gestion de l'Accompagnement Entrepreneurial (SIGAE) &bull; Hubs Africa &bull; Confidentiel
     </div>
 </div>

@@ -3,13 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Invitation Invalide &bull; Hub Africa</title>
+    <title>Invitation Invalide &bull; Hubs Africa</title>
     <link rel="icon" href="{{ asset('images/logo.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-full flex flex-col justify-between font-sans text-slate-800 antialiased relative overflow-x-hidden">
     
-    {{-- Arrière-plan d'ambiance avec halos lumineux Hub Africa --}}
+    {{-- Arrière-plan d'ambiance avec halos lumineux Hubs Africa --}}
     <div class="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <div class="absolute -top-36 -left-36 w-96 h-96 bg-[#2F3284]/35 rounded-full blur-3xl"></div>
         <div class="absolute top-1/3 -right-36 w-96 h-96 bg-[#F8B81D]/15 rounded-full blur-3xl"></div>
@@ -23,7 +23,7 @@
                 <svg class="w-4 h-4 text-[#F8B81D] transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                 </svg>
-                <span class="font-bold">Hub Africa</span>
+                <span class="font-bold">Hubs Africa</span>
                 <span class="text-slate-600 hidden sm:inline">&bull;</span>
                 <span class="text-slate-400 font-normal hidden sm:inline">Portail Panafricain</span>
             </a>
@@ -60,7 +60,7 @@
     </main>
 
     <footer class="w-full border-t border-slate-800/80 py-4 text-center text-xs text-slate-500 relative z-10">
-        &copy; {{ date('Y') }} Hub Africa &bull; Tous droits réservés.
+        &copy; {{ date('Y') }} Hubs Africa &bull; Tous droits réservés.
     </footer>
 </body>
 </html>

@@ -112,7 +112,7 @@ return [
 
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'teamhubafrica@gmail.com'),
-        'name' => env('MAIL_FROM_NAME', 'Hub Africa'),
+        'name' => env('MAIL_FROM_NAME', 'Hubs Africa'),
     ],
 
 ];

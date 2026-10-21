@@ -1,14 +1,14 @@
-# 🚀 Hub Africa V2 — Modernisation de l'Architecture d'Accompagnement
+# 🚀 Hubs Africa V2 — Modernisation de l'Architecture d'Accompagnement
 
 > **Document de référence & Synthèse d'ingénierie logicielle**  
-> Ce document formalise l'intégration des concepts du référentiel d'accompagnement au sein de l'architecture multi-tenant native de Hub Africa V2.
+> Ce document formalise l'intégration des concepts du référentiel d'accompagnement au sein de l'architecture multi-tenant native de Hubs Africa V2.
 
 ---
 
 ## 1. Principes Fondamentaux d'Intégration
 
 ### 1.1 Respect absolu du Multi-Tenancy SAE
-Dans Hub Africa V2, chaque incubateur / accélérateur (**SAE**) est un tenant isolé. Toute nouvelle entité implémente :
+Dans Hubs Africa V2, chaque incubateur / accélérateur (**SAE**) est un tenant isolé. Toute nouvelle entité implémente :
 - Le champ `sae_id` avec clé étrangère contrainte vers `saes`.
 - Le trait [`BelongsToTenant`](file:///C:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Models/Concerns/BelongsToTenant.php) appliquant automatiquement le global scope `TenantScope` et l'auto-injection du tenant courant.
 
@@ -24,7 +24,7 @@ Dans Hub Africa V2, chaque incubateur / accélérateur (**SAE**) est un tenant i
 
 ## 2. Matrice Comparative : Évolution du Schéma
 
-| Domaine | Schéma Initial Hub Africa V2 | Proposition brute du Markdown | Solution Adoptée dans Hub Africa V2 |
+| Domaine | Schéma Initial Hubs Africa V2 | Proposition brute du Markdown | Solution Adoptée dans Hubs Africa V2 |
 | :--- | :--- | :--- | :--- |
 | **Phases & Jalons** | Aucun jalon intermédiaire dans le programme | `PhaseTemplate` & `CohortPhase` (sans multi-tenant) | `ProgramPhase` & `CohortPhase` avec `sae_id`, durée estimée, critères de passage et synchronisation intelligente |
 | **Notation Candidatures** | Score numérique unique direct sur `Application` | `Evaluation` & `EvaluationScore` (conflit de table) | `EvaluationCriterion` (pondération, max_score) + `ApplicationEvaluation` + `ApplicationEvaluationScore` |
@@ -63,7 +63,7 @@ erDiagram
 ```
 Toutes les forces du document plateforme-accompagnement-models-migrations.md ont été
   extraites, adaptées et intégrées directement dans l'architecture multi-tenant SAE
-  existante de Hub Africa V2, tout en corrigeant l'intégralité des failles de conception
+  existante de Hubs Africa V2, tout en corrigeant l'intégralité des failles de conception
   relevées lors du challenge.
   Un document d'architecture détaillé a été généré dans l'artéfact
   architecture_accompagnement_hubafrica.md.

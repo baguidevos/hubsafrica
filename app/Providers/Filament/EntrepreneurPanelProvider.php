@@ -27,7 +27,7 @@ class EntrepreneurPanelProvider extends PanelProvider
         return $panel
             ->id('entrepreneur')
             ->path('portal')
-            ->brandName('Hub Africa')
+            ->brandName('Hubs Africa')
             ->brandLogo(fn () => asset('images/koworkers.png'))
             ->darkModeBrandLogo(fn () => asset('images/logo.png'))
             ->brandLogoHeight('2.25rem')

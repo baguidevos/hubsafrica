@@ -1,4 +1,4 @@
-<x-emails.layouts.hubafrica :sae="$sae" badgeText="Invitation Coach">
+<x-emails.layouts.hubsafrica :sae="$sae" badgeText="Invitation Coach">
     <h2 style="margin: 0 0 16px 0; font-size: 20px; font-weight: 800; color: #0f172a;">
         Félicitations {{ $joinRequest->name }} ! 🎉
     </h2>
@@ -38,4 +38,4 @@
         Si le bouton ci-dessus ne fonctionne pas, copiez-collez l'adresse suivante dans votre navigateur :<br>
         <span style="word-break: break-all; color: #2F3284; font-family: monospace;">{{ $invitationUrl }}</span>
     </p>
-</x-emails.layouts.hubafrica>
+</x-emails.layouts.hubsafrica>

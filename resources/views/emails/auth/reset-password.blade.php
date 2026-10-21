@@ -1,4 +1,4 @@
-<x-emails.layouts.hubafrica :sae="$sae ?? null" badgeText="Sécurité">
+<x-emails.layouts.hubsafrica :sae="$sae ?? null" badgeText="Sécurité">
     <h2 style="margin: 0 0 16px 0; font-size: 20px; font-weight: 800; color: #0f172a; letter-spacing: -0.3px;">
         Réinitialisation de votre mot de passe 🔐
     </h2>
@@ -9,7 +9,7 @@
 
     <p style="margin: 0 0 20px 0; color: #334155; font-size: 15px; line-height: 1.6;">
         Nous avons bien reçu une demande de réinitialisation de mot de passe pour le compte associé à l'adresse 
-        <strong style="color: #2F3284;">{{ $user->email }}</strong> sur la plateforme <strong>Hub Africa</strong>.
+        <strong style="color: #2F3284;">{{ $user->email }}</strong> sur la plateforme <strong>Hubs Africa</strong>.
     </p>
 
     <!-- Bouton CTA Principal -->
@@ -48,4 +48,4 @@
     <div style="background-color: #ffffff; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 10px 14px; font-family: monospace; font-size: 11px; word-break: break-all; color: #2F3284;">
         <a href="{{ $resetUrl }}" style="color: #2F3284; text-decoration: underline;">{{ $resetUrl }}</a>
     </div>
-</x-emails.layouts.hubafrica>
+</x-emails.layouts.hubsafrica>

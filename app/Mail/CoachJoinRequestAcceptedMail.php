@@ -22,7 +22,7 @@ class CoachJoinRequestAcceptedMail extends Mailable implements ShouldQueue
 
     public function envelope(): Envelope
     {
-        $saeName = $this->joinRequest->sae?->name ?? 'Hub Africa';
+        $saeName = $this->joinRequest->sae?->name ?? 'Hubs Africa';
 
         return new Envelope(
             subject: "Votre demande d'intégration chez {$saeName} a été acceptée !",

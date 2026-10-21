@@ -1,27 +1,27 @@
 # 💰 DOCUMENT DES BESOINS FINANCIERS & ALLOCATION DES FONDS
-## PROJET : HUB AFRICA (HUB AFRICA V2)
+## PROJET : HUBS AFRICA (HUBS AFRICA V2)
 *Plan Budgétaire Détaillé, Justification des Postes de Coûts, Calendrier de Décaissement & Scénarios de Rentabilité de la Plateforme SaaS*
 
 ---
 
 ## 📋 Table des Matières
-1. [Cadrage Général de la Levée d'Amorçage de Hub Africa](#1-cadrage-général-de-la-levée-damorçage-de-hub-africa)
+1. [Cadrage Général de la Levée d'Amorçage de Hubs Africa](#1-cadrage-général-de-la-levée-damorçage-de-Hubs-Africa)
 2. [Décomposition Analytique du Budget (Poste par Poste)](#2-décomposition-analytique-du-budget-poste-par-poste)
    - [Poste 1 : Force Commerciale Terrain & Acquisition des SAE (40% — 30 000 000 FCFA)](#poste-1--force-commerciale-terrain--acquisition-des-sae-40--30-000-000-fcfa)
-   - [Poste 2 : R&D Logicielle Hub Africa, UX Mobile & Sécurité Cloud (30% — 22 500 000 FCFA)](#poste-2--rd-logicielle-hub-africa-ux-mobile--sécurité-cloud-30--22-500-000-fcfa)
-   - [Poste 3 : Marketing B2B, Hub Africa Summit & Relations Bailleurs (20% — 15 000 000 FCFA)](#poste-3--marketing-b2b-hub-africa-summit--relations-bailleurs-20--15-000-000-fcfa)
+   - [Poste 2 : R&D Logicielle Hubs Africa, UX Mobile & Sécurité Cloud (30% — 22 500 000 FCFA)](#poste-2--rd-logicielle-Hubs-Africa-ux-mobile--sécurité-cloud-30--22-500-000-fcfa)
+   - [Poste 3 : Marketing B2B, Hubs Africa Summit & Relations Bailleurs (20% — 15 000 000 FCFA)](#poste-3--marketing-b2b-Hubs-Africa-summit--relations-bailleurs-20--15-000-000-fcfa)
    - [Poste 4 : Trésorerie Tampon, Réserve d'Exploitation & Frais Juridiques (10% — 7 500 000 FCFA)](#poste-4--trésorerie-tampon-réserve-dexploitation--frais-juridiques-10--7-500-000-fcfa)
 3. [Ventilation Comptable : CAPEX (Investissements) vs OPEX (Exploitation)](#3-ventilation-comptable--capex-investissements-vs-opex-exploitation)
 4. [Calendrier de Tirage des Tranches Conditionnées par Jalons SaaS](#4-calendrier-de-tirage-des-tranches-conditionnées-par-jalons-saas)
-5. [Justification de la Valorisation Pré-Money de Hub Africa (300M FCFA)](#5-justification-de-la-valorisation-pré-money-de-hub-africa-300m-fcfa)
+5. [Justification de la Valorisation Pré-Money de Hubs Africa (300M FCFA)](#5-justification-de-la-valorisation-pré-money-de-Hubs-Africa-300m-fcfa)
 6. [Plan de Trésorerie Prévisionnel & Seuil de Rentabilité (Break-even Point)](#6-plan-de-trésorerie-prévisionnel--seuil-de-rentabilité-break-even-point)
 7. [Scénarios de Retour sur Investissement (ROI) & Sortie du Capital (Exit)](#7-scénarios-de-retour-sur-investissement-roi--sortie-du-capital-exit)
 
 ---
 
-## 1. Cadrage Général de la Levée d'Amorçage de Hub Africa
+## 1. Cadrage Général de la Levée d'Amorçage de Hubs Africa
 
-| Paramètre Financier | Valeur Retenue pour Hub Africa | Équivalent Devises |
+| Paramètre Financier | Valeur Retenue pour Hubs Africa | Équivalent Devises |
 | :--- | :--- | :--- |
 | **Montant Global Sollicité** | **75 000 000 FCFA** | **114 335 EUR** / **125 000 USD** |
 | **Période de Couverture (Runway)** | **14 à 18 mois** (Octobre 2026 - Mars 2028) | Atteinte de l'autofinancement opérationnel au T3 2027 |
@@ -39,16 +39,16 @@
 
 | Sous-Poste / Intitulé | Unité | Quantité | Coût Unitaire (FCFA) | Montant Total (FCFA) | Justification Opérationnelle |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **Business Developers Régionaux Hub Africa** | Homme/Mois | 4 commerciaux × 12 mois = 48 | 350 000 | 16 800 000 | Prospection active et closing des abonnements auprès des directions d'incubateurs à Cotonou, Abidjan, Dakar et Douala. |
+| **Business Developers Régionaux Hubs Africa** | Homme/Mois | 4 commerciaux × 12 mois = 48 | 350 000 | 16 800 000 | Prospection active et closing des abonnements auprès des directions d'incubateurs à Cotonou, Abidjan, Dakar et Douala. |
 | **Missions Terrain, Démonstrations & Roadshow SAE** | Forfait/Pays | 4 pays × 3 tournées = 12 | 500 000 | 6 000 000 | Rencontres physiques avec les fédérations nationales d'incubateurs et les délégations ministérielles. |
-| **Sessions d'Onboarding & Formation des Équipes SAE** | Ateliers | 8 sessions régionales | 450 000 | 3 600 000 | Ateliers pratiques d'appropriation de Hub Africa v2 pour les coordinateurs et gestionnaires de programmes. |
+| **Sessions d'Onboarding & Formation des Équipes SAE** | Ateliers | 8 sessions régionales | 450 000 | 3 600 000 | Ateliers pratiques d'appropriation de Hubs Africa v2 pour les coordinateurs et gestionnaires de programmes. |
 | **Campagnes Digitales B2B & Prospection Ciblée LinkedIn** | Mois | 12 mois | 300 000 | 3 600 000 | Génération de leads qualifiés de directeurs de centres d'innovation et pôles universitaires. |
 | **SOUS-TOTAL POSTE 1** | | | | **30 000 000** | **40,0% du budget total** |
 
 ---
 
-### Poste 2 : R&D Logicielle Hub Africa, UX Mobile & Sécurité Cloud (30% — 22 500 000 FCFA)
-*Objectif : Industrialiser la plateforme Hub Africa v2, développer la Progressive Web App mobile et renforcer la sécurité multi-tenant.*
+### Poste 2 : R&D Logicielle Hubs Africa, UX Mobile & Sécurité Cloud (30% — 22 500 000 FCFA)
+*Objectif : Industrialiser la plateforme Hubs Africa v2, développer la Progressive Web App mobile et renforcer la sécurité multi-tenant.*
 
 | Sous-Poste / Intitulé | Unité | Quantité | Coût Unitaire (FCFA) | Montant Total (FCFA) | Justification Opérationnelle |
 | :--- | :---: | :---: | :---: | :---: | :--- |
@@ -61,12 +61,12 @@
 
 ---
 
-### Poste 3 : Marketing B2B, Hub Africa Summit & Relations Bailleurs (20% — 15 000 000 FCFA)
-*Objectif : Positionner Hub Africa comme le standard logiciel de référence de l'accompagnement entrepreneurial en Afrique francophone.*
+### Poste 3 : Marketing B2B, Hubs Africa Summit & Relations Bailleurs (20% — 15 000 000 FCFA)
+*Objectif : Positionner Hubs Africa comme le standard logiciel de référence de l'accompagnement entrepreneurial en Afrique francophone.*
 
 | Sous-Poste / Intitulé | Unité | Quantité | Coût Unitaire (FCFA) | Montant Total (FCFA) | Justification Opérationnelle |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **Organisation du Hub Africa Summit (Événement Annuel)** | Événement | 1 édition majeure (Lomé/Abidjan) | 8 000 000 | 8 000 000 | Grand rassemblement des directeurs d'incubateurs, bailleurs de fonds et mentors d'Afrique de l'Ouest. |
+| **Organisation du Hubs Africa Summit (Événement Annuel)** | Événement | 1 édition majeure (Lomé/Abidjan) | 8 000 000 | 8 000 000 | Grand rassemblement des directeurs d'incubateurs, bailleurs de fonds et mentors d'Afrique de l'Ouest. |
 | **Production de Contenus, Guides SAE & Vidéos Démo** | Forfait | 1 pack complet | 3 500 000 | 3 500 000 | Tutoriels vidéo de prise en main, livres blancs sur le Suivi-Évaluation et études de cas de succès de cohortes. |
 | **Relations Publiques, Presse Éco & Sommets Tech** | Campagne | 4 trimestres | 875 000 | 3 500 000 | Couverture dans les médias économiques régionaux et présence aux salons de l'innovation (AfriLabs Summit, etc.). |
 | **SOUS-TOTAL POSTE 3** | | | | **15 000 000** | **20,0% du budget total** |
@@ -79,7 +79,7 @@
 | Sous-Poste / Intitulé | Unité | Quantité | Coût Unitaire (FCFA) | Montant Total (FCFA) | Justification Opérationnelle |
 | :--- | :---: | :---: | :---: | :---: | :--- |
 | **Cabinet Juridique Spécialisé (Pacte d'Associés & Statuts)** | Forfait | 1 mandat juridique | 2 500 000 | 2 500 000 | Rédaction des actes d'augmentation de capital, conventions de souscription de parts et formalités de greffe. |
-| **Commissariat aux Comptes & Audit Comptable Légal** | Exercice | 1 audit annuel | 1 500 000 | 1 500 000 | Certification des états financiers annuels de la société éditrice de Hub Africa. |
+| **Commissariat aux Comptes & Audit Comptable Légal** | Exercice | 1 audit annuel | 1 500 000 | 1 500 000 | Certification des états financiers annuels de la société éditrice de Hubs Africa. |
 | **Fonds de Roulement de Réserve (Tampon de Trésorerie)** | Forfait | Sécurité 12 mois | 3 500 000 | 3 500 000 | Réserve liquide disponible sur compte bancaire pour lisser les décalages de trésorerie. |
 | **SOUS-TOTAL POSTE 4** | | | | **7 500 000** | **10,0% du budget total** |
 
@@ -88,7 +88,7 @@
 ## 3. Ventilation Comptable : CAPEX (Investissements) vs OPEX (Exploitation)
 
 ```
-RÉPARTITION COMPTABLE DU PROGRAMME D'AMORÇAGE DE HUB AFRICA
+RÉPARTITION COMPTABLE DU PROGRAMME D'AMORÇAGE DE HUBS AFRICA
 ┌───────────────────────────────────────────────┬───────────────────────────────────────────────┐
 │  CAPEX (Dépenses d'Investissement / Actif)     │  OPEX (Charges Courantes d'Exploitation)      │
 │  TOTAL : 18 500 000 FCFA (24,7%)              │  TOTAL : 56 500 000 FCFA (75,3%)              │
@@ -96,7 +96,7 @@ RÉPARTITION COMPTABLE DU PROGRAMME D'AMORÇAGE DE HUB AFRICA
 │ • Développement de la PWA mobile et module S&E│ • Salaires des Business Developers régionaux  │
 │ • Infrastructure serveurs cloud pérenne       │ • Hébergement et licences logicielles cloud   │
 │ • Production des modules vidéos et e-learning │ • Frais de mission & roadshow terrain         │
-│ • Frais juridiques d'augmentation de capital  │ • Logistique du Hub Africa Summit             │
+│ • Frais juridiques d'augmentation de capital  │ • Logistique du Hubs Africa Summit             │
 │                                               │ • Réserve de trésorerie d'exploitation        │
 └───────────────────────────────────────────────┴───────────────────────────────────────────────┘
 ```
@@ -116,11 +116,11 @@ Pour garantir la bonne gestion des fonds, le déblocage s'effectue en **3 tranch
 
 - **Tranche 1 (35 000 000 FCFA - À la signature) :** Recrutement des 2 premiers Business Developers, renforcement des serveurs Cloud et déploiement de la PWA mobile.
 - **Tranche 2 (25 000 000 FCFA - À M+6, Jalon 1) :** Conditionnée par l'atteinte de **40 SAE abonnées** et d'un chiffre d'affaires cumulé minimum de 25 000 000 FCFA. Sert à financer l'expansion en Côte d'Ivoire et au Sénégal.
-- **Tranche 3 (15 000 000 FCFA - À M+12, Jalon 2) :** Conditionnée par l'organisation réussie du Hub Africa Summit et l'atteinte de **75 SAE abonnées**. Sert à l'ouverture du bureau Afrique Centrale (Douala).
+- **Tranche 3 (15 000 000 FCFA - À M+12, Jalon 2) :** Conditionnée par l'organisation réussie du Hubs Africa Summit et l'atteinte de **75 SAE abonnées**. Sert à l'ouverture du bureau Afrique Centrale (Douala).
 
 ---
 
-## 5. Justification de la Valorisation Pré-Money de Hub Africa (300M FCFA)
+## 5. Justification de la Valorisation Pré-Money de Hubs Africa (300M FCFA)
 
 La valorisation pré-money de **300 000 000 FCFA (~457 000 €)** repose sur 3 méthodes reconnues et documentées :
 
@@ -133,7 +133,7 @@ La valorisation pré-money de **300 000 000 FCFA (~457 000 €)** repose sur 3 m
    - *Total Berkus :* **300 000 000 FCFA**.
 
 2. **Méthode des Multiples SaaS (ARR) :**
-   - Chiffre d'affaires budgété 2026 de Hub Africa : **58 000 000 FCFA**.
+   - Chiffre d'affaires budgété 2026 de Hubs Africa : **58 000 000 FCFA**.
    - Multiple moyen appliqué aux SaaS B2B émergents à forte marge brute (> 85%) : **5,2x**.
    - *Valorisation par les multiples :* 58M FCFA × 5,2 = **301 600 000 FCFA**.
 
@@ -141,9 +141,9 @@ La valorisation pré-money de **300 000 000 FCFA (~457 000 €)** repose sur 3 m
 
 ## 6. Plan de Trésorerie Prévisionnel & Seuil de Rentabilité (Break-even Point)
 
-### Seuil de Rentabilité de Hub Africa :
+### Seuil de Rentabilité de Hubs Africa :
 - **Charges fixes mensuelles de croisière :** **7 200 000 FCFA / mois** (salaires de l'équipe commerciale et technique, serveurs, siège).
-- **Marge brute logicielle de Hub Africa :** **88%** sur les abonnements.
+- **Marge brute logicielle de Hubs Africa :** **88%** sur les abonnements.
 - **Chiffre d'affaires mensuel d'équilibre (Break-even) :** **8 200 000 FCFA / mois**.
 - **Point mort :** Atteint au **8e mois d'exploitation** (soit environ 55 SAE abonnées au plan Pro et 2 contrats de programmes bailleurs).
 
@@ -151,7 +151,7 @@ La valorisation pré-money de **300 000 000 FCFA (~457 000 €)** repose sur 3 m
 
 ## 7. Scénarios de Retour sur Investissement (ROI) & Sortie du Capital (Exit)
 
-Pour l'investisseur apportant **75 000 000 FCFA pour 20% du capital de Hub Africa**, 3 scénarios de sortie à horizon 4-5 ans (2030) sont projetés :
+Pour l'investisseur apportant **75 000 000 FCFA pour 20% du capital de Hubs Africa**, 3 scénarios de sortie à horizon 4-5 ans (2030) sont projetés :
 
 ```
 +----------------------------------------------------------------------------------------------------+

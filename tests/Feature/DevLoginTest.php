@@ -7,7 +7,7 @@ test('comptes test overview page renders successfully', function () {
 
     $response->assertOk();
     $response->assertSee('Comptes de Test');
-    $response->assertSee('admin@hubafrica.org');
+    $response->assertSee('admin@hubsafrica.org');
     $response->assertSee('fatou.diop@teranga.sn');
     $response->assertSee('marie.sarr@coach.sn');
     $response->assertSee('ousmane.fall@ecobat.sn');
@@ -15,8 +15,8 @@ test('comptes test overview page renders successfully', function () {
 
 test('auto login connects super admin and redirects to admin panel', function () {
     $admin = User::firstOrCreate(
-        ['email' => 'admin@hubafrica.org'],
-        ['name' => 'Directeur Hub Africa', 'password' => bcrypt('password')]
+        ['email' => 'admin@hubsafrica.org'],
+        ['name' => 'Directeur Hubs Africa', 'password' => bcrypt('password')]
     );
 
     $response = $this->get('/demo/login?as=admin');

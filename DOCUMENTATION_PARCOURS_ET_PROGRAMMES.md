@@ -1,4 +1,4 @@
-# 📚 Guide & Documentation des Programmes, Candidatures et Parcours Utilisateurs — Hub Africa
+# 📚 Guide & Documentation des Programmes, Candidatures et Parcours Utilisateurs — Hubs Africa
 
 Ce document détaille l'architecture fonctionnelle et technique du front public, la gestion des programmes des structures d'accompagnement (SAE), les parcours de candidature en ligne et la mécanique des invitations de coachs.
 
@@ -140,7 +140,7 @@ sequenceDiagram
 
 ## 5. Parcours Candidat N°2 : Entrepreneur AYANT DÉJÀ un Compte
 
-Ce parcours s'applique à un porteur de projet déjà inscrit sur Hub Africa (ou connecté via son portail).
+Ce parcours s'applique à un porteur de projet déjà inscrit sur Hubs Africa (ou connecté via son portail).
 
 ```mermaid
 sequenceDiagram
@@ -209,4 +209,4 @@ stateDiagram-v2
 
 ---
 
-*Documentation générée pour Hub Africa — Dernière mise à jour : 2026-09-27.*
+*Documentation générée pour Hubs Africa — Dernière mise à jour : 2026-09-27.*

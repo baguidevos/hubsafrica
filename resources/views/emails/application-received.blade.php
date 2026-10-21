@@ -1,4 +1,4 @@
-<x-emails.layouts.hubafrica :sae="$sae" badgeText="Accusé de réception">
+<x-emails.layouts.hubsafrica :sae="$sae" badgeText="Accusé de réception">
     <h2 style="margin: 0 0 16px 0; font-size: 20px; font-weight: 800; color: #0f172a;">
         Dossier de candidature bien reçu ! 📋
     </h2>
@@ -51,4 +51,4 @@
             </td>
         </tr>
     </table>
-</x-emails.layouts.hubafrica>
+</x-emails.layouts.hubsafrica>

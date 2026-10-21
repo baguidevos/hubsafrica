@@ -13,7 +13,7 @@ class OrientationController extends Controller
      */
     public function index(): View
     {
-        Head::title('Rejoindre Hub Africa — Orientation & Choix de Profil')
+        Head::title('Rejoindre Hubs Africa — Orientation & Choix de Profil')
             ->description('Sélectionnez votre profil (Entrepreneur, Mentor expert, Structure SAE) pour accéder aux programmes ou à votre espace dédié.');
 
         return view('pages.rejoindre');

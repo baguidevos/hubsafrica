@@ -1,10 +1,10 @@
-<x-emails.layouts.hubafrica :sae="$sae" :badgeText="$isWaitlist ? 'Liste d\'attente' : 'Décision du jury'">
+<x-emails.layouts.hubsafrica :sae="$sae" :badgeText="$isWaitlist ? 'Liste d\'attente' : 'Décision du jury'">
     <h2 style="margin: 0 0 16px 0; font-size: 20px; font-weight: 800; color: #0f172a;">
         Bonjour {{ $entrepreneur?->first_name ?? '' }},
     </h2>
 
     <p style="margin: 0 0 16px 0; color: #334155; font-size: 15px;">
-        Le comité de sélection de <strong>{{ $sae?->name ?? 'Hub Africa' }}</strong> a attentivement étudié votre candidature pour le projet <strong>"{{ $project?->name }}"</strong> dans le cadre du programme <strong>{{ $program?->name }}</strong>.
+        Le comité de sélection de <strong>{{ $sae?->name ?? 'Hubs Africa' }}</strong> a attentivement étudié votre candidature pour le projet <strong>"{{ $project?->name }}"</strong> dans le cadre du programme <strong>{{ $program?->name }}</strong>.
     </p>
 
     @if($isWaitlist)
@@ -50,4 +50,4 @@
             </td>
         </tr>
     </table>
-</x-emails.layouts.hubafrica>
+</x-emails.layouts.hubsafrica>

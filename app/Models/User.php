@@ -79,9 +79,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasTenant
 
     public function isSuperAdmin(): bool
     {
-        $initialAdmin = env('INITIAL_ADMIN_EMAIL', 'admin@hubafrica.org');
+        $initialAdmin = env('INITIAL_ADMIN_EMAIL', 'admin@hubsafrica.org');
 
-        if ($this->email === 'admin@hubafrica.org' || ($initialAdmin && $this->email === $initialAdmin)) {
+        if ($this->email === 'admin@hubsafrica.org' || ($initialAdmin && $this->email === $initialAdmin)) {
             return true;
         }
 
@@ -112,7 +112,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasTenant
             return true;
         }
 
-        // 2. Panel Admin : Réservé aux Super Admins Hub Africa
+        // 2. Panel Admin : Réservé aux Super Admins Hubs Africa
         if ($panelId === 'admin') {
             return $this->isSuperAdmin();
         }

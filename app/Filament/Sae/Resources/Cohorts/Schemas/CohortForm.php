@@ -56,14 +56,14 @@ class CohortForm
                     ->schema([
                         Select::make('application_form_id')
                             ->label('Template du formulaire de candidature')
-                            ->helperText('Obligatoire : Sélectionnez le formulaire que rempliront les candidats. Vous pouvez choisir le modèle officiel Hub Africa ou un template personnalisé de votre structure.')
+                            ->helperText('Obligatoire : Sélectionnez le formulaire que rempliront les candidats. Vous pouvez choisir le modèle officiel Hubs Africa ou un template personnalisé de votre structure.')
                             ->options(function () {
                                 $saeId = Filament::getTenant()?->id;
                                 $service = app(ApplicationFormTemplateService::class);
                                 $templates = $service->getAvailableTemplatesForSae($saeId);
 
                                 return $templates->mapWithKeys(function (Form $form) {
-                                    $badge = $form->is_standard ? '⭐️ Standard Hub Africa' : '🏛️ Template de votre structure';
+                                    $badge = $form->is_standard ? '⭐️ Standard Hubs Africa' : '🏛️ Template de votre structure';
 
                                     return [$form->id => "{$form->name} ({$badge})"];
                                 })->toArray();

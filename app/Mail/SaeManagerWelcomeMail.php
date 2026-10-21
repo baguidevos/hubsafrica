@@ -22,10 +22,10 @@ class SaeManagerWelcomeMail extends Mailable implements ShouldQueue
 
     public function envelope(): Envelope
     {
-        $saeName = $this->sae?->name ?? 'Hub Africa';
+        $saeName = $this->sae?->name ?? 'Hubs Africa';
 
         return new Envelope(
-            subject: "Votre accès Responsable SAE Hub Africa ({$saeName})",
+            subject: "Votre accès Responsable SAE Hubs Africa ({$saeName})",
         );
     }
 

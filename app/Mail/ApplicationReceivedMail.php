@@ -20,7 +20,7 @@ class ApplicationReceivedMail extends Mailable implements ShouldQueue
 
     public function envelope(): Envelope
     {
-        $programName = $this->application->program?->name ?? 'Programme Hub Africa';
+        $programName = $this->application->program?->name ?? 'Programme Hubs Africa';
 
         return new Envelope(
             subject: "Candidature enregistrée avec succès — {$programName}",

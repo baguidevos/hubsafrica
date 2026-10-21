@@ -42,7 +42,7 @@ class CohortsTable
                     ->label('Formulaire')
                     ->badge()
                     ->color(fn ($record) => $record?->applicationForm?->is_standard ? 'warning' : 'primary')
-                    ->placeholder('Modèle standard Hub Africa')
+                    ->placeholder('Modèle standard Hubs Africa')
                     ->limit(22)
                     ->tooltip(fn ($record) => $record?->applicationForm?->name)
                     ->sortable(),

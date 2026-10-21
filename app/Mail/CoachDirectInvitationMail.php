@@ -20,7 +20,7 @@ class CoachDirectInvitationMail extends Mailable implements ShouldQueue
 
     public function envelope(): Envelope
     {
-        $saeName = $this->invitation->sae?->name ?? 'Hub Africa';
+        $saeName = $this->invitation->sae?->name ?? 'Hubs Africa';
 
         return new Envelope(
             subject: "Invitation à rejoindre l'équipe d'accompagnement de {$saeName}",

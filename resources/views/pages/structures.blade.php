@@ -8,7 +8,7 @@
                 Structures d'<span class="text-[#F8B81D]">Accompagnement (SAE)</span>
             </h1>
             <p class="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-2xl mx-auto font-normal">
-                Découvrez le réseau officiel des incubateurs, technopoles et accélérateurs membres d'Hub Africa à travers le continent.
+                Découvrez le réseau officiel des incubateurs, technopoles et accélérateurs membres d'Hubs Africa à travers le continent.
             </p>
         </div>
     </section>
@@ -75,7 +75,7 @@
                         </div>
 
                         <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
-                            {{ $sae->description ?: 'Structure d\'incubation partenaire déployant les programmes d\'accompagnement et de suivi de l\'innovation Hub Africa.' }}
+                            {{ $sae->description ?: 'Structure d\'incubation partenaire déployant les programmes d\'accompagnement et de suivi de l\'innovation Hubs Africa.' }}
                         </p>
 
                         <div class="grid grid-cols-3 gap-2 pt-3 border-t border-slate-100 text-center">

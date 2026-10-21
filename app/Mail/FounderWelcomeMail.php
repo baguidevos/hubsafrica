@@ -23,7 +23,7 @@ class FounderWelcomeMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Bienvenue sur Hub Africa — Votre Espace Entrepreneur',
+            subject: 'Bienvenue sur Hubs Africa — Votre Espace Entrepreneur',
         );
     }
 

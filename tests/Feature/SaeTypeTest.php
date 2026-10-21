@@ -50,8 +50,8 @@ test('le webmaster super admin peut administrer les types de SAE via le panel Ad
     setPermissionsTeamId(0);
     $superAdminRole = Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => 'web']);
     $admin = User::firstOrCreate(
-        ['email' => 'admin@hubafrica.org'],
-        ['name' => 'Directeur Hub Africa', 'password' => bcrypt('password')]
+        ['email' => 'admin@hubsafrica.org'],
+        ['name' => 'Directeur Hubs Africa', 'password' => bcrypt('password')]
     );
     $admin->assignRole($superAdminRole);
 
@@ -100,8 +100,8 @@ test('l administrateur peut modifier l ensemble des informations d une SAE', fun
     setPermissionsTeamId(0);
     $superAdminRole = Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => 'web']);
     $admin = User::firstOrCreate(
-        ['email' => 'admin@hubafrica.org'],
-        ['name' => 'Directeur Hub Africa', 'password' => bcrypt('password')]
+        ['email' => 'admin@hubsafrica.org'],
+        ['name' => 'Directeur Hubs Africa', 'password' => bcrypt('password')]
     );
     $admin->assignRole($superAdminRole);
 

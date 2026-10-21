@@ -18,8 +18,8 @@ class DevLoginController extends Controller
         return [
             'admin' => [
                 'id' => 'admin',
-                'name' => 'Directeur Hub Africa',
-                'email' => 'admin@hubafrica.org',
+                'name' => 'Directeur Hubs Africa',
+                'email' => 'admin@hubsafrica.org',
                 'password' => 'password',
                 'role' => 'Super Administrateur',
                 'panel_name' => 'Admin Central',

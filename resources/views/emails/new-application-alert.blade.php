@@ -1,4 +1,4 @@
-<x-emails.layouts.hubafrica :sae="$sae" badgeText="Nouvelle Candidature">
+<x-emails.layouts.hubsafrica :sae="$sae" badgeText="Nouvelle Candidature">
     <h2 style="margin: 0 0 16px 0; font-size: 20px; font-weight: 800; color: #0f172a;">
         Nouveau dossier de candidature soumis 📥
     </h2>
@@ -44,4 +44,4 @@
             </td>
         </tr>
     </table>
-</x-emails.layouts.hubafrica>
+</x-emails.layouts.hubsafrica>

@@ -1,28 +1,28 @@
 # 📂 DATA ROOM & OUTILS D'ÉVALUATION DE PROJET
-## PROJET : HUB AFRICA (HUB AFRICA V2)
+## PROJET : HUBS AFRICA (HUBS AFRICA V2)
 *Formulaire Officiel d'Auto-Évaluation Entrepreneuriale, Checklist Exhaustive de la Virtual Data Room (VDR) & Guide du Pacte d'Associés*
 
 ---
 
 ## 📋 Table des Matières
-1. [Formulaire Officiel d'Évaluation de Projet (Auto-Évaluation Hub Africa)](#1-formulaire-officiel-dévaluation-de-projet-auto-évaluation-hub-africa)
+1. [Formulaire Officiel d'Évaluation de Projet (Auto-Évaluation Hubs Africa)](#1-formulaire-officiel-dévaluation-de-projet-auto-évaluation-Hubs-Africa)
    - [Grille de Notation Détaillée & Feedback Justifié de l'Équipe](#grille-de-notation-détaillée--feedback-justifié-de-léquipe)
-   - [Bilan Global & Calcul du Score Synthétique de Hub Africa](#bilan-global--calcul-du-score-synthétique-de-hub-africa)
-2. [Checklist Complète de Présence des Documents de la Data Room de Hub Africa](#2-checklist-complète-de-présence-des-documents-de-la-data-room-de-hub-africa)
+   - [Bilan Global & Calcul du Score Synthétique de Hubs Africa](#bilan-global--calcul-du-score-synthétique-de-Hubs-Africa)
+2. [Checklist Complète de Présence des Documents de la Data Room de Hubs Africa](#2-checklist-complète-de-présence-des-documents-de-la-data-room-de-Hubs-Africa)
    - [Dossier 1 : Documents Juridiques & Corporate de la Société](#dossier-1--documents-juridiques--corporate-de-la-société)
    - [Dossier 2 : Documents Comptables, Financiers & Fiscaux](#dossier-2--documents-comptables-financiers--fiscaux)
    - [Dossier 3 : Documents Commerciaux, Marché & Métriques SaaS](#dossier-3--documents-commerciaux-marché--métriques-saas)
-   - [Dossier 4 : Documents Techniques, Architecture Hub Africa v2 & Code](#dossier-4--documents-techniques-architecture-hub-africa-v2--code)
+   - [Dossier 4 : Documents Techniques, Architecture Hubs Africa v2 & Code](#dossier-4--documents-techniques-architecture-Hubs-Africa-v2--code)
    - [Dossier 5 : Documents Ressources Humaines, Équipe & Organisation](#dossier-5--documents-ressources-humaines-équipe--organisation)
    - [Dossier 6 : Documents RSE, Impact Socio-Économique & Bailleurs](#dossier-6--documents-rse-impact-socio-économique--bailleurs)
 3. [Protocole de Déploiement de la Virtual Data Room Sécurisée](#3-protocole-de-déploiement-de-la-virtual-data-room-sécurisée)
-4. [Guide Pratique & Term Sheet Type du Pacte d'Associés de Hub Africa](#4-guide-pratique--term-sheet-type-du-pacte-dassociés-de-hub-africa)
+4. [Guide Pratique & Term Sheet Type du Pacte d'Associés de Hubs Africa](#4-guide-pratique--term-sheet-type-du-pacte-dassociés-de-Hubs-Africa)
 
 ---
 
-## 1. Formulaire Officiel d'Évaluation de Projet (Auto-Évaluation Hub Africa)
+## 1. Formulaire Officiel d'Évaluation de Projet (Auto-Évaluation Hubs Africa)
 
-*Ce formulaire applique la méthodologie officielle d'évaluation pré-investissement. Il est renseigné en toute transparence par l'équipe fondatrice de Hub Africa avec attribution d'une note sur 20 par dimension, assortie des justifications et preuves documentées associées.*
+*Ce formulaire applique la méthodologie officielle d'évaluation pré-investissement. Il est renseigné en toute transparence par l'équipe fondatrice de Hubs Africa avec attribution d'une note sur 20 par dimension, assortie des justifications et preuves documentées associées.*
 
 ### Grille de Notation Détaillée & Feedback Justifié de l'Équipe
 
@@ -35,7 +35,7 @@
 #### Dimension B : Maturité du Produit, Technologie & Propriété Intellectuelle (Pondération : 20%)
 - **Note attribuée :** **18,5 / 20**
 - **Feedback & Justification des Fondateurs :**
-  > *"Hub Africa v2 n'est pas une maquette : c'est une plateforme web en production, moderne et testée. Elle implémente une isolation stricte multi-tenant (`TenantScope`), trois portails opérationnels (`/sae/{tenant}`, `/mentor/{tenant}`, `/portal/{tenant}`), un centre de formulaires dynamiques d'évaluation et de Suivi-Évaluation (S&E), et passe avec succès 100% de la suite de tests automatisés Pest. Le code source est entièrement propriétaire."*
+  > *"Hubs Africa v2 n'est pas une maquette : c'est une plateforme web en production, moderne et testée. Elle implémente une isolation stricte multi-tenant (`TenantScope`), trois portails opérationnels (`/sae/{tenant}`, `/mentor/{tenant}`, `/portal/{tenant}`), un centre de formulaires dynamiques d'évaluation et de Suivi-Évaluation (S&E), et passe avec succès 100% de la suite de tests automatisés Pest. Le code source est entièrement propriétaire."*
 - **Preuves tangibles associées :** Codebase auditable sur GitHub, rapport de couverture des tests Pest (16 tests, 80 assertions réussies), spécifications techniques et architecture multi-tenant documentée.
 
 #### Dimension C : Pertinence Marché, Adéquation Problème/Solution & Traction (Pondération : 20%)
@@ -59,35 +59,35 @@
 #### Dimension F : Impact Socio-Économique, Mixité de Genre & ODD (Pondération : 10%)
 - **Note attribuée :** **19,0 / 20**
 - **Feedback & Justification des Fondateurs :**
-  > *"Hub Africa agit comme un multiplicateur d'impact : en équipant 180 SAE, nous contribuons à la pérennisation de 10 000 emplois durables (ODD 8). La plateforme intègre nativement le suivi d'indicateurs de genre avec un engagement contractuel de 45% de bénéficiaires féminines (ODD 5) et dote le continent d'une infrastructure tech souveraine (ODD 9)."*
+  > *"Hubs Africa agit comme un multiplicateur d'impact : en équipant 180 SAE, nous contribuons à la pérennisation de 10 000 emplois durables (ODD 8). La plateforme intègre nativement le suivi d'indicateurs de genre avec un engagement contractuel de 45% de bénéficiaires féminines (ODD 5) et dote le continent d'une infrastructure tech souveraine (ODD 9)."*
 - **Preuves tangibles associées :** Rapports de Suivi & Évaluation (S&E), ventilation des métriques de genre sur les cohortes pilotes, lettres d'appui institutionnelles.
 
 ---
 
-### Bilan Global & Calcul du Score Synthétique de Hub Africa
+### Bilan Global & Calcul du Score Synthétique de Hubs Africa
 
 ```
 +----------------------------------------------------------------------------------------------------+
 |  DIMENSION ANALYSÉE                      | PONDÉRATION | NOTE BRUTE (/20) | NOTE PONDÉRÉE (/100)   |
 +------------------------------------------+-------------+------------------+------------------------+
 |  A. Profil Équipe, Leadership & Posture  |     20%     |      19,00       |         19,00          |
-|  B. Produit Hub Africa v2, Code & Tech   |     20%     |      18,50       |         18,50          |
+|  B. Produit Hubs Africa v2, Code & Tech   |     20%     |      18,50       |         18,50          |
 |  C. Marché, Traction SAE & Validation    |     20%     |      17,50       |         17,50          |
 |  D. Modèle Économique SaaS & Finance     |     20%     |      18,00       |         18,00          |
 |  E. Juridique, Fiscalité & Gouvernance   |     10%     |      17,00       |          8,50          |
 |  F. Impact ODD, Inclusion & Genre        |     10%     |      19,00       |          9,50          |
 +------------------------------------------+-------------+------------------+------------------------+
-|  SCORE TOTAL SYNTHÉTIQUE DE HUB AFRICA   |    100%     |      18,10 / 20  |      90,50 / 100       |
+|  SCORE TOTAL SYNTHÉTIQUE DE HUBS AFRICA   |    100%     |      18,10 / 20  |      90,50 / 100       |
 +----------------------------------------------------------------------------------------------------+
 ```
 
 ### Interprétation Officielle :
 - **Seuil d'Admission Directe à l'Investissement : $\ge 75/100$**
-- **Résultat de Hub Africa :** **90,50 / 100** — Statut **"Investment-Ready d'Excellence"** validé. Le dossier présente toutes les garanties méthodologiques, technologiques et financières requises pour le tour de table d'amorçage.
+- **Résultat de Hubs Africa :** **90,50 / 100** — Statut **"Investment-Ready d'Excellence"** validé. Le dossier présente toutes les garanties méthodologiques, technologiques et financières requises pour le tour de table d'amorçage.
 
 ---
 
-## 2. Checklist Complète de Présence des Documents de la Data Room de Hub Africa
+## 2. Checklist Complète de Présence des Documents de la Data Room de Hubs Africa
 
 ### Dossier 1 : Documents Juridiques & Corporate de la Société
 
@@ -122,7 +122,7 @@
 
 | Réf. | Intitulé du Document | Statut | Emplacement VDR | Responsable |
 | :---: | :--- | :---: | :--- | :--- |
-| **DOC-3.1** | Résumé Exécutif officiel de Hub Africa | ✅ **Présent** | `VDR/03_Commercial/RESUME_EXECUTIF_HUB_AFRICA.md` | Direction Générale |
+| **DOC-3.1** | Résumé Exécutif officiel de Hubs Africa | ✅ **Présent** | `VDR/03_Commercial/RESUME_EXECUTIF_HUB_AFRICA.md` | Direction Générale |
 | **DOC-3.2** | Pitch Deck officiel de présentation (13 diapositives) | ✅ **Présent** | `VDR/03_Commercial/PITCH_DECK_HUB_AFRICA.pdf` | Dir. Commerciale |
 | **DOC-3.3** | Modèle économique complet en 17 étapes & Business Model Canvas | ✅ **Présent** | `VDR/03_Commercial/BUSINESS_MODEL_17_ETAPES.md` | Dir. Stratégie |
 | **DOC-3.4** | Contrats types d'abonnement SaaS SAE (Starter, Pro, Enterprise) | ✅ **Présent** | `VDR/03_Commercial/Contrats_Types_SaaS_SAE.pdf` | Direction Juridique |
@@ -131,13 +131,13 @@
 
 ---
 
-### Dossier 4 : Documents Techniques, Architecture Hub Africa v2 & Code
+### Dossier 4 : Documents Techniques, Architecture Hubs Africa v2 & Code
 
 | Réf. | Intitulé du Document | Statut | Emplacement VDR | Responsable |
 | :---: | :--- | :---: | :--- | :--- |
 | **DOC-4.1** | Schéma d'architecture technique multi-tenant et spécifications Laravel 13 | ✅ **Présent** | `VDR/04_Tech/Architecture_Technique_HubAfrica_v2.pdf` | Lead Developer |
 | **DOC-4.2** | Rapport d'exécution de la suite de tests automatisés Pest (100% de succès) | ✅ **Présent** | `VDR/04_Tech/Rapport_Tests_Automatises_Pest.pdf` | DevOps Engineer |
-| **DOC-4.3** | Certificat d'enregistrement de marque et logo Hub Africa à l'OAPI | ✅ **Présent** | `VDR/04_Tech/Depot_Marque_OAPI_HubAfrica.pdf` | Conseil Juridique |
+| **DOC-4.3** | Certificat d'enregistrement de marque et logo Hubs Africa à l'OAPI | ✅ **Présent** | `VDR/04_Tech/Depot_Marque_OAPI_HubAfrica.pdf` | Conseil Juridique |
 | **DOC-4.4** | Preuves de propriété et gestion des noms de domaine officiels | ✅ **Présent** | `VDR/04_Tech/Titres_Propriete_Domaines.pdf` | DevOps Engineer |
 | **DOC-4.5** | Politique de sécurité des données, sauvegardes chiffrées et conformité APDP | ✅ **Présent** | `VDR/04_Tech/Politique_Securite_Donnees_RGPD_APDP.pdf`| Lead Developer |
 
@@ -166,7 +166,7 @@
 
 ## 3. Protocole de Déploiement de la Virtual Data Room Sécurisée
 
-La Data Room de Hub Africa est administrée selon les meilleures pratiques internationales d'audit et de confidentialité :
+La Data Room de Hubs Africa est administrée selon les meilleures pratiques internationales d'audit et de confidentialité :
 
 ```
 PARCOURS D'ACCÈS SÉCURISÉ POUR L'INVESTISSEUR
@@ -180,15 +180,15 @@ PARCOURS D'ACCÈS SÉCURISÉ POUR L'INVESTISSEUR
 
 ---
 
-## 4. Guide Pratique & Term Sheet Type du Pacte d'Associés de Hub Africa
+## 4. Guide Pratique & Term Sheet Type du Pacte d'Associés de Hubs Africa
 
 Pour préserver la souveraineté managériale des fondateurs tout en octroyant aux investisseurs d'amorçage une protection patrimoniale complète, les clauses suivantes sont intégrées au projet de pacte :
 
 - **Clause de Préemption :** Droit de priorité pour les associés existants lors de toute cession envisagée de parts sociales.
-- **Clause de Sortie Conjointe Proportionnelle (Tag-Along) :** Si les fondateurs cèdent le contrôle de Hub Africa, l'investisseur minoritaire a le droit d'inclure ses parts dans la transaction aux mêmes conditions financières.
+- **Clause de Sortie Conjointe Proportionnelle (Tag-Along) :** Si les fondateurs cèdent le contrôle de Hubs Africa, l'investisseur minoritaire a le droit d'inclure ses parts dans la transaction aux mêmes conditions financières.
 - **Clause d'Obligation de Sortie Conjointe (Drag-Along) :** Si une offre d'acquisition intégrale intervient à une valorisation très avantageuse (seuil plancher de 2,5 Milliards FCFA) et est approuvée par 75% des parts, tous les associés s'engagent à céder leurs parts.
 - **Clause de Liquidité Préférentielle (1x Non-Participating) :** En cas d'événement de liquidité ou de cession, l'investisseur d'amorçage récupère en premier son apport initial (1x) avant partage du reliquat avec les fondateurs.
 - **Clause d'Engagement et de Vesting (Good Leaver / Bad Leaver) :** Les fondateurs s'engagent sur une présence active de 36 mois minimum (vesting linéaire sur 3 ans) afin de garantir la continuité opérationnelle du projet.
 - **Gouvernance & Comité Stratégique :**
   - Réunion trimestrielle du Comité Stratégique avec 1 représentant des investisseurs d'amorçage.
-  - Transmission d'un reporting opérationnel et financier trimestriel issu directement du back-office de Hub Africa.
+  - Transmission d'un reporting opérationnel et financier trimestriel issu directement du back-office de Hubs Africa.

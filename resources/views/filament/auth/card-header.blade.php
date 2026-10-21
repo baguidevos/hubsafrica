@@ -1,7 +1,7 @@
 @php
     $currentPath = request()->path();
     $currentPanel = 'general';
-    $panelTitle = 'Hub Africa';
+    $panelTitle = 'Hubs Africa';
     $panelBadge = 'Espace Sécurisé';
     $badgeBg = 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700';
     $accentColor = '#F8B81D';

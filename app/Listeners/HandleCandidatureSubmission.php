@@ -82,7 +82,7 @@ class HandleCandidatureSubmission
                 if (! $user) {
                     $firstName = $data['first_name'] ?? '';
                     $lastName = $data['last_name'] ?? '';
-                    $fullName = trim("{$firstName} {$lastName}") ?: 'Candidat Hub Africa';
+                    $fullName = trim("{$firstName} {$lastName}") ?: 'Candidat Hubs Africa';
 
                     $user = User::create([
                         'name' => $fullName,

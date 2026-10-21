@@ -39,7 +39,7 @@ class CohortPublicController extends Controller
             ]);
         }
 
-        Head::title("Rejoindre la promotion {$cohort->name} — {$cohort->program->name} | Hub Africa")
+        Head::title("Rejoindre la promotion {$cohort->name} — {$cohort->program->name} | Hubs Africa")
             ->description("Candidatez directement à la promotion {$cohort->name} du programme {$cohort->program->name} porté par {$cohort->sae?->name}.");
 
         return view('pages.cohort-join', [

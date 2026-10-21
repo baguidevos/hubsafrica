@@ -36,7 +36,7 @@
                 <div>
                     <div class="flex items-center gap-2 mb-2">
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-[#2F3284] border border-amber-200">
-                            {{ $applicationForm->is_standard ? '⭐️ Formulaire Officiel Hub Africa' : '🏛️ Formulaire Personnalisé SAE' }}
+                            {{ $applicationForm->is_standard ? '⭐️ Formulaire Officiel Hubs Africa' : '🏛️ Formulaire Personnalisé SAE' }}
                         </span>
                         @if($cohort)
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">

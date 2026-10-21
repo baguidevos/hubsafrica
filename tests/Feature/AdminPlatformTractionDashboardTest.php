@@ -11,7 +11,7 @@ use Livewire\Livewire;
 test('admin dashboard renders platform traction metrics widgets correctly', function () {
     $this->seed();
 
-    $admin = User::where('email', 'admin@hubafrica.org')->first();
+    $admin = User::where('email', 'admin@hubsafrica.org')->first();
     expect($admin)->not->toBeNull();
 
     // 1. Dashboard HTTP GET

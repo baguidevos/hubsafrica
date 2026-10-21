@@ -15,7 +15,7 @@
                             Structures d'Accompagnement (SAE) — Réseau Panafricain
                         </span>
                         <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                            Incubateurs, accélérateurs et pôles d'innovation déployés sur l'infrastructure Hub Africa
+                            Incubateurs, accélérateurs et pôles d'innovation déployés sur l'infrastructure Hubs Africa
                         </p>
                     </div>
                 </div>

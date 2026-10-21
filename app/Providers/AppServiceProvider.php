@@ -96,14 +96,14 @@ class AppServiceProvider extends ServiceProvider
     protected function configureHeadDefaults(): void
     {
         Head::defaults(function ($head) {
-            $head->title(config('hubafrica.seo.title', 'Hub Africa — Plateforme Panafricaine d\'Accompagnement'))
-                ->description(config('hubafrica.seo.description', 'Plateforme institutionnelle d\'accompagnement et d\'incubation en Afrique.'))
-                ->applicationName(config('hubafrica.name', 'Hub Africa'))
-                ->themeColor(config('hubafrica.theme.primary', '#064e3b'))
+            $head->title(config('hubsafrica.seo.title', 'Hubs Africa — Plateforme Panafricaine d\'Accompagnement'))
+                ->description(config('hubsafrica.seo.description', 'Plateforme institutionnelle d\'accompagnement et d\'incubation en Afrique.'))
+                ->applicationName(config('hubsafrica.name', 'Hubs Africa'))
+                ->themeColor(config('hubsafrica.theme.primary', '#064e3b'))
                 ->canonical()
                 ->og(
                     type: 'website',
-                    siteName: config('hubafrica.name', 'Hub Africa'),
+                    siteName: config('hubsafrica.name', 'Hubs Africa'),
                     locale: 'fr_FR'
                 )
                 ->twitter(card: 'summary_large_image');

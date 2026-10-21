@@ -1,4 +1,4 @@
-<x-emails.layouts.hubafrica :sae="$sae" badgeText="Candidature Coach">
+<x-emails.layouts.hubsafrica :sae="$sae" badgeText="Candidature Coach">
     <h2 style="margin: 0 0 16px 0; font-size: 20px; font-weight: 800; color: #0f172a;">
         Nouveau profil Coach / Mentor candidat 🎯
     </h2>
@@ -64,4 +64,4 @@
             </td>
         </tr>
     </table>
-</x-emails.layouts.hubafrica>
+</x-emails.layouts.hubsafrica>

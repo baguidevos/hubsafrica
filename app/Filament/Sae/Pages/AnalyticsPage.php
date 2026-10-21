@@ -37,7 +37,7 @@ class AnalyticsPage extends Page
             return $service->getAnalyticsData($tenant);
         }
 
-        return $service->getAnalyticsData(new Sae(['name' => 'Hub Africa SAE', 'slug' => 'sae']));
+        return $service->getAnalyticsData(new Sae(['name' => 'Hubs Africa SAE', 'slug' => 'sae']));
     }
 
     public function getPrintUrl(): string
@@ -69,7 +69,7 @@ class AnalyticsPage extends Page
 
     public function exportCsv(): StreamedResponse
     {
-        $tenant = $this->getActiveTenant() ?? new Sae(['name' => 'Hub Africa', 'slug' => 'hubafrica']);
+        $tenant = $this->getActiveTenant() ?? new Sae(['name' => 'Hubs Africa', 'slug' => 'hubsafrica']);
         $service = app(ReportExportService::class);
         $data = $this->getAnalyticsData();
 

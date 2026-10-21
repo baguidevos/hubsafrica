@@ -1,4 +1,4 @@
-# 📑 PITCH DECK OFFICIEL — HUB AFRICA (HUB AFRICA V2)
+# 📑 PITCH DECK OFFICIEL — HUBS AFRICA (HUBS AFRICA V2)
 *La Plateforme SaaS Panafricaine de Pilotage de l'Accompagnement, de Suivi-Évaluation (S&E) et de Structuration des Startups*
 *Guide de Présentation, Script Orateur (2 min chrono), Guide Graphique & Spécifications des Visuels*
 
@@ -8,9 +8,9 @@
 1. **Règles d'Or & Charte de Présentation**
 2. **Répertoire des Visuels & Spécifications Graphiques**
 3. **Le Pitch Deck Diapositive par Diapositive (Contenu, Visuel & Script Orateur)**
-4. **Tableaux Financiers Détaillés de Hub Africa (N-1 à N+3)**
+4. **Tableaux Financiers Détaillés de Hubs Africa (N-1 à N+3)**
 5. **Diapositives d'Annexe (Questions / Réponses des Investisseurs)**
-6. **Coordonnées Officielles Hub Africa**
+6. **Coordonnées Officielles Hubs Africa**
 
 ---
 
@@ -18,8 +18,8 @@
 
 ### Contraintes de Forme
 - **Format du deck :** 16:9 panoramique haute définition (1920 × 1080 px).
-- **Règle visuelle :** 70% de visuels (captures d'écrans des 3 portails de Hub Africa, métriques en gros caractères, schémas de parcours) et 30% de texte concis.
-- **Palette chromatique officielle de Hub Africa :**
+- **Règle visuelle :** 70% de visuels (captures d'écrans des 3 portails de Hubs Africa, métriques en gros caractères, schémas de parcours) et 30% de texte concis.
+- **Palette chromatique officielle de Hubs Africa :**
   - **Bleu Nuit Institutionnel (`#2F3284`)** — Confiance, gouvernance et rigueur SaaS.
   - **Or / Ambre Panafricain (`#F8B81D`)** — Énergie, jeunesse et dynamisme entrepreneurial.
   - **Vert Émeraude (`#10B981`)** — Indicateurs validés, rentabilité et impact positif.
@@ -34,10 +34,10 @@ Pour organiser vos slides, placez les illustrations dans un dossier `images_pitc
 
 | N° Diapo | Nom de fichier obligatoire | Description détaillée du visuel | Format recommandé |
 | :---: | :--- | :--- | :---: |
-| **01** | `slide01_hubafrica_hero_mockup.png` | Mockup 3D montrant l'écran de Hub Africa v2 sur ordinateur portable (portail SAE) et smartphone (portail entrepreneur). | PNG HD (1600 × 900 px) |
+| **01** | `slide01_hubafrica_hero_mockup.png` | Mockup 3D montrant l'écran de Hubs Africa v2 sur ordinateur portable (portail SAE) et smartphone (portail entrepreneur). | PNG HD (1600 × 900 px) |
 | **02** | `slide02_infographie_chaos_sae.png` | Schéma illustrant le chaos actuel des incubateurs : fichiers Excel dispersés, perte d'emails, manque d'indicateurs de Suivi-Évaluation (S&E). | PNG (1200 × 800 px) |
 | **03** | `slide03_architecture_3_portails.png` | Schéma triptyque des 3 portails connectés : Portail SAE (`/sae`), Portail Mentor (`/mentor`), Portail Entrepreneur (`/portal`). | PNG (1400 × 700 px) |
-| **04** | `slide04_matrice_comparative_saas.png` | Graphique matriciel montrant le positionnement de Hub Africa vs outils génériques (Trello, Airtable) et ERP lourds. | PNG (1000 × 800 px) |
+| **04** | `slide04_matrice_comparative_saas.png` | Graphique matriciel montrant le positionnement de Hubs Africa vs outils génériques (Trello, Airtable) et ERP lourds. | PNG (1000 × 800 px) |
 | **05** | `slide05_marche_sae_tam_sam_som.png` | Diagramme d'entonnoir du marché de l'accompagnement en Afrique subsaharienne (> 750 SAE, 1 500 universités et programmes bailleurs). | PNG (1100 × 800 px) |
 | **06** | `slide06_modele_revenus_saas.png` | Graphique circulaire des revenus : 55% Abonnements SaaS SAE, 30% Programmes Bailleurs, 15% Add-ons & Marque blanche. | PNG (900 × 900 px) |
 | **07** | `slide07_equipe_hubafrica.png` | Photos professionnelles de l'équipe fondatrice (Ingénierie logicielle Laravel/Cloud, Direction de programmes d'incubation). | PNG (1400 × 700 px) |
@@ -59,25 +59,25 @@ Pour organiser vos slides, placez les illustrations dans un dossier `images_pitc
 ```
 +---------------------------------------------------------------------------------------------------+
 |                                                                                                   |
-|                                            HUB AFRICA                                             |
-|                                        (HUB AFRICA V2)                                            |
+|                                            HUBS AFRICA                                             |
+|                                        (HUBS AFRICA V2)                                            |
 |                                                                                                   |
 |                  La Plateforme SaaS Panafricaine de Pilotage de l'Accompagnement,                 |
 |                     de Suivi-Évaluation (S&E) et de Structuration des Startups                    |
 |                                                                                                   |
 |                             [IMAGE: slide01_hubafrica_hero_mockup.png]                            |
 |                                                                                                   |
-|    🌐 www.hubafrica.org   📧 contact@hubafrica.org   📱 +228 70 76 76 94    📅 Octobre 2026       |
+|    🌐 www.hubsafrica.org   📧 contact@hubsafrica.org   📱 +228 70 76 76 94    📅 Octobre 2026       |
 +---------------------------------------------------------------------------------------------------+
 ```
 
 #### Contenu Synthétique
-- **Projet :** HUB AFRICA v2.
+- **Projet :** HUBS AFRICA v2.
 - **Nature :** Logiciel SaaS B2B Multi-Tenant pour Structures d'Accompagnement à l'Entrepreneuriat (SAE).
 - **Zone :** Espace UEMOA, CEMAC et Afrique subsaharienne.
 
 #### 🎙️ Script Orateur (Chrono : 0:00 - 0:10 | 10 sec)
-> *"Bonjour. Hub Africa est le système d'exploitation SaaS tout-en-un conçu pour les incubateurs et accélérateurs africains. Nous permettons aux structures d'accompagnement de digitaliser leurs cohortes, de piloter leur mentorat et de prouver leur impact en temps réel auprès des bailleurs de fonds."*
+> *"Bonjour. Hubs Africa est le système d'exploitation SaaS tout-en-un conçu pour les incubateurs et accélérateurs africains. Nous permettons aux structures d'accompagnement de digitaliser leurs cohortes, de piloter leur mentorat et de prouver leur impact en temps réel auprès des bailleurs de fonds."*
 
 ---
 
@@ -107,11 +107,11 @@ Pour organiser vos slides, placez les illustrations dans un dossier `images_pitc
 
 ---
 
-### DIAPOSITIVE 03 — LA SOLUTION : HUB AFRICA V2
+### DIAPOSITIVE 03 — LA SOLUTION : HUBS AFRICA V2
 
 ```
 +---------------------------------------------------------------------------------------------------+
-|  NOTRE SOLUTION : HUB AFRICA V2                                                                   |
+|  NOTRE SOLUTION : HUBS AFRICA V2                                                                   |
 |  Une plateforme SaaS unifiée reliant la Direction de SAE, les Mentors et les Entrepreneurs        |
 |                                                                                                   |
 |  [IMAGE: slide03_architecture_3_portails.png]                                                     |
@@ -129,7 +129,7 @@ Pour organiser vos slides, placez les illustrations dans un dossier `images_pitc
 - **Gestion des jurys :** Grilles de notation pondérées pour sélectionner les meilleurs projets.
 
 #### 🎙️ Script Orateur (Chrono : 0:20 - 0:32 | 12 sec)
-> *"Hub Africa résout ce chaos grâce à une plateforme unique à 3 portails : la direction de l'incubateur pilote ses programmes et son reporting, les mentors évaluent les livrables en ligne, et les entrepreneurs déposent leurs dossiers dans une Data Room prête pour les investisseurs."*
+> *"Hubs Africa résout ce chaos grâce à une plateforme unique à 3 portails : la direction de l'incubateur pilote ses programmes et son reporting, les mentors évaluent les livrables en ligne, et les entrepreneurs déposent leurs dossiers dans une Data Room prête pour les investisseurs."*
 
 ---
 
@@ -145,12 +145,12 @@ Pour organiser vos slides, placez les illustrations dans un dossier `images_pitc
 |  • Outils de gestion génériques (Trello, Notion, Airtable) : Pas de logique d'incubation ni jurys|
 |  • ERP Internationaux (Odoo, SAP) : Trop lourds, inabordables et inadaptés au terrain africain   |
 |  • Annuaires en ligne (F6S, VC4A) : Données déclaratives ponctuelles sans suivi continu de cohorte |
-|  • AVANTAGE HUB AFRICA : Multi-tenancy souverain, moteur S&E natif et tarification locale en FCFA|
+|  • AVANTAGE HUBS AFRICA : Multi-tenancy souverain, moteur S&E natif et tarification locale en FCFA|
 +---------------------------------------------------------------------------------------------------+
 ```
 
 #### Tableau Comparatif
-| Critère Clé | Outils Génériques | ERP Internationaux | Annuaires Web | **HUB AFRICA** |
+| Critère Clé | Outils Génériques | ERP Internationaux | Annuaires Web | **HUBS AFRICA** |
 | :--- | :---: | :---: | :---: | :---: |
 | **Logique d'Incubation & Jalons** | ❌ Non | ⚠️ Complexe | ❌ Non | **✅ Oui (Native)** |
 | **Suivi-Évaluation (S&E) Automatisé** | ❌ Non | ❌ Non | ❌ Non | **✅ Oui (Centre S&E)** |
@@ -158,7 +158,7 @@ Pour organiser vos slides, placez les illustrations dans un dossier `images_pitc
 | **Tarif accessible en FCFA** | ❌ Dollars/Euros | ❌ Très cher | ⚠️ Limité | **✅ Dès 25 000 FCFA/m** |
 
 #### 🎙️ Script Orateur (Chrono : 0:32 - 0:42 | 10 sec)
-> *"Contrairement aux outils occidentaux froids ou aux tableurs bricolés, Hub Africa est nativement pensé pour l'incubation africaine : multi-tenant, doté d'un moteur de suivi-évaluation complet, et accessible en Francs CFA."*
+> *"Contrairement aux outils occidentaux froids ou aux tableurs bricolés, Hubs Africa est nativement pensé pour l'incubation africaine : multi-tenant, doté d'un moteur de suivi-évaluation complet, et accessible en Francs CFA."*
 
 ---
 
@@ -244,7 +244,7 @@ Pour organiser vos slides, placez les illustrations dans un dossier `images_pitc
 |                                                                                                   |
 |  [IMAGE: slide08_traction_metriques_hubafrica.png]                                                |
 |                                                                                                   |
-|  • Hub Africa v2 Déployé & Testé : 100% de succès sur la suite de tests Pest (16 tests, 80 tests)  |
+|  • Hubs Africa v2 Déployé & Testé : 100% de succès sur la suite de tests Pest (16 tests, 80 tests)  |
 |  • 100+ Structures d'Accompagnement (SAE) déjà répertoriées et cartographiées dans notre base     |
 |  • 1 200+ Entrepreneurs formés et suivis au travers de nos parcours méthodologiques               |
 |  • 5 Pays Cibles Pilotes : Togo, Bénin, Côte d'Ivoire, Sénégal et Burkina Faso                    |
@@ -252,7 +252,7 @@ Pour organiser vos slides, placez les illustrations dans un dossier `images_pitc
 ```
 
 #### 🎙️ Script Orateur (Chrono : 1:14 - 1:26 | 12 sec)
-> *"Nous avons dépassé le stade du prototype : Hub Africa v2 est en ligne, testé avec 100% de réussite technique, plus de 100 structures sont enregistrées dans notre annuaire et plus de 1 200 entrepreneurs ont déjà testé nos parcours dans 5 pays."*
+> *"Nous avons dépassé le stade du prototype : Hubs Africa v2 est en ligne, testé avec 100% de réussite technique, plus de 100 structures sont enregistrées dans notre annuaire et plus de 1 200 entrepreneurs ont déjà testé nos parcours dans 5 pays."*
 
 ---
 
@@ -260,7 +260,7 @@ Pour organiser vos slides, placez les illustrations dans un dossier `images_pitc
 
 ```
 +---------------------------------------------------------------------------------------------------+
-|  PRÉVISIONS FINANCIÈRES DE HUB AFRICA                                                             |
+|  PRÉVISIONS FINANCIÈRES DE HUBS AFRICA                                                             |
 |  Rentabilité nette de 42% atteinte grâce à la scalabilité du modèle SaaS                          |
 |                                                                                                   |
 |  [IMAGE: slide09_courbe_croissance_financiere.png]                                                |
@@ -282,7 +282,7 @@ Pour organiser vos slides, placez les illustrations dans un dossier `images_pitc
 | **Marge Nette** | *-30,8%* | **+14,6%** | **+32,4%** | **+42,1%** |
 
 #### 🎙️ Script Orateur (Chrono : 1:26 - 1:38 | 12 sec)
-> *"Après un exercice d'amorçage 2025 dédié au produit, Hub Africa bascule dans la rentabilité dès 2026 avec 58 millions de FCFA de chiffre d'affaires, pour atteindre 320 millions de FCFA et plus de 42% de marge nette en 2028."*
+> *"Après un exercice d'amorçage 2025 dédié au produit, Hubs Africa bascule dans la rentabilité dès 2026 avec 58 millions de FCFA de chiffre d'affaires, pour atteindre 320 millions de FCFA et plus de 42% de marge nette en 2028."*
 
 ---
 
@@ -297,7 +297,7 @@ Pour organiser vos slides, placez les illustrations dans un dossier `images_pitc
 |                                                                                                   |
 |  • 40% (30 M FCFA) — Déploiement Commercial Terrain : 4 Business Developers (Bénin, CI, SN, CM)  |
 |  • 30% (22,5 M FCFA) — R&D Logicielle : PWA mobile offline-first et intégrations APIs bailleurs    |
-|  • 20% (15 M FCFA) — Marketing B2B & Hub Africa Summit : Référencement et événement annuel phare  |
+|  • 20% (15 M FCFA) — Marketing B2B & Hubs Africa Summit : Référencement et événement annuel phare  |
 |  • 10% (7,5 M FCFA) — Trésorerie Tampon & Juridique : Sécurisation d'exploitation sur 12 mois    |
 +---------------------------------------------------------------------------------------------------+
 ```
@@ -323,7 +323,7 @@ Pour organiser vos slides, placez les illustrations dans un dossier `images_pitc
 |                                                                                                   |
 |  • T4 2026 : Déploiement de la PWA mobile et passage du cap de 40 SAE abonnées                    |
 |  • S1 2027 : Ouverture des représentations commerciales en Côte d'Ivoire et au Sénégal            |
-|  • S2 2027 : 1ère édition du Hub Africa Summit & Signature de 5 contrats institutionnels bailleurs|
+|  • S2 2027 : 1ère édition du Hubs Africa Summit & Signature de 5 contrats institutionnels bailleurs|
 |  • 2028 : Expansion en Afrique Centrale (Cameroun, Gabon, RDC) et franchissement de 180 SAE     |
 +---------------------------------------------------------------------------------------------------+
 ```
@@ -350,7 +350,7 @@ Pour organiser vos slides, placez les illustrations dans un dossier `images_pitc
 ```
 
 #### 🎙️ Script Orateur (Chrono : 1:54 - 2:00 | 6 sec)
-> *"Investir dans Hub Africa, c'est soutenir l'infrastructure qui propulsera 10 000 emplois et des milliers de femmes cheffes d'entreprise à travers le continent. Rejoignez notre tour de table dès aujourd'hui."*
+> *"Investir dans Hubs Africa, c'est soutenir l'infrastructure qui propulsera 10 000 emplois et des milliers de femmes cheffes d'entreprise à travers le continent. Rejoignez notre tour de table dès aujourd'hui."*
 
 ---
 
@@ -358,7 +358,7 @@ Pour organiser vos slides, placez les illustrations dans un dossier `images_pitc
 
 ```
 +---------------------------------------------------------------------------------------------------+
-|                                            HUB AFRICA                                             |
+|                                            HUBS AFRICA                                             |
 |                                                                                                   |
 |                                    MERCI POUR VOTRE ATTENTION                                     |
 |                                                                                                   |
@@ -366,19 +366,19 @@ Pour organiser vos slides, placez les illustrations dans un dossier `images_pitc
 |                                                                                                   |
 |                           [IMAGE: slide13_contact_qrcode_hubafrica.png]                           |
 |                                                                                                   |
-|    🌐 www.hubafrica.org   📧 contact@hubafrica.org   📱 WhatsApp : +228 70 76 76 94               |
+|    🌐 www.hubsafrica.org   📧 contact@hubsafrica.org   📱 WhatsApp : +228 70 76 76 94               |
 |    🏢 Siège Régional : Lomé, Togo   📅 Date : Octobre 2026                                        |
 +---------------------------------------------------------------------------------------------------+
 ```
 
 #### 🎙️ Script Orateur (Clôture)
-> *"Merci pour votre attention. La plateforme Hub Africa est accessible et opérationnelle. Je suis à votre entière disposition pour vos questions."*
+> *"Merci pour votre attention. La plateforme Hubs Africa est accessible et opérationnelle. Je suis à votre entière disposition pour vos questions."*
 
 ---
 
 ## 4. 📁 Diapositives d'Annexe (Pour la Séance de Questions / Réponses)
 
-### ANNEXE 1 : L'Architecture Multi-Tenant Native de Hub Africa
+### ANNEXE 1 : L'Architecture Multi-Tenant Native de Hubs Africa
 - Chaque SAE dispose d'un espace complètement étanche grâce au trait Laravel `BelongsToTenant`.
 - Aucun risque de fuite de données entre structures concurrentes : les formulaires, notes de jurys et livrables sont cloisonnés au niveau de la base de données.
 - Possibilité d'associer un nom de domaine personnalisé par incubateur (Marque blanche complète).

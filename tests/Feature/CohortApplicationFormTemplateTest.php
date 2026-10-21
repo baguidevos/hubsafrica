@@ -43,7 +43,7 @@ beforeEach(function () {
     ]);
 });
 
-test('le template standardise officiel hub africa est cree avec les bons attributs', function () {
+test('le template standardise officiel hubs africa est cree avec les bons attributs', function () {
     expect($this->standardTemplate)->not->toBeNull()
         ->and($this->standardTemplate->is_standard)->toBeTrue()
         ->and($this->standardTemplate->is_template)->toBeTrue()

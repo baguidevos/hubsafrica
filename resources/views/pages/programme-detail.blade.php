@@ -44,7 +44,7 @@
 
                     <p class="text-xs sm:text-sm text-slate-400 flex items-center gap-2">
                         <span>Organisé par</span>
-                        <strong class="text-slate-200 font-bold">{{ $program->sae?->name ?: 'Hub Africa Régional' }}</strong>
+                        <strong class="text-slate-200 font-bold">{{ $program->sae?->name ?: 'Hubs Africa Régional' }}</strong>
                         @if($program->sae?->address)
                             <span>&bull; {{ $program->sae->address }}</span>
                         @endif

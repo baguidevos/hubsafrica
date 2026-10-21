@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{{ $subject ?? 'Notification Hub Africa' }}</title>
+    <title>{{ $subject ?? 'Notification Hubs Africa' }}</title>
     <!--[if mso]>
     <style type="text/css">
         body, table, td {font-family: Arial, Helvetica, sans-serif !important;}
@@ -29,11 +29,11 @@
                                                 {{ $sae->name }}
                                             </div>
                                             <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: #F8B81D; margin-top: 3px;">
-                                                Accompagnement opéré via Hub Africa
+                                                Accompagnement opéré via Hubs Africa
                                             </div>
                                         @else
                                             <div style="font-size: 22px; font-weight: 900; color: #ffffff; letter-spacing: -0.5px;">
-                                                HUB <span style="color: #F8B81D;">AFRICA</span>
+                                                HUBS <span style="color: #F8B81D;">AFRICA</span>
                                             </div>
                                             <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: #cbd5e1; margin-top: 2px;">
                                                 Plateforme Panafricaine d'Accompagnement
@@ -69,15 +69,15 @@
                         <td style="background-color: #f8fafc; border-top: 1px solid #e2e8f0; padding: 24px 32px; text-align: center;">
                             <p style="margin: 0 0 8px 0; font-size: 12px; color: #64748b; font-weight: 500;">
                                 Besoin d'assistance ? Contactez-nous à
-                                <a href="mailto:{{ config('hubafrica.contact.email', 'teamhubafrica@gmail.com') }}" style="color: #2F3284; text-decoration: underline; font-weight: 600;">
-                                    {{ config('hubafrica.contact.email', 'teamhubafrica@gmail.com') }}
+                                <a href="mailto:{{ config('hubsafrica.contact.email', 'teamhubafrica@gmail.com') }}" style="color: #2F3284; text-decoration: underline; font-weight: 600;">
+                                    {{ config('hubsafrica.contact.email', 'teamhubafrica@gmail.com') }}
                                 </a>
-                                @if(config('hubafrica.contact.phone'))
-                                    &bull; <span>{{ config('hubafrica.contact.phone') }}</span>
+                                @if(config('hubsafrica.contact.phone'))
+                                    &bull; <span>{{ config('hubsafrica.contact.phone') }}</span>
                                 @endif
                             </p>
                             <p style="margin: 0; font-size: 11px; color: #94a3b8;">
-                                Hub Africa &bull; Lomé, Togo &bull; Propulsé pour dynamiser l'écosystème entrepreneurial africain
+                                Hubs Africa &bull; Lomé, Togo &bull; Propulsé pour dynamiser l'écosystème entrepreneurial africain
                             </p>
                             <p style="margin: 8px 0 0 0; font-size: 10px; color: #cbd5e1;">
                                 Cet email automatique a été transmis en accord avec votre compte ou candidature sur la plateforme.

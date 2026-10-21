@@ -25,7 +25,7 @@ class PlatformTopSaesWidget extends Widget
         return $saes->map(function (Sae $sae) {
             $location = $sae->provenance_label;
             if ($location === 'Non renseigné' || empty($location)) {
-                $location = $sae->address ?: 'Réseau Hub Africa';
+                $location = $sae->address ?: 'Réseau Hubs Africa';
             }
 
             return [

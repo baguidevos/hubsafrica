@@ -10,7 +10,7 @@
             </h1>
 
             <p class="text-sm text-slate-300 max-w-3xl leading-relaxed">
-                Retrouvez ci-dessous l'ensemble des comptes de démonstration pré-configurés pour tester chaque rôle de l'écosystème Hub Africa. Utilisez le bouton <strong>« Connexion 1 Clic »</strong> pour vous authentifier instantanément sans ressaisir vos identifiants.
+                Retrouvez ci-dessous l'ensemble des comptes de démonstration pré-configurés pour tester chaque rôle de l'écosystème Hubs Africa. Utilisez le bouton <strong>« Connexion 1 Clic »</strong> pour vous authentifier instantanément sans ressaisir vos identifiants.
             </p>
 
             @if(session('success'))

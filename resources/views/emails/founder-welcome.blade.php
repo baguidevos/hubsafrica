@@ -1,10 +1,10 @@
-<x-emails.layouts.hubafrica badgeText="Espace Entrepreneur">
+<x-emails.layouts.hubsafrica badgeText="Espace Entrepreneur">
     <h2 style="margin: 0 0 16px 0; font-size: 20px; font-weight: 800; color: #0f172a;">
-        Bienvenue dans la communauté Hub Africa, {{ $user->name }} ! 🚀
+        Bienvenue dans la communauté Hubs Africa, {{ $user->name }} ! 🚀
     </h2>
 
     <p style="margin: 0 0 16px 0; color: #334155; font-size: 15px;">
-        Votre compte entrepreneur a été créé avec succès sur <strong>Hub Africa</strong>, la plateforme panafricaine dédiée à la croissance et à la structuration des pépites technologiques et innovantes du continent.
+        Votre compte entrepreneur a été créé avec succès sur <strong>Hubs Africa</strong>, la plateforme panafricaine dédiée à la croissance et à la structuration des pépites technologiques et innovantes du continent.
     </p>
 
     <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin: 24px 0;">
@@ -46,4 +46,4 @@
             </td>
         </tr>
     </table>
-</x-emails.layouts.hubafrica>
+</x-emails.layouts.hubsafrica>

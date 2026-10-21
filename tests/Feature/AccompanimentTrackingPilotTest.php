@@ -384,7 +384,7 @@ test('printable impact report view and download endpoints return high fidelity c
     $response->assertSuccessful()
         ->assertSee($this->sae->name)
         ->assertSee('Suivi-Évaluation')
-        ->assertSee('Hub Africa')
+        ->assertSee('Hubs Africa')
         ->assertSee('admission au programme');
 
     $downloadUrl = route('sae.reports.impact.download', ['tenant' => $this->sae->slug]);
@@ -412,7 +412,7 @@ test('printable analytics report view and download endpoints return high fidelit
         ->assertSee($this->sae->name)
         ->assertSee('Diagnostic Stratégique & Performance du Portefeuille')
         ->assertSee('Entonnoir de Sélection & Taux de Conversion')
-        ->assertSee('Hub Africa');
+        ->assertSee('Hubs Africa');
 
     $downloadUrl = route('sae.reports.analytics.download', ['tenant' => $this->sae->slug]);
     $downloadResponse = $this->get($downloadUrl);

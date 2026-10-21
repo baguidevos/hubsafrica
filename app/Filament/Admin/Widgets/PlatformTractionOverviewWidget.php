@@ -86,7 +86,7 @@ class PlatformTractionOverviewWidget extends BaseWidget
 
         return [
             Stat::make('Structures (SAE) raccordées', $totalSaes)
-                ->description("{$activeSaes} structures actives sur Hub Africa")
+                ->description("{$activeSaes} structures actives sur Hubs Africa")
                 ->descriptionIcon('heroicon-m-building-office-2')
                 ->chart([2, 4, 6, 8, 10, $totalSaes])
                 ->color('primary'),

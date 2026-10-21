@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Routes Publiques Institutionnelles — Hub Africa
+| Routes Publiques Institutionnelles — Hubs Africa
 |--------------------------------------------------------------------------
 */
 

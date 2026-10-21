@@ -47,7 +47,7 @@ class FilamentResetPassword extends BaseResetPassword
         $name = $notifiable->name ?? 'Utilisateur';
 
         return (new MailMessage)
-            ->subject('Réinitialisation de votre mot de passe — '.config('hubafrica.name', 'Hub Africa'))
+            ->subject('Réinitialisation de votre mot de passe — '.config('hubsafrica.name', 'Hubs Africa'))
             ->view('emails.auth.reset-password', [
                 'user' => $notifiable,
                 'name' => $name,

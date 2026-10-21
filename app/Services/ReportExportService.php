@@ -20,13 +20,13 @@ class ReportExportService
 {
     /**
      * Récupère les données d'image et le logo du tenant (base64 ou URL publique)
-     * ainsi que le logo de certification Hub Africa.
+     * ainsi que le logo de certification Hubs Africa.
      *
      * @return array{src: string|null, is_base64: bool, initials: string, name: string, hub_logo: string|null}
      */
     public function getTenantBranding(?Sae $tenant): array
     {
-        $name = $tenant?->name ?? 'Hub Africa SAE';
+        $name = $tenant?->name ?? 'Hubs Africa SAE';
         $initials = strtoupper(substr(preg_replace('/[^a-zA-Z0-9]/', '', $name) ?: 'SA', 0, 2));
         $hubLogo = $this->getFallbackHubAfricaLogoBase64();
 
@@ -74,7 +74,7 @@ class ReportExportService
     }
 
     /**
-     * Lit et encode en base64 le logo officiel de l'application Hub Africa.
+     * Lit et encode en base64 le logo officiel de l'application Hubs Africa.
      */
     public function getFallbackHubAfricaLogoBase64(): ?string
     {
@@ -403,7 +403,7 @@ class ReportExportService
             fwrite($handle, "\xEF\xBB\xBF");
 
             // En-tête institutionnel
-            fputcsv($handle, ['RAPPORT D\'IMPACT & SUIVI-ÉVALUATION (M&E) — HUB AFRICA V2']);
+            fputcsv($handle, ['RAPPORT D\'IMPACT & SUIVI-ÉVALUATION (M&E) — HUBS AFRICA V2']);
             fputcsv($handle, ['Structure / SAE', $tenant->name]);
             fputcsv($handle, ['Email', $tenant->email ?? '—']);
             fputcsv($handle, ['Téléphone', $tenant->phone ?? '—']);

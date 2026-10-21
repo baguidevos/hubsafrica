@@ -5,7 +5,7 @@
             <div class="relative z-10 max-w-4xl space-y-3">
                 <div class="inline-flex items-center gap-2 rounded-full bg-teal-500/20 px-3 py-1 text-xs font-semibold tracking-wide text-teal-200 backdrop-blur-md border border-teal-400/30">
                     <x-heroicon-s-sparkles class="h-4 w-4 text-teal-300" />
-                    <span>Documentation Officielle &middot; Hub Africa V2</span>
+                    <span>Documentation Officielle &middot; Hubs Africa V2</span>
                 </div>
                 <h1 class="text-3xl font-extrabold tracking-tight sm:text-4xl text-white">
                     Guide Méthodologique & Pratique de l'Accompagnateur SAE
@@ -305,7 +305,7 @@
                     </p>
                     <ol class="list-decimal list-inside space-y-1.5 pl-2 text-xs">
                         <li>Créer la cohorte <strong>« AgriTech Promo 1 (2026) »</strong> rattachée au programme, avec date de début fixée au <strong>01/10/2026</strong>.</li>
-                        <li><strong>Choix Obligatoire du Modèle de Candidature :</strong> Sélectionner le formulaire de candidature requis (le <em>« Dossier Standardisé Hub Africa »</em> à 13 champs communs, ou un template sur-mesure créé par votre structure).</li>
+                        <li><strong>Choix Obligatoire du Modèle de Candidature :</strong> Sélectionner le formulaire de candidature requis (le <em>« Dossier Standardisé Hubs Africa »</em> à 13 champs communs, ou un template sur-mesure créé par votre structure).</li>
                         <li><strong>Application du Template Méthodologique (Afric'innov / Startup Loop) :</strong> Depuis la page <em>Accompagnement &gt; Templates d'accompagnement</em> ou depuis l'action en en-tête du Tableau de Bord M&amp;E, appliquer le modèle d'incubation :
                             <ul class="list-disc list-inside pl-4 text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
                                 <li><strong>6 Phases d'incubation :</strong> Cadrage &amp; Immersion, Diagnostic &amp; PSF, Structuration MVP, Traction &amp; PMF, Accélération, Bilan &amp; Sortie.</li>
@@ -734,7 +734,7 @@
                         <ul class="space-y-1.5 text-gray-600 dark:text-gray-300">
                             <li>• <strong>Définition des phases :</strong> Découper le parcours (nom, durée en semaines, ordre, critères de passage).</li>
                             <li>• <strong>Critères jury :</strong> Assigner coefficient et note maximale (sur 10 ou 20) par critère d'évaluation.</li>
-                            <li>• <strong>Sélection obligatoire du formulaire :</strong> Chaque cohorte impose le choix d'un modèle de candidature (Standard Hub Africa ou Template personnalisé de la structure).</li>
+                            <li>• <strong>Sélection obligatoire du formulaire :</strong> Chaque cohorte impose le choix d'un modèle de candidature (Standard Hubs Africa ou Template personnalisé de la structure).</li>
                             <li>• <strong>Synchronisation des cohortes :</strong> Bouton <em>« Synchroniser depuis le programme »</em> pour calculer automatiquement le rétro-planning complet de la promotion.</li>
                             <li>• <strong>Lien direct de candidature :</strong> Action <em>« Lien direct »</em> pour générer et copier l'URL d'inscription directe (`/cohortes/{id}/rejoindre`) à transmettre aux candidats (WhatsApp, email).</li>
                             <li>• <strong>Catalogue public &amp; Cohortes ouvertes :</strong> Détection automatique du statut d'ouverture avec badge vert vif et verrouillage sur la promotion.</li>
@@ -920,7 +920,7 @@
                         <ul class="space-y-1.5 text-gray-600 dark:text-gray-300">
                             <li>• <strong>Data Room sécurisée :</strong> Stockage confidentiel des pièces légales (statuts, pacte, RIB, états financiers).</li>
                             <li>• <strong>Contrôle d'accès :</strong> Isolation étanche par structure (TenantScope) et droits de consultation stricts.</li>
-                            <li>• <strong>Modèles de Candidature &amp; Enquêtes :</strong> Distinction claire entre templates officiels Hub Africa, templates de candidature et enquêtes d'évaluation.</li>
+                            <li>• <strong>Modèles de Candidature &amp; Enquêtes :</strong> Distinction claire entre templates officiels Hubs Africa, templates de candidature et enquêtes d'évaluation.</li>
                             <li>• <strong>Formulaires sur-mesure :</strong> Créateur visuel de formulaires pour enquêtes de satisfaction et bilans de sortie.</li>
                         </ul>
                     </div>
@@ -985,7 +985,7 @@
         {{-- Footer d'aide --}}
         <x-filament::section compact>
             <div class="text-center text-xs text-gray-500 dark:text-gray-400 py-1">
-                Besoin d'un accompagnement personnalisé ou d'une formation d'équipe ? Contactez l'administrateur de votre SAE ou le support technique Hub Africa.
+                Besoin d'un accompagnement personnalisé ou d'une formation d'équipe ? Contactez l'administrateur de votre SAE ou le support technique Hubs Africa.
             </div>
         </x-filament::section>
     </div>

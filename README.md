@@ -1,4 +1,4 @@
-# Hub Africa v2 — Plateforme d'Accompagnement & Suivi-Évaluation (CUBE S&E)
+# Hubs Africa v2 — Plateforme d'Accompagnement & Suivi-Évaluation (CUBE S&E)
 
 Plateforme web multi-tenant d'accompagnement de startups et PME en Afrique subsaharienne, basée sur la méthodologie de Suivi & Évaluation (S&E) du référentiel **CUBE**.
 
@@ -85,7 +85,7 @@ php artisan migrate:fresh --seed
 
 | Rôle | URL | Email | Mot de passe | SAE / Tenant |
 | :--- | :--- | :--- | :--- | :--- |
-| **Super Admin** | `/admin` | `admin@hubafrica.org` | `password` | Global |
+| **Super Admin** | `/admin` | `admin@hubsafrica.org` | `password` | Global |
 | **Responsable SAE** | `/sae/teranga-africa` | `fatou.diop@teranga.sn` | `password` | Teranga Africa Hub |
 | **Coach / Mentor** | `/mentor/teranga-africa` | `marie.sarr@coach.sn` | `password` | Teranga Africa Hub |
 | **Entrepreneur** | `/portal/teranga-africa` | `ousmane.fall@ecobat.sn` | `password` | Teranga Africa Hub |

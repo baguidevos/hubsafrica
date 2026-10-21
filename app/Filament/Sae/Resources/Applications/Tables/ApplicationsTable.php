@@ -55,7 +55,7 @@ class ApplicationsTable
                     ->label('Template')
                     ->badge()
                     ->color(fn (?Application $record) => $record?->form?->is_standard ? 'warning' : 'primary')
-                    ->default('Standard Hub Africa')
+                    ->default('Standard Hubs Africa')
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('status')

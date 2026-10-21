@@ -5,7 +5,7 @@
             <svg class="w-4 h-4 text-[#F8B81D] transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
             </svg>
-            <span class="font-bold">Hub Africa</span>
+            <span class="font-bold">Hubs Africa</span>
             <span class="text-slate-400 dark:text-slate-600 hidden sm:inline">&bull;</span>
             <span class="text-slate-500 dark:text-slate-400 font-normal hidden sm:inline">Accueil du portail</span>
         </a>

@@ -1,10 +1,10 @@
-<x-emails.layouts.hubafrica :sae="$sae" badgeText="Invitation Mentor">
+<x-emails.layouts.hubsafrica :sae="$sae" badgeText="Invitation Mentor">
     <h2 style="margin: 0 0 16px 0; font-size: 20px; font-weight: 800; color: #0f172a;">
         Bonjour {{ $invitation->name ?: 'Cher Mentor' }},
     </h2>
 
     <p style="margin: 0 0 16px 0; color: #334155; font-size: 15px;">
-        La structure <strong>{{ $sae?->name ?? 'Hub Africa' }}</strong> vous invite à rejoindre son réseau d'experts pour accompagner ses cohortes de startups innovantes.
+        La structure <strong>{{ $sae?->name ?? 'Hubs Africa' }}</strong> vous invite à rejoindre son réseau d'experts pour accompagner ses cohortes de startups innovantes.
     </p>
 
     <div style="background-color: #f8fafc; border-left: 4px solid #2F3284; padding: 18px; border-radius: 8px; margin: 20px 0;">
@@ -34,4 +34,4 @@
     <p style="margin: 20px 0 0 0; font-size: 13px; color: #64748b;">
         Ce lien d'invitation est valable pendant 7 jours.
     </p>
-</x-emails.layouts.hubafrica>
+</x-emails.layouts.hubsafrica>

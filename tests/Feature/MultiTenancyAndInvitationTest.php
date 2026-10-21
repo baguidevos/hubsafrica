@@ -70,7 +70,7 @@ test('database seeder produces expected multi-tenant records and users', functio
     $this->seed();
 
     expect(Sae::count())->toBeGreaterThanOrEqual(2);
-    expect(User::where('email', 'admin@hubafrica.org')->exists())->toBeTrue();
+    expect(User::where('email', 'admin@hubsafrica.org')->exists())->toBeTrue();
     expect(User::where('email', 'fatou.diop@teranga.sn')->exists())->toBeTrue();
     expect(User::where('email', 'marie.sarr@coach.sn')->exists())->toBeTrue();
     expect(User::where('email', 'ousmane.fall@ecobat.sn')->exists())->toBeTrue();
@@ -79,7 +79,7 @@ test('database seeder produces expected multi-tenant records and users', functio
 test('authenticated users can access their respective panels and dashboards', function () {
     $this->seed();
 
-    $admin = User::where('email', 'admin@hubafrica.org')->first();
+    $admin = User::where('email', 'admin@hubsafrica.org')->first();
     $saeUser = User::where('email', 'fatou.diop@teranga.sn')->first();
     $coachUser = User::where('email', 'marie.sarr@coach.sn')->first();
     $this->actingAs($admin)->get('/admin')->assertOk();

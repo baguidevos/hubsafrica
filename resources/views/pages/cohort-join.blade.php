@@ -135,7 +135,7 @@
             {{-- Promotion Ouverte : Deux colonnes claires (Connexion vs Inscription) --}}
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 
-                {{-- Colonne 1 : Déjà un compte Hub Africa ? (5 cols) --}}
+                {{-- Colonne 1 : Déjà un compte Hubs Africa ? (5 cols) --}}
                 <div class="lg:col-span-5 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-6">
                     <div class="space-y-1">
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-[#2F3284]/10 text-[#2F3284]">

@@ -139,7 +139,7 @@
 
                         {{-- Title --}}
                         <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl">
-                            Candidature au programme {{ $application->program?->name ?? 'Programme Hub Africa' }}
+                            Candidature au programme {{ $application->program?->name ?? 'Programme Hubs Africa' }}
                         </h1>
 
                         <p class="mt-1.5 text-xs text-gray-500 dark:text-gray-400 flex flex-wrap items-center gap-x-3 gap-y-1">
@@ -654,7 +654,7 @@
                             <p class="text-xs text-gray-500 dark:text-gray-400">Structure d'accompagnement (SAE)</p>
                             <p class="text-sm font-semibold text-emerald-600 dark:text-emerald-400 mt-0.5 flex items-center gap-1.5">
                                 <x-heroicon-m-building-office-2 class="h-4 w-4 shrink-0" />
-                                {{ $application->program?->sae?->name ?? 'Structure Hub Africa' }}
+                                {{ $application->program?->sae?->name ?? 'Structure Hubs Africa' }}
                             </p>
                         </div>
 
@@ -756,7 +756,7 @@
 
                     <div class="mt-4 pt-3 border-t border-emerald-200/60 dark:border-emerald-800/40">
                         <p class="text-xs font-bold text-emerald-800 dark:text-emerald-300">
-                            {{ $application->program?->sae?->name ?? 'Hub Africa V2' }}
+                            {{ $application->program?->sae?->name ?? 'Hubs Africa V2' }}
                         </p>
                         @if($application->program?->sae?->email)
                             <a href="mailto:{{ $application->program->sae->email }}" class="text-xs text-emerald-600 hover:underline dark:text-emerald-400 block mt-0.5">

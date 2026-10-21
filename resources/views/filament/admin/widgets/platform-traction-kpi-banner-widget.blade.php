@@ -12,7 +12,7 @@
                     </div>
                     <div>
                         <span class="text-base font-bold text-gray-900 dark:text-white">
-                            Mesures de Traction & Ratios d'Impact Panafricains — Hub Africa
+                            Mesures de Traction & Ratios d'Impact Panafricains — Hubs Africa
                         </span>
                         <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                             Indicateurs de performance, de parité et d'intensité de l'accompagnement consolidés en temps réel

@@ -26,7 +26,7 @@ class ApplicationDecisionMail extends Mailable implements ShouldQueue
 
     public function envelope(): Envelope
     {
-        $programName = $this->application->program?->name ?? 'Programme Hub Africa';
+        $programName = $this->application->program?->name ?? 'Programme Hubs Africa';
         $subject = $this->isWaitlist()
             ? "Mise en liste d'attente — {$programName}"
             : "Notification relative à votre candidature — {$programName}";

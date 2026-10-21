@@ -53,7 +53,7 @@ class SaePanelProvider extends PanelProvider
             ->default()
             ->id('sae')
             ->path('sae')
-            ->brandName('Hub Africa')
+            ->brandName('Hubs Africa')
             ->brandLogo(fn () => asset('images/koworkers.png'))
             ->darkModeBrandLogo(fn () => asset('images/logo.png'))
             ->brandLogoHeight('2.25rem')

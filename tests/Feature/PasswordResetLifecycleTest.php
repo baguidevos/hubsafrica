@@ -44,7 +44,7 @@ test('super admin can request password reset from admin panel', function () {
     $adminRole = Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => 'web']);
 
     $admin = User::factory()->create([
-        'email' => 'custom-admin@hubafrica.org',
+        'email' => 'custom-admin@hubsafrica.org',
     ]);
 
     DB::table('model_has_roles')->insert([
@@ -58,7 +58,7 @@ test('super admin can request password reset from admin panel', function () {
 
     Livewire::test(RequestPasswordReset::class)
         ->fillForm([
-            'email' => 'custom-admin@hubafrica.org',
+            'email' => 'custom-admin@hubsafrica.org',
         ])
         ->call('request')
         ->assertHasNoFormErrors();

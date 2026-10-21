@@ -179,7 +179,7 @@ class EvaluationFormResource extends FormResource
                     ->badge()
                     ->state(function (Form $record): string {
                         if ($record->is_standard) {
-                            return '⭐️ Standard Hub Africa';
+                            return '⭐️ Standard Hubs Africa';
                         }
                         if ($record->is_template || $record->type === FormType::CANDIDATURE) {
                             return '🏛️ Template Candidature';

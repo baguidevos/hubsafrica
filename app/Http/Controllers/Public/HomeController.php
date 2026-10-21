@@ -15,7 +15,7 @@ class HomeController extends Controller
 {
     public function index(): View
     {
-        Head::title(config('hubafrica.seo.title', 'Hub Africa — Plateforme Panafricaine d\'Accompagnement'))
+        Head::title(config('hubsafrica.seo.title', 'Hubs Africa — Plateforme Panafricaine d\'Accompagnement'))
             ->description('Portail officiel d\'accompagnement et de suivi de l\'innovation entrepreneuriale en Afrique. Candidatez aux programmes d\'incubation.');
 
         // Métriques d'impact certifiées calculées en temps réel

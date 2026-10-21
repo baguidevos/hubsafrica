@@ -1,10 +1,10 @@
-<x-emails.layouts.hubafrica :sae="$sae" badgeText="Admission Confirmée">
+<x-emails.layouts.hubsafrica :sae="$sae" badgeText="Admission Confirmée">
     <h2 style="margin: 0 0 16px 0; font-size: 22px; font-weight: 800; color: #0f172a;">
         Excellente nouvelle {{ $entrepreneur?->first_name ?? '' }} ! 🎉
     </h2>
 
     <p style="margin: 0 0 16px 0; color: #334155; font-size: 15px;">
-        Le comité de sélection de <strong>{{ $sae?->name ?? 'Hub Africa' }}</strong> a le plaisir de vous annoncer que votre projet <strong>"{{ $project?->name }}"</strong> a été <strong>officiellement retenu pour admission</strong> !
+        Le comité de sélection de <strong>{{ $sae?->name ?? 'Hubs Africa' }}</strong> a le plaisir de vous annoncer que votre projet <strong>"{{ $project?->name }}"</strong> a été <strong>officiellement retenu pour admission</strong> !
     </p>
 
     <div style="background-color: #f8fafc; border-left: 4px solid #F8B81D; padding: 20px; border-radius: 8px; margin: 24px 0;">
@@ -59,4 +59,4 @@
             </td>
         </tr>
     </table>
-</x-emails.layouts.hubafrica>
+</x-emails.layouts.hubsafrica>

@@ -1,4 +1,4 @@
-# 📚 Guide Pratique & Manuel d'Utilisation : Plateforme d'Accompagnement Hub Africa V2
+# 📚 Guide Pratique & Manuel d'Utilisation : Plateforme d'Accompagnement Hubs Africa V2
 
 > **Espace Responsable SAE, Équipe Pédagogique & Jurys d'Admission**  
 > Ce manuel documente de manière exhaustive l'organisation de la plateforme par **Clusters Filament**, détaille les actions réalisables par les responsables et illustre le cycle complet d'accompagnement à travers le cas pratique réel de la startup **« BioAgri Tech »**.
@@ -129,7 +129,7 @@ Pour illustrer concrètement le fonctionnement de la plateforme, ce cas pratique
 #### Actions du Responsable SAE :
 1. Créer la cohorte **« AgriTech Promo 1 (2026) »**, rattachée au programme, avec une date de démarrage fixée au **01/10/2026**.
 2. **Choix Obligatoire du Modèle de Candidature :**
-   Chaque création de cohorte impose la sélection d'un formulaire de dossier de candidature (`application_form_id`). Le responsable peut conserver le **Modèle Standard Hub Africa** (socle commun panafricain à 13 champs pré-sélectionné par défaut) ou choisir un **Template Sur-Mesure** créé par la SAE avec ses questions complémentaires.
+   Chaque création de cohorte impose la sélection d'un formulaire de dossier de candidature (`application_form_id`). Le responsable peut conserver le **Modèle Standard Hubs Africa** (socle commun panafricain à 13 champs pré-sélectionné par défaut) ou choisir un **Template Sur-Mesure** créé par la SAE avec ses questions complémentaires.
 3. À l'enregistrement, la plateforme bascule immédiatement sur les onglets de la promotion.
 4. Dans l'onglet **« Jalons réels & Calendrier de la cohorte »** (situé au sommet de la page) ou depuis le menu direct **« Jalons & Phases »**, cliquer sur le bouton d'action **« Synchroniser depuis le programme »**.
 5. **Automatisation 1-Clic :** La plateforme calcule immédiatement les dates calendaires de chaque phase :
@@ -165,7 +165,7 @@ Pour illustrer concrètement le fonctionnement de la plateforme, ce cas pratique
 - Porteur de projet : `Candidatures` (`/entrepreneur/applications`)
 
 #### Actions du Responsable & des Jurys :
-1. La candidature de la startup **BioAgri Tech** (portée par Amadou Traoré) est reçue sur la plateforme. Le modèle de formulaire utilisé est immédiatement identifié par un badge (`Dossier Standard Hub Africa` ou template spécifique de la SAE).
+1. La candidature de la startup **BioAgri Tech** (portée par Amadou Traoré) est reçue sur la plateforme. Le modèle de formulaire utilisé est immédiatement identifié par un badge (`Dossier Standard Hubs Africa` ou template spécifique de la SAE).
 2. **Nouvelle Vue Unifiée Haute Fidélité :**
    En ouvrant le dossier, le responsable et les membres du jury accèdent à une page d'instruction complète et harmonisée :
    - **Bannière d'en-tête dynamique :** arborant la couleur du statut (`SOUMISE`, `EN_EXAMEN`, `ACCEPTEE`, `EN_ATTENTE`, `REFUSEE`) et la note consolidée du jury sur 100 avec coloration conditionnelle ($\ge 75$ vert, $50-74$ orange, $< 50$ rouge).
@@ -190,7 +190,7 @@ Pour illustrer concrètement le fonctionnement de la plateforme, ce cas pratique
    - **Architecture de Délibération en Cascade (Flexibilité Maximale) :**
      - **Niveau SAE (Politique Globale) :** La structure paramètre dans son profil SAE (`Profil de la SAE`) ses seuils par défaut applicables à tous ses programmes (ex: *Admission $\ge 70$*, *Attente $\ge 45$*).
      - **Niveau Programme (Surcharge Spécifique) :** Pour les programmes particuliers (ex: *Bootcamp d'accélération sélectif* avec fonds d'amorçage), la SAE configure des seuils sur-mesure dans la fiche du programme (ex: *Admission $\ge 85$*, *Attente $\ge 65$*).
-     - **Filet de Sécurité Hub Africa :** En l'absence de personnalisation, le socle de référence panafricain (75 / 50) s'applique par défaut.
+     - **Filet de Sécurité Hubs Africa :** En l'absence de personnalisation, le socle de référence panafricain (75 / 50) s'applique par défaut.
    - **Bascule Automatique du Statut selon les Seuils Actifs :**
      - **≥ Seuil d'admission (Vert) :** Candidature automatiquement **Acceptée** (*Avis favorable du jury*).
      - **Entre Seuil d'attente et Seuil d'admission (Orange) :** Candidature automatiquement placée en **Liste d'attente**.
@@ -359,7 +359,7 @@ Pour illustrer concrètement le fonctionnement de la plateforme, ce cas pratique
   - Définir la grille d'évaluation (critères, pondérations x1 à x5, barèmes sur 10 ou 20).
   - Associer les bailleurs via l'action *« Associer un partenaire »* avec montant de dotation en FCFA et rôle.
 - **Cohortes :**
-  - Créer une nouvelle promotion avec date de démarrage, capacité en startups, objectifs et **sélection obligatoire du modèle de dossier de candidature** (Standard Hub Africa ou Template sur-mesure SAE).
+  - Créer une nouvelle promotion avec date de démarrage, capacité en startups, objectifs et **sélection obligatoire du modèle de dossier de candidature** (Standard Hubs Africa ou Template sur-mesure SAE).
   - Badge d'identification du modèle de formulaire associé sur chaque cohorte.
   - Onglet *« Jalons réels & Calendrier de la cohorte »* au sommet de la fiche.
   - Action 1-clic *« Synchroniser depuis le programme »* pour calculer automatiquement toutes les dates calendaires réelles.
@@ -437,9 +437,9 @@ Pour illustrer concrètement le fonctionnement de la plateforme, ce cas pratique
 - **Data Room :**
   - Coffre-fort numérique étanche pour les pièces juridiques, statuts et bilans certifiés.
 - **Formulaires & Enquêtes :**
-  - Modèles de Candidature & Enquêtes : gestion unifiée avec badges d'usage (`Standard Hub Africa`, `Template Candidature`, `Enquête & Suivi`).
+  - Modèles de Candidature & Enquêtes : gestion unifiée avec badges d'usage (`Standard Hubs Africa`, `Template Candidature`, `Enquête & Suivi`).
   - Action 1-clic *« Dupliquer en tant que modèle SAE »* pour adapter le socle standard aux spécificités de la structure.
-  - Protection d'intégrité : le modèle officiel standard Hub Africa est protégé contre toute altération ou suppression.
+  - Protection d'intégrité : le modèle officiel standard Hubs Africa est protégé contre toute altération ou suppression.
   - Création visuelle d'enquêtes d'évaluation et déverrouillage ciblé par cohorte ou entrepreneur.
 
 ### Module Transverse : Pilotage & Décision
@@ -467,4 +467,4 @@ Pour finaliser la documentation visuelle de votre SAE, insérez les captures d'�
 
 ---
 
-*Hub Africa V2 — Manuel d'utilisation de la plateforme d'accompagnement (Version 2.10.0 — Septembre 2026).*
+*Hubs Africa V2 — Manuel d'utilisation de la plateforme d'accompagnement (Version 2.10.0 — Septembre 2026).*

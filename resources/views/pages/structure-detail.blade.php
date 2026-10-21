@@ -43,7 +43,7 @@
                             @endif
                         </div>
                         <p class="text-xs sm:text-sm text-slate-400">
-                            {{ $sae->provenance_label ?: ($sae->address ?: 'Structure d\'Accompagnement labellisée Hub Africa') }}
+                            {{ $sae->provenance_label ?: ($sae->address ?: 'Structure d\'Accompagnement labellisée Hubs Africa') }}
                         </p>
                         @if($sae->types->isNotEmpty())
                             <div class="flex flex-wrap gap-1.5 pt-1">
@@ -259,7 +259,7 @@
                                                 {{ implode(' • ', array_slice($coach->specialties, 0, 2)) }}
                                             </div>
                                         @else
-                                            <div class="text-[11px] text-slate-400 truncate mt-0.5">Coach certifié Hub Africa</div>
+                                            <div class="text-[11px] text-slate-400 truncate mt-0.5">Coach certifié Hubs Africa</div>
                                         @endif
                                     </div>
                                 </div>

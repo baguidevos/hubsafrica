@@ -1,10 +1,10 @@
-<x-emails.layouts.hubafrica :sae="$sae" badgeText="Accès Responsable SAE">
+<x-emails.layouts.hubsafrica :sae="$sae" badgeText="Accès Responsable SAE">
     <h2 style="margin: 0 0 16px 0; font-size: 20px; font-weight: 800; color: #0f172a;">
         Bienvenue {{ $user->name }} ! 🏛️
     </h2>
 
     <p style="margin: 0 0 16px 0; color: #334155; font-size: 15px;">
-        Votre accès en tant que <strong>Responsable / Gestionnaire de la structure {{ $sae?->name ?? 'SAE' }}</strong> a été configuré avec succès sur la plateforme Hub Africa.
+        Votre accès en tant que <strong>Responsable / Gestionnaire de la structure {{ $sae?->name ?? 'SAE' }}</strong> a été configuré avec succès sur la plateforme Hubs Africa.
     </p>
 
     <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin: 24px 0;">
@@ -51,4 +51,4 @@
             </td>
         </tr>
     </table>
-</x-emails.layouts.hubafrica>
+</x-emails.layouts.hubsafrica>

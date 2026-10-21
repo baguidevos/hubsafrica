@@ -1,12 +1,12 @@
 # 🤝 LISTE QUALIFIÉE DES INVESTISSEURS & STRATÉGIE DE CIBLAGE
-## PROJET : HUB AFRICA (HUB AFRICA V2)
+## PROJET : HUBS AFRICA (HUBS AFRICA V2)
 *Guide Stratégique de Mobilisation des Capitaux pour la Plateforme SaaS Panafricaine de l'Accompagnement*
 
 ---
 
 ## 📋 Table des Matières
-1. [Typologie des Investisseurs Cibles & Adéquation au Modèle SaaS de Hub Africa](#1-typologie-des-investisseurs-cibles--adéquation-au-modèle-saas-de-hub-africa)
-2. [Pourquoi les Investisseurs Hésitent en Afrique (et comment Hub Africa lève ces doutes)](#2-pourquoi-les-investisseurs-hésitent-en-afrique-et-comment-hub-africa-lève-ces-doutes)
+1. [Typologie des Investisseurs Cibles & Adéquation au Modèle SaaS de Hubs Africa](#1-typologie-des-investisseurs-cibles--adéquation-au-modèle-saas-de-Hubs-Africa)
+2. [Pourquoi les Investisseurs Hésitent en Afrique (et comment Hubs Africa lève ces doutes)](#2-pourquoi-les-investisseurs-hésitent-en-afrique-et-comment-Hubs-Africa-lève-ces-doutes)
 3. [Les Instruments de Financement Privilégiés pour le Tour de 75M FCFA](#3-les-instruments-de-financement-privilégiés-pour-le-tour-de-75m-fcfa)
 4. [Annuaire Qualifié des Investisseurs Cibles (Afrique de l'Ouest & Panafricain)](#4-annuaire-qualifié-des-investisseurs-cibles-afrique-de-louest--panafricain)
    - [Catégorie A : Réseaux de Business Angels & Diaspora (BA Networks)](#catégorie-a--réseaux-de-business-angels--diaspora-ba-networks)
@@ -18,31 +18,31 @@
 
 ---
 
-## 1. Typologie des Investisseurs Cibles & Adéquation au Modèle SaaS de Hub Africa
+## 1. Typologie des Investisseurs Cibles & Adéquation au Modèle SaaS de Hubs Africa
 
-Pour réussir la levée d'amorçage de **75 000 000 FCFA (~115 000 €)** de Hub Africa, le ciblage est concentré sur les profils d'investisseurs qui comprennent l'économie d'un logiciel SaaS B2B et l'impact de l'infrastructure entrepreneuriale en Afrique :
+Pour réussir la levée d'amorçage de **75 000 000 FCFA (~115 000 €)** de Hubs Africa, le ciblage est concentré sur les profils d'investisseurs qui comprennent l'économie d'un logiciel SaaS B2B et l'impact de l'infrastructure entrepreneuriale en Afrique :
 
-| Type d'Investisseur | Ticket Moyen (FCFA) | Stade Visé | Intérêt Stratégique pour Hub Africa | Niveau de Priorité |
+| Type d'Investisseur | Ticket Moyen (FCFA) | Stade Visé | Intérêt Stratégique pour Hubs Africa | Niveau de Priorité |
 | :--- | :---: | :---: | :--- | :---: |
 | **Business Angels (Individuels / Réseaux)** | 5M à 25M FCFA | Amorçage / Post-MVP | Apport de réseau (*Smart Money*), mise en relation avec des directions de SAE et ministères. | **🔥 PRIORITÉ 1 (Cible : 35M FCFA)** |
 | **Subventions Bailleurs & Programmes Tech** | 10M à 35M FCFA | Amorçage | Financement non-dilutif, validation institutionnelle majeure auprès des écosystèmes locaux. | **🔥 PRIORITÉ 1 (Cible : 25M FCFA)** |
 | **Fonds d'Amorçage Régionaux (Seed VC)** | 15M à 50M FCFA | Traction SaaS | Accompagnement vers la scalabilité panafricaine, préparation du futur tour de Série A. | **⚡ PRIORITÉ 2 (Cible : 15M FCFA)** |
-| **Grands Fonds VC Série A (Partech, etc.)** | > 300M FCFA | Expansion > 100k$ ARR | Étape ultérieure ; à tenir informés dès maintenant de la progression de Hub Africa. | ⏳ Cible pour 2028 |
+| **Grands Fonds VC Série A (Partech, etc.)** | > 300M FCFA | Expansion > 100k$ ARR | Étape ultérieure ; à tenir informés dès maintenant de la progression de Hubs Africa. | ⏳ Cible pour 2028 |
 
 ---
 
-## 2. Pourquoi les Investisseurs Hésitent en Afrique (et comment Hub Africa lève ces doutes)
+## 2. Pourquoi les Investisseurs Hésitent en Afrique (et comment Hubs Africa lève ces doutes)
 
-Les investisseurs et Business Angels opérant en Afrique francophone formulent 5 objections récurrentes. Hub Africa a été architecturé pour répondre méthodiquement à chacune d'elles :
+Les investisseurs et Business Angels opérant en Afrique francophone formulent 5 objections récurrentes. Hubs Africa a été architecturé pour répondre méthodiquement à chacune d'elles :
 
 ```
 +----------------------------------------------------------------------------------------------------+
-|  OBJECTION CLASSIQUE DE L'INVESTISSEUR             |  RÉPONSE FORMELLE APPORTÉE PAR HUB AFRICA      |
+|  OBJECTION CLASSIQUE DE L'INVESTISSEUR             |  RÉPONSE FORMELLE APPORTÉE PAR HUBS AFRICA      |
 +----------------------------------------------------+-----------------------------------------------+
-|  1. "Le marché des startups africaines est trop    |  Hub Africa vend aux structures (SAE, États,  |
+|  1. "Le marché des startups africaines est trop    |  Hubs Africa vend aux structures (SAE, États,  |
 |     fragile et les PME ne paient pas."             |  bailleurs) qui ont des budgets pérennes.     |
 +----------------------------------------------------+-----------------------------------------------+
-|  2. "Les fondateurs n'ont qu'un prototype et pas   |  Hub Africa v2 est en ligne, testé (suite Pest|
+|  2. "Les fondateurs n'ont qu'un prototype et pas   |  Hubs Africa v2 est en ligne, testé (suite Pest|
 |     de produit réel fonctionnel."                  |  100% verte) et déjà éprouvé en pilote.       |
 +----------------------------------------------------+-----------------------------------------------+
 |  3. "Les valorisations d'amorçage sont excessives |  Valorisation raisonnable (300M FCFA) adossée  |
@@ -60,7 +60,7 @@ Les investisseurs et Business Angels opérant en Afrique francophone formulent 5
 
 ## 3. Les Instruments de Financement Privilégiés pour le Tour de 75M FCFA
 
-Pour concilier rapidité de clôture et préservation de la gouvernance fondatrice, Hub Africa propose 2 instruments juridiques :
+Pour concilier rapidité de clôture et préservation de la gouvernance fondatrice, Hubs Africa propose 2 instruments juridiques :
 
 ### 1. Le BSA-AIR (Accord d'Investissement Rapide / SAFE Panafricain) — Option Recommandée
 - **Principe :** Injection immédiate des fonds, conversion en capital lors de la prochaine levée institutionnelle.
@@ -81,10 +81,10 @@ Pour concilier rapidité de clôture et préservation de la gouvernance fondatri
 
 ### Catégorie A : Réseaux de Business Angels & Diaspora (BA Networks)
 
-| Nom du Réseau | Implantation | Ticket Moyen | Intérêt Spécifique pour Hub Africa | Coordonnées / Référence |
+| Nom du Réseau | Implantation | Ticket Moyen | Intérêt Spécifique pour Hubs Africa | Coordonnées / Référence |
 | :--- | :--- | :---: | :--- | :--- |
 | **ABAN (African Business Angel Network)** | Panafricain | Syndicats | Fédération continentale ; prescripteur naturel auprès des clubs de BA africains. | `secretariat@abanangels.org`<br>[abanangels.org](https://abanangels.org) |
-| **Togo Angels Network** | Lomé (Togo) | 2M à 15M FCFA | Ancrage local direct, appui à l'infrastructure technologique nationale. | Siège CUBE / Hub Africa Lomé |
+| **Togo Angels Network** | Lomé (Togo) | 2M à 15M FCFA | Ancrage local direct, appui à l'infrastructure technologique nationale. | Siège CUBE / Hubs Africa Lomé |
 | **Ivoire Angels** | Abidjan (Côte d'Ivoire) | 5M à 25M FCFA | Intérêt marqué pour les logiciels B2B et la digitalisation des PME en Côte d'Ivoire. | `contact@ivoireangels.com` |
 | **Dakar Network Angels (DNA)** | Dakar (Sénégal) | 5M à 30M FCFA | Club de BA très actif dans la tech francophone, cherchant des solutions scalables. | `contact@dakarangels.com` |
 | **Cameroon Angels Network (CAN)** | Douala (Cameroun) | 5M à 20M FCFA | Pont d'entrée stratégique pour notre futur déploiement en zone CEMAC. | Douala / Yaoundé |
@@ -92,7 +92,7 @@ Pour concilier rapidité de clôture et préservation de la gouvernance fondatri
 
 ### Catégorie B : Fonds de Capital-Risque d'Amorçage (Seed / Early Stage VC)
 
-| Nom du Fonds | Siège / Présence | Ticket Moyen | Thèse d'Investissement & Synergie Hub Africa |
+| Nom du Fonds | Siège / Présence | Ticket Moyen | Thèse d'Investissement & Synergie Hubs Africa |
 | :--- | :--- | :---: | :--- |
 | **Launch Africa Ventures** | Panafricain (Mauritius) | 50 000 $ à 150 000 $ | Leader du Seed en Afrique ; investit dans les plateformes SaaS B2B qui désenclavent les marchés locaux. |
 | **Saviu Ventures** | Côte d'Ivoire / France | 50 000 € à 250 000 € | Spécialiste de la tech en Afrique de l'Ouest francophone (Sénégal, CI, Togo). |
@@ -113,7 +113,7 @@ Pour concilier rapidité de clôture et préservation de la gouvernance fondatri
 
 ### Catégorie D : Fonds d'Impact & Véhicules Régionaux de Développement
 
-| Institution | Zone Cible | Rôle & Intérêt pour Hub Africa |
+| Institution | Zone Cible | Rôle & Intérêt pour Hubs Africa |
 | :--- | :--- | :--- |
 | **Investisseurs & Partenaires (I&P)** | Panafricain francophone | Réseau pionnier de l'investissement d'impact dans les PME africaines. |
 | **WIC Capital (Women's Investment Club)** | Sénégal / Côte d'Ivoire | Syndicat d'investisseuses valorisant les plateformes intégrant des indicateurs de parité. |
@@ -126,7 +126,7 @@ Pour concilier rapidité de clôture et préservation de la gouvernance fondatri
 Pour réunir rapidement les **75 000 000 FCFA**, le tour de table est scindé en **3 compartiments équilibrés** :
 
 ```
-TOUR D'AMORÇAGE HUB AFRICA : 75 000 000 FCFA (~115 000 €)
+TOUR D'AMORÇAGE HUBS AFRICA : 75 000 000 FCFA (~115 000 €)
 ┌────────────────────────────────────────┬────────────────────────────────────────┬────────────────────────────────────────┐
 │  COMPARTIMENT 1 : BUSINESS ANGELS (BA) │  COMPARTIMENT 2 : SUBVENTIONS BAILLEURS│  COMPARTIMENT 3 : SEED VC RÉGIONAUX    │
 │  • Montant : 35 000 000 FCFA (46,7%)   │  • Montant : 25 000 000 FCFA (33,3%)   │  • Montant : 15 000 000 FCFA (20,0%)   │
@@ -146,7 +146,7 @@ TOUR D'AMORÇAGE HUB AFRICA : 75 000 000 FCFA (~115 000 €)
 
 ### Étape 2 : Présentation du Pitch Deck & Démonstration Live (J 0)
 - Session de pitch minutée (2 à 5 minutes) basée sur le guide officiel [PITCH_DECK_HUB_AFRICA_CUBE.md](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/PITCH_DECK_HUB_AFRICA_CUBE.md).
-- **Démonstration en direct de Hub Africa v2 :**
+- **Démonstration en direct de Hubs Africa v2 :**
   1. Vue administrateur SAE (`/sae/{tenant}`) : création d'une cohorte et déblocage d'un formulaire d'évaluation S&E.
   2. Vue mentor (`/mentor/{tenant}`) : consultation des startups assignées et notation d'un livrable.
   3. Vue entrepreneur (`/portal/{tenant}`) : tableau de bord du parcours, dépôt de livrable et réponse au questionnaire.

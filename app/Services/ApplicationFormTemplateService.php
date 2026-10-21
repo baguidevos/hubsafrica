@@ -10,18 +10,18 @@ use Illuminate\Support\Str;
 
 class ApplicationFormTemplateService
 {
-    public const STANDARD_TEMPLATE_SLUG = 'candidature-standard-hub-africa';
+    public const STANDARD_TEMPLATE_SLUG = 'candidature-standard-hubs-africa';
 
     /**
-     * Récupère ou initialise le Template Standardisé Officiel Hub Africa.
+     * Récupère ou initialise le Template Standardisé Officiel Hubs Africa.
      */
     public function getOrCreateStandardTemplate(): Form
     {
         return Form::withoutGlobalScopes()->updateOrCreate(
             ['slug' => self::STANDARD_TEMPLATE_SLUG],
             [
-                'name' => 'Dossier de Candidature Standard Hub Africa',
-                'description' => 'Modèle officiel standardisé Hub Africa comprenant l\'état civil porteur, la présentation de la startup, la note de motivation et le pitch deck.',
+                'name' => 'Dossier de Candidature Standard Hubs Africa',
+                'description' => 'Modèle officiel standardisé Hubs Africa comprenant l\'état civil porteur, la présentation de la startup, la note de motivation et le pitch deck.',
                 'type' => FormType::CANDIDATURE,
                 'is_template' => true,
                 'is_standard' => true,
@@ -41,7 +41,7 @@ class ApplicationFormTemplateService
     }
 
     /**
-     * Définition exhaustive des sections et champs du socle commun Hub Africa
+     * Définition exhaustive des sections et champs du socle commun Hubs Africa
      * structurée pour le moteur natif Packstub FormBuilder.
      *
      * @return array<int, array<string, mixed>>
@@ -275,7 +275,7 @@ class ApplicationFormTemplateService
 
     /**
      * Récupère tous les templates de candidature disponibles pour une SAE :
-     * 1. Le template officiel standardisé Hub Africa.
+     * 1. Le template officiel standardisé Hubs Africa.
      * 2. Les templates personnalisés créés par cette SAE.
      */
     public function getAvailableTemplatesForSae(?int $saeId): Collection
@@ -329,7 +329,7 @@ class ApplicationFormTemplateService
 
     /**
      * Obtient le formulaire effectif pour une cohorte :
-     * Le formulaire assigné ou, à défaut, le template standardisé Hub Africa.
+     * Le formulaire assigné ou, à défaut, le template standardisé Hubs Africa.
      */
     public function getEffectiveFormForCohort(Cohort $cohort): Form
     {

@@ -1,6 +1,6 @@
-# Changelog & Récapitulatif Technique — Hub Africa v2
+# Changelog & Récapitulatif Technique — Hubs Africa v2
 
-Toutes les modifications notables apportées au projet **Hub Africa v2** (Stack Laravel 13 + Filament v5 + MySQL + Multi-tenant) sont documentées dans ce fichier.
+Toutes les modifications notables apportées au projet **Hubs Africa v2** (Stack Laravel 13 + Filament v5 + MySQL + Multi-tenant) sont documentées dans ce fichier.
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
@@ -26,7 +26,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
     - Bouton d'action d'en-tête dynamique "Vue Kanban" / "Vue Tableau" intégré sur l'ensemble des pages de liste correspondantes (`ListApplications`, `ListProjects`, `ListDeliverableSubmissions`, `ListCoachJoinRequests`).
 
 - **Dock Flottant d'Actions Rapides & Navigation Pipeline (`quick-action-dock`)** :
-  - Barre d'accès rapide flottante positionnée en bas de page dans le panel Incubateur (`SaePanelProvider.php`), aux couleurs officielles Hub Africa (`#2F3284` & `#F8B81D`).
+  - Barre d'accès rapide flottante positionnée en bas de page dans le panel Incubateur (`SaePanelProvider.php`), aux couleurs officielles Hubs Africa (`#2F3284` & `#F8B81D`).
   - Navigation instantanée en 1 clic vers les 4 pipelines Kanban (Candidatures, Projets, Livrables, Coachs).
   - Support du raccourci clavier universel (`Cmd/Ctrl + K`) pour ouvrir la modale de saut rapide entre tableaux de bord.
   - Fichiers d'assets dédiés et légers (`public/css/quick-action-dock.css` et `public/js/quick-action-dock.js`).
@@ -67,10 +67,10 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 
 ### Ajouté (Added) & Amélioré (Improved)
 - **Infrastructure Complète de Notifications & Emails Transactionnels** :
-  - **Gabarit HTML responsive standardisé (`components/emails/layouts/hubafrica.blade.php`)** :
-    - Design moderne aux couleurs institutionnelles Hub Africa (Bleu Nuit `#2F3284` & Or Panafricain `#F8B81D`).
+  - **Gabarit HTML responsive standardisé (`components/emails/layouts/hubsafrica.blade.php`)** :
+    - Design moderne aux couleurs institutionnelles Hubs Africa (Bleu Nuit `#2F3284` & Or Panafricain `#F8B81D`).
     - Compatible avec l'ensemble des clients de messagerie (structure en tables imbriquées, inline styles, responsive).
-    - En-tête multi-tenant dynamique affichant le logo et le nom de la SAE émettrice avec fallback Hub Africa.
+    - En-tête multi-tenant dynamique affichant le logo et le nom de la SAE émettrice avec fallback Hubs Africa.
     - Pied de page complet avec coordonnées du support, mentions d'hébergement panafricain et liens sécurisés.
   - **Emails de bienvenue & embarquement aux inscriptions** :
     - [`FounderWelcomeMail`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/app/Mail/FounderWelcomeMail.php) : Envoyé au fondateur dès la soumission de sa première candidature, avec ses identifiants et le lien vers l'espace entrepreneur `/portal`.
@@ -127,7 +127,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
   - **Discrétion du portail d'administration** : Retrait du lien direct Super Admin du menu déroulant public.
 
 - **Modernisation Graphique de la Vitrine Publique (`home.blade.php`, `public.blade.php`)** :
-  - **Hero Section immersif** : Arrière-plan enrichi d'halos lumineux d'ambiance aux couleurs officielles Hub Africa (Bleu Nuit `#2F3284` et Or `#F8B81D`), trame en pointillés fins, badge officiel pulsant et bouton CTA doré à fort impact.
+  - **Hero Section immersif** : Arrière-plan enrichi d'halos lumineux d'ambiance aux couleurs officielles Hubs Africa (Bleu Nuit `#2F3284` et Or `#F8B81D`), trame en pointillés fins, badge officiel pulsant et bouton CTA doré à fort impact.
   - **Indicateurs d'impact valorisés** : Cartes statistiques en verre dépoli (`backdrop-blur-md`) avec bordures lumineuses au survol (`hover:border-[#F8B81D]/40`) et micro-élévation.
   - **Cartes des programmes phares & Parcours en 4 étapes** : Design revisité avec coins adoucis (`rounded-3xl`), tags de maturité nets, micro-animations sur les étapes clés (Diagnostic, Mentorat, Structuration, Financement & Marchés) et bannière finale en dégradé nuit profond.
 
@@ -138,12 +138,12 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
     - Création du compte Super Administrateur initial avec identifiants configurables via `.env` (`INITIAL_ADMIN_EMAIL`, `INITIAL_ADMIN_PASSWORD`).
 
 - **Matrice de Conformité Référentiel DIL (Digital Innovation Loop)** :
-  - Validation et documentation de l'adéquation fonctionnelle native de Hub Africa v2 pour le pilotage complet du référentiel DIL d'accompagnement à la digitalisation des TPME et coopératives.
+  - Validation et documentation de l'adéquation fonctionnelle native de Hubs Africa v2 pour le pilotage complet du référentiel DIL d'accompagnement à la digitalisation des TPME et coopératives.
 
 ## [2.15.0] - 2026-10-11
 
 ### Ajouté (Added) & Amélioré (Improved)
-- **Tableau de Bord Administrateur — Mesures de Traction Panafricaines de Hub Africa (`/admin`)** :
+- **Tableau de Bord Administrateur — Mesures de Traction Panafricaines de Hubs Africa (`/admin`)** :
   - **Widget Synthétique de Traction (`PlatformTractionOverviewWidget`)** :
     - 8 cartes de statistiques temps réel avec sparklines et alertes colorées.
     - Structures d'Accompagnement (SAE) raccordées et actives.
@@ -169,14 +169,14 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
   - **Tests Automatisés Pest (`AdminPlatformTractionDashboardTest.php`)** :
     - Couverture intégrale du rendu HTTP GET `/admin` et de chacun des widgets Livewire avec 15 assertions réussies à 100%.
 
-- **Dossier Officiel de Préparation à la Levée de Fonds — 100% Centré sur Hub Africa** :
+- **Dossier Officiel de Préparation à la Levée de Fonds — 100% Centré sur Hubs Africa** :
   - **Pitch Deck Officiel (`PITCH_DECK_HUB_AFRICA_CUBE.md`)** :
     - 13 diapositives calibrées pour une présentation orale de 2 minutes chrono.
     - Scripts orateurs mot à mot, nomenclature graphique des visuels à insérer, prévisions financières (N-1 à N+3) et diapositives d'annexe (Q&A).
   - **Résumé Exécutif (`RESUME_EXECUTIF_HUB_AFRICA.md`)** :
     - Document de synthèse managériale en 2 pages pour les investisseurs : énoncé du problème (85% des incubateurs sur Excel/WhatsApp), solution SaaS à 3 portails, modèle économique, traction terrain et offre de 75 000 000 FCFA pour 20% du capital.
   - **Business Model en 17 Étapes (`BUSINESS_MODEL_17_ETAPES_HUB_AFRICA.md`)** :
-    - Application rigoureuse de la méthodologie CUBE en 17 étapes logiques au logiciel Hub Africa v2.
+    - Application rigoureuse de la méthodologie CUBE en 17 étapes logiques au logiciel Hubs Africa v2.
     - Matrice Business Model Canvas (BMC), grille tarifaire en FCFA (*Starter 25k*, *Pro 60k*, *Enterprise 120k*), licences institutionnelles et économie unitaire (ratio LTV / CAC > 9x).
   - **Liste Qualifiée des Investisseurs & Stratégie (`LISTE_DES_INVESTISSEURS_ET_STRATEGIE_CIBLAGE.md`)** :
     - Arguments levant les 5 réticences majeures des Business Angels, modalités d'investissement (BSA-AIR / Equity), annuaire de plus de 25 investisseurs cibles en Afrique (ABAN, Launch Africa, Saviu, etc.) et séquence de prospection en 6 étapes.
@@ -188,7 +188,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
     - Guide centralisateur de l'ensemble des documents avec conseils graphiques et typographiques pour la mise en page.
 
 - **Outillage d'Importation & Migration de Données V1** :
-  - Commande Artisan `ImportV1DatabaseCommand` (`php artisan hubafrica:import-v1-database`) assurant le parsing, la normalisation et la migration complète des données historiques JSON/SQL vers les entités relationnelles multi-tenants de Hub Africa v2.
+  - Commande Artisan `ImportV1DatabaseCommand` (`php artisan hubsafrica:import-v1-database`) assurant le parsing, la normalisation et la migration complète des données historiques JSON/SQL vers les entités relationnelles multi-tenants de Hubs Africa v2.
 
 ## [2.14.0] - 2026-10-11
 
@@ -270,7 +270,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
     - Nouvelle section *« Seuils de Délibération & Admission Jury »* dans la fiche du programme.
     - Liberté totale : permet d'adapter la sélectivité pour les programmes d'élite (ex: $85 / 65$) ou les programmes inclusifs (ex: $60 / 40$). En l'absence de saisie, le programme hérite automatiquement des seuils par défaut de sa SAE.
   - **Moteur d'Évaluation en Cascade (`Application::applyEvaluationDecision`)** :
-    - Résolution dynamique de priorité : Programme $\rightarrow$ SAE $\rightarrow$ Standard Hub Africa (75 / 50).
+    - Résolution dynamique de priorité : Programme $\rightarrow$ SAE $\rightarrow$ Standard Hubs Africa (75 / 50).
     - Bascule automatique du statut dès la notation : `ACCEPTEE` dès le seuil d'admission atteint, `EN_ATTENTE` pour le seuil intermédiaire, `REFUSEE` en-dessous.
   - **Interface Filament Réactive & Feedback Visuel** :
     - Rappel explicite des seuils actifs et de leur source (programme vs SAE) dans l'action de délibération du jury (`ApplicationsTable::evaluate`).
@@ -426,7 +426,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 ## [2.8.0] - 2026-09-28
 
 ### Ajouté (Added) & Amélioré (Improved)
-- **Architecture d'Accompagnement Hub Africa & Organisation par Clusters Métiers** :
+- **Architecture d'Accompagnement Hubs Africa & Organisation par Clusters Métiers** :
   - Restructuration intégrale du panneau SAE en 4 Clusters fonctionnels fluides :
     - *🎓 Programmes & Sélection* : Fiche d'édition enrichie avec onglets combinés (*Informations*, *Phases & Jalons*, *Grille de Sélection & Jurys*, *Partenaires & Bailleurs*), gestion des promotions et candidatures.
     - *💼 Portefeuille Startups* : Fiches 360° des entreprises, profils des fondateurs et timeline chronologique.
@@ -463,14 +463,14 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
     - Export complet (`/sae/{tenant}/programmes/cohorts/{cohort}/export-attendance`) au format CSV/Excel croisant toutes les startups inscrites et toutes les séances de coaching de la promotion avec calcul automatique du taux d'assiduité.
 
 - **Système de Templates de Formulaires de Candidature Standardisés & Personnalisés par SAE** :
-  - **Modèle Officiel Standard Hub Africa** :
+  - **Modèle Officiel Standard Hubs Africa** :
     - Initialisation automatique d'un template officiel panafricain (`is_standard = true`, `is_template = true`) comportant le socle commun de 13 champs (état civil, contact WhatsApp, profil porteur, startup, pitch synthétique, taille d'équipe, note de motivation, besoins d'accompagnement prioritaires, téléversement du pitch deck).
-    - Protection stricte : interdiction de suppression ou de modification du modèle standard Hub Africa pour garantir l'uniformité des données pan-africaines.
+    - Protection stricte : interdiction de suppression ou de modification du modèle standard Hubs Africa pour garantir l'uniformité des données pan-africaines.
   - **Formulaire Obligatoire à la Création de Cohorte** :
-    - Champ `application_form_id` rendu obligatoire sur chaque cohorte (`CohortForm`), avec sélection dynamique entre le modèle standardisé et les templates propres à la structure, pré-sélectionné par défaut sur le standard Hub Africa.
+    - Champ `application_form_id` rendu obligatoire sur chaque cohorte (`CohortForm`), avec sélection dynamique entre le modèle standardisé et les templates propres à la structure, pré-sélectionné par défaut sur le standard Hubs Africa.
   - **Création de Modèles Sur-Mesure par Structure (SAE)** :
     - Possibilité pour chaque SAE de créer ses propres templates personnalisés (`is_template = true`) ou de dupliquer en 1 clic le modèle officiel (`duplicateAsSaeTemplate`) pour y ajouter des questions d'éligibilité, des QCM ou des champs spécifiques.
-    - Filtrage et badges d'usage (`Standard Hub Africa`, `Template Candidature`, `Enquête & Suivi`) dans `EvaluationFormResource`.
+    - Filtrage et badges d'usage (`Standard Hubs Africa`, `Template Candidature`, `Enquête & Suivi`) dans `EvaluationFormResource`.
   - **Génération Dynamique dans le Wizard Public de Candidature** :
     - Détection automatique et rendu dynamique des questions complémentaires de la structure à l'Étape 3 du wizard Livewire (`ProgramApplicationWizard`).
     - Prise en charge des types de champs : texte libre, textarea, listes déroulantes (`select`), nombres, cases à cocher avec validation en temps réel.
@@ -516,19 +516,19 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 ## [2.5.0] - 2026-09-27
 
 ### Modifié (Changed) & Harmonisé (Aligned)
-- **Palette Graphique Officielle Hub Africa Version 1** :
-  - Extraction et intégration des codes couleur exacts de la Version 1 (`C:\Users\D3vOs\Projets\Laravel\Web\hub-africa`) :
-    - Couleur primaire : `#F8B81D` (Jaune d'or / Gold Hub Africa)
+- **Palette Graphique Officielle Hubs Africa Version 1** :
+  - Extraction et intégration des codes couleur exacts de la Version 1 (`C:\Users\D3vOs\Projets\Laravel\Web\Hubs-Africa`) :
+    - Couleur primaire : `#F8B81D` (Jaune d'or / Gold Hubs Africa)
     - Survol primaire : `#e5a510`
     - Couleur secondaire : `#2F3284` (Bleu indigo nuit profond / Navy)
     - Accent chaleureux : `#F9B104` (Ambre)
-  - Configuration centralisée dans `config/hubafrica.php` et déclaration des variables de design system dans `resources/css/app.css` (Tailwind `@theme`).
+  - Configuration centralisée dans `config/hubsafrica.php` et déclaration des variables de design system dans `resources/css/app.css` (Tailwind `@theme`).
   - Déclinaison harmonieuse sur l'ensemble des pages publiques (Accueil, Catalogue des programmes, Fiche programme, Annuaire SAE, Fiche SAE, Parcours d'orientation, et Assistant de candidature multi-étapes).
 - **Intégration du Logo Officiel & Partenaire de la Version 1** :
-  - Déploiement du véritable logo horizontal Hub Africa issu de la v1 (`koworkers.png` — "Hub" doré `#F8B81D`, "Africa" noir avec point doré sur le 'i') dans le header et le footer.
+  - Déploiement du véritable logo horizontal Hubs Africa issu de la v1 (`koworkers.png` — "Hub" doré `#F8B81D`, "Africa" noir avec point doré sur le 'i') dans le header et le footer.
   - Déploiement de l'emblème officiel partenaire `iyba-seed.png` dans la grille des partenaires institutionnels.
 - **Remplacement des Favicons par ceux de la Version 1** :
-  - Intégration dans `public/` de `favicon.ico`, `favicon.svg`, et `apple-touch-icon.png` officiels de Hub Africa v1.
+  - Intégration dans `public/` de `favicon.ico`, `favicon.svg`, et `apple-touch-icon.png` officiels de Hubs Africa v1.
   - Référencement complet dans le layout public (`<x-layouts.public>`).
 - **Tests & Robustesse** :
   - Suite de tests Pest validée à 100% (25/25 tests passants).
@@ -550,7 +550,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
   - Masquage intelligent du sous-titre de logo sur les écrans inférieurs à `xl`.
   - Passage des liens de navigation avec espacement optimisé (`gap-6`) et boutons d'action compacts, maintenant une largeur totale sous les 650px.
 - **Suppression de la mention "v2" sur l'espace public** :
-  - Harmonisation de la marque publique sous le nom unique **Hub Africa**.
+  - Harmonisation de la marque publique sous le nom unique **Hubs Africa**.
   - Retrait du badge "v2" dans la barre de navigation, les en-têtes, les métadonnées SEO et le pied de page public.
 
 ## [2.3.0] - 2026-09-27
@@ -586,8 +586,8 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
   - Configuration globale dans `AppServiceProvider.php` via `Head::defaults()` (OpenGraph, Twitter Cards, balises canoniques, séparateurs de titres dynamiques).
   - En-têtes personnalisés dynamiques sur chaque page publique (`HomeController`, `ProgramPublicController`, `StructurePublicController`).
 
-- **Moteur de Thème & Palette Configurable (`config/hubafrica.php`)** :
-  - Fichier de configuration centralisé `config/hubafrica.php` gérant l'identité, les contacts, les métadonnées SEO et la charte graphique.
+- **Moteur de Thème & Palette Configurable (`config/hubsafrica.php`)** :
+  - Fichier de configuration centralisé `config/hubsafrica.php` gérant l'identité, les contacts, les métadonnées SEO et la charte graphique.
   - Système de variables CSS dynamiques (`--ha-primary`, `--ha-secondary`, `--ha-accent`, `--ha-surface`) injectées dans le layout et intégrées aux tokens `@theme` de Tailwind CSS v4 (`--color-brand-primary`, etc.).
   - Personnalisation immédiate des couleurs via variables d'environnement `.env` sans recompilation des assets.
 
@@ -711,7 +711,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 ## [2.0.0] - 2026-09-25
 
 ### Ajouté (Added)
-- **Socle initial Hub Africa v2 sous Laravel 13 & Filament v5** :
+- **Socle initial Hubs Africa v2 sous Laravel 13 & Filament v5** :
   - 3 Panels configurés :
     - SAE Admin : `/sae/{tenant}`
     - Coach / Mentor : `/mentor/{tenant}`
@@ -727,7 +727,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 
 | Rôle | URL de connexion | Email | Mot de passe | Contexte / Tenant |
 | :--- | :--- | :--- | :--- | :--- |
-| **Super Administrateur** | `/admin` | `admin@hubafrica.org` | `password` | Plateforme globale |
+| **Super Administrateur** | `/admin` | `admin@hubsafrica.org` | `password` | Plateforme globale |
 | **Responsable SAE** | `/sae/teranga-africa` | `fatou.diop@teranga.sn` | `password` | Teranga Africa Hub |
 | **Coach / Mentor** | `/mentor/teranga-africa` | `marie.sarr@coach.sn` | `password` | Teranga Africa Hub |
 | **Entrepreneur** | `/portal/teranga-africa` | `ousmane.fall@ecobat.sn` | `password` | EcoBat Sénégal |

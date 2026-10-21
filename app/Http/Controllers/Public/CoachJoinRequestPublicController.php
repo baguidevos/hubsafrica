@@ -22,8 +22,8 @@ class CoachJoinRequestPublicController extends Controller
      */
     public function create(Request $request): View
     {
-        Head::title('Devenir Coach / Mentor — Hub Africa')
-            ->description('Postulez pour rejoindre l\'équipe de mentorat d\'une structure d\'accompagnement partenaire de Hub Africa.');
+        Head::title('Devenir Coach / Mentor — Hubs Africa')
+            ->description('Postulez pour rejoindre l\'équipe de mentorat d\'une structure d\'accompagnement partenaire de Hubs Africa.');
 
         $selectedSaeId = $request->query('sae');
         $saes = Sae::where('status', 'ACTIVE')->orderBy('name')->get();

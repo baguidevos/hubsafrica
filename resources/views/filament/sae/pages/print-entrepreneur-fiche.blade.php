@@ -5,7 +5,7 @@
             <p class="text-xs text-stone-600">Dossier individuel d'accompagnement &bull; {{ $record->full_name }}</p>
         </div>
         <div class="text-right text-[11px] text-stone-500">
-            <p class="font-bold text-stone-800">{{ $record->sae?->name ?? 'Hub Africa' }}</p>
+            <p class="font-bold text-stone-800">{{ $record->sae?->name ?? 'Hubs Africa' }}</p>
             <p>Édité le {{ now()->translatedFormat('d F Y à H:i') }}</p>
         </div>
     </div>

@@ -5,7 +5,7 @@
                 Portail d'Orientation &amp; Accès
             </span>
             <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight">
-                Rejoindre la Dynamique <span class="text-[#F8B81D]">Hub Africa</span>
+                Rejoindre la Dynamique <span class="text-[#F8B81D]">Hubs Africa</span>
             </h1>
             <p class="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-2xl mx-auto font-normal">
                 Sélectionnez votre profil d'acteur pour être orienté vers les opportunités, les appels à candidatures ou votre espace de gestion dédié.

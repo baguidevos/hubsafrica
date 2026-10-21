@@ -1,6 +1,6 @@
-# 🧪 Comptes de Test & Connexions Directes — Hub Africa
+# 🧪 Comptes de Test & Connexions Directes — Hubs Africa
 
-Ce document référence l'intégralité des **comptes de test pré-configurés** pour chaque rôle et espace de l'application Hub Africa.
+Ce document référence l'intégralité des **comptes de test pré-configurés** pour chaque rôle et espace de l'application Hubs Africa.
 
 ---
 
@@ -10,7 +10,7 @@ Pour vous connecter **instantanément** à n'importe quel espace sans avoir à s
 
 | Rôle & Profil | Nom | Connexion Directe 1-Clic | Dashboard Cible |
 | :--- | :--- | :--- | :--- |
-| 🛡️ **Super Administrateur** | Directeur Hub Africa | [👉 Se connecter en Super Admin](http://localhost:8000/demo/login?as=admin) | `/admin` |
+| 🛡️ **Super Administrateur** | Directeur Hubs Africa | [👉 Se connecter en Super Admin](http://localhost:8000/demo/login?as=admin) | `/admin` |
 | 🏢 **Responsable SAE (Dakar)** | Fatou Diop | [👉 Se connecter (Teranga Hub)](http://localhost:8000/demo/login?as=sae) | `/sae/teranga-africa` |
 | 🏢 **Responsable SAE (Abidjan)** | Amadou Koné | [👉 Se connecter (Jokkolabs)](http://localhost:8000/demo/login?as=sae2) | `/sae/jokkolabs-abidjan` |
 | 🎓 **Coach & Mentor Senior** | Marie Sarr | [👉 Se connecter (Marie Sarr)](http://localhost:8000/demo/login?as=coach) | `/coach/teranga-africa` |
@@ -28,7 +28,7 @@ Tous les comptes partagent le même mot de passe universel : `password`
 
 | Rôle | Nom | Email | Mot de passe | Structure / Projet | Panel Filament |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Super Admin** | Directeur Hub Africa | `admin@hubafrica.org` | `password` | *Plateforme Panafricaine* | [`/admin`](http://localhost:8000/admin) |
+| **Super Admin** | Directeur Hubs Africa | `admin@hubsafrica.org` | `password` | *Plateforme Panafricaine* | [`/admin`](http://localhost:8000/admin) |
 | **Responsable SAE** | Fatou Diop | `fatou.diop@teranga.sn` | `password` | Teranga Africa Hub (Dakar) | [`/sae/teranga-africa`](http://localhost:8000/sae/teranga-africa) |
 | **Responsable SAE** | Amadou Koné | `amadou.kone@jokkolabs.ci` | `password` | Jokkolabs Abidjan (RCI) | [`/sae/jokkolabs-abidjan`](http://localhost:8000/sae/jokkolabs-abidjan) |
 | **Coach / Mentor** | Marie Sarr | `marie.sarr@coach.sn` | `password` | Teranga Africa Hub | [`/coach/teranga-africa`](http://localhost:8000/coach/teranga-africa) |

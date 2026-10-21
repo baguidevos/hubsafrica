@@ -18,7 +18,7 @@ class ProgramPublicController extends Controller
      */
     public function index(): View
     {
-        Head::title('Programmes d\'Accompagnement & Appels à Candidatures | Hub Africa')
+        Head::title('Programmes d\'Accompagnement & Appels à Candidatures | Hubs Africa')
             ->description('Découvrez tous les programmes d\'incubation et d\'accélération actifs en Afrique. Filtrez par incubateur, niveau et postulez en ligne.');
 
         return view('pages.programmes');
@@ -32,12 +32,12 @@ class ProgramPublicController extends Controller
         $program = Program::with(['sae.types', 'level', 'cohorts', 'deliverableDefinitions'])
             ->findOrFail($id);
 
-        Head::title("{$program->name} — Programme d'Accompagnement | Hub Africa")
+        Head::title("{$program->name} — Programme d'Accompagnement | Hubs Africa")
             ->description(strip_tags($program->description ?: 'Consultez les détails, critères d\'éligibilité et calendrier de ce programme d\'accompagnement.'))
             ->og(
                 type: 'article',
                 title: $program->name,
-                description: strip_tags($program->description ?: 'Appel à candidatures Hub Africa'),
+                description: strip_tags($program->description ?: 'Appel à candidatures Hubs Africa'),
             );
 
         return view('pages.programme-detail', [
@@ -97,7 +97,7 @@ class ProgramPublicController extends Controller
             $prefillValues['cohort_id'] = (string) $cohort->id;
         }
 
-        Head::title("Candidater au programme : {$program->name} | Hub Africa")
+        Head::title("Candidater au programme : {$program->name} | Hubs Africa")
             ->description("Formulaire officiel de candidature en ligne pour intégrer le programme {$program->name}.");
 
         return view('pages.programme-apply', [

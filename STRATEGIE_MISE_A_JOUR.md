@@ -1,4 +1,4 @@
-﻿# Stratégie de Mise à Jour & Déploiement — Hub Africa V2
+﻿# Stratégie de Mise à Jour & Déploiement — Hubs Africa V2
 **Branche :** `feature/saei-accompaniment-tracking`  
 **Date :** Octobre 2026  
 
