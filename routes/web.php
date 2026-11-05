@@ -12,6 +12,7 @@ use App\Http\Controllers\Public\StructurePublicController;
 use App\Http\Controllers\Sae\ReportPrintController;
 use App\Http\Controllers\UnifiedInvitationController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -84,3 +85,27 @@ Route::middleware(['auth'])->prefix('sae/{tenant:slug}/rapports')->name('sae.rep
     Route::get('/analytics/download', [ReportPrintController::class, 'analyticsDownload'])->name('analytics.download');
     Route::get('/analytics/csv', [ReportPrintController::class, 'analyticsCsv'])->name('analytics.csv');
 });
+
+// Déploiement temporaire : exécution forcée des migrations en production
+Route::get('/maintenance/migrate-force', function (Request $request) {
+    $expectedSecret = env('MIGRATION_SECRET', 'hubsafrica-migrate-force-2026');
+    $providedKey = $request->query('key');
+
+    $isAuthorized = ($providedKey && hash_equals($expectedSecret, (string) $providedKey))
+        || (auth()->check() && method_exists(auth()->user(), 'isSuperAdmin') && auth()->user()->isSuperAdmin());
+
+    if (! $isAuthorized) {
+        abort(403, 'Accès interdit. Clé de migration requise (?key=...) ou session Super Admin requise.');
+    }
+
+    try {
+        Artisan::call('migrate', [
+            '--force' => true,
+        ]);
+        $output = Artisan::output();
+
+        return response("<pre style='background:#0f172a;color:#38bdf8;padding:20px;border-radius:10px;font-family:monospace;white-space:pre-wrap;'>=== MIGRATIONS EXÉCUTÉES AVEC SUCCÈS ===\n\n".e($output).'</pre>');
+    } catch (Throwable $e) {
+        return response("<pre style='background:#450a0a;color:#fca5a5;padding:20px;border-radius:10px;font-family:monospace;white-space:pre-wrap;'>=== ERREUR MIGRATION ===\n\n".e($e->getMessage())."\n\n".e($e->getTraceAsString()).'</pre>', 500);
+    }
+})->name('maintenance.migrate.force');
