@@ -37,6 +37,7 @@ class AdminPanelProvider extends PanelProvider
             ->maxContentWidth(Width::Full)
             ->login()
             ->passwordReset()
+            ->profile(isSimple: false)
             ->colors([
                 'primary' => Color::Slate,
             ])
