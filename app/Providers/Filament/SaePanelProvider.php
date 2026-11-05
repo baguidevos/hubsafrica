@@ -139,6 +139,7 @@ class SaePanelProvider extends PanelProvider
                     ]),
             ])
             ->databaseNotifications()
+            ->databaseNotificationsPolling('120s')
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

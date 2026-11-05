@@ -21,7 +21,7 @@ class PlatformTractionOverviewWidget extends BaseWidget
 
     protected static bool $isLazy = false;
 
-    protected ?string $pollingInterval = '30s';
+    protected ?string $pollingInterval = null;
 
     protected function getStats(): array
     {

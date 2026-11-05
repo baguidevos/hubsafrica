@@ -62,6 +62,7 @@ class AppServiceProvider extends ServiceProvider
         DeliverableSubmission::observe(DeliverableSubmissionObserver::class);
 
         $this->configureFilamentAuthHooks();
+        $this->configureFilamentLivewireHooks();
     }
 
     /**
@@ -87,6 +88,17 @@ class AppServiceProvider extends ServiceProvider
         FilamentView::registerRenderHook(
             PanelsRenderHook::SIMPLE_LAYOUT_END,
             fn () => view('filament.auth.footer'),
+        );
+    }
+
+    /**
+     * Interception globale des erreurs de polling et de session pour Livewire dans Filament.
+     */
+    protected function configureFilamentLivewireHooks(): void
+    {
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::BODY_END,
+            fn () => view('filament.hooks.livewire-error-handler'),
         );
     }
 

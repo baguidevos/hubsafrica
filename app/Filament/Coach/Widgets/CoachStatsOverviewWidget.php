@@ -12,7 +12,7 @@ class CoachStatsOverviewWidget extends BaseWidget
 {
     protected static ?int $sort = 1;
 
-    protected ?string $pollingInterval = '30s';
+    protected ?string $pollingInterval = null;
 
     protected function getStats(): array
     {
