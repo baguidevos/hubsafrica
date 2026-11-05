@@ -4,6 +4,37 @@ Toutes les modifications notables apportées au projet **Hubs Africa v2** (Stack
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
 
+## [2.21.0] - 2026-11-05
+
+### Ajouté (Added) & Amélioré (Improved)
+- **Gestion des Mots de Passe & Profil Administrateur** :
+  - **Profil Administrateur Filament (`/admin/profile`)** : activation de la page de profil native avec `->profile(isSimple: false)` dans `AdminPanelProvider.php`, permettant à l'administrateur de mettre à jour son nom, son email et de modifier son mot de passe avec vérification de son mot de passe actuel.
+  - **Action Dédiée dans la Table des Utilisateurs** : ajout d'une action modale `Changer mot de passe` (icône clé avec confirmation) dans `UsersTable.php` pour permettre la réinitialisation directe du mot de passe d'un utilisateur par l'administrateur.
+  - **Formulaire Utilisateur Rénové (`UserForm.php`)** : passage du mot de passe en mode optionnel lors de la modification (`->required(fn ($operation) => $operation === 'create')` et `->dehydrated(fn ($state) => filled($state))`) pour éviter toute réinitialisation involontaire lors d'une simple mise à jour d'informations.
+
+- **Unification & Discrétion des Liens d'Invitation (`/join/{token}`)** :
+  - **Point d'Entrée Neutre et Unique** : remplacement des chemins explicites (`/coach/invite/{token}` et `/entrepreneur/invite/{token}`) par une route unifiée `https://hubsafrica.org/join/{token}` ne révélant ni le rôle interne ni la structure technique dans l'URL.
+  - **Contrôleur Unifié (`UnifiedInvitationController.php`)** : détection automatique en coulisse du type d'invitation (Coach ou Entrepreneur) pour afficher l'interface d'embarquement correspondante et finaliser l'inscription sur `POST /join/{token}`.
+  - **Tokens Compacts & Sécurisés** : réduction de la taille des jetons d'invitation de 48 à 20 caractères alphanumériques sécurisés, produisant des liens courts et lisibles dans les e-mails, SMS et applications de messagerie.
+  - **Rétrocompatibilité Complète** : maintien des anciennes routes `/coach/invite/{token}` et `/entrepreneur/invite/{token}` sans rupture de service pour les liens déjà envoyés.
+
+- **Lien d'Invitation Permanent & Générique pour Coachs** :
+  - **Jeton d'Invitation Ouvert par SAE** : migration de schéma ajoutant la colonne `coach_invite_token` (20 caractères, unique) à la table `saes` avec initialisation automatique pour toutes les structures existantes.
+  - **Embarquement Ouvert pour Mentors** : chaque structure d'accompagnement dispose désormais d'un lien permanent réutilisable permettant à n'importe quel coach d'entrer son adresse email, son nom, son téléphone, ses spécialités et de créer son compte rattaché à la SAE.
+  - **Gestion Ergonomique dans le Panel SAE** : boutons d'action d'en-tête « Lien générique Coach » intégrés dans `ListCoachInvitations` et `ListCoaches` avec copie en 1 clic et option de renouvellement/rotation du token en cas de besoin.
+
+- **Intégration d'Invitations au Niveau des Cohortes & Promotions** :
+  - **Action Directe d'Invitation dans `CohortsTable`** : ajout d'une action « Inviter » sur chaque cohorte permettant d'inviter un entrepreneur directement rattaché à cette promotion, avec génération du lien `/join/{token}` et transmission d'e-mail.
+  - **Rattachement Automatique à la Promotion** : à la validation du formulaire par l'entrepreneur, son inscription est automatiquement créée et activée (`Enrollment` avec statut `ACTIF`).
+  - **Route Publique Simplifiée** : ajout de la route neutre `/join/cohort/{id}` pour la candidature publique directe à une cohorte spécifique.
+
+- **Opérations & Déploiement en Production** :
+  - **Route Temporaire Sécurisée de Migration (`/maintenance/migrate-force`)** : mise en place d'un point d'accès d'urgence protégé par clé secrète (`?key=...`) ou session Super Admin pour exécuter `php artisan migrate --force` et afficher le rapport d'exécution en environnement de production sans accès terminal direct.
+
+- **Conformité & Suite de Tests** :
+  - **Tests Pest Dédiés** : ajout de [`AdminPasswordChangeTest.php`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/tests/Feature/AdminPasswordChangeTest.php), [`UnifiedInvitationTest.php`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/tests/Feature/UnifiedInvitationTest.php) et [`MaintenanceMigrationTest.php`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/tests/Feature/MaintenanceMigrationTest.php) (42 tests passés au vert).
+  - Formatage validé via Laravel Pint.
+
 ## [2.20.0] - 2026-10-21
 
 ### Modifié (Changed) & Amélioré (Improved)
