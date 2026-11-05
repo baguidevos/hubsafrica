@@ -47,7 +47,7 @@ class EntrepreneurInvitation extends Model
 
         static::creating(function (EntrepreneurInvitation $invitation) {
             if (empty($invitation->token)) {
-                $invitation->token = Str::random(48);
+                $invitation->token = Str::random(20);
             }
             if (empty($invitation->expires_at)) {
                 $invitation->expires_at = now()->addDays(14);
@@ -91,7 +91,7 @@ class EntrepreneurInvitation extends Model
 
     public function getInvitationUrl(): string
     {
-        return route('entrepreneur.invite', ['token' => $this->token]);
+        return route('invitation.join', ['token' => $this->token]);
     }
 
     public function makeInvitationNotification(): Notification

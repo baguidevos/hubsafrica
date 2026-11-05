@@ -110,7 +110,7 @@
             @endif
 
             {{-- Formulaire --}}
-            <form method="POST" action="{{ route('entrepreneur.invite.register', $invitation->token) }}" class="space-y-5">
+            <form method="POST" action="{{ route('invitation.register', $invitation->token) }}" class="space-y-5">
                 @csrf
 
                 {{-- Email verrouillé --}}

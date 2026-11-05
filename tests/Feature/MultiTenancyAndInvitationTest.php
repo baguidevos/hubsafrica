@@ -113,7 +113,7 @@ test('coach invitation notification has copy action and correct url', function (
         'status' => 'PENDING',
     ]);
 
-    expect($invitation->getInvitationUrl())->toContain('/coach/invite/token-copy-test-999');
+    expect($invitation->getInvitationUrl())->toContain('/join/token-copy-test-999');
 
     $notification = $invitation->makeInvitationNotification();
     expect($notification->getTitle())->toBe('Lien d\'invitation généré');
@@ -131,5 +131,5 @@ test('coach invitation notification has copy action and correct url', function (
 
 test('legacy register coach url with token redirects to official coach invite route', function () {
     $response = $this->get('/register/coach?token=demo-token-123');
-    $response->assertRedirect(route('coach.invite', ['token' => 'demo-token-123']));
+    $response->assertRedirect(route('invitation.join', ['token' => 'demo-token-123']));
 });

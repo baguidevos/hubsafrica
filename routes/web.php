@@ -10,6 +10,7 @@ use App\Http\Controllers\Public\OrientationController;
 use App\Http\Controllers\Public\ProgramPublicController;
 use App\Http\Controllers\Public\StructurePublicController;
 use App\Http\Controllers\Sae\ReportPrintController;
+use App\Http\Controllers\UnifiedInvitationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -44,18 +45,22 @@ Route::redirect('/account-type-selection', '/rejoindre');
 Route::get('/coach/postuler', [CoachJoinRequestPublicController::class, 'create'])->name('public.coach.join');
 Route::post('/coach/postuler', [CoachJoinRequestPublicController::class, 'store'])->name('public.coach.join.store');
 
-// Parcours d'inscription Coach via lien d'invitation sécurisé
+// Parcours d'embarquement unifié et neutre (Coach & Entrepreneur)
+Route::get('/join/{token}', [UnifiedInvitationController::class, 'show'])->name('invitation.join');
+Route::post('/join/{token}', [UnifiedInvitationController::class, 'register'])->name('invitation.register');
+
+// Rétrocompatibilité avec les liens et tests existants
 Route::get('/coach/invite/{token}', [CoachInvitationController::class, 'show'])->name('coach.invite');
 Route::post('/coach/invite/{token}', [CoachInvitationController::class, 'register'])->name('coach.invite.register');
 
-// Parcours d'inscription Entrepreneur via lien d'invitation sécurisé
 Route::get('/entrepreneur/invite/{token}', [EntrepreneurInvitationController::class, 'show'])->name('entrepreneur.invite');
 Route::post('/entrepreneur/invite/{token}', [EntrepreneurInvitationController::class, 'register'])->name('entrepreneur.invite.register');
+
 Route::get('/register/coach', function (Request $request) {
     $token = $request->query('token');
 
     return $token
-        ? redirect()->route('coach.invite', ['token' => $token])
+        ? redirect()->route('invitation.join', ['token' => $token])
         : redirect()->route('public.coach.join');
 });
 

@@ -47,7 +47,7 @@ class CoachInvitation extends Model
 
         static::creating(function (CoachInvitation $invitation) {
             if (empty($invitation->token)) {
-                $invitation->token = Str::random(48);
+                $invitation->token = Str::random(20);
             }
             if (empty($invitation->expires_at)) {
                 $invitation->expires_at = now()->addDays(7);
@@ -76,7 +76,7 @@ class CoachInvitation extends Model
 
     public function getInvitationUrl(): string
     {
-        return route('coach.invite', ['token' => $this->token]);
+        return route('invitation.join', ['token' => $this->token]);
     }
 
     public function makeInvitationNotification(): Notification

@@ -74,7 +74,7 @@
             @endif
 
             {{-- Formulaire de finalisation --}}
-            <form method="POST" action="{{ route('coach.invite.register', $invitation->token) }}" class="space-y-4">
+            <form method="POST" action="{{ route('invitation.register', $invitation->token) }}" class="space-y-4">
                 @csrf
 
                 <div>
