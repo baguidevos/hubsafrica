@@ -1,9 +1,14 @@
 <?php
 
 use App\Enums\CoachInvitationStatus;
+use App\Enums\CohortStatus;
 use App\Enums\EntrepreneurInvitationStatus;
+use App\Enums\ProgramStatus;
 use App\Models\CoachInvitation;
+use App\Models\Cohort;
+use App\Models\Enrollment;
 use App\Models\EntrepreneurInvitation;
+use App\Models\Program;
 use App\Models\Sae;
 use App\Models\User;
 
@@ -140,4 +145,74 @@ test('entrepreneur can register via unified join route', function () {
     $user = User::where('email', 'entrepreneur.unified.reg@test.sn')->first();
     expect($user)->not->toBeNull()
         ->and($user->isEntrepreneur())->toBeTrue();
+});
+
+test('clean cohort join url is accessible and renders cohort join page', function () {
+    $program = Program::create([
+        'sae_id' => $this->sae->id,
+        'name' => 'Programme Test Panafricain',
+        'status' => ProgramStatus::ACTIF,
+    ]);
+
+    $cohort = Cohort::create([
+        'sae_id' => $this->sae->id,
+        'program_id' => $program->id,
+        'name' => 'Cohorte Clean URL Test',
+        'status' => CohortStatus::OUVERTE,
+    ]);
+
+    $response = $this->get(route('public.cohort.join.clean', ['id' => $cohort->id]));
+    $response->assertOk();
+    $response->assertSee('Cohorte Clean URL Test');
+});
+
+test('cohort invitation with unified join url automatically enrolls entrepreneur', function () {
+    $program = Program::create([
+        'sae_id' => $this->sae->id,
+        'name' => 'Programme Solaire',
+        'status' => ProgramStatus::ACTIF,
+    ]);
+
+    $cohort = Cohort::create([
+        'sae_id' => $this->sae->id,
+        'program_id' => $program->id,
+        'name' => 'Promotion Solaire 2026',
+        'status' => CohortStatus::OUVERTE,
+    ]);
+
+    $invitation = EntrepreneurInvitation::create([
+        'sae_id' => $this->sae->id,
+        'cohort_id' => $cohort->id,
+        'email' => 'solaire.founder@test.sn',
+        'first_name' => 'Demba',
+        'last_name' => 'Ndiaye',
+    ]);
+
+    expect($invitation->getInvitationUrl())->toContain('/join/'.$invitation->token);
+
+    $pageResponse = $this->get(route('invitation.join', ['token' => $invitation->token]));
+    $pageResponse->assertOk();
+    $pageResponse->assertSee('Promotion Solaire 2026');
+
+    $postResponse = $this->post(route('invitation.register', ['token' => $invitation->token]), [
+        'first_name' => 'Demba',
+        'last_name' => 'Ndiaye',
+        'password' => 'PasswordClean123!',
+        'password_confirmation' => 'PasswordClean123!',
+        'project_name' => 'SunPower Sahel',
+    ]);
+
+    $postResponse->assertRedirect();
+
+    $invitation->refresh();
+    expect($invitation->status)->toBe(EntrepreneurInvitationStatus::ACCEPTED);
+
+    $user = User::where('email', 'solaire.founder@test.sn')->first();
+    expect($user)->not->toBeNull();
+
+    $enrollment = Enrollment::where('cohort_id', $cohort->id)
+        ->where('entrepreneur_id', $user->entrepreneurProfile->id)
+        ->first();
+    expect($enrollment)->not->toBeNull()
+        ->and($enrollment->status)->toBe('ACTIF');
 });

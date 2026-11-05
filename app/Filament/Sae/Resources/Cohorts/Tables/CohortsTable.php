@@ -3,7 +3,10 @@
 namespace App\Filament\Sae\Resources\Cohorts\Tables;
 
 use App\Enums\CohortStatus;
+use App\Enums\EntrepreneurInvitationStatus;
+use App\Mail\EntrepreneurDirectInvitationMail;
 use App\Models\Cohort;
+use App\Models\EntrepreneurInvitation;
 use App\Services\AccompanimentTemplateService;
 use App\Services\AttendanceService;
 use Filament\Actions\Action;
@@ -18,6 +21,7 @@ use Filament\Notifications\Notification;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Mail;
 
 class CohortsTable
 {
@@ -140,8 +144,8 @@ class CohortsTable
                     ->modalDescription("Partagez ce lien avec vos porteurs de projet. Les personnes sans compte seront invitées à s'inscrire avant d'accéder au formulaire de candidature pré-verrouillé sur cette cohorte.")
                     ->form([
                         TextInput::make('join_url')
-                            ->label('Lien d\'invitation directe')
-                            ->default(fn (Cohort $record) => route('public.cohort.join', $record->id))
+                            ->label('Lien de candidature directe')
+                            ->default(fn (Cohort $record) => route('public.cohort.join.clean', $record->id))
                             ->readOnly()
                             ->helperText('Ce lien amène l\'entrepreneur à se connecter ou s\'inscrire, puis le redirige vers le formulaire de cette cohorte.'),
                     ])
@@ -153,7 +157,7 @@ class CohortsTable
                             ->icon('heroicon-o-clipboard-document-check')
                             ->color('primary')
                             ->action(function ($livewire, Cohort $record) {
-                                $url = route('public.cohort.join', $record->id);
+                                $url = route('public.cohort.join.clean', $record->id);
                                 $livewire->js("window.navigator.clipboard.writeText('{$url}')");
                                 Notification::make()
                                     ->title('Lien copié !')
@@ -162,6 +166,50 @@ class CohortsTable
                                     ->send();
                             }),
                     ]),
+                Action::make('inviteEntrepreneur')
+                    ->label('Inviter')
+                    ->icon('heroicon-o-paper-airplane')
+                    ->color('primary')
+                    ->tooltip('Inviter directement un entrepreneur dans cette promotion')
+                    ->modalHeading(fn (Cohort $record) => "Inviter un entrepreneur dans {$record->name}")
+                    ->modalDescription('Génère un lien d\'invitation sécurisé (/join/{token}) rattaché à cette cohorte et transmet un email au porteur de projet.')
+                    ->modalSubmitActionLabel('Envoyer l\'invitation')
+                    ->form([
+                        TextInput::make('email')
+                            ->label('Adresse email du porteur')
+                            ->email()
+                            ->required(),
+                        TextInput::make('first_name')
+                            ->label('Prénom')
+                            ->nullable(),
+                        TextInput::make('last_name')
+                            ->label('Nom')
+                            ->nullable(),
+                        TextInput::make('phone')
+                            ->label('Téléphone')
+                            ->tel()
+                            ->nullable(),
+                        TextInput::make('project_name')
+                            ->label('Nom du projet (Optionnel)')
+                            ->nullable(),
+                    ])
+                    ->action(function (Cohort $record, array $data): void {
+                        $invitation = EntrepreneurInvitation::create([
+                            'sae_id' => $record->sae_id ?: filament()->getTenant()?->id,
+                            'cohort_id' => $record->id,
+                            'email' => $data['email'],
+                            'first_name' => $data['first_name'] ?? null,
+                            'last_name' => $data['last_name'] ?? null,
+                            'phone' => $data['phone'] ?? null,
+                            'project_name' => $data['project_name'] ?? null,
+                            'status' => EntrepreneurInvitationStatus::PENDING,
+                        ]);
+
+                        Mail::to($invitation->email)
+                            ->queue(new EntrepreneurDirectInvitationMail($invitation));
+
+                        $invitation->makeInvitationNotification()->send();
+                    }),
                 ViewAction::make()->slideOver(),
                 EditAction::make()->slideOver(),
                 DeleteAction::make(),

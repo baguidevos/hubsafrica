@@ -29,6 +29,7 @@ Route::get('/programmes/{id}', [ProgramPublicController::class, 'show'])->name('
 Route::get('/programmes/{id}/candidater', [ProgramPublicController::class, 'candidater'])->name('public.programme.candidater');
 
 // Accès Direct & Candidature à une Cohorte / Promotion spécifique
+Route::get('/join/cohort/{id}', [CohortPublicController::class, 'join'])->name('public.cohort.join.clean');
 Route::get('/cohortes/{id}/rejoindre', [CohortPublicController::class, 'join'])->name('public.cohort.join');
 Route::post('/cohortes/{id}/login', [CohortPublicController::class, 'login'])->name('public.cohort.login');
 Route::post('/cohortes/{id}/register', [CohortPublicController::class, 'register'])->name('public.cohort.register');
