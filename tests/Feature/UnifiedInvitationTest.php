@@ -216,3 +216,79 @@ test('cohort invitation with unified join url automatically enrolls entrepreneur
     expect($enrollment)->not->toBeNull()
         ->and($enrollment->status)->toBe('ACTIF');
 });
+
+test('sae has a generic coach invitation url', function () {
+    expect($this->sae->coach_invite_token)->not->toBeEmpty();
+    expect(strlen($this->sae->coach_invite_token))->toBe(20);
+
+    $url = $this->sae->getCoachInviteUrl();
+    expect($url)->toBe(route('invitation.join', ['token' => $this->sae->coach_invite_token]))
+        ->and($url)->toContain('/join/');
+});
+
+test('generic coach invitation url allows any coach to view registration page with editable email', function () {
+    $response = $this->get($this->sae->getCoachInviteUrl());
+
+    $response->assertOk();
+    $response->assertSee('Votre Adresse Email');
+    $response->assertSee($this->sae->name);
+    $response->assertSee("Domaines d'expertise", false);
+});
+
+test('generic coach invitation url allows any coach to register and is reusable', function () {
+    $token = $this->sae->coach_invite_token;
+
+    // First coach registers
+    $response1 = $this->post(route('invitation.register', ['token' => $token]), [
+        'name' => 'Dr. Koffi Kouame',
+        'email' => 'koffi.coach.gen@test.ci',
+        'phone' => '+2250700000001',
+        'specialties' => 'AgriTech, Financement',
+        'password' => 'SecurePassKoffi123!',
+        'password_confirmation' => 'SecurePassKoffi123!',
+    ]);
+
+    $response1->assertRedirect();
+    $this->assertAuthenticated();
+
+    $user1 = User::where('email', 'koffi.coach.gen@test.ci')->first();
+    expect($user1)->not->toBeNull()
+        ->and($user1->isCoach())->toBeTrue();
+
+    Auth::logout();
+    $this->assertGuest();
+
+    // Second coach registers with the SAME generic link
+    $response2 = $this->post(route('invitation.register', ['token' => $token]), [
+        'name' => 'Mme Aminata Traore',
+        'email' => 'aminata.coach.gen@test.ml',
+        'phone' => '+223700000002',
+        'specialties' => 'Marketing, Scale-up',
+        'password' => 'SecurePassAminata123!',
+        'password_confirmation' => 'SecurePassAminata123!',
+    ]);
+
+    $response2->assertRedirect();
+    $this->assertAuthenticated();
+
+    $user2 = User::where('email', 'aminata.coach.gen@test.ml')->first();
+    expect($user2)->not->toBeNull()
+        ->and($user2->isCoach())->toBeTrue();
+});
+
+test('regenerating sae generic coach token invalidates old token', function () {
+    $oldToken = $this->sae->coach_invite_token;
+    $newUrl = $this->sae->regenerateCoachInviteToken();
+
+    expect($this->sae->fresh()->coach_invite_token)->not->toBe($oldToken);
+
+    // Old token is now invalid
+    $oldResponse = $this->get(route('invitation.join', ['token' => $oldToken]));
+    $oldResponse->assertOk();
+    $oldResponse->assertSee('Lien d\'invitation', false);
+
+    // New token works
+    $newResponse = $this->get($newUrl);
+    $newResponse->assertOk();
+    $newResponse->assertSee($this->sae->name);
+});

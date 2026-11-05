@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CoachInvitation;
 use App\Models\EntrepreneurInvitation;
+use App\Models\Sae;
 use Illuminate\Http\Request;
 
 class UnifiedInvitationController extends Controller
@@ -18,6 +19,11 @@ class UnifiedInvitationController extends Controller
         $coachInvitation = CoachInvitation::where('token', $token)->first();
         if ($coachInvitation) {
             return $this->coachController->show($token);
+        }
+
+        $saeGenericCoach = Sae::where('coach_invite_token', $token)->first();
+        if ($saeGenericCoach) {
+            return $this->coachController->showGeneric($saeGenericCoach);
         }
 
         $entrepreneurInvitation = EntrepreneurInvitation::where('token', $token)->first();
@@ -35,6 +41,11 @@ class UnifiedInvitationController extends Controller
         $coachInvitation = CoachInvitation::where('token', $token)->first();
         if ($coachInvitation) {
             return $this->coachController->register($request, $token);
+        }
+
+        $saeGenericCoach = Sae::where('coach_invite_token', $token)->first();
+        if ($saeGenericCoach) {
+            return $this->coachController->registerGeneric($request, $saeGenericCoach);
         }
 
         $entrepreneurInvitation = EntrepreneurInvitation::where('token', $token)->first();

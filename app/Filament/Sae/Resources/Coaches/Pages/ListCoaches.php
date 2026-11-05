@@ -10,6 +10,7 @@ use Filament\Actions\CreateAction;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 
 class ListCoaches extends ListRecords
@@ -62,6 +63,39 @@ class ListCoaches extends ListRecords
 
                     $invitation->makeInvitationNotification()->send();
                 }),
+
+            Action::make('generic_coach_link')
+                ->label('Lien générique Coach')
+                ->icon('heroicon-o-globe-alt')
+                ->color('info')
+                ->modalHeading('Lien d\'invitation permanent pour coachs')
+                ->modalDescription('Partagez ce lien unique avec n\'importe quel coach ou mentor. Chaque personne qui l\'ouvre pourra créer son compte et rejoindre directement votre structure SAE.')
+                ->form([
+                    TextInput::make('generic_url')
+                        ->label('Lien permanent à partager')
+                        ->default(fn () => Filament::getTenant()?->getCoachInviteUrl())
+                        ->readOnly(),
+                ])
+                ->modalSubmitAction(false)
+                ->modalCancelActionLabel('Fermer')
+                ->extraModalFooterActions([
+                    Action::make('copy_generic_url')
+                        ->label('Copier le lien')
+                        ->icon('heroicon-o-clipboard-document-check')
+                        ->color('primary')
+                        ->action(function ($livewire) {
+                            $url = Filament::getTenant()?->getCoachInviteUrl();
+                            if ($url) {
+                                $livewire->js("window.navigator.clipboard.writeText('{$url}')");
+                                Notification::make()
+                                    ->title('Lien permanent copié !')
+                                    ->body('Le lien d\'invitation générique pour coachs a été copié dans votre presse-papier.')
+                                    ->success()
+                                    ->send();
+                            }
+                        }),
+                ]),
+
             CreateAction::make()->slideOver(),
         ];
     }

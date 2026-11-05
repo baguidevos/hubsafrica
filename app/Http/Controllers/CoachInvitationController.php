@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\CoachWelcomeMail;
 use App\Models\Coach;
 use App\Models\CoachInvitation;
+use App\Models\Sae;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -102,5 +103,81 @@ class CoachInvitationController extends Controller
         Mail::to($user->email)->queue(new CoachWelcomeMail($user, $coach, $invitation->sae));
 
         return redirect(filament()->getPanel('coach')->getUrl($invitation->sae));
+    }
+
+    public function showGeneric(Sae $sae)
+    {
+        return view('auth.coach-invite', [
+            'invitation' => null,
+            'sae' => $sae,
+            'isGeneric' => true,
+            'token' => $sae->coach_invite_token,
+        ]);
+    }
+
+    public function registerGeneric(Request $request, Sae $sae)
+    {
+        $validated = $request->validate([
+            'email' => ['required', 'email', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'phone' => ['nullable', 'string', 'max:50'],
+            'specialties' => ['nullable', 'string', 'max:255'],
+        ], [
+            'email.required' => 'Votre adresse email est obligatoire.',
+            'name.required' => 'Votre nom complet est obligatoire.',
+            'password.required' => 'Veuillez définir un mot de passe sécurisé.',
+            'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
+        ]);
+
+        $specialtiesArray = ! empty($validated['specialties'])
+            ? array_filter(array_map('trim', explode(',', $validated['specialties'])))
+            : null;
+
+        $user = DB::transaction(function () use ($sae, $validated, $specialtiesArray) {
+            $user = User::updateOrCreate(
+                ['email' => $validated['email']],
+                [
+                    'name' => $validated['name'],
+                    'password' => Hash::make($validated['password']),
+                    'phone' => $validated['phone'] ?? null,
+                    'status' => 'ACTIVE',
+                ]
+            );
+
+            $user->saes()->syncWithoutDetaching([
+                $sae->id => [
+                    'role' => 'COACH',
+                    'status' => 'ACTIVE',
+                ],
+            ]);
+
+            setPermissionsTeamId($sae->id);
+            $coachRole = Role::firstOrCreate(['name' => 'coach', 'guard_name' => 'web']);
+            $user->assignRole($coachRole);
+
+            Coach::updateOrCreate(
+                [
+                    'sae_id' => $sae->id,
+                    'user_id' => $user->id,
+                ],
+                [
+                    'name' => $validated['name'],
+                    'email' => $validated['email'],
+                    'phone' => $validated['phone'] ?? null,
+                    'specialties' => $specialtiesArray,
+                    'status' => 'ACTIVE',
+                ]
+            );
+
+            return $user;
+        });
+
+        Auth::login($user);
+
+        $coach = Coach::where('user_id', $user->id)->first();
+        Mail::to($user->email)->queue(new CoachWelcomeMail($user, $coach, $sae));
+
+        return redirect(filament()->getPanel('coach')->getUrl($sae));
     }
 }

@@ -74,20 +74,37 @@
             @endif
 
             {{-- Formulaire de finalisation --}}
-            <form method="POST" action="{{ route('invitation.register', $invitation->token) }}" class="space-y-4">
+            <form method="POST" action="{{ route('invitation.register', $token ?? $invitation?->token) }}" class="space-y-4">
                 @csrf
 
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                        Adresse Email (invitée et réservée)
-                    </label>
-                    <input 
-                        type="email" 
-                        value="{{ $invitation->email }}" 
-                        disabled
-                        class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 text-sm cursor-not-allowed font-mono"
-                    >
-                </div>
+                @if(!empty($isGeneric))
+                    <div>
+                        <label for="email" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                            Votre Adresse Email <span class="text-rose-500">*</span>
+                        </label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            value="{{ old('email') }}" 
+                            required
+                            placeholder="votre.email@exemple.com"
+                            class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-slate-900 dark:text-white focus:border-[#F8B81D] focus:ring-4 focus:ring-[#F8B81D]/20 text-sm outline-none transition"
+                        >
+                    </div>
+                @else
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                            Adresse Email (invitée et réservée)
+                        </label>
+                        <input 
+                            type="email" 
+                            value="{{ $invitation->email }}" 
+                            disabled
+                            class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 text-sm cursor-not-allowed font-mono"
+                        >
+                    </div>
+                @endif
 
                 <div>
                     <label for="name" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
@@ -97,7 +114,7 @@
                         type="text" 
                         id="name" 
                         name="name" 
-                        value="{{ old('name', $invitation->name) }}" 
+                        value="{{ old('name', $invitation?->name) }}" 
                         required
                         class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-slate-900 dark:text-white focus:border-[#F8B81D] focus:ring-4 focus:ring-[#F8B81D]/20 text-sm outline-none transition"
                         placeholder="Ex: Dr. Kouamé Koffi"
@@ -117,6 +134,23 @@
                         placeholder="Ex: +225 07 00 00 00 00"
                     >
                 </div>
+
+                @if(!empty($isGeneric))
+                    <div>
+                        <label for="specialties" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                            Domaines d'expertise / Spécialités (Optionnel)
+                        </label>
+                        <input 
+                            type="text" 
+                            id="specialties" 
+                            name="specialties" 
+                            value="{{ old('specialties') }}" 
+                            placeholder="Ex: Stratégie, Finance, Agritech, Levée de fonds"
+                            class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-slate-900 dark:text-white focus:border-[#F8B81D] focus:ring-4 focus:ring-[#F8B81D]/20 text-sm outline-none transition"
+                        >
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Séparez par des virgules vos domaines d'intervention.</p>
+                    </div>
+                @endif
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>

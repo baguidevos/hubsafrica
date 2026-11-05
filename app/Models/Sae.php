@@ -33,6 +33,7 @@ class Sae extends Model implements HasAvatar
         'city',
         'origin_type',
         'university_name',
+        'coach_invite_token',
         'logo',
         'status',
         'default_admission_threshold',
@@ -114,7 +115,27 @@ class Sae extends Model implements HasAvatar
             if (empty($sae->slug)) {
                 $sae->slug = Str::slug($sae->name);
             }
+            if (empty($sae->coach_invite_token)) {
+                $sae->coach_invite_token = Str::random(20);
+            }
         });
+    }
+
+    public function getCoachInviteUrl(): string
+    {
+        if (empty($this->coach_invite_token)) {
+            $this->updateQuietly(['coach_invite_token' => Str::random(20)]);
+        }
+
+        return route('invitation.join', ['token' => $this->coach_invite_token]);
+    }
+
+    public function regenerateCoachInviteToken(): string
+    {
+        $newToken = Str::random(20);
+        $this->update(['coach_invite_token' => $newToken]);
+
+        return route('invitation.join', ['token' => $newToken]);
     }
 
     public function owner(): BelongsTo
