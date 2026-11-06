@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Enums\ApplicationStatus;
+use App\Enums\DocumentCategory;
 use App\Enums\FormType;
 use App\Enums\Gender;
 use App\Enums\ProjectStatus;
@@ -11,6 +12,7 @@ use App\Mail\FounderWelcomeMail;
 use App\Mail\NewApplicationAlertMail;
 use App\Models\Application;
 use App\Models\Cohort;
+use App\Models\Document;
 use App\Models\Entrepreneur;
 use App\Models\Program;
 use App\Models\Project;
@@ -22,6 +24,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Packstub\FormBuilder\Events\SubmissionReceived;
 
@@ -215,6 +218,30 @@ class HandleCandidatureSubmission
                 'submitted_at' => now(),
                 'comment' => $commentBody,
             ]);
+
+            // 7.1 Enregistrement du Pitch Deck dans la GED de la candidature
+            if (! empty($pitchDeck) && is_string($pitchDeck)) {
+                $diskName = config('packstub-form-builder.uploads.disk', 'local');
+                $fileSize = Storage::disk($diskName)->exists($pitchDeck) ? Storage::disk($diskName)->size($pitchDeck) : null;
+                $originalName = pathinfo($pitchDeck, PATHINFO_BASENAME);
+                if (str_contains($originalName, '_')) {
+                    $originalName = substr($originalName, strpos($originalName, '_') + 1);
+                }
+
+                Document::create([
+                    'sae_id' => $saeId,
+                    'documentable_type' => Application::class,
+                    'documentable_id' => $application->id,
+                    'category' => DocumentCategory::CANDIDATURE,
+                    'title' => 'Pitch Deck — '.($project->name ?? 'Projet'),
+                    'disk' => $diskName,
+                    'path' => $pitchDeck,
+                    'original_name' => $originalName ?: 'pitch_deck.pdf',
+                    'size' => $fileSize,
+                    'version' => 1,
+                    'uploaded_by_id' => $user->id,
+                ]);
+            }
 
             // 8. Traçabilité dans la timeline du projet
             TimelineEvent::create([

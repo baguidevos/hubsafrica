@@ -2,6 +2,7 @@
 
 use App\Enums\ApplicationStatus;
 use App\Enums\CohortStatus;
+use App\Enums\DocumentCategory;
 use App\Enums\Gender;
 use App\Enums\ProgramStatus;
 use App\Enums\ProjectStatus;
@@ -99,6 +100,7 @@ test('le listener de candidature traite automatiquement une soumission du form b
         'website' => 'https://agridrone.sn',
         'motivation' => 'Accéder aux mentors experts en agronomie et levée de fonds.',
         'needs' => ['Mentorat technique', 'Financement'],
+        'pitch_deck' => 'form-builder/5/pitch_deck_moussa.pdf',
         'program_id' => (string) $this->program->id,
         'cohort_id' => (string) $this->cohort->id,
         'chiffre_affaires_annuel' => '15000000 FCFA',
@@ -150,6 +152,13 @@ test('le listener de candidature traite automatiquement une soumission du form b
     expect($application->answers)->toHaveKey('chiffre_affaires_annuel');
     expect($application->answers['chiffre_affaires_annuel'])->toEqual('15000000 FCFA');
     expect($application->comment)->toContain('Accéder aux mentors experts');
+
+    // 4.1 Vérification de la création automatique du Document dans la GED de la candidature
+    $document = $application->documents()->first();
+    expect($document)->not->toBeNull();
+    expect($document->category)->toEqual(DocumentCategory::CANDIDATURE);
+    expect($document->path)->toEqual('form-builder/5/pitch_deck_moussa.pdf');
+    expect($document->title)->toContain('Pitch Deck');
 
     // 5. Vérification du jalon Timeline
     $timeline = TimelineEvent::where('project_id', $project->id)->first();
