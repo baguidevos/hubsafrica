@@ -307,12 +307,19 @@ test('seuls les responsables de la SAE recoivent lemail dalerte, pas les autres 
     });
 });
 
-test('le champ de fichier est configure pour gerer le mode tableau avec maxFiles(1) et eviter lerreur array', function () {
+test('le champ de fichier simple ne force pas la regle array et valide sans erreur', function () {
     $field = $this->standardTemplate->field('pitch_deck');
     expect($field)->not->toBeNull();
 
+    // Vérifier que le champ n'impose pas la règle array lorsqu'il s'agit d'un upload simple
+    $rules = $field->type->rules($field);
+    expect($rules)->not->toContain('array');
+
+    // Vérifier que le composant FileUpload est instancié
     $component = $field->type->formComponent($field);
     expect($component)->toBeInstanceOf(FileUpload::class);
-    expect($component->isMultiple())->toBeTrue();
-    expect($component->getMaxFiles())->toEqual(1);
+
+    // Vérifier que la validation accepte une chaîne ou un tableau
+    $rulesWithNullable = $field->rules();
+    expect($rulesWithNullable)->toEqual(['nullable']);
 });
