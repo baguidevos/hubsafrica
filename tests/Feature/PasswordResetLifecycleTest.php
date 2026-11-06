@@ -10,7 +10,7 @@ use Livewire\Livewire;
 use Spatie\Permission\Models\Role;
 
 test('password reset request routes are accessible across panels', function () {
-    $this->get(route('filament.admin.auth.password-reset.request'))->assertSuccessful();
+    $this->get(route('filament.hubs-hq.auth.password-reset.request'))->assertSuccessful();
     $this->get(route('filament.sae.auth.password-reset.request'))->assertSuccessful();
     $this->get(route('filament.entrepreneur.auth.password-reset.request'))->assertSuccessful();
     $this->get(route('filament.coach.auth.password-reset.request'))->assertSuccessful();
@@ -54,7 +54,7 @@ test('super admin can request password reset from admin panel', function () {
         'sae_id' => 0,
     ]);
 
-    Filament::setCurrentPanel(Filament::getPanel('admin'));
+    Filament::setCurrentPanel(Filament::getPanel('hubs-hq'));
 
     Livewire::test(RequestPasswordReset::class)
         ->fillForm([

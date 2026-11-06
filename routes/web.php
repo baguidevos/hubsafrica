@@ -69,6 +69,10 @@ Route::get('/register/coach', function (Request $request) {
 // Redirection conviviale pour l'espace Coach/Mentor
 Route::redirect('/mentor', '/coach');
 
+// Redirection conviviale pour l'espace Hubs-HQ (Super Admin)
+Route::redirect('/admin', '/hubs-hq');
+Route::redirect('/admin/{any}', '/hubs-hq/{any}')->where('any', '.*');
+
 // Comptes de Démonstration & Connexion Instantanée 1-Clic
 Route::get('/comptes-test', [DevLoginController::class, 'index'])->name('dev.comptes');
 Route::get('/demo', [DevLoginController::class, 'index'])->name('dev.demo');

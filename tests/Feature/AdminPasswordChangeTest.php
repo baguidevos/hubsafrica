@@ -10,14 +10,14 @@ use Livewire\Livewire;
 
 beforeEach(function () {
     $this->seed();
-    Filament::setCurrentPanel(Filament::getPanel('admin'));
+    Filament::setCurrentPanel(Filament::getPanel('hubs-hq'));
 });
 
 test('admin can access profile page to change password', function () {
     $admin = User::where('email', 'admin@hubsafrica.org')->first();
     expect($admin)->not->toBeNull();
 
-    $response = $this->actingAs($admin)->get('/admin/profile');
+    $response = $this->actingAs($admin)->get('/hubs-hq/profile');
     $response->assertOk();
 });
 

@@ -22,10 +22,10 @@ class DevLoginController extends Controller
                 'email' => 'admin@hubsafrica.org',
                 'password' => 'password',
                 'role' => 'Super Administrateur',
-                'panel_name' => 'Admin Central',
-                'panel_id' => 'admin',
-                'panel_url' => '/admin',
-                'login_url' => '/admin/login',
+                'panel_name' => 'Hubs-HQ (Super Admin)',
+                'panel_id' => 'hubs-hq',
+                'panel_url' => '/hubs-hq',
+                'login_url' => '/hubs-hq/login',
                 'sae_name' => 'Plateforme Globale',
                 'sae_slug' => null,
                 'badge' => 'Super Admin',
@@ -176,7 +176,7 @@ class DevLoginController extends Controller
             return redirect($targetRedirect);
         }
 
-        return redirect()->intended('/admin');
+        return redirect()->intended('/hubs-hq');
     }
 
     /**

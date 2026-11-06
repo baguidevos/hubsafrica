@@ -21,7 +21,7 @@ test('auto login connects super admin and redirects to admin panel', function ()
 
     $response = $this->get('/demo/login?as=admin');
 
-    $response->assertRedirect('/admin');
+    $response->assertRedirect('/hubs-hq');
     $this->assertAuthenticatedAs($admin);
 });
 

@@ -134,7 +134,7 @@ test('l administration globale permet d editer la provenance et l origine de la 
     ]);
 
     $this->actingAs($admin);
-    Filament::setCurrentPanel(Filament::getPanel('admin'));
+    Filament::setCurrentPanel(Filament::getPanel('hubs-hq'));
 
     Livewire::test(EditSae::class, ['record' => $sae->id])
         ->fillForm([

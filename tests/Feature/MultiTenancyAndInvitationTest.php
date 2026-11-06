@@ -63,7 +63,7 @@ test('panels have functioning login and entry points', function () {
     $this->get('/sae/login')->assertOk();
     $this->get('/coach/login')->assertOk();
     $this->get('/portal/login')->assertOk();
-    $this->get('/admin/login')->assertOk();
+    $this->get('/hubs-hq/login')->assertOk();
 });
 
 test('database seeder produces expected multi-tenant records and users', function () {
@@ -82,7 +82,7 @@ test('authenticated users can access their respective panels and dashboards', fu
     $admin = User::where('email', 'admin@hubsafrica.org')->first();
     $saeUser = User::where('email', 'fatou.diop@teranga.sn')->first();
     $coachUser = User::where('email', 'marie.sarr@coach.sn')->first();
-    $this->actingAs($admin)->get('/admin')->assertOk();
+    $this->actingAs($admin)->get('/hubs-hq')->assertOk();
 });
 
 test('sae responsable can access sae tenant dashboard', function () {

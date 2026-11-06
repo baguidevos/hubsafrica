@@ -31,6 +31,11 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 - **Opérations & Déploiement en Production** :
   - **Route Temporaire Sécurisée de Migration (`/maintenance/migrate-force`)** : mise en place d'un point d'accès d'urgence protégé par clé secrète (`?key=...`) ou session Super Admin pour exécuter `php artisan migrate --force` et afficher le rapport d'exécution en environnement de production sans accès terminal direct.
 
+- **Sécurisation & Renommage du Panel Administration (`hubs-hq`)** :
+  - **Identifiant et Chemin Discrets** : remplacement de l'ID de panel standard `admin` et de son URL `/admin` par `hubs-hq` (`/hubs-hq`), renforçant la sécurité par obscurité contre les scanners de vulnérabilité ciblant les chemins d'administration conventionnels.
+  - **Redirection Rétrocompatible & Gestion d'Accès** : mise en place de redirections transparentes `/admin` et `/admin/{any}` vers `/hubs-hq`, mise à jour du contrôleur de connexion développeur (`DevLoginController`) et ajustement de `User::canAccessPanel()` pour valider l'accès au panel `hubs-hq`.
+  - **Mise à Jour de la Suite de Tests** : alignement de l'ensemble des tests de fonctionnalités Filament et du cycle d'authentification sur le nouveau nom de route et préfixe d'URL.
+
 - **Conformité & Suite de Tests** :
   - **Tests Pest Dédiés** : ajout de [`AdminPasswordChangeTest.php`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/tests/Feature/AdminPasswordChangeTest.php), [`UnifiedInvitationTest.php`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/tests/Feature/UnifiedInvitationTest.php) et [`MaintenanceMigrationTest.php`](file:///c:/Users/D3vOs/Projets/Javascript(Next_Nuxt_React_VueJs)/Hub_Africa_V2/hubafrica_v2/tests/Feature/MaintenanceMigrationTest.php) (42 tests passés au vert).
   - Formatage validé via Laravel Pint.

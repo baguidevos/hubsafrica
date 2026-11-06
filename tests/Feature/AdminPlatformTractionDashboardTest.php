@@ -15,7 +15,7 @@ test('admin dashboard renders platform traction metrics widgets correctly', func
     expect($admin)->not->toBeNull();
 
     // 1. Dashboard HTTP GET
-    $response = $this->actingAs($admin)->get('/admin');
+    $response = $this->actingAs($admin)->get('/hubs-hq');
     $response->assertOk();
     $response->assertSee('Mesures de Traction', false);
     $response->assertSee('Structures (SAE) raccordées', false);

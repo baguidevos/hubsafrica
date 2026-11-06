@@ -56,7 +56,7 @@ test('le webmaster super admin peut administrer les types de SAE via le panel Ad
     $admin->assignRole($superAdminRole);
 
     $this->actingAs($admin);
-    Filament::setCurrentPanel(Filament::getPanel('admin'));
+    Filament::setCurrentPanel(Filament::getPanel('hubs-hq'));
 
     // Liste des types
     Livewire::test(ListSaeTypes::class)
@@ -126,7 +126,7 @@ test('l administrateur peut modifier l ensemble des informations d une SAE', fun
     $typeFabLab = SaeType::firstOrCreate(['slug' => 'fablab-makerspace'], ['name' => 'FabLab / MakerSpace']);
 
     $this->actingAs($admin);
-    Filament::setCurrentPanel(Filament::getPanel('admin'));
+    Filament::setCurrentPanel(Filament::getPanel('hubs-hq'));
 
     Livewire::test(EditSae::class, ['record' => $sae->id])
         ->fillForm([

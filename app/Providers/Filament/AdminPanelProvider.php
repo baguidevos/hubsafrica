@@ -26,8 +26,8 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->id('admin')
-            ->path('admin')
+            ->id('hubs-hq')
+            ->path('hubs-hq')
             ->brandName('Hubs Africa')
             ->brandLogo(fn () => asset('images/logo2.png'))
             ->darkModeBrandLogo(fn () => asset('images/dark_big.png'))

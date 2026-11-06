@@ -112,8 +112,8 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasTenant
             return true;
         }
 
-        // 2. Panel Admin : Réservé aux Super Admins Hubs Africa
-        if ($panelId === 'admin') {
+        // 2. Panel Hubs-HQ (Admin Central) : Réservé aux Super Admins Hubs Africa
+        if ($panelId === 'hubs-hq' || $panelId === 'admin') {
             return $this->isSuperAdmin();
         }
 

@@ -303,9 +303,9 @@
                 <a href="/sae"
                     class="block w-full text-center px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:text-[#2F3284] hover:bg-slate-50 transition">Portail
                     Structure SAE</a>
-                <a href="/admin"
-                    class="block w-full text-center px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:text-[#2F3284] hover:bg-slate-50 transition">Portail
-                    Super Admin</a>
+                <a href="/hubs-hq"
+                    class="block w-full text-center px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:text-[#2F3284] hover:bg-slate-50 transition">Hubs-HQ
+                    (Super Admin)</a>
                 <a href="{{ route('public.rejoindre') }}"
                     class="block w-full text-center px-4 py-2.5 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 text-xs font-bold shadow transition">Rejoindre
                     / Candidater</a>
