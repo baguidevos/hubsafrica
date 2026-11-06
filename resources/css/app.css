@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import '../../vendor/filament/forms/dist/index.css';
 
 @source '../views/**/*';
 @source '../../app/**/*';
@@ -14,4 +15,27 @@
     --color-brand-accent: var(--ha-accent, #F9B104);
     --color-brand-accent-light: var(--ha-accent-light, #fbbf24);
     --color-brand-surface: var(--ha-surface, #f8fafc);
+}
+
+/* Hubs Africa - Composant FileUpload FilePond */
+.fi-fo-file-upload .filepond--root {
+    margin-bottom: 0;
+    border-radius: 0.75rem;
+    border: 2px dashed #cbd5e1;
+    background-color: #f8fafc;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.fi-fo-file-upload .filepond--root:hover {
+    border-color: #2F3284;
+    background-color: #f8fafc;
+}
+
+.fi-fo-file-upload .filepond--drop-label {
+    min-height: 5.5rem;
+    color: #475569;
+}
+
+.fi-fo-file-upload .filepond--panel-root {
+    background-color: transparent;
 }

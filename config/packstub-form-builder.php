@@ -1,5 +1,6 @@
 <?php
 
+use App\Fields\Types\CustomFileField;
 use App\Models\Sae;
 use Packstub\FormBuilder\Fields\Types;
 use Packstub\FormBuilder\Models\Form;
@@ -73,7 +74,7 @@ return [
         Types\DateField::class,
         Types\DateTimeField::class,
         Types\TimeField::class,
-        Types\FileField::class,
+        CustomFileField::class,
         Types\ColorField::class,
         Types\CountryField::class,
         Types\ConsentField::class,

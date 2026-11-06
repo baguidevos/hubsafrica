@@ -15,6 +15,7 @@ use App\Models\Sae;
 use App\Models\TimelineEvent;
 use App\Models\User;
 use App\Services\ApplicationFormTemplateService;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Support\Facades\Event;
 use Packstub\FormBuilder\Events\SubmissionReceived;
 use Packstub\FormBuilder\Models\FormSubmission;
@@ -304,4 +305,14 @@ test('seuls les responsables de la SAE recoivent lemail dalerte, pas les autres 
     Mail::assertNotQueued(NewApplicationAlertMail::class, function ($mail) use ($otherEntrepreneurUser) {
         return $mail->hasTo($otherEntrepreneurUser->email);
     });
+});
+
+test('le champ de fichier est configure pour gerer le mode tableau avec maxFiles(1) et eviter lerreur array', function () {
+    $field = $this->standardTemplate->field('pitch_deck');
+    expect($field)->not->toBeNull();
+
+    $component = $field->type->formComponent($field);
+    expect($component)->toBeInstanceOf(FileUpload::class);
+    expect($component->isMultiple())->toBeTrue();
+    expect($component->getMaxFiles())->toEqual(1);
 });

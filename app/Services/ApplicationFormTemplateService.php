@@ -229,7 +229,8 @@ class ApplicationFormTemplateService
                                 'required' => false,
                                 'accept' => 'pdf, pptx, ppt',
                                 'max_kb' => 15360,
-                                'multiple' => false,
+                                'multiple' => true,
+                                'max_files' => 1,
                             ],
                         ],
                         [
