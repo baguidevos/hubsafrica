@@ -57,7 +57,7 @@ class CoachPanelProvider extends PanelProvider
                     ->allThemes(),
             ])
             ->databaseNotifications()
-            ->databaseNotificationsPolling('120s')
+            // ->databaseNotificationsPolling('120s')
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
