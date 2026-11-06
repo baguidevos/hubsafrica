@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Mail\CoachJoinRequestReceivedMail;
 use App\Models\CoachJoinRequest;
 use App\Models\Sae;
-use App\Models\User;
 use Filament\Notifications\Notification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -74,17 +73,17 @@ class CoachJoinRequestPublicController extends Controller
         ]);
 
         // Notifications in-app & Email aux responsables de la SAE
-        $saeUsers = User::whereHas('saes', fn ($q) => $q->where('saes.id', $sae->id))->get();
-        foreach ($saeUsers as $saeUser) {
+        $saeResponsibles = $sae->getResponsibles();
+        foreach ($saeResponsibles as $responsible) {
             Notification::make()
                 ->title('Nouvelle candidature de Coach / Mentor')
                 ->body("{$joinRequest->name} souhaite intégrer l'équipe de mentorat de {$sae->name}.")
                 ->icon('heroicon-o-academic-cap')
                 ->info()
-                ->sendToDatabase($saeUser);
+                ->sendToDatabase($responsible);
 
-            if ($saeUser->email) {
-                Mail::to($saeUser->email)->queue(new CoachJoinRequestReceivedMail($joinRequest));
+            if ($responsible->email) {
+                Mail::to($responsible->email)->queue(new CoachJoinRequestReceivedMail($joinRequest));
             }
         }
 

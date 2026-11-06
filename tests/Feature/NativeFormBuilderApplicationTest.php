@@ -5,6 +5,7 @@ use App\Enums\CohortStatus;
 use App\Enums\Gender;
 use App\Enums\ProgramStatus;
 use App\Enums\ProjectStatus;
+use App\Mail\NewApplicationAlertMail;
 use App\Models\Application;
 use App\Models\Cohort;
 use App\Models\Entrepreneur;
@@ -207,4 +208,100 @@ test('le listener réutilise le compte existant pour un entrepreneur authentifi�
     $app = Application::where('entrepreneur_id', $existingEntrepreneur->id)->first();
     expect($app)->not->toBeNull();
     expect($app->project->name)->toEqual('HealthCare Mobile');
+});
+
+test('la soumission dune candidature ne duplique pas les lignes dapplication', function () {
+    $submissionData = [
+        'first_name' => 'Fatou',
+        'last_name' => 'Diop',
+        'email' => 'fatou.diop@techsenegal.sn',
+        'phone' => '+221 77 111 22 33',
+        'gender' => 'F',
+        'city' => 'Thiès',
+        'project_name' => 'AgriTech Thiès',
+        'sector' => 'Agriculture',
+        'pitch' => 'Plateforme de traçabilité agricole.',
+        'motivation' => 'Intégrer le programme pour accélérer notre produit.',
+        'program_id' => (string) $this->program->id,
+        'cohort_id' => (string) $this->cohort->id,
+    ];
+
+    $submission = FormSubmission::create([
+        'form_id' => $this->standardTemplate->id,
+        'data' => $submissionData,
+        'channel' => 'web',
+    ]);
+
+    $context = new SubmissionContext(
+        ip: '127.0.0.1',
+        sourceUrl: "http://localhost/programmes/{$this->program->id}/candidater?cohort={$this->cohort->id}",
+    );
+
+    // Déclenchement de l'événement deux fois consécutives pour simuler un double clic ou re-dispatch
+    Event::dispatch(new SubmissionReceived($this->standardTemplate, $submission, $context));
+    Event::dispatch(new SubmissionReceived($this->standardTemplate, $submission, $context));
+
+    $createdEntrepreneur = Entrepreneur::where('email', 'fatou.diop@techsenegal.sn')->first();
+    expect($createdEntrepreneur)->not->toBeNull();
+
+    $applicationsCount = Application::where('entrepreneur_id', $createdEntrepreneur->id)
+        ->where('program_id', $this->program->id)
+        ->where('cohort_id', $this->cohort->id)
+        ->count();
+
+    expect($applicationsCount)->toEqual(1);
+});
+
+test('seuls les responsables de la SAE recoivent lemail dalerte, pas les autres entrepreneurs inscrits', function () {
+    Mail::fake();
+
+    $saeResponsible = User::factory()->create([
+        'name' => 'Directeur SAE',
+        'email' => 'directeur@terangalab.sn',
+    ]);
+    $this->sae->members()->attach($saeResponsible->id, ['role' => 'RESPONSABLE', 'status' => 'ACTIVE']);
+
+    $otherEntrepreneurUser = User::factory()->create([
+        'name' => 'Autre Porteur',
+        'email' => 'autre.porteur@terangalab.sn',
+    ]);
+    $this->sae->members()->attach($otherEntrepreneurUser->id, ['role' => 'ENTREPRENEUR', 'status' => 'ACTIVE']);
+
+    $submissionData = [
+        'first_name' => 'Mamadou',
+        'last_name' => 'Ndiaye',
+        'email' => 'mamadou.ndiaye@terangabox.sn',
+        'phone' => '+221 77 999 88 77',
+        'gender' => 'M',
+        'city' => 'Dakar',
+        'project_name' => 'TerangaBox',
+        'sector' => 'E-commerce',
+        'pitch' => 'Boîtes cadeaux locales.',
+        'motivation' => 'Rejoindre la cohorte.',
+        'program_id' => (string) $this->program->id,
+        'cohort_id' => (string) $this->cohort->id,
+    ];
+
+    $submission = FormSubmission::create([
+        'form_id' => $this->standardTemplate->id,
+        'data' => $submissionData,
+        'channel' => 'web',
+    ]);
+
+    $context = new SubmissionContext(
+        ip: '127.0.0.1',
+        sourceUrl: "http://localhost/programmes/{$this->program->id}/candidater?cohort={$this->cohort->id}",
+    );
+
+    Event::dispatch(new SubmissionReceived($this->standardTemplate, $submission, $context));
+
+    // L'e-mail d'alerte NewApplicationAlertMail doit être envoyé au responsable
+    Mail::assertQueued(NewApplicationAlertMail::class, function ($mail) use ($saeResponsible) {
+        return $mail->hasTo($saeResponsible->email);
+    });
+
+    // L'e-mail d'alerte NewApplicationAlertMail NE DOIT PAS être envoyé aux autres entrepreneurs
+    Mail::assertNotQueued(NewApplicationAlertMail::class, function ($mail) use ($otherEntrepreneurUser) {
+        return $mail->hasTo($otherEntrepreneurUser->email);
+    });
 });

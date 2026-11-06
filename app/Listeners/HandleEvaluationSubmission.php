@@ -6,6 +6,7 @@ use App\Enums\FormType;
 use App\Enums\FormUnlockStatus;
 use App\Models\Entrepreneur;
 use App\Models\FormUnlock;
+use App\Models\Sae;
 use App\Models\TimelineEvent;
 use App\Models\User;
 use Filament\Notifications\Notification;
@@ -80,20 +81,23 @@ class HandleEvaluationSubmission
 
         // In-app notification to SAE managers
         $saeId = $form->getAttribute('sae_id') ?? $entrepreneur->sae_id;
-        $saeUsers = User::whereHas('saes', fn ($q) => $q->where('saes.id', $saeId))->get();
+        if ($saeId) {
+            $sae = Sae::find($saeId);
+            $saeResponsibles = $sae ? $sae->getResponsibles() : collect();
 
-        foreach ($saeUsers as $saeUser) {
-            // Avoid notifying the submitter themselves
-            if ($saeUser->id === (int) $userId) {
-                continue;
+            foreach ($saeResponsibles as $responsible) {
+                // Avoid notifying the submitter themselves
+                if ($responsible->id === (int) $userId) {
+                    continue;
+                }
+
+                Notification::make()
+                    ->title('Nouvelle réponse reçue')
+                    ->body("{$entrepreneur->full_name} a soumis ses réponses pour '{$form->name}'.")
+                    ->icon('heroicon-o-clipboard-document-check')
+                    ->info()
+                    ->sendToDatabase($responsible);
             }
-
-            Notification::make()
-                ->title('Nouvelle réponse reçue')
-                ->body("{$entrepreneur->full_name} a soumis ses réponses pour '{$form->name}'.")
-                ->icon('heroicon-o-clipboard-document-check')
-                ->info()
-                ->sendToDatabase($saeUser);
         }
     }
 }

@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Listeners\HandleCandidatureSubmission;
-use App\Listeners\HandleEvaluationSubmission;
 use App\Models\Application;
 use App\Models\CoachAssignment;
 use App\Models\CoachingSession;
@@ -19,11 +17,9 @@ use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Head\Facades\Head;
-use Packstub\FormBuilder\Events\SubmissionReceived;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -45,16 +41,6 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureDefaults();
         $this->configureHeadDefaults();
-
-        Event::listen(
-            SubmissionReceived::class,
-            HandleEvaluationSubmission::class,
-        );
-
-        Event::listen(
-            SubmissionReceived::class,
-            HandleCandidatureSubmission::class,
-        );
 
         Application::observe(ApplicationObserver::class);
         CoachAssignment::observe(CoachAssignmentObserver::class);

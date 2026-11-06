@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -148,6 +149,24 @@ class Sae extends Model implements HasAvatar
         return $this->belongsToMany(User::class, 'sae_users')
             ->withPivot(['role', 'status'])
             ->withTimestamps();
+    }
+
+    /**
+     * Retourne les administrateurs et responsables de la structure (propriétaire et membres avec rôle RESPONSABLE).
+     *
+     * @return Collection<int, User>
+     */
+    public function getResponsibles(): Collection
+    {
+        $responsibles = $this->members()
+            ->wherePivot('role', 'RESPONSABLE')
+            ->get();
+
+        if ($this->owner && ! $responsibles->contains('id', $this->owner->id)) {
+            $responsibles->push($this->owner);
+        }
+
+        return $responsibles;
     }
 
     public function types(): BelongsToMany

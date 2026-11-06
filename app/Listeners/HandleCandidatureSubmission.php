@@ -14,6 +14,7 @@ use App\Models\Cohort;
 use App\Models\Entrepreneur;
 use App\Models\Program;
 use App\Models\Project;
+use App\Models\Sae;
 use App\Models\TimelineEvent;
 use App\Models\User;
 use Filament\Notifications\Notification;
@@ -189,7 +190,19 @@ class HandleCandidatureSubmission
                 }
             }
 
-            // 7. Enregistrement officiel de la candidature
+            // 7. Enregistrement officiel de la candidature (idempotent)
+            $existingApplication = Application::where('entrepreneur_id', $entrepreneur->id)
+                ->where('program_id', $program?->id)
+                ->where('cohort_id', $cohort?->id)
+                ->where('project_id', $project->id)
+                ->first();
+
+            if ($existingApplication) {
+                DB::commit();
+
+                return;
+            }
+
             $application = Application::create([
                 'sae_id' => $saeId,
                 'program_id' => $program?->id,
@@ -241,22 +254,25 @@ class HandleCandidatureSubmission
             Mail::to($user->email)
                 ->queue(new ApplicationReceivedMail($application));
 
-            // 12. Notification in-app & Email aux responsables de la SAE
+            // 12. Notification in-app & Email aux seuls responsables de la SAE
             if ($saeId) {
-                $saeUsers = User::whereHas('saes', fn ($q) => $q->where('saes.id', $saeId))->get();
-                foreach ($saeUsers as $saeUser) {
-                    if ($saeUser->id === $user->id) {
+                $sae = Sae::find($saeId);
+                $saeResponsibles = $sae ? $sae->getResponsibles() : collect();
+
+                foreach ($saeResponsibles as $responsible) {
+                    if ($responsible->id === $user->id) {
                         continue;
                     }
+
                     Notification::make()
                         ->title('Nouvelle candidature reçue')
                         ->body("{$entrepreneur->full_name} a déposé une candidature pour le programme '{$program?->name}'.")
                         ->icon('heroicon-o-clipboard-document-check')
                         ->info()
-                        ->sendToDatabase($saeUser);
+                        ->sendToDatabase($responsible);
 
-                    if ($saeUser->email) {
-                        Mail::to($saeUser->email)
+                    if ($responsible->email) {
+                        Mail::to($responsible->email)
                             ->queue(new NewApplicationAlertMail($application));
                     }
                 }
