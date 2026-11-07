@@ -132,6 +132,20 @@
             {{-- Colonne Gauche : Détails, Secteurs, Zones & Description (8 cols) --}}
             <div class="lg:col-span-8 space-y-8">
 
+                {{-- Visuel d'illustration de l'opportunité --}}
+                @if($opportunity->image_url)
+                    <div class="rounded-3xl overflow-hidden border {{ $isClosed ? 'border-red-300' : 'border-slate-200/90' }} shadow-sm bg-slate-100 max-h-96 relative">
+                        <img
+                            src="{{ $opportunity->image_url }}"
+                            alt="{{ $opportunity->title }}"
+                            class="w-full h-72 sm:h-96 object-cover hover:scale-105 transition-transform duration-700 {{ $isClosed ? 'grayscale-30' : '' }}"
+                        >
+                        @if($isClosed)
+                            <div class="absolute inset-0 bg-red-950/20 pointer-events-none"></div>
+                        @endif
+                    </div>
+                @endif
+
                 {{-- Fiche Principale : Description & Cahier des charges --}}
                 <div class="bg-white rounded-3xl p-8 border {{ $isClosed ? 'border-red-200 shadow-sm' : 'border-slate-200/90 shadow-xs' }} space-y-6">
                     <div class="flex items-center justify-between pb-4 border-b border-slate-100">

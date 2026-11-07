@@ -9,6 +9,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\TernaryFilter;
@@ -21,6 +22,13 @@ class OpportunitiesTable
     {
         return $table
             ->columns([
+                ImageColumn::make('image')
+                    ->label('Visuel')
+                    ->disk('public')
+                    ->circular()
+                    ->defaultImageUrl(fn ($record) => $record->sae?->logo_url)
+                    ->toggleable(),
+
                 TextColumn::make('title')
                     ->label('Opportunité')
                     ->weight('bold')

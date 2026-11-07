@@ -230,3 +230,37 @@ test('closed opportunity displays in red with appropriate closed badges and noti
     $response->assertSee('bg-red-600');
     $response->assertSee('Cette opportunité a atteint sa date limite de dépôt');
 });
+
+test('opportunity can have cover image and renders correctly on catalog and detail pages', function () {
+    $user = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $user->id,
+        'name' => 'Kigali Innovation City Hub',
+        'slug' => 'kigali-innovation-city-hub',
+    ]);
+
+    $opportunity = Opportunity::create([
+        'sae_id' => $sae->id,
+        'title' => 'Challenge AgriTech Rwanda 2026',
+        'image' => 'opportunities/covers/agritech-rwanda.jpg',
+        'sectors' => ['AgriTech'],
+        'target_zones' => ['Rwanda'],
+        'details' => 'Dotation de 20 000 USD pour les lauréats.',
+        'deadline' => now()->addDays(15),
+        'is_active' => true,
+    ]);
+
+    expect($opportunity->image)->toBe('opportunities/covers/agritech-rwanda.jpg')
+        ->and($opportunity->image_url)->toContain('opportunities/covers/agritech-rwanda.jpg');
+
+    // Catalogue Livewire
+    Livewire::test(OpportunitiesCatalog::class)
+        ->assertSee('Challenge AgriTech Rwanda 2026')
+        ->assertSee('opportunities/covers/agritech-rwanda.jpg');
+
+    // Page de détail
+    $response = $this->get(route('public.opportunities.detail', $opportunity->slug));
+    $response->assertOk();
+    $response->assertSee('Challenge AgriTech Rwanda 2026');
+    $response->assertSee('opportunities/covers/agritech-rwanda.jpg');
+});

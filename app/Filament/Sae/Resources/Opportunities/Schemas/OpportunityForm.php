@@ -3,6 +3,7 @@
 namespace App\Filament\Sae\Resources\Opportunities\Schemas;
 
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
@@ -20,6 +21,17 @@ class OpportunityForm
                 Section::make('Informations générales')
                     ->description('Renseignez les éléments essentiels de l\'opportunité ou de l\'appel à projets.')
                     ->schema([
+                        FileUpload::make('image')
+                            ->label('Visuel / Image d\'illustration de l\'opportunité')
+                            ->image()
+                            ->disk('public')
+                            ->directory('opportunities/covers')
+                            ->visibility('public')
+                            ->imageEditor()
+                            ->helperText('Image d\'illustration (JPEG, PNG, WebP — max 5 Mo) affichée sur le portail public et la fiche détaillée.')
+                            ->maxSize(5120)
+                            ->columnSpanFull(),
+
                         TextInput::make('title')
                             ->label('Nom de l\'opportunité')
                             ->placeholder('Ex: Challenge AgriTech & Climat Sahel 2026')

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Opportunity extends Model
@@ -18,6 +19,7 @@ class Opportunity extends Model
         'sae_id',
         'title',
         'slug',
+        'image',
         'sectors',
         'target_zones',
         'details',
@@ -46,6 +48,19 @@ class Opportunity extends Model
                 $opportunity->slug = "{$baseSlug}-{$uniqueSuffix}";
             }
         });
+    }
+
+    public function getImageUrlAttribute(): ?string
+    {
+        if (blank($this->image)) {
+            return null;
+        }
+
+        if (str_starts_with($this->image, 'http://') || str_starts_with($this->image, 'https://')) {
+            return $this->image;
+        }
+
+        return Storage::disk('public')->url($this->image);
     }
 
     /**

@@ -134,40 +134,80 @@
 
                 <article class="rounded-3xl shadow-xs transition-all duration-300 flex flex-col justify-between overflow-hidden group hover:-translate-y-1 {{ $isClosed ? 'bg-red-50/20 border-2 border-red-300 hover:border-red-500 hover:shadow-red-100' : 'bg-white border border-slate-200/90 hover:border-[#2F3284]/30 hover:shadow-xl' }}">
                     <div>
+                        {{-- Image d'illustration de l'opportunité si définie --}}
+                        @if($opp->image_url)
+                            <div class="relative h-44 w-full overflow-hidden bg-slate-100">
+                                <img src="{{ $opp->image_url }}" alt="{{ $opp->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <div class="absolute inset-0 {{ $isClosed ? 'bg-red-950/40 mix-blend-multiply' : 'bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent' }}"></div>
+                                <div class="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
+                                    @if($isClosed)
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-600 text-white shadow-md animate-pulse">
+                                            <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            Clôturé
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/95 text-emerald-700 backdrop-blur-md shadow-xs">
+                                            <span class="relative flex h-2 w-2">
+                                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                            </span>
+                                            Ouvert
+                                        </span>
+                                    @endif
+
+                                    @if($opp->deadline)
+                                        <span class="text-xs font-bold px-2.5 py-1 rounded-lg {{ $isClosed ? 'bg-red-950/80 text-red-200 border border-red-500' : 'bg-slate-900/80 text-white backdrop-blur-md' }}">
+                                            @if($isClosed)
+                                                Échu
+                                            @elseif($remainingDays === 0)
+                                                Clôture ce jour !
+                                            @elseif($remainingDays !== null)
+                                                J-{{ $remainingDays }}
+                                            @endif
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
+
                         {{-- En-tête de carte : badge statut & SAE --}}
                         <div class="p-6 pb-4 border-b {{ $isClosed ? 'border-red-100 bg-red-50/60' : 'border-slate-100 bg-gradient-to-br from-slate-50 to-white' }}">
-                            <div class="flex items-center justify-between gap-2 mb-3">
-                                {{-- Statut : En ROUGE vif quand clôturé --}}
-                                @if($isClosed)
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700 border border-red-300 animate-pulse">
-                                        <svg class="w-3.5 h-3.5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                        </svg>
-                                        Clôturé
-                                    </span>
-                                @else
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                        <span class="relative flex h-2 w-2">
-                                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                            @if(!$opp->image_url)
+                                <div class="flex items-center justify-between gap-2 mb-3">
+                                    {{-- Statut : En ROUGE vif quand clôturé --}}
+                                    @if($isClosed)
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700 border border-red-300 animate-pulse">
+                                            <svg class="w-3.5 h-3.5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            Clôturé
                                         </span>
-                                        Candidatures ouvertes
-                                    </span>
-                                @endif
+                                    @else
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                            <span class="relative flex h-2 w-2">
+                                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                            </span>
+                                            Candidatures ouvertes
+                                        </span>
+                                    @endif
 
-                                {{-- Jours restants ou date limite --}}
-                                @if($opp->deadline)
-                                    <span class="text-xs font-semibold {{ $isClosed ? 'text-red-600 font-bold' : ($remainingDays !== null && $remainingDays <= 3 ? 'text-amber-600' : 'text-slate-500') }}">
-                                        @if($isClosed)
-                                            Échu le {{ $opp->deadline->translatedFormat('d M Y') }}
-                                        @elseif($remainingDays === 0)
-                                            Clôture ce jour !
-                                        @elseif($remainingDays !== null)
-                                            J-{{ $remainingDays }}
-                                        @endif
-                                    </span>
-                                @endif
-                            </div>
+                                    {{-- Jours restants ou date limite --}}
+                                    @if($opp->deadline)
+                                        <span class="text-xs font-semibold {{ $isClosed ? 'text-red-600 font-bold' : ($remainingDays !== null && $remainingDays <= 3 ? 'text-amber-600' : 'text-slate-500') }}">
+                                            @if($isClosed)
+                                                Échu le {{ $opp->deadline->translatedFormat('d M Y') }}
+                                            @elseif($remainingDays === 0)
+                                                Clôture ce jour !
+                                            @elseif($remainingDays !== null)
+                                                J-{{ $remainingDays }}
+                                            @endif
+                                        </span>
+                                    @endif
+                                </div>
+                            @endif
 
                             {{-- SAE organisatrice --}}
                             @if($opp->sae)
