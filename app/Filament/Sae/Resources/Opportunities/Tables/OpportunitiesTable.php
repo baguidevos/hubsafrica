@@ -4,10 +4,14 @@ namespace App\Filament\Sae\Resources\Opportunities\Tables;
 
 use App\Models\Opportunity;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -89,18 +93,112 @@ class OpportunitiesTable
                     ->falseLabel('Brouillons / Masquées'),
             ])
             ->recordActions([
-                Action::make('view_front')
-                    ->label('Voir sur le site')
-                    ->icon('heroicon-o-arrow-top-right-on-square')
-                    ->color('gray')
-                    ->url(fn (Opportunity $record): string => route('public.opportunities.detail', ['slug' => $record->slug]))
-                    ->openUrlInNewTab(),
-                ViewAction::make()->slideOver(),
-                EditAction::make()->slideOver(),
-                DeleteAction::make(),
+                Action::make('shareModal')
+                    ->label('Partager')
+                    ->icon('heroicon-o-share')
+                    ->color('amber')
+                    ->tooltip('Partager cette opportunité sur les réseaux sociaux ou copier le lien direct')
+                    ->modalHeading(fn (Opportunity $record): string => "Partager : {$record->title}")
+                    ->modalDescription('Diffusez cet appel à projets auprès de votre écosystème avec un lien public sécurisé.')
+                    ->modalSubmitAction(false)
+                    ->modalCancelActionLabel('Fermer')
+                    ->form([
+                        TextInput::make('public_share_url')
+                            ->label('Lien direct officiel')
+                            ->default(fn (Opportunity $record): string => $record->share_url)
+                            ->readOnly()
+                            ->helperText('Ce lien amène directement sur la page de l\'opportunité sur Hubs Africa sans révéler la base de données.'),
+                    ])
+                    ->extraModalFooterActions([
+                        Action::make('copyModalLink')
+                            ->label('Copier le lien')
+                            ->icon('heroicon-o-clipboard-document-check')
+                            ->color('primary')
+                            ->action(function ($livewire, Opportunity $record): void {
+                                $url = $record->share_url;
+                                $livewire->js("window.navigator.clipboard.writeText('{$url}')");
+                                Notification::make()
+                                    ->title('Lien officiel copié !')
+                                    ->body("Le lien public pour \"{$record->title}\" a été copié dans le presse-papier.")
+                                    ->success()
+                                    ->send();
+                            }),
+                        Action::make('modalWhatsapp')
+                            ->label('WhatsApp')
+                            ->icon('heroicon-o-chat-bubble-left-ellipsis')
+                            ->color('success')
+                            ->url(fn (Opportunity $record): string => $record->share_links['whatsapp'])
+                            ->openUrlInNewTab(),
+                        Action::make('modalLinkedin')
+                            ->label('LinkedIn')
+                            ->icon('heroicon-o-globe-alt')
+                            ->color('info')
+                            ->url(fn (Opportunity $record): string => $record->share_links['linkedin'])
+                            ->openUrlInNewTab(),
+                        Action::make('modalTwitter')
+                            ->label('X (Twitter)')
+                            ->icon('heroicon-o-hashtag')
+                            ->color('gray')
+                            ->url(fn (Opportunity $record): string => $record->share_links['twitter'])
+                            ->openUrlInNewTab(),
+                    ]),
+
+                ActionGroup::make([
+                    Action::make('copyDirectLink')
+                        ->label('Copier le lien public')
+                        ->icon('heroicon-o-clipboard-document-check')
+                        ->color('warning')
+                        ->action(function ($livewire, Opportunity $record): void {
+                            $url = $record->share_url;
+                            $livewire->js("window.navigator.clipboard.writeText('{$url}')");
+                            Notification::make()
+                                ->title('Lien copié !')
+                                ->body("Le lien a été copié dans le presse-papier : {$url}")
+                                ->success()
+                                ->send();
+                        }),
+
+                    Action::make('shareWhatsappGroup')
+                        ->label('Partager sur WhatsApp')
+                        ->icon('heroicon-o-chat-bubble-left-ellipsis')
+                        ->color('emerald')
+                        ->url(fn (Opportunity $record): string => $record->share_links['whatsapp'])
+                        ->openUrlInNewTab(),
+
+                    Action::make('shareLinkedinGroup')
+                        ->label('Partager sur LinkedIn')
+                        ->icon('heroicon-o-globe-alt')
+                        ->color('info')
+                        ->url(fn (Opportunity $record): string => $record->share_links['linkedin'])
+                        ->openUrlInNewTab(),
+
+                    Action::make('shareTwitterGroup')
+                        ->label('Partager sur X (Twitter)')
+                        ->icon('heroicon-o-hashtag')
+                        ->color('gray')
+                        ->url(fn (Opportunity $record): string => $record->share_links['twitter'])
+                        ->openUrlInNewTab(),
+
+                    Action::make('view_front')
+                        ->label('Voir sur le site public')
+                        ->icon('heroicon-o-arrow-top-right-on-square')
+                        ->color('gray')
+                        ->url(fn (Opportunity $record): string => $record->share_url)
+                        ->openUrlInNewTab(),
+
+                    ViewAction::make()->slideOver(),
+                    EditAction::make()->slideOver(),
+                    DeleteAction::make(),
+                ])
+                    ->label('Actions')
+                    ->icon('heroicon-m-ellipsis-vertical')
+                    ->size('sm')
+                    ->color('gray'),
             ])
             ->toolbarActions([
-                DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
             ]);
     }
 }

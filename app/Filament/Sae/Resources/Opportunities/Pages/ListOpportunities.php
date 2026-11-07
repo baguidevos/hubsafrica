@@ -19,38 +19,6 @@ class ListOpportunities extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            // Action 1: Charger directement les 22 opportunités pré-extraites de CUBE
-            Action::make('loadPresetCube')
-                ->label('Charger le pack CUBE (22 opportunités)')
-                ->icon('heroicon-o-sparkles')
-                ->color('amber')
-                ->requiresConfirmation()
-                ->modalHeading('Importer les 22 opportunités pré-extraites pour CUBE')
-                ->modalDescription('Cette action va automatiquement insérer et publier les 22 opportunités et appels à projets identifiés pour CUBE (MEET Africa, AgriFI, HBS Africa, Global EbA Fund, FemTech UNICEF, etc.).')
-                ->modalSubmitActionLabel('Confirmer et charger')
-                ->action(function (OpportunityImportService $service): void {
-                    $jsonPath = database_path('data/opportunities_cube.json');
-                    $sae = filament()->getTenant();
-
-                    try {
-                        $summary = $service->importFromFile($jsonPath, $sae);
-
-                        Notification::make()
-                            ->title('Importation CUBE réussie !')
-                            ->success()
-                            ->body("{$summary['imported_count']} opportunités ont été importées et publiées avec succès sur la plateforme.")
-                            ->send();
-                    } catch (\Throwable $exception) {
-                        Notification::make()
-                            ->title('Échec du chargement')
-                            ->danger()
-                            ->body($exception->getMessage())
-                            ->persistent()
-                            ->send();
-                    }
-                }),
-
-            // Action 2: Importer un fichier personnalisé JSON, CSV ou Excel
             Action::make('importOpportunities')
                 ->label('Importer un fichier (JSON / CSV / Excel)')
                 ->icon('heroicon-o-arrow-up-tray')
