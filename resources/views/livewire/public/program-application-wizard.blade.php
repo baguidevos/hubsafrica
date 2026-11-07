@@ -66,7 +66,7 @@
                         <h1 class="text-xl sm:text-2xl font-black mt-1">{{ $program->name }}</h1>
                     </div>
                     <div class="hidden sm:block text-right">
-                        <span class="text-xs text-slate-400 block">Structure Organisatrice</span>
+                        <span class="text-xs text-slate-400 block">Structure Publicatrice</span>
                         <span class="font-bold text-sm text-amber-200">{{ $program->sae?->name }}</span>
                     </div>
                 </div>

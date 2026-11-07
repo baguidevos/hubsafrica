@@ -264,3 +264,49 @@ test('opportunity can have cover image and renders correctly on catalog and deta
     $response->assertSee('Challenge AgriTech Rwanda 2026');
     $response->assertSee('opportunities/covers/agritech-rwanda.jpg');
 });
+
+test('opportunity provides secure opaque share urls and multi-channel share links', function () {
+    $user = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $user->id,
+        'name' => 'Ouaga Innovation Hub',
+        'slug' => 'ouaga-innovation-hub',
+    ]);
+
+    $opportunity = Opportunity::create([
+        'sae_id' => $sae->id,
+        'title' => 'Bourse Climat Sahel 2026',
+        'sectors' => ['Climat', 'Environnement'],
+        'target_zones' => ['Burkina Faso', 'Niger'],
+        'details' => 'Accompagnement et dotation financière.',
+        'deadline' => now()->addDays(30),
+        'is_active' => true,
+    ]);
+
+    // L'URL de partage ne doit pas révéler l'ID interne de la base de données
+    expect($opportunity->share_url)
+        ->toContain('/opportunites/'.$opportunity->slug)
+        ->not->toContain('id='.$opportunity->id)
+        ->not->toContain('sae_id=');
+
+    // Les liens de réseaux sociaux doivent être pré-formatés et encodés
+    $shareLinks = $opportunity->share_links;
+    expect($shareLinks)->toHaveKeys(['copy', 'whatsapp', 'linkedin', 'twitter', 'facebook', 'email'])
+        ->and($shareLinks['whatsapp'])->toContain('https://api.whatsapp.com/send?text=')
+        ->and($shareLinks['linkedin'])->toContain('https://www.linkedin.com/sharing/share-offsite/?url=')
+        ->and($shareLinks['twitter'])->toContain('https://twitter.com/intent/tweet?url=')
+        ->and($shareLinks['email'])->toContain('mailto:?subject=');
+
+    // Le catalogue doit contenir l'action de partage
+    Livewire::test(OpportunitiesCatalog::class)
+        ->assertSee('Bourse Climat Sahel 2026')
+        ->assertSee('Partager');
+
+    // La page de détail doit afficher le widget social interactif
+    $response = $this->get(route('public.opportunities.detail', $opportunity->slug));
+    $response->assertOk()
+        ->assertSee("Partager l'opportunité", false)
+        ->assertSee('WhatsApp')
+        ->assertSee('LinkedIn')
+        ->assertSee('Copier le lien public sécurisé');
+});

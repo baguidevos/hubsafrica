@@ -337,6 +337,105 @@
                     </div>
                 @endif
 
+                {{-- Bloc de Partage Sécurisé & Multi-canaux --}}
+                <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-xs space-y-4" x-data="{ copied: false }">
+                    <div class="flex items-center justify-between">
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <svg class="w-4 h-4 text-[#2F3284]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                            </svg>
+                            <span>Partager l'opportunité</span>
+                        </div>
+                        <span class="text-[10px] text-emerald-600 font-bold" x-show="copied" x-transition style="display: none;">
+                            ✓ Lien officiel copié !
+                        </span>
+                    </div>
+
+                    <p class="text-xs text-slate-500">
+                        Diffusez cet appel à projets auprès de votre réseau d'entrepreneurs et de partenaires.
+                    </p>
+
+                    {{-- Bouton Copier le lien direct protégé --}}
+                    <div class="relative">
+                        <button
+                            type="button"
+                            @click="navigator.clipboard.writeText('{{ $opportunity->share_url }}'); copied = true; setTimeout(() => copied = false, 2500)"
+                            class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold transition group"
+                            title="Copier le lien public sécurisé"
+                        >
+                            <span class="truncate font-mono text-[11px] text-slate-500 text-left max-w-[200px]">
+                                {{ $opportunity->share_url }}
+                            </span>
+                            <span class="inline-flex items-center gap-1 text-[11px] font-bold text-[#2F3284] shrink-0 ml-2">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                                <span x-text="copied ? 'Copié !' : 'Copier'">Copier</span>
+                            </span>
+                        </button>
+                    </div>
+
+                    {{-- Boutons Réseaux Sociaux Directs --}}
+                    @php
+                        $shareLinks = $opportunity->share_links;
+                    @endphp
+                    <div class="grid grid-cols-4 gap-2 pt-1">
+                        {{-- WhatsApp --}}
+                        <a
+                            href="{{ $shareLinks['whatsapp'] }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="flex flex-col items-center justify-center py-2.5 px-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 transition group"
+                            title="Partager sur WhatsApp"
+                        >
+                            <svg class="w-5 h-5 text-emerald-600 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.074-1.782-.401-1.378-.57-2.27-1.956-2.339-2.048-.069-.092-.556-.738-.556-1.408 0-.67.348-.999.472-1.134.124-.135.27-.17.36-.17.09 0 .18.001.258.006.082.005.192-.031.3.23.112.27.382.932.416 1.001.034.069.056.15.011.24-.045.09-.068.146-.135.225-.068.079-.142.176-.203.237-.068.068-.139.141-.06.277.079.135.351.58.753.939.519.463.957.606 1.093.674.135.069.214.06.293-.031.079-.092.338-.393.428-.528.09-.135.18-.112.304-.068.124.045.788.371.923.439.135.068.225.101.258.158.034.056.034.327-.11.732z"/>
+                            </svg>
+                            <span class="text-[10px] font-bold mt-1">WhatsApp</span>
+                        </a>
+
+                        {{-- LinkedIn --}}
+                        <a
+                            href="{{ $shareLinks['linkedin'] }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="flex flex-col items-center justify-center py-2.5 px-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 transition group"
+                            title="Partager sur LinkedIn"
+                        >
+                            <svg class="w-5 h-5 text-blue-600 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+                            </svg>
+                            <span class="text-[10px] font-bold mt-1">LinkedIn</span>
+                        </a>
+
+                        {{-- X / Twitter --}}
+                        <a
+                            href="{{ $shareLinks['twitter'] }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="flex flex-col items-center justify-center py-2.5 px-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 transition group"
+                            title="Partager sur X"
+                        >
+                            <svg class="w-5 h-5 text-slate-900 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                            <span class="text-[10px] font-bold mt-1">X</span>
+                        </a>
+
+                        {{-- Email --}}
+                        <a
+                            href="{{ $shareLinks['email'] }}"
+                            class="flex flex-col items-center justify-center py-2.5 px-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 transition group"
+                            title="Partager par email"
+                        >
+                            <svg class="w-5 h-5 text-[#F8B81D] group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            <span class="text-[10px] font-bold mt-1">Email</span>
+                        </a>
+                    </div>
+                </div>
+
                 {{-- Partage & Navigation retour --}}
                 <div class="p-6 rounded-3xl bg-slate-50 border border-slate-200/80 text-center space-y-3">
                     <p class="text-xs text-slate-500">

@@ -33,13 +33,20 @@ class OpportunityPublicController extends Controller
         $plainDescription = strip_tags($opportunity->details);
         $shortDescription = mb_substr($plainDescription, 0, 160) ?: 'Consultez les détails, critères d\'éligibilité et postulez en ligne.';
 
+        $ogPayload = [
+            'type' => 'article',
+            'title' => $opportunity->title,
+            'description' => $shortDescription,
+            'url' => $opportunity->share_url,
+        ];
+
+        if ($opportunity->image_url) {
+            $ogPayload['image'] = $opportunity->image_url;
+        }
+
         Head::title("{$opportunity->title} — Opportunité | Hubs Africa")
             ->description($shortDescription)
-            ->og(
-                type: 'article',
-                title: $opportunity->title,
-                description: $shortDescription,
-            );
+            ->og(...$ogPayload);
 
         return view('pages.opportunity-detail', [
             'opportunity' => $opportunity,

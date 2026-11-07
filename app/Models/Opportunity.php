@@ -64,6 +64,36 @@ class Opportunity extends Model
     }
 
     /**
+     * URL publique et canonique de partage direct.
+     * Totalement agnostique et opaque quant à la structure de la base de données.
+     */
+    public function getShareUrlAttribute(): string
+    {
+        return route('public.opportunities.detail', ['slug' => $this->slug]);
+    }
+
+    /**
+     * Liens pré-formatés pour le partage sur les réseaux sociaux.
+     *
+     * @return array<string, string>
+     */
+    public function getShareLinksAttribute(): array
+    {
+        $shareUrl = $this->share_url;
+        $encodedUrl = rawurlencode($shareUrl);
+        $encodedText = rawurlencode("Découvrez cette opportunité sur Hubs Africa : {$this->title}");
+
+        return [
+            'copy' => $shareUrl,
+            'whatsapp' => "https://api.whatsapp.com/send?text={$encodedText}%20{$encodedUrl}",
+            'linkedin' => "https://www.linkedin.com/sharing/share-offsite/?url={$encodedUrl}",
+            'twitter' => "https://twitter.com/intent/tweet?url={$encodedUrl}&text={$encodedText}",
+            'facebook' => "https://www.facebook.com/sharer/sharer.php?u={$encodedUrl}",
+            'email' => 'mailto:?subject='.rawurlencode("Opportunité : {$this->title}")."&body={$encodedText}%0A%0A{$encodedUrl}",
+        ];
+    }
+
+    /**
      * Détermine si l'opportunité est clôturée.
      * Une opportunité est clôturée si elle est désactivée OU si sa date limite est échue.
      */
