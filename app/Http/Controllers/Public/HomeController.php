@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Public;
 use App\Http\Controllers\Controller;
 use App\Models\CoachingSession;
 use App\Models\FundingRecord;
+use App\Models\Opportunity;
 use App\Models\Program;
 use App\Models\Project;
 use App\Models\Sae;
@@ -46,10 +47,21 @@ class HomeController extends Controller
             ->limit(6)
             ->get();
 
+        // Opportunités & Appels à Projets ouverts
+        $featuredOpportunities = Opportunity::withoutGlobalScopes()
+            ->with('sae')
+            ->open()
+            ->latest()
+            ->limit(3)
+            ->get();
+        $opportunitiesCount = Opportunity::withoutGlobalScopes()->open()->count();
+
         return view('pages.home', [
             'metrics' => $metrics,
             'featuredPrograms' => $featuredPrograms,
             'featuredSaes' => $featuredSaes,
+            'featuredOpportunities' => $featuredOpportunities,
+            'opportunitiesCount' => $opportunitiesCount,
         ]);
     }
 }

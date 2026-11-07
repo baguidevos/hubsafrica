@@ -6,6 +6,7 @@ use App\Http\Controllers\EntrepreneurInvitationController;
 use App\Http\Controllers\Public\CoachJoinRequestPublicController;
 use App\Http\Controllers\Public\CohortPublicController;
 use App\Http\Controllers\Public\HomeController;
+use App\Http\Controllers\Public\OpportunityPublicController;
 use App\Http\Controllers\Public\OrientationController;
 use App\Http\Controllers\Public\ProgramPublicController;
 use App\Http\Controllers\Public\StructurePublicController;
@@ -38,6 +39,10 @@ Route::post('/cohortes/{id}/register', [CohortPublicController::class, 'register
 // Annuaire & Fiches des Structures d'Accompagnement (SAEs)
 Route::get('/structures', [StructurePublicController::class, 'index'])->name('public.structures');
 Route::get('/structures/{id}', [StructurePublicController::class, 'show'])->name('public.structure.detail');
+
+// Opportunités & Appels à Projets (Publiés par les SAEs)
+Route::get('/opportunites', [OpportunityPublicController::class, 'index'])->name('public.opportunities');
+Route::get('/opportunites/{slug}', [OpportunityPublicController::class, 'show'])->name('public.opportunities.detail');
 
 // Portail d'Orientation & Choix de Profil
 Route::get('/rejoindre', [OrientationController::class, 'index'])->name('public.rejoindre');

@@ -168,6 +168,10 @@
                         class="text-xs sm:text-sm font-semibold {{ request()->routeIs('public.programmes*') ? 'text-[#2F3284] font-bold border-b-2 border-[#F8B81D] pb-1' : 'text-slate-600 hover:text-[#2F3284]' }} transition">
                         Programmes
                     </a>
+                    <a href="{{ route('public.opportunities') }}"
+                        class="text-xs sm:text-sm font-semibold {{ request()->routeIs('public.opportunities*') ? 'text-[#2F3284] font-bold border-b-2 border-[#F8B81D] pb-1' : 'text-slate-600 hover:text-[#2F3284]' }} transition">
+                        Opportunités
+                    </a>
                     <a href="{{ route('public.structures') }}"
                         class="text-xs sm:text-sm font-semibold {{ request()->routeIs('public.structures*') ? 'text-[#2F3284] font-bold border-b-2 border-[#F8B81D] pb-1' : 'text-slate-600 hover:text-[#2F3284]' }} transition">
                         Structures SAE
@@ -286,6 +290,8 @@
                 class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-[#2F3284]">Accueil</a>
             <a href="{{ route('public.programmes') }}"
                 class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-[#2F3284]">Programmes</a>
+            <a href="{{ route('public.opportunities') }}"
+                class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-[#2F3284]">Opportunités</a>
             <a href="{{ route('public.structures') }}"
                 class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-[#2F3284]">Structures
                 SAE</a>
@@ -402,6 +408,7 @@
                 <div class="space-y-3">
                     <h4 class="text-xs font-bold text-white uppercase tracking-wider">Opportunités</h4>
                     <ul class="space-y-2 text-xs">
+                        <li><a href="{{ route('public.opportunities') }}" class="hover:text-[#F8B81D] transition font-bold text-amber-400">Appels à projets &amp; Opportunités</a></li>
                         <li><a href="{{ route('public.programmes') }}" class="hover:text-[#F8B81D] transition">Tous les
                                 programmes d'incubation</a></li>
                         <li><a href="{{ route('public.programmes') }}?status=open"

@@ -235,6 +235,11 @@ class Sae extends Model implements HasAvatar
         return $this->hasMany(FundingRecord::class, 'sae_id');
     }
 
+    public function opportunities(): HasMany
+    {
+        return $this->hasMany(Opportunity::class, 'sae_id');
+    }
+
     public function indicators(): HasMany
     {
         return $this->hasMany(Indicator::class, 'sae_id');
