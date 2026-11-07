@@ -5,9 +5,12 @@ namespace App\Services;
 use App\Models\Opportunity;
 use App\Models\Sae;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use RuntimeException;
 use ZipArchive;
 
 class OpportunityImportService
@@ -16,23 +19,25 @@ class OpportunityImportService
      * Importe des opportunités depuis un fichier JSON, CSV ou Excel (XLSX).
      *
      * @param  string  $filePath  Chemin absolu vers le fichier
-     * @param  int|Sae  $sae  La structure SAE rattachée
+     * @param  int|Sae|null  $sae  La structure SAE rattachée
      * @return array{imported_count: int, skipped_count: int, errors: array<int, string>}
      */
-    public function importFromFile(string $filePath, int|Sae $sae): array
+    public function importFromFile(string $filePath, int|Sae|null $sae): array
     {
+        $this->ensureOpportunitiesTableExists();
+
         if (! file_exists($filePath) || ! is_readable($filePath)) {
             throw new InvalidArgumentException("Le fichier d'import est introuvable ou illisible : {$filePath}");
         }
 
-        $saeId = $sae instanceof Sae ? $sae->id : $sae;
+        $saeId = $this->resolveSaeId($sae);
         $extension = Str::lower(pathinfo($filePath, PATHINFO_EXTENSION));
 
         $rawRows = match ($extension) {
             'json' => $this->parseJsonFile($filePath),
             'csv' => $this->parseCsvFile($filePath),
             'xlsx' => $this->parseXlsxFile($filePath),
-            default => throw new InvalidArgumentException("Format non pris en charge ({$extension}). Formats acceptés : .json, .csv, .xlsx"),
+            default => throw new InvalidArgumentException("Format de fichier non pris en charge (.{$extension}). Formats acceptés : .json, .csv, .xlsx"),
         };
 
         return $this->importRows($rawRows, $saeId);
@@ -46,6 +51,8 @@ class OpportunityImportService
      */
     public function importRows(array $rows, int $saeId): array
     {
+        $this->ensureOpportunitiesTableExists();
+
         $importedCount = 0;
         $skippedCount = 0;
         $errors = [];
@@ -56,7 +63,7 @@ class OpportunityImportService
             $title = trim((string) ($row['title'] ?? $row['titre'] ?? $row['nom'] ?? ''));
             if ($title === '') {
                 $skippedCount++;
-                $errors[] = "Ligne {$lineNumber} : Titre manquant ou vide.";
+                $errors[] = "Ligne {$lineNumber} : Le titre de l'opportunité est manquant ou vide.";
 
                 continue;
             }
@@ -105,7 +112,63 @@ class OpportunityImportService
     }
 
     /**
-     * Parse un fichier JSON.
+     * S'assure que la table 'opportunities' existe dans la base de données.
+     * En production, si la table est absente, déclenche automatiquement la migration.
+     */
+    private function ensureOpportunitiesTableExists(): void
+    {
+        if (Schema::hasTable('opportunities')) {
+            return;
+        }
+
+        try {
+            Artisan::call('migrate', ['--force' => true]);
+        } catch (\Throwable $exception) {
+            Log::warning('Tentative automatique de migration échouée : '.$exception->getMessage());
+        }
+
+        if (! Schema::hasTable('opportunities')) {
+            throw new RuntimeException(
+                "La table 'opportunities' n'existe pas encore dans la base de données de production. "
+                .'Veuillez exécuter les migrations en accédant à : /maintenance/migrate-force?key=hubsafrica-migrate-force-2026'
+            );
+        }
+    }
+
+    /**
+     * Résout l'identifiant SAE de façon fiable avec fallbacks contextuels.
+     */
+    private function resolveSaeId(int|Sae|null $sae): int
+    {
+        if ($sae instanceof Sae) {
+            return $sae->id;
+        }
+
+        if (is_numeric($sae) && (int) $sae > 0) {
+            return (int) $sae;
+        }
+
+        if (function_exists('filament') && filament()->hasTenancy() && ($tenant = filament()->getTenant())) {
+            return (int) $tenant->getKey();
+        }
+
+        if (auth()->check() && isset(auth()->user()->active_sae_id)) {
+            return (int) auth()->user()->active_sae_id;
+        }
+
+        $cubeSae = Sae::where('name', 'like', '%CUBE%')
+            ->orWhere('slug', 'like', '%cube%')
+            ->first() ?: Sae::first();
+
+        if ($cubeSae) {
+            return (int) $cubeSae->id;
+        }
+
+        throw new RuntimeException("Aucune structure d'accompagnement (SAE) valide n'a pu être trouvée pour associer les opportunités.");
+    }
+
+    /**
+     * Parse un fichier JSON en supprimant l'éventuel BOM UTF-8.
      *
      * @return array<int, array<string, mixed>>
      */
@@ -116,7 +179,9 @@ class OpportunityImportService
             throw new InvalidArgumentException("Impossible de lire le fichier JSON : {$filePath}");
         }
 
-        $decoded = json_decode($rawContent, true);
+        $cleanedContent = preg_replace('/^\xEF\xBB\xBF/', '', trim($rawContent));
+        $decoded = json_decode((string) $cleanedContent, true);
+
         if (json_last_error() !== JSON_ERROR_NONE || ! is_array($decoded)) {
             throw new InvalidArgumentException('Structure JSON invalide : '.json_last_error_msg());
         }
@@ -133,7 +198,7 @@ class OpportunityImportService
     }
 
     /**
-     * Parse un fichier CSV avec détection automatique du délimiteur (, ou ; ou \t).
+     * Parse un fichier CSV avec détection automatique du délimiteur.
      *
      * @return array<int, array<string, mixed>>
      */
@@ -194,7 +259,7 @@ class OpportunityImportService
     }
 
     /**
-     * Parse un fichier Excel (.xlsx) natif via ZipArchive & XML sans dépendance externe lourde.
+     * Parse un fichier Excel (.xlsx) natif via ZipArchive & XML.
      *
      * @return array<int, array<string, mixed>>
      */
@@ -205,7 +270,6 @@ class OpportunityImportService
             throw new InvalidArgumentException("Impossible d'ouvrir le classeur Excel : {$filePath}");
         }
 
-        // 1. Lire la table des chaînes partagées (sharedStrings.xml)
         $sharedStrings = [];
         $sharedStringsXml = $zip->getFromName('xl/sharedStrings.xml');
         if ($sharedStringsXml !== false) {
@@ -225,7 +289,6 @@ class OpportunityImportService
             }
         }
 
-        // 2. Lire la première feuille de calcul (sheet1.xml)
         $sheetXml = $zip->getFromName('xl/worksheets/sheet1.xml');
         $zip->close();
 

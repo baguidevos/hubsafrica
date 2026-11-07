@@ -115,7 +115,7 @@ test('opportunity import service gracefully handles rows with missing title', fu
     expect($result['imported_count'])->toBe(1)
         ->and($result['skipped_count'])->toBe(1)
         ->and($result['errors'])->toHaveCount(1)
-        ->and($result['errors'][0])->toContain('Titre manquant');
+        ->and($result['errors'][0])->toContain('titre');
 });
 
 test('artisan command opportunities:import executes cleanly', function () {

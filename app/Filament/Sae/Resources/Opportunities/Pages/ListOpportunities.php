@@ -10,6 +10,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class ListOpportunities extends ListRecords
 {
@@ -18,8 +19,40 @@ class ListOpportunities extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            // Action 1: Charger directement les 22 opportunités pré-extraites de CUBE
+            Action::make('loadPresetCube')
+                ->label('Charger le pack CUBE (22 opportunités)')
+                ->icon('heroicon-o-sparkles')
+                ->color('amber')
+                ->requiresConfirmation()
+                ->modalHeading('Importer les 22 opportunités pré-extraites pour CUBE')
+                ->modalDescription('Cette action va automatiquement insérer et publier les 22 opportunités et appels à projets identifiés pour CUBE (MEET Africa, AgriFI, HBS Africa, Global EbA Fund, FemTech UNICEF, etc.).')
+                ->modalSubmitActionLabel('Confirmer et charger')
+                ->action(function (OpportunityImportService $service): void {
+                    $jsonPath = database_path('data/opportunities_cube.json');
+                    $sae = filament()->getTenant();
+
+                    try {
+                        $summary = $service->importFromFile($jsonPath, $sae);
+
+                        Notification::make()
+                            ->title('Importation CUBE réussie !')
+                            ->success()
+                            ->body("{$summary['imported_count']} opportunités ont été importées et publiées avec succès sur la plateforme.")
+                            ->send();
+                    } catch (\Throwable $exception) {
+                        Notification::make()
+                            ->title('Échec du chargement')
+                            ->danger()
+                            ->body($exception->getMessage())
+                            ->persistent()
+                            ->send();
+                    }
+                }),
+
+            // Action 2: Importer un fichier personnalisé JSON, CSV ou Excel
             Action::make('importOpportunities')
-                ->label('Importer en masse (JSON / CSV / Excel)')
+                ->label('Importer un fichier (JSON / CSV / Excel)')
                 ->icon('heroicon-o-arrow-up-tray')
                 ->color('gray')
                 ->modalHeading('Importer des opportunités en lot')
@@ -43,15 +76,41 @@ class ListOpportunities extends ListRecords
                         ->helperText('Formats supportés : .json, .csv (séparateur virgule ou point-virgule), ou .xlsx (Excel).'),
                 ])
                 ->action(function (array $data, OpportunityImportService $service): void {
-                    $relativeFilePath = $data['file'];
-                    $absoluteFilePath = Storage::disk('local')->path($relativeFilePath);
-
+                    $rawFile = $data['file'];
                     $sae = filament()->getTenant();
+
+                    // Résolution du chemin absolu du fichier téléchargé
+                    $absoluteFilePath = null;
+
+                    if ($rawFile instanceof TemporaryUploadedFile) {
+                        $absoluteFilePath = $rawFile->getRealPath();
+                    } elseif (is_array($rawFile)) {
+                        $firstFile = reset($rawFile);
+                        if ($firstFile instanceof TemporaryUploadedFile) {
+                            $absoluteFilePath = $firstFile->getRealPath();
+                        } elseif (is_string($firstFile)) {
+                            $absoluteFilePath = Storage::disk('local')->exists($firstFile)
+                                ? Storage::disk('local')->path($firstFile)
+                                : (Storage::disk('public')->exists($firstFile) ? Storage::disk('public')->path($firstFile) : storage_path('app/'.$firstFile));
+                        }
+                    } elseif (is_string($rawFile)) {
+                        $absoluteFilePath = Storage::disk('local')->exists($rawFile)
+                            ? Storage::disk('local')->path($rawFile)
+                            : (Storage::disk('public')->exists($rawFile) ? Storage::disk('public')->path($rawFile) : storage_path('app/'.$rawFile));
+                    }
+
+                    if (! $absoluteFilePath || ! file_exists($absoluteFilePath)) {
+                        Notification::make()
+                            ->title('Fichier introuvable')
+                            ->danger()
+                            ->body("Impossible d'accéder au fichier téléchargé sur le serveur.")
+                            ->send();
+
+                        return;
+                    }
 
                     try {
                         $summary = $service->importFromFile($absoluteFilePath, $sae);
-
-                        @unlink($absoluteFilePath);
 
                         if ($summary['imported_count'] > 0) {
                             $notification = Notification::make()
@@ -66,10 +125,15 @@ class ListOpportunities extends ListRecords
 
                             $notification->send();
                         } else {
+                            $firstErrors = ! empty($summary['errors'])
+                                ? implode("\n", array_slice($summary['errors'], 0, 3))
+                                : 'Le fichier ne contient aucune opportunité valide ou le format est incorrect.';
+
                             Notification::make()
                                 ->title('Aucune opportunité importée')
-                                ->warning()
-                                ->body('Vérifiez le format des colonnes ou la validité des données du fichier.')
+                                ->danger()
+                                ->body($firstErrors)
+                                ->persistent()
                                 ->send();
                         }
                     } catch (\Throwable $exception) {
@@ -77,6 +141,7 @@ class ListOpportunities extends ListRecords
                             ->title('Échec de l\'importation')
                             ->danger()
                             ->body($exception->getMessage())
+                            ->persistent()
                             ->send();
                     }
                 }),
