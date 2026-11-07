@@ -4,6 +4,7 @@ namespace App\Filament\Sae\Resources\Programs\Schemas;
 
 use App\Enums\ProgramStatus;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -20,6 +21,17 @@ class ProgramForm
                 Section::make('Présentation du programme')
                     ->schema([
                         Grid::make(2)->schema([
+                            FileUpload::make('image')
+                                ->label('Visuel / Image de couverture du programme')
+                                ->image()
+                                ->disk('public')
+                                ->directory('programs/covers')
+                                ->visibility('public')
+                                ->imageEditor()
+                                ->helperText('Image d\'illustration (JPEG, PNG, WebP — max 5 Mo) affichée sur le portail public et la fiche du programme.')
+                                ->maxSize(5120)
+                                ->columnSpanFull(),
+
                             TextInput::make('name')
                                 ->label('Nom du programme')
                                 ->placeholder('Ex: Accélération Impact 2026')

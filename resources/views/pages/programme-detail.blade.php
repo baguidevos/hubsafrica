@@ -72,6 +72,17 @@
             
             {{-- Colonne Gauche : Détails & Contenu Pédagogique (8 cols) --}}
             <div class="lg:col-span-8 space-y-8">
+
+                {{-- Visuel d'illustration du programme --}}
+                @if($program->image_url)
+                    <div class="rounded-3xl overflow-hidden border border-slate-200/90 shadow-sm bg-slate-100 max-h-96">
+                        <img
+                            src="{{ $program->image_url }}"
+                            alt="{{ $program->name }}"
+                            class="w-full h-72 sm:h-96 object-cover hover:scale-105 transition-transform duration-700"
+                        >
+                    </div>
+                @endif
                 
                 {{-- Présentation & Résumé --}}
                 <div class="bg-white rounded-3xl p-8 border border-slate-200/90 shadow-xs space-y-4">

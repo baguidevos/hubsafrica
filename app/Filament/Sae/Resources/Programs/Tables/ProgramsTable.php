@@ -12,6 +12,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -22,6 +23,13 @@ class ProgramsTable
     {
         return $table
             ->columns([
+                ImageColumn::make('image')
+                    ->label('Visuel')
+                    ->disk('public')
+                    ->circular()
+                    ->defaultImageUrl(fn ($record) => $record->sae?->logo_url)
+                    ->toggleable(),
+
                 TextColumn::make('name')
                     ->label('Programme')
                     ->weight('bold')

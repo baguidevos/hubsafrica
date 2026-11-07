@@ -221,3 +221,34 @@ test('structures directory and orientation pages render properly', function () {
     $respRedirect = $this->get('/account-type-selection');
     $respRedirect->assertRedirect('/rejoindre');
 });
+
+test('program can have cover image and renders on public catalog and detail pages', function () {
+    $user = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $user->id,
+        'name' => 'Incubateur Innov Cotonou',
+        'slug' => 'incubateur-innov-cotonou',
+    ]);
+
+    $programWithImage = Program::create([
+        'sae_id' => $sae->id,
+        'name' => 'Programme AgriTech Bénin 2026',
+        'image' => 'programs/covers/agritech-cover.jpg',
+        'status' => 'ACTIF',
+        'description' => 'Accompagnement intensif pour startups agricoles.',
+    ]);
+
+    expect($programWithImage->image)->toBe('programs/covers/agritech-cover.jpg')
+        ->and($programWithImage->image_url)->toContain('programs/covers/agritech-cover.jpg');
+
+    // Page catalogue
+    Livewire::test(ProgrammesCatalog::class)
+        ->assertSee('Programme AgriTech Bénin 2026')
+        ->assertSee('programs/covers/agritech-cover.jpg');
+
+    // Page détail
+    $response = $this->get(route('public.programme.detail', $programWithImage->id));
+    $response->assertOk();
+    $response->assertSee('Programme AgriTech Bénin 2026');
+    $response->assertSee('programs/covers/agritech-cover.jpg');
+});

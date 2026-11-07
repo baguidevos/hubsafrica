@@ -114,32 +114,65 @@
                 <article class="bg-white rounded-3xl border border-slate-200/90 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden group hover:-translate-y-1">
                     {{-- Bandeau supérieur & Badges --}}
                     <div>
-                        <div class="p-6 pb-4 border-b border-slate-100 bg-gradient-to-br from-slate-50 to-white">
-                            <div class="flex items-center justify-between gap-2 mb-3">
-                                {{-- Statut Inscriptions / Cohorte Ouverte --}}
-                                @if($openCohort)
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
-                                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                                        Cohorte Ouverte : {{ Str::limit($openCohort->name, 22) }}
-                                    </span>
-                                @elseif($isOpen)
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-[#2F3284] border border-amber-200">
-                                        <span class="w-2 h-2 rounded-full bg-[#F8B81D] animate-pulse"></span>
-                                        Candidatures Ouvertes
-                                    </span>
-                                @else
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
-                                        Clôturé / En cours
-                                    </span>
-                                @endif
+                        {{-- Image de couverture du programme si définie --}}
+                        @if($p->image_url)
+                            <div class="relative h-44 w-full overflow-hidden bg-slate-100">
+                                <img src="{{ $p->image_url }}" alt="{{ $p->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent"></div>
+                                <div class="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
+                                    @if($openCohort)
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-white/95 text-emerald-800 backdrop-blur-md shadow-xs">
+                                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                            Cohorte Ouverte
+                                        </span>
+                                    @elseif($isOpen)
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-[#F8B81D] text-slate-950 shadow-xs">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-slate-950 animate-pulse"></span>
+                                            Candidatures Ouvertes
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-slate-900/85 text-white backdrop-blur-md">
+                                            Clôturé
+                                        </span>
+                                    @endif
 
-                                {{-- Phase / Niveau --}}
-                                @if($p->level)
-                                    <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 bg-[#2F3284]/10 text-[#2F3284] border border-[#2F3284]/20 rounded-lg shrink-0">
-                                        {{ $p->level->name }}
-                                    </span>
-                                @endif
+                                    @if($p->level)
+                                        <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 bg-white/95 text-[#2F3284] rounded-lg shadow-xs backdrop-blur-md">
+                                            {{ $p->level->name }}
+                                        </span>
+                                    @endif
+                                </div>
                             </div>
+                        @endif
+
+                        <div class="p-6 pb-4 border-b border-slate-100 bg-gradient-to-br from-slate-50 to-white">
+                            @if(!$p->image_url)
+                                <div class="flex items-center justify-between gap-2 mb-3">
+                                    {{-- Statut Inscriptions / Cohorte Ouverte --}}
+                                    @if($openCohort)
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                            Cohorte Ouverte : {{ Str::limit($openCohort->name, 22) }}
+                                        </span>
+                                    @elseif($isOpen)
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-[#2F3284] border border-amber-200">
+                                            <span class="w-2 h-2 rounded-full bg-[#F8B81D] animate-pulse"></span>
+                                            Candidatures Ouvertes
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
+                                            Clôturé / En cours
+                                        </span>
+                                    @endif
+
+                                    {{-- Phase / Niveau --}}
+                                    @if($p->level)
+                                        <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 bg-[#2F3284]/10 text-[#2F3284] border border-[#2F3284]/20 rounded-lg shrink-0">
+                                            {{ $p->level->name }}
+                                        </span>
+                                    @endif
+                                </div>
+                            @endif
 
                             {{-- Titre & Structure Organisatrice --}}
                             <h3 class="text-lg font-extrabold text-slate-900 group-hover:text-[#2F3284] transition line-clamp-1">

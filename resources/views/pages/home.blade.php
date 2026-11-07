@@ -129,20 +129,40 @@
             @forelse($featuredPrograms as $p)
                 <article
                     class="group bg-white rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-xl hover:border-[#F8B81D]/60 transition-all duration-300 flex flex-col justify-between overflow-hidden transform hover:-translate-y-1">
-                    <div class="p-6 sm:p-7 space-y-4">
-                        <div class="flex items-center justify-between gap-2">
-                            <span
-                                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-[#2F3284] border border-amber-200/80">
-                                <span class="w-1.5 h-1.5 rounded-full bg-[#F8B81D] animate-pulse"></span>
-                                Candidatures Ouvertes
-                            </span>
-                            @if($p->level)
-                                <span
-                                    class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 bg-slate-100 text-slate-700 border border-slate-200 rounded-lg">
-                                    {{ $p->level->name }}
+                    @if($p->image_url)
+                        <div class="relative h-44 w-full overflow-hidden bg-slate-100">
+                            <img src="{{ $p->image_url }}" alt="{{ $p->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent"></div>
+                            <div class="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-[#F8B81D] text-slate-950 shadow-xs">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-slate-950 animate-pulse"></span>
+                                    Candidatures Ouvertes
                                 </span>
-                            @endif
+                                @if($p->level)
+                                    <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 bg-white/95 text-[#2F3284] rounded-lg shadow-xs backdrop-blur-md">
+                                        {{ $p->level->name }}
+                                    </span>
+                                @endif
+                            </div>
                         </div>
+                    @endif
+
+                    <div class="p-6 sm:p-7 space-y-4">
+                        @if(!$p->image_url)
+                            <div class="flex items-center justify-between gap-2">
+                                <span
+                                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-[#2F3284] border border-amber-200/80">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-[#F8B81D] animate-pulse"></span>
+                                    Candidatures Ouvertes
+                                </span>
+                                @if($p->level)
+                                    <span
+                                        class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 bg-slate-100 text-slate-700 border border-slate-200 rounded-lg">
+                                        {{ $p->level->name }}
+                                    </span>
+                                @endif
+                            </div>
+                        @endif
 
                         <h3 class="text-lg font-black text-slate-900 group-hover:text-[#2F3284] transition line-clamp-1">
                             <a href="{{ route('public.programme.detail', $p->id) }}">

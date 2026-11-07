@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class Program extends Model
 {
@@ -17,6 +18,7 @@ class Program extends Model
     protected $fillable = [
         'sae_id',
         'name',
+        'image',
         'description',
         'objectives',
         'target',
@@ -44,6 +46,19 @@ class Program extends Model
             'admission_threshold' => 'integer',
             'waitlist_threshold' => 'integer',
         ];
+    }
+
+    public function getImageUrlAttribute(): ?string
+    {
+        if (blank($this->image)) {
+            return null;
+        }
+
+        if (str_starts_with($this->image, 'http://') || str_starts_with($this->image, 'https://')) {
+            return $this->image;
+        }
+
+        return Storage::disk('public')->url($this->image);
     }
 
     public function getAdmissionThreshold(): int
