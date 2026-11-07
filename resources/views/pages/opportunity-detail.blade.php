@@ -298,7 +298,7 @@
                 @if($sae)
                     <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-xs space-y-4">
                         <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                            Structure Organisatrice (SAE)
+                            Structure Publicatrice (SAE)
                         </div>
 
                         <div class="flex items-center gap-3">
