@@ -195,7 +195,12 @@ test('livewire opportunities catalog filters by search, sae and status', functio
         ->set('search', '')
         ->set('selectedStatus', 'closed')
         ->assertSee('Concours E-santé Lomé Clôturé')
-        ->assertDontSee('Programme Accélération IA Dakar');
+        ->assertDontSee('Programme Accélération IA Dakar')
+        ->call('resetFilters')
+        ->assertSet('selectedStatus', 'all')
+        ->assertSet('search', '')
+        ->assertSee('Programme Accélération IA Dakar')
+        ->assertSee('Concours E-santé Lomé Clôturé');
 });
 
 test('closed opportunity displays in red with appropriate closed badges and notices', function () {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Public;
 
 use App\Models\Opportunity;
@@ -7,7 +9,6 @@ use App\Models\Sae;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
-use Livewire\Attributes\Js;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -16,19 +17,19 @@ class OpportunitiesCatalog extends Component
 {
     use WithPagination;
 
-    #[Url(as: 'q', history: true)]
+    #[Url(as: 'q', history: true, except: '')]
     public string $search = '';
 
-    #[Url(as: 'sae', history: true)]
+    #[Url(as: 'sae', history: true, except: 'all')]
     public string $selectedSae = 'all';
 
-    #[Url(as: 'secteur', history: true)]
+    #[Url(as: 'secteur', history: true, except: 'all')]
     public string $selectedSector = 'all';
 
-    #[Url(as: 'zone', history: true)]
+    #[Url(as: 'zone', history: true, except: 'all')]
     public string $selectedZone = 'all';
 
-    #[Url(as: 'statut', history: true)]
+    #[Url(as: 'statut', history: true, except: 'all')]
     public string $selectedStatus = 'all';
 
     public function updatingSearch(): void
@@ -56,56 +57,38 @@ class OpportunitiesCatalog extends Component
         $this->resetPage();
     }
 
-    #[Js]
-    public function resetFilters(): string
+    /**
+     * Réinitialise l'ensemble des filtres vers leur valeur initiale par défaut.
+     */
+    public function resetFilters(): void
     {
-        return <<<'JS'
-            $wire.search = '';
-            $wire.selectedSae = 'all';
-            $wire.selectedSector = 'all';
-            $wire.selectedZone = 'all';
-            $wire.selectedStatus = 'all';
-        JS;
+        $this->search = '';
+        $this->selectedSae = 'all';
+        $this->selectedSector = 'all';
+        $this->selectedZone = 'all';
+        $this->selectedStatus = 'all';
+        $this->resetPage();
+    }
+
+    /**
+     * Indique si un ou plusieurs filtres personnalisés sont actifs.
+     */
+    public function hasActiveFilters(): bool
+    {
+        return filled($this->search)
+            || $this->selectedSae !== 'all'
+            || $this->selectedSector !== 'all'
+            || $this->selectedZone !== 'all'
+            || $this->selectedStatus !== 'all';
     }
 
     public function render(): View
     {
-        $opportunityQuery = Opportunity::withoutGlobalScopes()
-            ->with('sae')
-            ->published();
+        $opportunityQuery = Opportunity::withoutGlobalScopes()->with('sae');
 
-        // Filtre Recherche textuelle
-        if (filled($this->search)) {
-            $opportunityQuery->search($this->search);
-        }
+        $this->applyFiltersToQuery($opportunityQuery);
 
-        // Filtre SAE
-        if ($this->selectedSae !== 'all') {
-            $opportunityQuery->where('sae_id', (int) $this->selectedSae);
-        }
-
-        // Filtre Secteur (dans le JSON sectors)
-        if ($this->selectedSector !== 'all') {
-            $opportunityQuery->whereJsonContains('sectors', $this->selectedSector);
-        }
-
-        // Filtre Zone géographique (dans le JSON target_zones)
-        if ($this->selectedZone !== 'all') {
-            $opportunityQuery->whereJsonContains('target_zones', $this->selectedZone);
-        }
-
-        // Filtre Statut d'échéance (ouvert vs clôturé)
-        if ($this->selectedStatus === 'open') {
-            $opportunityQuery->where(function (Builder $subQuery): void {
-                $subQuery->whereNull('deadline')
-                    ->orWhere('deadline', '>=', now());
-            });
-        } elseif ($this->selectedStatus === 'closed') {
-            $opportunityQuery->whereNotNull('deadline')
-                ->where('deadline', '<', now());
-        }
-
-        // Tri : les opportunités ouvertes en premier, classées par date limite la plus proche, puis les clôturées
+        // Tri : opportunités ouvertes en premier classées par date limite, puis clôturées
         $opportunities = $opportunityQuery
             ->orderByRaw('CASE WHEN deadline IS NOT NULL AND deadline < ? THEN 1 ELSE 0 END ASC', [now()])
             ->orderByRaw('CASE WHEN deadline IS NULL THEN 1 ELSE 0 END ASC')
@@ -121,15 +104,65 @@ class OpportunitiesCatalog extends Component
             ->published()
             ->get(['sectors', 'target_zones']);
 
-        $availableSectors = $this->extractUniqueTags($allPublishedOpportunities, 'sectors');
-        $availableZones = $this->extractUniqueTags($allPublishedOpportunities, 'target_zones');
-
         return view('livewire.public.opportunities-catalog', [
             'opportunities' => $opportunities,
             'participatingSaes' => $participatingSaes,
-            'availableSectors' => $availableSectors,
-            'availableZones' => $availableZones,
+            'availableSectors' => $this->extractUniqueTags($allPublishedOpportunities, 'sectors'),
+            'availableZones' => $this->extractUniqueTags($allPublishedOpportunities, 'target_zones'),
+            'hasActiveFilters' => $this->hasActiveFilters(),
         ]);
+    }
+
+    /**
+     * Applique les critères de recherche et de filtrage à la requête Eloquent.
+     */
+    private function applyFiltersToQuery(Builder $query): void
+    {
+        // 1. Statut (ouvert vs clôturé vs tous)
+        if ($this->selectedStatus === 'open') {
+            $query->open();
+        } elseif ($this->selectedStatus === 'closed') {
+            $query->closed();
+        } else {
+            // Afficher les opportunités actives ou passées visibles
+            $query->where(function (Builder $subQuery): void {
+                $subQuery->where('is_active', true)
+                    ->orWhere(function (Builder $nestedQuery): void {
+                        $nestedQuery->whereNotNull('deadline')
+                            ->where('deadline', '<', now());
+                    });
+            });
+        }
+
+        // 2. Recherche textuelle
+        if (filled($this->search)) {
+            $query->search($this->search);
+        }
+
+        // 3. Structure SAE
+        if ($this->selectedSae !== 'all') {
+            $query->where('sae_id', (int) $this->selectedSae);
+        }
+
+        // 4. Secteur d'activité
+        if ($this->selectedSector !== 'all') {
+            $sector = $this->selectedSector;
+            $query->where(function (Builder $subQuery) use ($sector): void {
+                $subQuery->whereJsonContains('sectors', $sector)
+                    ->orWhere('sectors', 'like', '%"'.addcslashes($sector, '%_\\').'"%')
+                    ->orWhere('sectors', 'like', '%'.addcslashes($sector, '%_\\').'%');
+            });
+        }
+
+        // 5. Zone géographique
+        if ($this->selectedZone !== 'all') {
+            $zone = $this->selectedZone;
+            $query->where(function (Builder $subQuery) use ($zone): void {
+                $subQuery->whereJsonContains('target_zones', $zone)
+                    ->orWhere('target_zones', 'like', '%"'.addcslashes($zone, '%_\\').'"%')
+                    ->orWhere('target_zones', 'like', '%'.addcslashes($zone, '%_\\').'%');
+            });
+        }
     }
 
     /**

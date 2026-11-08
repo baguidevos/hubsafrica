@@ -2,10 +2,10 @@
     <div class="space-y-8">
         {{-- Barre de Filtres et Recherche Interactive --}}
         <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3.5 items-center">
 
                 {{-- Champ Recherche --}}
-                <div class="md:col-span-4 relative">
+                <div class="sm:col-span-2 lg:col-span-4 relative">
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -26,12 +26,12 @@
                 </div>
 
                 {{-- Sélecteur Structure SAE --}}
-                <div class="md:col-span-3">
+                <div class="sm:col-span-1 lg:col-span-2">
                     <select
                         wire:model.live="selectedSae"
-                        class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:border-[#F8B81D] focus:ring-4 focus:ring-[#F8B81D]/20 text-sm text-slate-800 bg-white outline-none transition"
+                        class="w-full px-3.5 py-3 rounded-2xl border border-slate-300 focus:border-[#F8B81D] focus:ring-4 focus:ring-[#F8B81D]/20 text-xs sm:text-sm text-slate-800 bg-white outline-none transition"
                     >
-                        <option value="all">Toutes les structures (SAE)</option>
+                        <option value="all">Toutes les structures</option>
                         @foreach($participatingSaes as $saeItem)
                             <option value="{{ $saeItem->id }}">{{ $saeItem->name }}</option>
                         @endforeach
@@ -39,10 +39,10 @@
                 </div>
 
                 {{-- Filtre Secteur --}}
-                <div class="md:col-span-2">
+                <div class="sm:col-span-1 lg:col-span-2">
                     <select
                         wire:model.live="selectedSector"
-                        class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:border-[#F8B81D] focus:ring-4 focus:ring-[#F8B81D]/20 text-sm text-slate-800 bg-white outline-none transition"
+                        class="w-full px-3.5 py-3 rounded-2xl border border-slate-300 focus:border-[#F8B81D] focus:ring-4 focus:ring-[#F8B81D]/20 text-xs sm:text-sm text-slate-800 bg-white outline-none transition"
                     >
                         <option value="all">Tous les secteurs</option>
                         @foreach($availableSectors as $sectorName)
@@ -52,10 +52,10 @@
                 </div>
 
                 {{-- Filtre Zone géographique --}}
-                <div class="md:col-span-2">
+                <div class="sm:col-span-1 lg:col-span-2">
                     <select
                         wire:model.live="selectedZone"
-                        class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:border-[#F8B81D] focus:ring-4 focus:ring-[#F8B81D]/20 text-sm text-slate-800 bg-white outline-none transition"
+                        class="w-full px-3.5 py-3 rounded-2xl border border-slate-300 focus:border-[#F8B81D] focus:ring-4 focus:ring-[#F8B81D]/20 text-xs sm:text-sm text-slate-800 bg-white outline-none transition"
                     >
                         <option value="all">Toutes les zones</option>
                         @foreach($availableZones as $zoneName)
@@ -65,13 +65,13 @@
                 </div>
 
                 {{-- Filtre Statut (Ouvert vs Clôturé) --}}
-                <div class="md:col-span-1">
+                <div class="sm:col-span-1 lg:col-span-2">
                     <select
                         wire:model.live="selectedStatus"
-                        class="w-full px-3 py-3 rounded-2xl border border-slate-300 focus:border-[#F8B81D] focus:ring-4 focus:ring-[#F8B81D]/20 text-xs text-slate-800 bg-white outline-none transition"
+                        class="w-full px-3.5 py-3 rounded-2xl border border-slate-300 focus:border-[#F8B81D] focus:ring-4 focus:ring-[#F8B81D]/20 text-xs sm:text-sm text-slate-800 bg-white outline-none transition font-medium"
                         title="Filtrer par statut"
                     >
-                        <option value="all">Statut</option>
+                        <option value="all">Tous les statuts</option>
                         <option value="open">Ouvert</option>
                         <option value="closed">Clôturé</option>
                     </select>
@@ -79,15 +79,15 @@
             </div>
 
             {{-- Filtres actifs & Reset --}}
-            @if($search !== '' || $selectedSae !== 'all' || $selectedSector !== 'all' || $selectedZone !== 'all' || $selectedStatus !== 'all')
+            @if($hasActiveFilters)
                 <div class="flex items-center justify-between pt-3 border-t border-slate-100 text-xs">
-                    <div class="text-slate-500">
-                        Filtres appliqués &bull; {{ $opportunities->total() }} opportunité(s) trouvée(s)
+                    <div class="text-slate-500 font-medium">
+                        Filtres appliqués &bull; <span class="font-bold text-slate-800">{{ $opportunities->total() }}</span> opportunité(s) trouvée(s)
                     </div>
                     <button
                         type="button"
                         wire:click="resetFilters"
-                        class="inline-flex items-center gap-1.5 font-bold text-amber-700 hover:text-amber-800 transition"
+                        class="inline-flex items-center gap-1.5 font-bold text-amber-700 hover:text-amber-800 transition cursor-pointer"
                     >
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
