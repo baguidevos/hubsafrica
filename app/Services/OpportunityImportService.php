@@ -78,6 +78,20 @@ class OpportunityImportService
                 $image = ! empty($row['image']) ? trim((string) $row['image']) : null;
                 $isActive = isset($row['is_active']) ? filter_var($row['is_active'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? true : true;
 
+                // Si aucune image n'est fournie, tentative d'extraction automatique depuis le lien public
+                if ($image === null && ($learnMoreUrl || $applyUrl)) {
+                    $targetUrl = $learnMoreUrl ?: $applyUrl;
+                    try {
+                        $scraper = app(WebpageMetadataScraperService::class);
+                        $metadata = $scraper->scrapeFromUrl($targetUrl);
+                        if ($metadata->hasImage()) {
+                            $image = $scraper->downloadAndStoreCoverImage($metadata->imageUrl);
+                        }
+                    } catch (\Throwable $scrapeException) {
+                        Log::info("Extraction automatique du visuel ignorée pour {$targetUrl} : ".$scrapeException->getMessage());
+                    }
+                }
+
                 $baseSlug = Str::slug($title);
                 $uniqueSuffix = Str::lower(Str::random(6));
                 $slug = "{$baseSlug}-{$uniqueSuffix}";

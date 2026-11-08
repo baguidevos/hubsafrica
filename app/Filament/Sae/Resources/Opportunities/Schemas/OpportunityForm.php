@@ -2,12 +2,15 @@
 
 namespace App\Filament\Sae\Resources\Opportunities\Schemas;
 
+use App\Services\WebpageMetadataScraperService;
+use Filament\Actions\Action;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Notifications\Notification;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -28,7 +31,7 @@ class OpportunityForm
                             ->directory('opportunities/covers')
                             ->visibility('public')
                             ->imageEditor()
-                            ->helperText('Image d\'illustration (JPEG, PNG, WebP — max 5 Mo) affichée sur le portail public et la fiche détaillée.')
+                            ->helperText('Image d\'illustration (JPEG, PNG, WebP — max 5 Mo). Astuce : collez un lien ci-dessous et cliquez sur 🪄 pour récupérer le visuel automatiquement.')
                             ->maxSize(5120)
                             ->columnSpanFull(),
 
@@ -101,13 +104,15 @@ class OpportunityForm
                                 ->label('Lien pour en savoir plus')
                                 ->url()
                                 ->placeholder('https://opportunite.org/details')
-                                ->helperText('Page officielle, règlement ou documentation complète.'),
+                                ->helperText('Cliquez sur 🪄 pour extraire le visuel et les informations officielles depuis cette page.')
+                                ->suffixAction(static::createMetadataExtractAction()),
 
                             TextInput::make('apply_url')
                                 ->label('Lien pour postuler')
                                 ->url()
                                 ->placeholder('https://opportunite.org/candidater')
-                                ->helperText('Lien direct vers la plateforme de soumission.'),
+                                ->helperText('Lien direct de soumission. Cliquez sur 🪄 pour extraire les métadonnées si besoin.')
+                                ->suffixAction(static::createMetadataExtractAction()),
                         ]),
 
                         Grid::make(2)->schema([
@@ -126,5 +131,76 @@ class OpportunityForm
                         ]),
                     ]),
             ]);
+    }
+
+    /**
+     * Action réutilisable d'extraction des métadonnées Open Graph (visuel, titre, description).
+     */
+    private static function createMetadataExtractAction(): Action
+    {
+        return Action::make('extractMetadata')
+            ->label('Extraire visuel')
+            ->icon('heroicon-m-sparkles')
+            ->color('amber')
+            ->tooltip('Récupérer automatiquement le visuel et les informations de la page web')
+            ->action(function ($state, $set, $get, WebpageMetadataScraperService $scraper): void {
+                $targetUrl = trim((string) $state);
+
+                if (empty($targetUrl)) {
+                    Notification::make()
+                        ->title('Lien requis')
+                        ->warning()
+                        ->body('Veuillez d\'abord saisir une adresse URL valide dans le champ.')
+                        ->send();
+
+                    return;
+                }
+
+                try {
+                    $metadata = $scraper->scrapeFromUrl($targetUrl);
+
+                    $hasExtractedAnything = false;
+
+                    if ($metadata->hasImage()) {
+                        $storedImagePath = $scraper->downloadAndStoreCoverImage($metadata->imageUrl);
+                        if ($storedImagePath) {
+                            $set('image', $storedImagePath);
+                            $hasExtractedAnything = true;
+                        }
+                    }
+
+                    if ($metadata->hasTitle() && empty($get('title'))) {
+                        $set('title', $metadata->title);
+                        $hasExtractedAnything = true;
+                    }
+
+                    if ($metadata->hasDescription() && empty($get('details'))) {
+                        $set('details', '<p>'.e($metadata->description).'</p>');
+                        $hasExtractedAnything = true;
+                    }
+
+                    if ($hasExtractedAnything) {
+                        Notification::make()
+                            ->title('Métadonnées importées avec succès !')
+                            ->success()
+                            ->body('Le visuel officiel et les métadonnées ont été appliqués au formulaire.')
+                            ->send();
+
+                        return;
+                    }
+
+                    Notification::make()
+                        ->title('Aucun visuel détecté')
+                        ->warning()
+                        ->body('La page a été consultée mais ne contient pas de balises Open Graph (og:image) exploitables.')
+                        ->send();
+                } catch (\Throwable $exception) {
+                    Notification::make()
+                        ->title('Impossible d\'extraire les métadonnées')
+                        ->danger()
+                        ->body($exception->getMessage())
+                        ->send();
+                }
+            });
     }
 }
