@@ -38,6 +38,7 @@ jobs:
             database/data/**
             database/migrations/**
             database/seeders/**
+            lang/**
             public/**
             resources/**
             routes/**
