@@ -48,10 +48,21 @@ class ProgramsTable
                     ->badge()
                     ->sortable(),
 
-                TextColumn::make('target')
-                    ->label('Cible')
-                    ->searchable()
-                    ->default('—'),
+                TextColumn::make('cohorts_count')
+                    ->counts('cohorts')
+                    ->label('Cohortes')
+                    ->badge()
+                    ->color('info')
+                    ->alignCenter()
+                    ->sortable(),
+
+                TextColumn::make('applications_count')
+                    ->counts('applications')
+                    ->label('Candidatures')
+                    ->badge()
+                    ->color('primary')
+                    ->alignCenter()
+                    ->sortable(),
 
                 TextColumn::make('capacity')
                     ->label('Capacité')
@@ -103,7 +114,7 @@ class ProgramsTable
                             ->body("Généré pour {$record->name} : {$summary['phases']} phases, {$summary['startup_deliverables']} livrables startups, {$summary['programme_deliverables']} livrables SAEI.")
                             ->send();
                     }),
-                ViewAction::make()->slideOver(),
+                ViewAction::make(),
                 EditAction::make()->slideOver(),
                 DeleteAction::make(),
             ])

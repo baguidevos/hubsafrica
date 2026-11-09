@@ -1,0 +1,77 @@
+<?php
+
+namespace App\Filament\Sae\Resources\Cohorts\Pages;
+
+use App\Filament\Sae\Resources\Cohorts\CohortResource;
+use App\Filament\Sae\Resources\Programs\ProgramResource;
+use App\Models\Cohort;
+use Filament\Actions\Action;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
+use Filament\Resources\Pages\ViewRecord;
+use Illuminate\Database\Eloquent\Model;
+
+class ViewCohort extends ViewRecord
+{
+    protected static string $resource = CohortResource::class;
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('backToProgram')
+                ->label('Voir le programme')
+                ->icon('heroicon-o-academic-cap')
+                ->color('gray')
+                ->visible(fn (): bool => $this->record->program_id !== null && $this->record->program !== null)
+                ->url(fn (): string => ProgramResource::getUrl('view', ['record' => $this->record->program])),
+
+            Action::make('copyJoinLink')
+                ->label('Lien direct de candidature')
+                ->icon('heroicon-o-link')
+                ->color('warning')
+                ->modalHeading(fn (Cohort $cohort): string => "Lien de candidature directe — {$cohort->name}")
+                ->form([
+                    TextInput::make('join_url')
+                        ->label('Lien de candidature directe')
+                        ->default(fn (Cohort $cohort): string => route('public.cohort.join.clean', $cohort->id))
+                        ->readOnly(),
+                ])
+                ->modalSubmitAction(false)
+                ->modalCancelActionLabel('Fermer')
+                ->extraModalFooterActions([
+                    Action::make('copyToClipboard')
+                        ->label('Copier le lien')
+                        ->icon('heroicon-o-clipboard-document-check')
+                        ->color('primary')
+                        ->action(function ($livewire, Cohort $cohort): void {
+                            $joinUrl = route('public.cohort.join.clean', $cohort->id);
+                            $livewire->js("window.navigator.clipboard.writeText('{$joinUrl}')");
+
+                            Notification::make()
+                                ->title('Lien copié !')
+                                ->body("Le lien direct pour la cohorte {$cohort->name} a été copié.")
+                                ->success()
+                                ->send();
+                        }),
+                ]),
+
+            EditAction::make(),
+        ];
+    }
+
+    public function hasCombinedRelationManagerTabsWithContent(): bool
+    {
+        return false;
+    }
+
+    protected function resolveRecord(int|string $key): Model
+    {
+        /** @var Cohort $cohort */
+        $cohort = parent::resolveRecord($key);
+
+        return $cohort
+            ->load(['program.level', 'applicationForm'])
+            ->loadCount(['applications', 'enrollments', 'phases', 'coachingSessions']);
+    }
+}

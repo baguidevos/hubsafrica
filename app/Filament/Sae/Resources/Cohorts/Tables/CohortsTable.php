@@ -210,7 +210,7 @@ class CohortsTable
 
                         $invitation->makeInvitationNotification()->send();
                     }),
-                ViewAction::make()->slideOver(),
+                ViewAction::make(),
                 EditAction::make()->slideOver(),
                 DeleteAction::make(),
             ])
