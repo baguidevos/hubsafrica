@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rapport d'Impact & S&E — {{ $tenant->name }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
 
     <style>
         * {
@@ -35,7 +37,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         .btn {
@@ -56,16 +58,18 @@
             background-color: #0d9488;
             color: #ffffff;
         }
+
         .btn-primary:hover {
             background-color: #0f766e;
         }
 
         .btn-secondary {
-            background-color: rgba(255,255,255,0.15);
+            background-color: rgba(255, 255, 255, 0.15);
             color: #ffffff;
         }
+
         .btn-secondary:hover {
-            background-color: rgba(255,255,255,0.25);
+            background-color: rgba(255, 255, 255, 0.25);
         }
 
         .report-sheet {
@@ -73,7 +77,7 @@
             margin: 24px auto;
             background: #ffffff;
             border-radius: 16px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.04);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.04);
             padding: 48px;
             border: 1px solid #e2e8f0;
         }
@@ -376,6 +380,7 @@
         }
     </style>
 </head>
+
 <body>
     {{-- Barre d'outils à l'écran (masquée à l'impression) --}}
     <div class="no-print-toolbar">
@@ -386,10 +391,12 @@
             <button onclick="window.print()" class="btn btn-primary">
                 🖨️ Imprimer / Enregistrer en PDF
             </button>
-            <a href="{{ route('sae.reports.impact.download', ['tenant' => $tenant->slug, 'program_id' => $filters['program_id'] ?? 'all', 'cohort_id' => $filters['cohort_id'] ?? 'all']) }}" class="btn btn-secondary">
+            <a href="{{ route('sae.reports.impact.download', ['tenant' => $tenant->slug, 'program_id' => $filters['program_id'] ?? 'all', 'cohort_id' => $filters['cohort_id'] ?? 'all']) }}"
+                class="btn btn-secondary">
                 ⬇️ Télécharger (.html)
             </a>
-            <a href="{{ route('sae.reports.impact.csv', ['tenant' => $tenant->slug, 'program_id' => $filters['program_id'] ?? 'all', 'cohort_id' => $filters['cohort_id'] ?? 'all']) }}" class="btn btn-secondary">
+            <a href="{{ route('sae.reports.impact.csv', ['tenant' => $tenant->slug, 'program_id' => $filters['program_id'] ?? 'all', 'cohort_id' => $filters['cohort_id'] ?? 'all']) }}"
+                class="btn btn-secondary">
                 📊 Exporter CSV
             </a>
             <button onclick="window.close()" class="btn btn-secondary">
@@ -424,13 +431,15 @@
 
             <div class="hub-brand">
                 @if(!empty($branding['hub_logo']))
-                    <img src="{{ $branding['hub_logo'] }}" alt="Hubs Africa" style="max-height: 40px; object-fit: contain; margin-bottom: 4px; display: inline-block;">
+                    <img src="{{ $branding['hub_logo'] }}" alt="Hubs Africa"
+                        style="max-height: 40px; object-fit: contain; margin-bottom: 4px; display: inline-block;">
                 @else
                     <span class="hub-brand-badge">Plateforme Hubs Africa V2</span>
                 @endif
                 <p>
                     <strong>Date :</strong> {{ now()->format('d/m/Y H:i') }}<br>
-                    <strong>Réf :</strong> RPT-IMP-{{ strtoupper(substr($tenant->slug, 0, 4)) }}-{{ now()->format('Ymd') }}<br>
+                    <strong>Réf :</strong>
+                    RPT-IMP-{{ strtoupper(substr($tenant->slug, 0, 4)) }}-{{ now()->format('Ymd') }}<br>
                     <strong>Auteur :</strong> {{ $author ?? 'Coordinateur SAE' }}
                 </p>
             </div>
@@ -465,7 +474,7 @@
             <div class="kpi-card">
                 <div class="kpi-card-label">Parité Genre (Femmes)</div>
                 <div class="kpi-card-value" style="color: #db2777;">{{ $tauxFemmes }}%</div>
-                <div class="kpi-card-target">Cible CUBE / Afric'innov : &ge; 40%</div>
+                <div class="kpi-card-target">Cible CUBE / : &ge; 40%</div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-card-label">Conformité Livrables</div>
@@ -485,7 +494,8 @@
         <div class="table-container">
             <div class="table-heading">
                 <span>Indicateurs de Performance Clés (KPIs S&amp;E)</span>
-                <span style="font-size: 11px; font-weight: normal; color: #64748b;">{{ count($indicators) }} indicateurs enregistrés</span>
+                <span style="font-size: 11px; font-weight: normal; color: #64748b;">{{ count($indicators) }} indicateurs
+                    enregistrés</span>
             </div>
 
             <table>
@@ -502,7 +512,7 @@
                 <tbody>
                     @foreach($indicators as $ind)
                         @php
-                            $statusClass = match(strtoupper($ind['status'])) {
+                            $statusClass = match (strtoupper($ind['status'])) {
                                 'ATTEINT' => 'status-atteint',
                                 'VIGILANCE' => 'status-vigilance',
                                 default => 'status-non_atteint',
@@ -513,10 +523,12 @@
                             <td><span style="color: #475569; font-weight: 600;">{{ $ind['category'] }}</span></td>
                             <td style="font-family: monospace; font-size: 10px; color: #64748b;">{{ $ind['formula'] }}</td>
                             <td style="text-align: right; font-weight: 700;">
-                                {{ is_numeric($ind['current']) ? number_format($ind['current'], 0, ',', ' ') : $ind['current'] }} {{ $ind['unit'] }}
+                                {{ is_numeric($ind['current']) ? number_format($ind['current'], 0, ',', ' ') : $ind['current'] }}
+                                {{ $ind['unit'] }}
                             </td>
                             <td style="text-align: right; color: #64748b;">
-                                {{ is_numeric($ind['target']) ? number_format($ind['target'], 0, ',', ' ') : $ind['target'] }} {{ $ind['unit'] }}
+                                {{ is_numeric($ind['target']) ? number_format($ind['target'], 0, ',', ' ') : $ind['target'] }}
+                                {{ $ind['unit'] }}
                             </td>
                             <td style="text-align: center;">
                                 <span class="status-badge {{ $statusClass }}">
@@ -549,10 +561,12 @@
         {{-- Pied de page --}}
         <footer class="report-footer">
             <p>
-                Rapport officiel généré électroniquement via la plateforme <strong>Hubs Africa V2</strong> pour la structure <strong>{{ $tenant->name }}</strong>.<br>
+                Rapport officiel généré électroniquement via la plateforme <strong>Hubs Africa V2</strong> pour la
+                structure <strong>{{ $tenant->name }}</strong>.<br>
                 Toute modification manuelle non authentifiée invalide la certification de ce document d'impact.
             </p>
         </footer>
     </div>
 </body>
+
 </html>

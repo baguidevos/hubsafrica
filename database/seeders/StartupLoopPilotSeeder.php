@@ -29,7 +29,7 @@ class StartupLoopPilotSeeder extends Seeder
         $program = Program::where('sae_id', $sae->id)->first() ?? Program::first();
         $cohort = Cohort::where('sae_id', $sae->id)->first() ?? Cohort::first();
 
-        // 1. Les 6 Phases Méthodologiques Startup Loop (Afric'innov / GIZ Pilot)
+        // 1. Les 6 Phases Méthodologiques Startup Loop (GIZ Pilot)
         $phasesData = [
             [
                 'position' => 1,

@@ -273,7 +273,7 @@ class AccompanimentMonitoringDashboard extends Page
             $enRetard = $submissions->where('is_late', true)->count();
             $tauxLivrables = round(($valides / $totalExpectedDefs) * 100);
 
-            // Détection du statut d'alerte (selon règle Afric'innov : Alerte si présence < 75%)
+            // Détection du statut d'alerte (selon règle : Alerte si présence < 75%)
             $status = 'BONNE_VOIE';
             $alertReason = null;
 

@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diagnostic Stratégique & Performance — {{ $tenant->name }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
 
     <style>
         * {
@@ -35,7 +37,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         .btn {
@@ -56,16 +58,18 @@
             background-color: #0d9488;
             color: #ffffff;
         }
+
         .btn-primary:hover {
             background-color: #0f766e;
         }
 
         .btn-secondary {
-            background-color: rgba(255,255,255,0.15);
+            background-color: rgba(255, 255, 255, 0.15);
             color: #ffffff;
         }
+
         .btn-secondary:hover {
-            background-color: rgba(255,255,255,0.25);
+            background-color: rgba(255, 255, 255, 0.25);
         }
 
         .report-sheet {
@@ -73,7 +77,7 @@
             margin: 24px auto;
             background: #ffffff;
             border-radius: 16px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.04);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.04);
             padding: 48px;
             border: 1px solid #e2e8f0;
         }
@@ -381,6 +385,7 @@
         }
     </style>
 </head>
+
 <body>
     {{-- Barre d'outils à l'écran (masquée à l'impression) --}}
     <div class="no-print-toolbar">
@@ -391,10 +396,12 @@
             <button onclick="window.print()" class="btn btn-primary">
                 🖨️ Imprimer / Enregistrer en PDF
             </button>
-            <a href="{{ route('sae.reports.analytics.download', ['tenant' => $tenant->slug, 'program_id' => $filters['program_id'] ?? 'all', 'cohort_id' => $filters['cohort_id'] ?? 'all']) }}" class="btn btn-secondary">
+            <a href="{{ route('sae.reports.analytics.download', ['tenant' => $tenant->slug, 'program_id' => $filters['program_id'] ?? 'all', 'cohort_id' => $filters['cohort_id'] ?? 'all']) }}"
+                class="btn btn-secondary">
                 ⬇️ Télécharger (.html)
             </a>
-            <a href="{{ route('sae.reports.analytics.csv', ['tenant' => $tenant->slug, 'program_id' => $filters['program_id'] ?? 'all', 'cohort_id' => $filters['cohort_id'] ?? 'all']) }}" class="btn btn-secondary">
+            <a href="{{ route('sae.reports.analytics.csv', ['tenant' => $tenant->slug, 'program_id' => $filters['program_id'] ?? 'all', 'cohort_id' => $filters['cohort_id'] ?? 'all']) }}"
+                class="btn btn-secondary">
                 📊 Exporter CSV
             </a>
             <button onclick="window.close()" class="btn btn-secondary">
@@ -429,13 +436,15 @@
 
             <div class="hub-brand">
                 @if(!empty($branding['hub_logo']))
-                    <img src="{{ $branding['hub_logo'] }}" alt="Hubs Africa" style="max-height: 40px; object-fit: contain; margin-bottom: 4px; display: inline-block;">
+                    <img src="{{ $branding['hub_logo'] }}" alt="Hubs Africa"
+                        style="max-height: 40px; object-fit: contain; margin-bottom: 4px; display: inline-block;">
                 @else
                     <span class="hub-brand-badge">Plateforme Hubs Africa V2</span>
                 @endif
                 <p>
                     <strong>Date :</strong> {{ now()->format('d/m/Y H:i') }}<br>
-                    <strong>Réf :</strong> RPT-PRF-{{ strtoupper(substr($tenant->slug, 0, 4)) }}-{{ now()->format('Ymd') }}<br>
+                    <strong>Réf :</strong>
+                    RPT-PRF-{{ strtoupper(substr($tenant->slug, 0, 4)) }}-{{ now()->format('Ymd') }}<br>
                     <strong>Auteur :</strong> {{ $author ?? 'Direction des Programmes SAE' }}
                 </p>
             </div>
@@ -489,7 +498,7 @@
                         <span class="stat-row-val">{{ $data['hommes'] ?? 0 }} ({{ $data['pctHommes'] ?? 0 }}%)</span>
                     </div>
                     <div style="margin-top: 12px; font-size: 11px; color: #0d9488; font-weight: 700;">
-                        Cible CUBE / Afric'innov : Min. 40% de femmes
+                        Cible CUBE / : Min. 40% de femmes
                     </div>
                 </div>
 
@@ -515,7 +524,8 @@
                             <span class="stat-row-val">{{ $n->count }}</span>
                         </div>
                     @empty
-                        <p style="font-size: 11px; color: #94a3b8; padding: 8px 0;">Profils académiques en cours de saisie</p>
+                        <p style="font-size: 11px; color: #94a3b8; padding: 8px 0;">Profils académiques en cours de saisie
+                        </p>
                     @endforelse
                 </div>
             </div>
@@ -536,7 +546,8 @@
                     </div>
                     <div class="stat-row">
                         <span>Volume horaire cumulé délivré</span>
-                        <span class="stat-row-val" style="color: #0d9488; font-size: 14px;">{{ $data['totalHeures'] ?? 0 }} heures</span>
+                        <span class="stat-row-val"
+                            style="color: #0d9488; font-size: 14px;">{{ $data['totalHeures'] ?? 0 }} heures</span>
                     </div>
                     <div style="margin-top: 10px; font-size: 11px; font-weight: 600; color: #475569;">
                         Ventilation par format d'intervention :
@@ -570,7 +581,8 @@
                             <span class="stat-row-val">{{ number_format((float) $f->total, 0, ',', ' ') }} FCFA</span>
                         </div>
                     @empty
-                        <p style="font-size: 11px; color: #94a3b8; padding: 8px 0;">Aucune opération de financement enregistrée</p>
+                        <p style="font-size: 11px; color: #94a3b8; padding: 8px 0;">Aucune opération de financement
+                            enregistrée</p>
                     @endforelse
                 </div>
             </div>
@@ -596,10 +608,12 @@
         {{-- Pied de page --}}
         <footer class="report-footer">
             <p>
-                Rapport stratégique édité via <strong>Hubs Africa V2</strong> pour la structure <strong>{{ $tenant->name }}</strong>.<br>
-                Données d'impact certifiées conformes aux référentiels Afric'innov &amp; SAEI CUBE.
+                Rapport stratégique édité via <strong>Hubs Africa V2</strong> pour la structure
+                <strong>{{ $tenant->name }}</strong>.<br>
+                Données d'impact certifiées conformes aux référentiels &amp; SAEI CUBE.
             </p>
         </footer>
     </div>
 </body>
+
 </html>

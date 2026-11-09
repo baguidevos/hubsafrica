@@ -15,7 +15,7 @@
                 <div class="space-y-1">
                     <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        Dispositif M&E — Méthodologie Afric'innov / SAE
+                        Dispositif M&E — Méthodologie SAE
                     </div>
                     <h2 class="text-xl lg:text-2xl font-bold tracking-tight text-gray-950 dark:text-white">
                         Tableau de Bord de Suivi & d'Accompagnement
@@ -237,9 +237,6 @@
                     <div class="flex items-center justify-between w-full">
                         <div>
                             <span class="text-sm font-bold uppercase tracking-wider">Matrice de Suivi Individuel — Startups de la Cohorte</span>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 font-normal">
-                                Reconstitution directe du tableau « Suivi Startups » du modèle Excel Afric'innov.
-                            </p>
                         </div>
                         <x-filament::badge color="gray">
                             {{ count($matrix) }} startup(s) active(s)

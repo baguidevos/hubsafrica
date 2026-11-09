@@ -31,7 +31,7 @@ Structurer le formulaire d'édition en **4 onglets thématiques natifs Filament*
    * Note explicative sur l'impact de ces seuils sur le scoring automatique des candidatures.
 
 4. **📦 Méthodologies & Packs Actifs**
-   * Récapitulatif visuel des modèles actifs rattachés à la SAE (Startup Loop Afric'innov, SAE-Acte).
+   * Récapitulatif visuel des modèles actifs rattachés à la SAE (Startup Loop , SAE-Acte).
    * Bouton de redirection vers la bibliothèque des modèles (`AccompanimentTemplatesPage.php`).
 
 ---
