@@ -30,11 +30,11 @@ class ViewCohort extends ViewRecord
                 ->label('Lien direct de candidature')
                 ->icon('heroicon-o-link')
                 ->color('warning')
-                ->modalHeading(fn (Cohort $cohort): string => "Lien de candidature directe — {$cohort->name}")
+                ->modalHeading(fn (Cohort $record): string => "Lien de candidature directe — {$record->name}")
                 ->form([
                     TextInput::make('join_url')
                         ->label('Lien de candidature directe')
-                        ->default(fn (Cohort $cohort): string => route('public.cohort.join.clean', $cohort->id))
+                        ->default(fn (Cohort $record): string => route('public.cohort.join.clean', $record->id))
                         ->readOnly(),
                 ])
                 ->modalSubmitAction(false)
@@ -44,13 +44,13 @@ class ViewCohort extends ViewRecord
                         ->label('Copier le lien')
                         ->icon('heroicon-o-clipboard-document-check')
                         ->color('primary')
-                        ->action(function ($livewire, Cohort $cohort): void {
-                            $joinUrl = route('public.cohort.join.clean', $cohort->id);
+                        ->action(function ($livewire, Cohort $record): void {
+                            $joinUrl = route('public.cohort.join.clean', $record->id);
                             $livewire->js("window.navigator.clipboard.writeText('{$joinUrl}')");
 
                             Notification::make()
                                 ->title('Lien copié !')
-                                ->body("Le lien direct pour la cohorte {$cohort->name} a été copié.")
+                                ->body("Le lien direct pour la cohorte {$record->name} a été copié.")
                                 ->success()
                                 ->send();
                         }),

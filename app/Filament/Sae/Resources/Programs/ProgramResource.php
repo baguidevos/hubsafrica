@@ -62,7 +62,7 @@ class ProgramResource extends Resource
                             ImageEntry::make('image')
                                 ->label('Visuel')
                                 ->disk('public')
-                                ->defaultImageUrl(fn (Program $program): ?string => $program->sae?->logo_url)
+                                ->defaultImageUrl(fn (Program $record): ?string => $record->sae?->logo_url)
                                 ->circular()
                                 ->imageSize(72),
 
@@ -95,7 +95,7 @@ class ProgramResource extends Resource
                                 ->label('Seuils Jury (Admission / Attente)')
                                 ->badge()
                                 ->color('info')
-                                ->getStateUsing(fn (Program $program): string => "Admis ≥ {$program->getAdmissionThreshold()}/100 • Attente ≥ {$program->getWaitlistThreshold()}/100"),
+                                ->getStateUsing(fn (Program $record): string => "Admis ≥ {$record->getAdmissionThreshold()}/100 • Attente ≥ {$record->getWaitlistThreshold()}/100"),
                         ]),
                     ]),
 
@@ -127,25 +127,25 @@ class ProgramResource extends Resource
                                 ->label('Cohortes / Promotions')
                                 ->badge()
                                 ->color('info')
-                                ->getStateUsing(fn (Program $program): string => ($program->cohorts_count ?? $program->cohorts()->count()).' cohorte(s)'),
+                                ->getStateUsing(fn (Program $record): string => ($record->cohorts_count ?? $record->cohorts()->count()).' cohorte(s)'),
 
                             TextEntry::make('applications_count_metric')
                                 ->label('Total Candidatures')
                                 ->badge()
                                 ->color('primary')
-                                ->getStateUsing(fn (Program $program): string => ($program->applications_count ?? $program->applications()->count()).' dossier(s)'),
+                                ->getStateUsing(fn (Program $record): string => ($record->applications_count ?? $record->applications()->count()).' dossier(s)'),
 
                             TextEntry::make('accepted_applications_metric')
                                 ->label('Candidatures retenues')
                                 ->badge()
                                 ->color('success')
-                                ->getStateUsing(fn (Program $program): string => $program->applications()->where('status', ApplicationStatus::ACCEPTEE)->count().' retenue(s)'),
+                                ->getStateUsing(fn (Program $record): string => $record->applications()->where('status', ApplicationStatus::ACCEPTEE)->count().' retenue(s)'),
 
                             TextEntry::make('pending_applications_metric')
                                 ->label('Nouvelles à instruire')
                                 ->badge()
                                 ->color('warning')
-                                ->getStateUsing(fn (Program $program): string => $program->applications()->where('status', ApplicationStatus::SOUMISE)->count().' en attente'),
+                                ->getStateUsing(fn (Program $record): string => $record->applications()->where('status', ApplicationStatus::SOUMISE)->count().' en attente'),
                         ]),
                     ]),
 

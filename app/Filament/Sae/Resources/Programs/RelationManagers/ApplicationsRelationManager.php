@@ -37,13 +37,13 @@ class ApplicationsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('id')
             ->modifyQueryUsing(fn (Builder $query): Builder => $query->with(['entrepreneur', 'project', 'cohort', 'program.sae']))
-            ->recordUrl(fn (Application $application): string => ApplicationResource::getUrl('view', ['record' => $application]))
+            ->recordUrl(fn (Application $record): string => ApplicationResource::getUrl('view', ['record' => $record]))
             ->columns([
                 TextColumn::make('entrepreneur.full_name')
                     ->label('Entrepreneur candidat')
                     ->weight('bold')
                     ->searchable(['first_name', 'last_name', 'email'])
-                    ->description(fn (Application $application): ?string => $application->entrepreneur?->email)
+                    ->description(fn (Application $record): ?string => $record->entrepreneur?->email)
                     ->sortable(),
 
                 TextColumn::make('project.name')
@@ -74,10 +74,10 @@ class ApplicationsRelationManager extends RelationManager
                 TextColumn::make('score')
                     ->label('Note Jury')
                     ->badge()
-                    ->color(fn ($state, Application $application): string => ProgramEvaluationPresenter::determineScoreBadgeColor(
+                    ->color(fn ($state, Application $record): string => ProgramEvaluationPresenter::determineScoreBadgeColor(
                         $state !== null ? (int) $state : null,
-                        $application->getAdmissionThreshold(),
-                        $application->getWaitlistThreshold()
+                        $record->getAdmissionThreshold(),
+                        $record->getWaitlistThreshold()
                     ))
                     ->formatStateUsing(fn ($state): string => ProgramEvaluationPresenter::formatScoreLabel(
                         $state !== null ? (int) $state : null
@@ -123,7 +123,7 @@ class ApplicationsRelationManager extends RelationManager
                     ->label('Voir candidature')
                     ->icon('heroicon-o-eye')
                     ->color('primary')
-                    ->url(fn (Application $application): string => ApplicationResource::getUrl('view', ['record' => $application])),
+                    ->url(fn (Application $record): string => ApplicationResource::getUrl('view', ['record' => $record])),
 
                 Action::make('acceptApplication')
                     ->label('Accepter')
@@ -131,18 +131,18 @@ class ApplicationsRelationManager extends RelationManager
                     ->color('success')
                     ->requiresConfirmation()
                     ->modalHeading('Accepter la candidature')
-                    ->modalDescription(fn (Application $application): string => "Valider l'admission de {$application->entrepreneur?->full_name} ({$application->project?->name}) dans la cohorte {$application->cohort?->name} ?")
-                    ->visible(fn (Application $application): bool => $application->status !== ApplicationStatus::ACCEPTEE)
-                    ->action(function (Application $application): void {
-                        $application->applyEvaluationDecision(
-                            $application->score ?? $application->getAdmissionThreshold(),
+                    ->modalDescription(fn (Application $record): string => "Valider l'admission de {$record->entrepreneur?->full_name} ({$record->project?->name}) dans la cohorte {$record->cohort?->name} ?")
+                    ->visible(fn (Application $record): bool => $record->status !== ApplicationStatus::ACCEPTEE)
+                    ->action(function (Application $record): void {
+                        $record->applyEvaluationDecision(
+                            $record->score ?? $record->getAdmissionThreshold(),
                             ApplicationStatus::ACCEPTEE,
                             'Admission validée depuis la fiche du programme'
                         );
 
                         Notification::make()
                             ->title('Candidature acceptée')
-                            ->body("Le projet « {$application->project?->name} » a été admis dans la cohorte {$application->cohort?->name}.")
+                            ->body("Le projet « {$record->project?->name} » a été admis dans la cohorte {$record->cohort?->name}.")
                             ->success()
                             ->send();
                     }),
@@ -159,12 +159,12 @@ class ApplicationsRelationManager extends RelationManager
                             ->placeholder('Précisez la raison du refus...')
                             ->required(),
                     ])
-                    ->visible(fn (Application $application): bool => $application->status !== ApplicationStatus::REFUSEE)
-                    ->action(function (Application $application, array $formValues): void {
-                        $rejectionReason = (string) ($formValues['rejection_reason'] ?? '');
-                        $application->update(['rejection_reason' => $rejectionReason]);
-                        $application->applyEvaluationDecision(
-                            $application->score ?? 40,
+                    ->visible(fn (Application $record): bool => $record->status !== ApplicationStatus::REFUSEE)
+                    ->action(function (Application $record, array $data): void {
+                        $rejectionReason = (string) ($data['rejection_reason'] ?? '');
+                        $record->update(['rejection_reason' => $rejectionReason]);
+                        $record->applyEvaluationDecision(
+                            $record->score ?? 40,
                             ApplicationStatus::REFUSEE,
                             $rejectionReason
                         );

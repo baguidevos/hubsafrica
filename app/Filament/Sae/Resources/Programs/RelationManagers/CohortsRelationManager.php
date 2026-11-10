@@ -97,7 +97,7 @@ class CohortsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('name')
             ->modifyQueryUsing(fn ($query) => $query->withCount(['applications', 'enrollments']))
-            ->recordUrl(fn (Cohort $cohort): string => CohortResource::getUrl('view', ['record' => $cohort]))
+            ->recordUrl(fn (Cohort $record): string => CohortResource::getUrl('view', ['record' => $record]))
             ->columns([
                 TextColumn::make('number')
                     ->label('#')
@@ -128,13 +128,13 @@ class CohortsRelationManager extends RelationManager
                 TextColumn::make('occupancy')
                     ->label('Startups admises / Capacité')
                     ->badge()
-                    ->color(fn (Cohort $cohort): string => ProgramEvaluationPresenter::determineOccupancyColor(
-                        $cohort->enrollments_count ?? 0,
-                        $cohort->capacity
+                    ->color(fn (Cohort $record): string => ProgramEvaluationPresenter::determineOccupancyColor(
+                        $record->enrollments_count ?? 0,
+                        $record->capacity
                     ))
-                    ->getStateUsing(fn (Cohort $cohort): string => ProgramEvaluationPresenter::formatOccupancyRate(
-                        $cohort->enrollments_count ?? 0,
-                        $cohort->capacity
+                    ->getStateUsing(fn (Cohort $record): string => ProgramEvaluationPresenter::formatOccupancyRate(
+                        $record->enrollments_count ?? 0,
+                        $record->capacity
                     ))
                     ->alignCenter(),
 
@@ -159,10 +159,10 @@ class CohortsRelationManager extends RelationManager
                 CreateAction::make()
                     ->label('Nouvelle cohorte')
                     ->slideOver()
-                    ->mutateFormDataUsing(function (array $formValues): array {
-                        $formValues['sae_id'] = $this->getOwnerRecord()->sae_id;
+                    ->mutateFormDataUsing(function (array $data): array {
+                        $data['sae_id'] = $this->getOwnerRecord()->sae_id;
 
-                        return $formValues;
+                        return $data;
                     }),
             ])
             ->recordActions([
@@ -170,16 +170,16 @@ class CohortsRelationManager extends RelationManager
                     ->label('Détails & Candidatures')
                     ->icon('heroicon-o-eye')
                     ->color('primary')
-                    ->url(fn (Cohort $cohort): string => CohortResource::getUrl('view', ['record' => $cohort])),
+                    ->url(fn (Cohort $record): string => CohortResource::getUrl('view', ['record' => $record])),
 
                 Action::make('filterAllApplications')
                     ->label('Filtrer candidatures')
                     ->icon('heroicon-o-funnel')
                     ->color('info')
-                    ->url(fn (Cohort $cohort): string => ApplicationResource::getUrl('index', [
+                    ->url(fn (Cohort $record): string => ApplicationResource::getUrl('index', [
                         'tableFilters' => [
-                            'program_id' => ['value' => $cohort->program_id],
-                            'cohort_id' => ['value' => $cohort->id],
+                            'program_id' => ['value' => $record->program_id],
+                            'cohort_id' => ['value' => $record->id],
                         ],
                     ])),
 
@@ -187,13 +187,13 @@ class CohortsRelationManager extends RelationManager
                     ->label('Lien direct')
                     ->icon('heroicon-o-link')
                     ->color('warning')
-                    ->action(function ($livewire, Cohort $cohort): void {
-                        $joinUrl = route('public.cohort.join.clean', $cohort->id);
+                    ->action(function ($livewire, Cohort $record): void {
+                        $joinUrl = route('public.cohort.join.clean', $record->id);
                         $livewire->js("window.navigator.clipboard.writeText('{$joinUrl}')");
 
                         Notification::make()
                             ->title('Lien copié !')
-                            ->body("Le lien de candidature pour {$cohort->name} a été copié.")
+                            ->body("Le lien de candidature pour {$record->name} a été copié.")
                             ->success()
                             ->send();
                     }),

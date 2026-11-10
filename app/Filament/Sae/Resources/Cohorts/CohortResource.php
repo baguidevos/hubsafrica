@@ -91,25 +91,25 @@ class CohortResource extends Resource
                                 ->label('Candidatures reçues')
                                 ->badge()
                                 ->color('primary')
-                                ->getStateUsing(fn (Cohort $cohort): string => ($cohort->applications_count ?? $cohort->applications()->count()).' dossier(s)'),
+                                ->getStateUsing(fn (Cohort $record): string => ($record->applications_count ?? $record->applications()->count()).' dossier(s)'),
 
                             TextEntry::make('occupancy_metric')
                                 ->label('Startups admises / Capacité')
                                 ->badge()
-                                ->color(fn (Cohort $cohort): string => ProgramEvaluationPresenter::determineOccupancyColor(
-                                    $cohort->enrollments_count ?? $cohort->enrollments()->count(),
-                                    $cohort->capacity
+                                ->color(fn (Cohort $record): string => ProgramEvaluationPresenter::determineOccupancyColor(
+                                    $record->enrollments_count ?? $record->enrollments()->count(),
+                                    $record->capacity
                                 ))
-                                ->getStateUsing(fn (Cohort $cohort): string => ProgramEvaluationPresenter::formatOccupancyRate(
-                                    $cohort->enrollments_count ?? $cohort->enrollments()->count(),
-                                    $cohort->capacity
+                                ->getStateUsing(fn (Cohort $record): string => ProgramEvaluationPresenter::formatOccupancyRate(
+                                    $record->enrollments_count ?? $record->enrollments()->count(),
+                                    $record->capacity
                                 )),
 
                             TextEntry::make('pending_applications_metric')
                                 ->label('Nouvelles à instruire')
                                 ->badge()
                                 ->color('warning')
-                                ->getStateUsing(fn (Cohort $cohort): string => $cohort->applications()->where('status', ApplicationStatus::SOUMISE)->count().' en attente'),
+                                ->getStateUsing(fn (Cohort $record): string => $record->applications()->where('status', ApplicationStatus::SOUMISE)->count().' en attente'),
                         ]),
                     ]),
 

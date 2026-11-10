@@ -160,7 +160,7 @@ test('view program page renders program details and metrics cleanly', function (
         ->assertSee('1 en attente');
 });
 
-test('cohorts relation manager on view program lists cohorts and filters by status', function () {
+test('cohorts relation manager on view program lists cohorts, filters by status, and creates a cohort without closure errors', function () {
     Livewire::test(CohortsRelationManager::class, [
         'ownerRecord' => $this->program,
         'pageClass' => ViewProgram::class,
@@ -169,7 +169,16 @@ test('cohorts relation manager on view program lists cohorts and filters by stat
         ->assertCanSeeTableRecords([$this->firstCohort, $this->secondCohort])
         ->filterTable('status', CohortStatus::OUVERTE->value)
         ->assertCanSeeTableRecords([$this->firstCohort])
-        ->assertCanNotSeeTableRecords([$this->secondCohort]);
+        ->assertCanNotSeeTableRecords([$this->secondCohort])
+        ->callTableAction('create', data: [
+            'name' => 'Cohorte 3 - Hiver',
+            'number' => 3,
+            'status' => CohortStatus::OUVERTE->value,
+            'capacity' => 20,
+        ])
+        ->assertHasNoTableActionErrors();
+
+    expect($this->program->cohorts()->where('name', 'Cohorte 3 - Hiver')->exists())->toBeTrue();
 });
 
 test('applications relation manager on view program lists applications and filters by cohort, status and sector', function () {
