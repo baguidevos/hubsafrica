@@ -36,6 +36,7 @@ class HomeController extends Controller
 
         // Programmes ouverts et en vedette
         $featuredPrograms = Program::with(['sae', 'level'])
+            ->published()
             ->where('status', 'ACTIF')
             ->latest()
             ->limit(3)

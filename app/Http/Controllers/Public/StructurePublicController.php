@@ -22,7 +22,11 @@ class StructurePublicController extends Controller
         $selectedType = $request->query('type');
 
         $query = Sae::with(['types'])
-            ->withCount(['programs', 'projects', 'coaches'])
+            ->withCount([
+                'programs' => fn ($q) => $q->published(),
+                'projects',
+                'coaches',
+            ])
             ->latest();
 
         if ($selectedType) {
@@ -51,7 +55,7 @@ class StructurePublicController extends Controller
     public function show(int $id): View
     {
         $sae = Sae::with(['types', 'programs' => function ($q) {
-            $q->where('status', 'ACTIF')->latest();
+            $q->published()->where('status', 'ACTIF')->latest();
         }, 'coaches' => function ($q) {
             $q->where('status', 'ACTIF');
         }])

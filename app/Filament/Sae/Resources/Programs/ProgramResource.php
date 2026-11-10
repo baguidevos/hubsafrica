@@ -69,12 +69,17 @@ class ProgramResource extends Resource
                             TextEntry::make('name')
                                 ->label('Nom du programme')
                                 ->weight('bold')
-                                ->size('lg')
-                                ->columnSpan(2),
+                                ->size('lg'),
 
                             TextEntry::make('status')
                                 ->label('Statut')
                                 ->badge(),
+
+                            TextEntry::make('is_active')
+                                ->label('Visibilité Portail Public')
+                                ->badge()
+                                ->color(fn (bool $state): string => $state ? 'success' : 'gray')
+                                ->formatStateUsing(fn (bool $state): string => $state ? 'Actif (Visible)' : 'Désactivé (Masqué)'),
 
                             TextEntry::make('level.name')
                                 ->label('Palier / Niveau ciblé')

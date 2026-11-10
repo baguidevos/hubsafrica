@@ -117,7 +117,7 @@
 
             <a href="{{ route('public.programmes') }}"
                 class="inline-flex items-center gap-1.5 text-xs font-bold text-[#2F3284] hover:text-[#F8B81D] transition">
-                <span>Voir les {{ \App\Models\Program::count() }} programmes</span>
+                <span>Voir les {{ \App\Models\Program::published()->count() }} programmes</span>
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M14 5l7 7m0 0l-7 7m7-7H3" />

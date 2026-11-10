@@ -3,6 +3,7 @@
 namespace App\Filament\Sae\Resources\Programs\Tables;
 
 use App\Enums\ProgramStatus;
+use App\Models\Program;
 use App\Services\AccompanimentTemplateService;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
@@ -14,7 +15,9 @@ use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
 class ProgramsTable
@@ -46,6 +49,11 @@ class ProgramsTable
                 TextColumn::make('status')
                     ->label('Statut')
                     ->badge()
+                    ->sortable(),
+
+                ToggleColumn::make('is_active')
+                    ->label('Actif (Front)')
+                    ->alignCenter()
                     ->sortable(),
 
                 TextColumn::make('cohorts_count')
@@ -81,6 +89,12 @@ class ProgramsTable
                     ->sortable(),
             ])
             ->filters([
+                TernaryFilter::make('is_active')
+                    ->label('Visibilité portail public')
+                    ->placeholder('Tous les programmes')
+                    ->trueLabel('Actifs (visibles sur le front)')
+                    ->falseLabel('Désactivés (masqués)'),
+
                 SelectFilter::make('status')
                     ->label('Statut')
                     ->options(ProgramStatus::class),
@@ -90,6 +104,27 @@ class ProgramsTable
                     ->relationship('level', 'name'),
             ])
             ->recordActions([
+                Action::make('toggleActive')
+                    ->label(fn (Program $record): string => $record->is_active ? 'Désactiver' : 'Activer')
+                    ->icon(fn (Program $record): string => $record->is_active ? 'heroicon-o-eye-slash' : 'heroicon-o-eye')
+                    ->color(fn (Program $record): string => $record->is_active ? 'warning' : 'success')
+                    ->requiresConfirmation()
+                    ->modalHeading(fn (Program $record): string => $record->is_active ? "Désactiver « {$record->name} »" : "Activer « {$record->name} »")
+                    ->modalDescription(fn (Program $record): string => $record->is_active
+                        ? 'Ce programme sera masqué sur le portail public, mais restera intégralement accessible dans votre espace de gestion SAE.'
+                        : 'Ce programme sera de nouveau visible pour les entrepreneurs sur le portail public.')
+                    ->action(function (Program $record): void {
+                        $newState = ! $record->is_active;
+                        $record->update(['is_active' => $newState]);
+
+                        Notification::make()
+                            ->title($newState ? 'Programme activé' : 'Programme désactivé')
+                            ->body($newState
+                                ? "Le programme « {$record->name} » est désormais visible sur le portail public."
+                                : "Le programme « {$record->name} » a été masqué du portail public.")
+                            ->success()
+                            ->send();
+                    }),
                 Action::make('applyTemplate')
                     ->label('Template')
                     ->icon('heroicon-o-sparkles')

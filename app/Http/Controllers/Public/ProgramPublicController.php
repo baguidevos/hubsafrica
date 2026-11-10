@@ -111,7 +111,7 @@ class ProgramPublicController extends Controller
      */
     private function resolveProgram(int|string $identifier, array $relations = []): Program
     {
-        $query = Program::with($relations);
+        $query = Program::with($relations)->published();
 
         if (is_numeric($identifier)) {
             return $query->where(function ($subQuery) use ($identifier): void {

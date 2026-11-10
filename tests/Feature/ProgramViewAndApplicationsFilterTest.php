@@ -10,6 +10,7 @@ use App\Filament\Sae\Resources\Cohorts\RelationManagers\CohortApplicationsRelati
 use App\Filament\Sae\Resources\Programs\Pages\ViewProgram;
 use App\Filament\Sae\Resources\Programs\RelationManagers\ApplicationsRelationManager;
 use App\Filament\Sae\Resources\Programs\RelationManagers\CohortsRelationManager;
+use App\Livewire\Public\ProgrammesCatalog;
 use App\Models\Application;
 use App\Models\Cohort;
 use App\Models\Entrepreneur;
@@ -216,4 +217,34 @@ test('view cohort page and cohort applications relation manager display cohort d
         ->assertCanNotSeeTableRecords([$this->secondApplication])
         ->filterTable('status', ApplicationStatus::SOUMISE->value)
         ->assertCanSeeTableRecords([$this->firstApplication]);
+});
+
+test('program can be deactivated and is filtered out on public catalog and detail pages', function () {
+    $inactiveProgram = Program::create([
+        'sae_id' => $this->sae->id,
+        'name' => 'Programme Masqué Interne 2026',
+        'status' => ProgramStatus::ACTIF,
+        'is_active' => false,
+    ]);
+
+    Livewire::test(ProgrammesCatalog::class)
+        ->assertSee('Programme GreenTech 2026')
+        ->assertDontSee('Programme Masqué Interne 2026');
+
+    $this->get($inactiveProgram->public_detail_url)->assertNotFound();
+
+    Livewire::test(ViewProgram::class, ['record' => $this->program->getRouteKey()])
+        ->callAction('toggleActive')
+        ->assertHasNoActionErrors();
+
+    expect($this->program->fresh()->is_active)->toBeFalse();
+
+    Livewire::test(ProgrammesCatalog::class)
+        ->assertDontSee('Programme GreenTech 2026');
+
+    Livewire::test(ViewProgram::class, ['record' => $this->program->getRouteKey()])
+        ->callAction('toggleActive')
+        ->assertHasNoActionErrors();
+
+    expect($this->program->fresh()->is_active)->toBeTrue();
 });

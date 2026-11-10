@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ProgramStatus;
 use App\Models\Concerns\BelongsToTenant;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -32,6 +33,7 @@ class Program extends Model
         'level_id',
         'eligibility',
         'status',
+        'is_active',
         'admission_threshold',
         'waitlist_threshold',
     ];
@@ -51,6 +53,7 @@ class Program extends Model
     {
         return [
             'status' => ProgramStatus::class,
+            'is_active' => 'boolean',
             'start_date' => 'date',
             'end_date' => 'date',
             'registration_start' => 'date',
@@ -59,6 +62,11 @@ class Program extends Model
             'admission_threshold' => 'integer',
             'waitlist_threshold' => 'integer',
         ];
+    }
+
+    public function scopePublished(Builder $query): Builder
+    {
+        return $query->where('is_active', true);
     }
 
     public function getImageUrlAttribute(): ?string

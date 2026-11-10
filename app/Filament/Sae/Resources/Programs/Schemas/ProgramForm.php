@@ -8,6 +8,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -56,8 +57,13 @@ class ProgramForm
                                 ->label('Statut du programme')
                                 ->options(ProgramStatus::class)
                                 ->default(ProgramStatus::OUVERT_CANDIDATURES)
-                                ->required()
-                                ->columnSpanFull(),
+                                ->required(),
+
+                            Toggle::make('is_active')
+                                ->label('Programme actif (visible sur le portail public)')
+                                ->helperText('Désactivez pour masquer temporairement ce programme sur le site public sans le supprimer.')
+                                ->default(true)
+                                ->inline(false),
 
                             Textarea::make('description')
                                 ->label('Description générale')
