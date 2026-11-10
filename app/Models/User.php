@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Filament\Facades\Filament;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Models\Contracts\HasTenants;
@@ -55,11 +56,30 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasTenant
     }
 
     /**
-     * Règle stricte : Un utilisateur ne peut créer qu'une seule structure SAE.
+     * Règle stricte : Un utilisateur ne peut créer qu'une seule structure SAE,
+     * et les Coachs / Entrepreneurs ne peuvent pas créer de structure SAE.
      */
     public function canCreateTenants(): bool
     {
-        return $this->ownedSae()->doesntExist();
+        if ($this->ownedSae()->exists()) {
+            return false;
+        }
+
+        if ($this->isCoach() || $this->isEntrepreneur()) {
+            return false;
+        }
+
+        if ($this->saes()->wherePivotIn('role', ['COACH', 'ENTREPRENEUR'])->exists()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function isSaeManager(): bool
+    {
+        return $this->ownedSae()->exists()
+            || $this->saes()->wherePivot('role', 'RESPONSABLE')->exists();
     }
 
     public function coachProfile(): HasOne
@@ -117,11 +137,10 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasTenant
             return $this->isSuperAdmin();
         }
 
-        // 3. Panel SAE : Responsables et managers de l'incubateur
+        // 3. Panel SAE : Strictement réservé aux Responsables et Propriétaires de SAE (ou nouveau compte SAE en cours d'enregistrement)
         if ($panelId === 'sae') {
-            return $this->saes()->wherePivot('role', 'RESPONSABLE')->exists()
-                || $this->ownedSae()->exists()
-                || $this->canCreateTenants(); // Permet l'accès pour enregistrer sa 1ère SAE
+            return $this->isSaeManager()
+                || $this->canCreateTenants();
         }
 
         // 4. Panel Coach : Réservé aux coachs / mentors
@@ -145,6 +164,33 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasTenant
             return Sae::all();
         }
 
+        $panelId = $panel->getId();
+
+        if ($panelId === 'sae') {
+            $tenants = collect();
+            if ($this->ownedSae) {
+                $tenants->push($this->ownedSae);
+            }
+
+            return $tenants
+                ->merge($this->saes()->wherePivot('role', 'RESPONSABLE')->get())
+                ->unique('id');
+        }
+
+        if ($panelId === 'coach') {
+            return $this->saes()
+                ->wherePivot('role', 'COACH')
+                ->get()
+                ->unique('id');
+        }
+
+        if ($panelId === 'entrepreneur') {
+            return $this->saes()
+                ->wherePivot('role', 'ENTREPRENEUR')
+                ->get()
+                ->unique('id');
+        }
+
         $tenants = collect();
         if ($this->ownedSae) {
             $tenants->push($this->ownedSae);
@@ -159,11 +205,34 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasTenant
             return true;
         }
 
-        if ($this->ownedSae && $this->ownedSae->id === $tenant->id) {
-            return true;
+        $currentPanelId = Filament::getCurrentPanel()?->getId();
+
+        if ($currentPanelId === 'sae') {
+            if ($this->ownedSae && $this->ownedSae->id === $tenant->id) {
+                return true;
+            }
+
+            return $this->saes()
+                ->where('saes.id', $tenant->id)
+                ->wherePivot('role', 'RESPONSABLE')
+                ->exists();
         }
 
-        if ($this->relationLoaded('saes') && $this->saes->contains('id', $tenant->id)) {
+        if ($currentPanelId === 'coach') {
+            return $this->saes()
+                ->where('saes.id', $tenant->id)
+                ->wherePivot('role', 'COACH')
+                ->exists();
+        }
+
+        if ($currentPanelId === 'entrepreneur') {
+            return $this->saes()
+                ->where('saes.id', $tenant->id)
+                ->wherePivot('role', 'ENTREPRENEUR')
+                ->exists();
+        }
+
+        if ($this->ownedSae && $this->ownedSae->id === $tenant->id) {
             return true;
         }
 

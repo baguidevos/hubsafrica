@@ -5,6 +5,7 @@ use App\Models\Coach;
 use App\Models\CoachInvitation;
 use App\Models\Sae;
 use App\Models\User;
+use Filament\Facades\Filament;
 
 test('a user can only create one SAE structure', function () {
     $user = User::factory()->create();
@@ -132,4 +133,22 @@ test('coach invitation notification has copy action and correct url', function (
 test('legacy register coach url with token redirects to official coach invite route', function () {
     $response = $this->get('/register/coach?token=demo-token-123');
     $response->assertRedirect(route('invitation.join', ['token' => 'demo-token-123']));
+});
+
+test('coaches and entrepreneurs cannot access the sae panel or create sae tenants', function () {
+    $this->seed();
+
+    $saePanel = Filament::getPanel('sae');
+
+    $coachUser = User::where('email', 'marie.sarr@coach.sn')->firstOrFail();
+    $entrepreneurUser = User::where('email', 'ousmane.fall@ecobat.sn')->firstOrFail();
+
+    expect($coachUser->canCreateTenants())->toBeFalse()
+        ->and($coachUser->canAccessPanel($saePanel))->toBeFalse();
+
+    expect($entrepreneurUser->canCreateTenants())->toBeFalse()
+        ->and($entrepreneurUser->canAccessPanel($saePanel))->toBeFalse();
+
+    $this->actingAs($coachUser)->get('/sae/teranga-africa')->assertForbidden();
+    $this->actingAs($entrepreneurUser)->get('/sae/teranga-africa')->assertForbidden();
 });
