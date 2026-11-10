@@ -27,10 +27,9 @@ class ProgramPublicController extends Controller
     /**
      * Fiche institutionnelle détaillée d'un programme d'accompagnement.
      */
-    public function show(int $id): View
+    public function show(int|string $id): View
     {
-        $program = Program::with(['sae.types', 'level', 'cohorts', 'deliverableDefinitions'])
-            ->findOrFail($id);
+        $program = $this->resolveProgram($id, ['sae.types', 'level', 'cohorts', 'deliverableDefinitions']);
 
         Head::title("{$program->name} — Programme d'Accompagnement | Hubs Africa")
             ->description(strip_tags($program->description ?: 'Consultez les détails, critères d\'éligibilité et calendrier de ce programme d\'accompagnement.'))
@@ -48,14 +47,13 @@ class ProgramPublicController extends Controller
     /**
      * Parcours officiel de candidature à un programme.
      */
-    public function candidater(int $id): View
+    public function candidater(int|string $id): View
     {
-        $program = Program::with(['sae', 'level', 'cohorts'])
-            ->findOrFail($id);
+        $program = $this->resolveProgram($id, ['sae', 'level', 'cohorts']);
 
-        $cohortId = request()->query('cohort');
-        $cohort = $cohortId
-            ? ($program->cohorts()->find($cohortId) ?? Cohort::find($cohortId))
+        $cohortIdentifier = request()->query('cohort');
+        $cohort = $cohortIdentifier
+            ? $this->resolveCohortForProgram($program, $cohortIdentifier)
             : $program->cohorts()->whereIn('status', ['OUVERTE', 'EN_COURS'])->latest()->first();
 
         $templateService = app(ApplicationFormTemplateService::class);
@@ -106,5 +104,33 @@ class ProgramPublicController extends Controller
             'applicationForm' => $applicationForm,
             'prefillValues' => $prefillValues,
         ]);
+    }
+
+    /**
+     * @param  array<int, string>  $relations
+     */
+    private function resolveProgram(int|string $identifier, array $relations = []): Program
+    {
+        $query = Program::with($relations);
+
+        if (is_numeric($identifier)) {
+            return $query->where(function ($subQuery) use ($identifier): void {
+                $subQuery->where('id', (int) $identifier)
+                    ->orWhere('slug', (string) $identifier);
+            })->firstOrFail();
+        }
+
+        return $query->where('slug', (string) $identifier)->firstOrFail();
+    }
+
+    private function resolveCohortForProgram(Program $program, int|string $cohortIdentifier): ?Cohort
+    {
+        if (is_numeric($cohortIdentifier)) {
+            return $program->cohorts()->where('id', (int) $cohortIdentifier)->first()
+                ?? Cohort::find((int) $cohortIdentifier);
+        }
+
+        return $program->cohorts()->where('slug', (string) $cohortIdentifier)->first()
+            ?? Cohort::where('slug', (string) $cohortIdentifier)->first();
     }
 }

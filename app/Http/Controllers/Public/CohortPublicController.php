@@ -20,22 +20,21 @@ use Laravel\Head\Facades\Head;
 class CohortPublicController extends Controller
 {
     /**
-     * Point d'entrée public pour rejoindre une cohorte spécifique.
+     * Point d'entrée public pour rejoindre une cohorte spécifique (par slug ou ID).
      * Si l'utilisateur est déjà connecté, il est redirigé directement vers le formulaire de candidature.
      * Sinon, il est invité à se connecter ou à créer son compte avant d'accéder au formulaire.
      */
-    public function join(int $id): View|RedirectResponse
+    public function join(int|string $id): View|RedirectResponse
     {
-        $cohort = Cohort::with(['sae.types', 'program.sae.types', 'program.level'])
-            ->findOrFail($id);
+        $cohort = $this->resolveCohort($id, ['sae.types', 'program.sae.types', 'program.level']);
 
         $isClosed = $cohort->status === CohortStatus::CLOTUREE;
 
         // Si l'utilisateur est déjà connecté et que la cohorte est active, redirection immédiate vers le wizard
         if (Auth::check() && ! $isClosed) {
             return redirect()->route('public.programme.candidater', [
-                'id' => $cohort->program_id,
-                'cohort' => $cohort->id,
+                'id' => $cohort->program?->slug ?: $cohort->program_id,
+                'cohort' => $cohort->slug ?: $cohort->id,
             ]);
         }
 
@@ -51,9 +50,9 @@ class CohortPublicController extends Controller
     /**
      * Connexion d'un utilisateur existant depuis la passerelle de cohorte.
      */
-    public function login(Request $request, int $id): RedirectResponse
+    public function login(Request $request, int|string $id): RedirectResponse
     {
-        $cohort = Cohort::findOrFail($id);
+        $cohort = $this->resolveCohort($id, ['program']);
 
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -70,8 +69,8 @@ class CohortPublicController extends Controller
             $request->session()->regenerate();
 
             return redirect()->route('public.programme.candidater', [
-                'id' => $cohort->program_id,
-                'cohort' => $cohort->id,
+                'id' => $cohort->program?->slug ?: $cohort->program_id,
+                'cohort' => $cohort->slug ?: $cohort->id,
             ])->with('status', "Ravi de vous revoir ! Vous pouvez dès à présent compléter votre candidature pour la cohorte {$cohort->name}.");
         }
 
@@ -83,9 +82,9 @@ class CohortPublicController extends Controller
     /**
      * Inscription d'un nouvel entrepreneur depuis la passerelle de cohorte.
      */
-    public function register(Request $request, int $id): RedirectResponse
+    public function register(Request $request, int|string $id): RedirectResponse
     {
-        $cohort = Cohort::with('program')->findOrFail($id);
+        $cohort = $this->resolveCohort($id, ['program']);
 
         $validated = $request->validate([
             'first_name' => ['required', 'string', 'max:100'],
@@ -140,8 +139,8 @@ class CohortPublicController extends Controller
             $request->session()->regenerate();
 
             return redirect()->route('public.programme.candidater', [
-                'id' => $cohort->program_id,
-                'cohort' => $cohort->id,
+                'id' => $cohort->program?->slug ?: $cohort->program_id,
+                'cohort' => $cohort->slug ?: $cohort->id,
             ])->with('status', 'Votre compte a été créé avec succès ! Veuillez finaliser votre dossier de candidature ci-dessous.');
         } catch (\Throwable $e) {
             DB::rollBack();
@@ -150,5 +149,22 @@ class CohortPublicController extends Controller
                 ->withInput($request->except('password', 'password_confirmation'))
                 ->withErrors(['general' => 'Une erreur est survenue lors de la création de votre compte : '.$e->getMessage()]);
         }
+    }
+
+    /**
+     * @param  array<int, string>  $relations
+     */
+    private function resolveCohort(int|string $identifier, array $relations = []): Cohort
+    {
+        $query = Cohort::with($relations);
+
+        if (is_numeric($identifier)) {
+            return $query->where(function ($subQuery) use ($identifier): void {
+                $subQuery->where('id', (int) $identifier)
+                    ->orWhere('slug', (string) $identifier);
+            })->firstOrFail();
+        }
+
+        return $query->where('slug', (string) $identifier)->firstOrFail();
     }
 }

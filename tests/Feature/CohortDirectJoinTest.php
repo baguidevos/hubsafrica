@@ -38,8 +38,13 @@ beforeEach(function () {
     ]);
 });
 
-test('un visiteur non connecte peut acceder a la passerelle de candidature d une cohorte', function () {
-    $response = $this->get(route('public.cohort.join', $this->cohort->id));
+test('un visiteur non connecte peut acceder a la passerelle de candidature d une cohorte via son slug ou son id', function () {
+    expect($this->cohort->slug)->toStartWith('promotion-agtech-printemps-2026-')
+        ->and($this->program->slug)->toStartWith('programme-agtech-panafricain-')
+        ->and($this->cohort->public_join_url)->toContain('/cohortes/'.$this->cohort->slug.'/rejoindre')
+        ->and($this->cohort->public_join_url)->not->toContain('/cohortes/'.$this->cohort->id.'/rejoindre');
+
+    $response = $this->get($this->cohort->public_join_url);
 
     $response->assertStatus(200);
     $response->assertSee($this->cohort->name);
@@ -48,14 +53,14 @@ test('un visiteur non connecte peut acceder a la passerelle de candidature d une
     $response->assertSee('Créer mon compte candidat');
 });
 
-test('un utilisateur deja connecte est redirige directement vers le formulaire de candidature de la cohorte', function () {
+test('un utilisateur deja connecte est redirige directement vers le formulaire de candidature de la cohorte avec slug', function () {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->get(route('public.cohort.join', $this->cohort->id));
+    $response = $this->actingAs($user)->get($this->cohort->public_join_url);
 
     $response->assertRedirect(route('public.programme.candidater', [
-        'id' => $this->program->id,
-        'cohort' => $this->cohort->id,
+        'id' => $this->program->slug,
+        'cohort' => $this->cohort->slug,
     ]));
 });
 
@@ -65,14 +70,14 @@ test('un utilisateur existant peut se connecter via la passerelle de cohorte et 
         'password' => Hash::make('Secret12345!'),
     ]);
 
-    $response = $this->post(route('public.cohort.login', $this->cohort->id), [
+    $response = $this->post(route('public.cohort.login', $this->cohort->slug), [
         'email' => 'entrepreneur.existant@example.com',
         'password' => 'Secret12345!',
     ]);
 
     $response->assertRedirect(route('public.programme.candidater', [
-        'id' => $this->program->id,
-        'cohort' => $this->cohort->id,
+        'id' => $this->program->slug,
+        'cohort' => $this->cohort->slug,
     ]));
 
     expect(Auth::check())->toBeTrue();
@@ -80,7 +85,7 @@ test('un utilisateur existant peut se connecter via la passerelle de cohorte et 
 });
 
 test('un nouveau candidat peut creer un compte depuis la passerelle de cohorte et etre redirige vers la candidature', function () {
-    $response = $this->post(route('public.cohort.register', $this->cohort->id), [
+    $response = $this->post(route('public.cohort.register', $this->cohort->slug), [
         'first_name' => 'Fatou',
         'last_name' => 'Ndiaye',
         'email' => 'fatou.ndiaye@startup.sn',
@@ -90,8 +95,8 @@ test('un nouveau candidat peut creer un compte depuis la passerelle de cohorte e
     ]);
 
     $response->assertRedirect(route('public.programme.candidater', [
-        'id' => $this->program->id,
-        'cohort' => $this->cohort->id,
+        'id' => $this->program->slug,
+        'cohort' => $this->cohort->slug,
     ]));
 
     expect(Auth::check())->toBeTrue();
@@ -149,12 +154,12 @@ test('le wizard de candidature prend en compte la cohorte ciblee lors de la soum
     ]);
 });
 
-test('la page detail du programme affiche les promotions et le lien pour rejoindre la cohorte ouverte', function () {
-    $response = $this->get(route('public.programme.detail', $this->program->id));
+test('la page detail du programme affiche les promotions et le lien slugifie pour rejoindre la cohorte ouverte', function () {
+    $response = $this->get($this->program->public_detail_url);
 
     $response->assertStatus(200);
     $response->assertSee('Promotions &amp; Cohortes du Programme', false);
     $response->assertSee($this->cohort->name);
     $response->assertSee('Inscriptions ouvertes');
-    $response->assertSee(route('public.cohort.join', $this->cohort->id));
+    $response->assertSee($this->cohort->public_join_url);
 });

@@ -212,7 +212,7 @@
                                         @endif
                                     </div>
                                     <h3 class="text-base font-bold text-slate-900 hover:text-[#2F3284] transition">
-                                        <a href="{{ route('public.programme.detail', $p->id) }}">
+                                        <a href="{{ $p->public_detail_url }}">
                                             {{ $p->name }}
                                         </a>
                                     </h3>
@@ -221,10 +221,10 @@
                                     </p>
                                 </div>
                                 <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
-                                    <a href="{{ route('public.programme.detail', $p->id) }}" class="text-xs font-bold text-[#2F3284] hover:underline">
+                                    <a href="{{ $p->public_detail_url }}" class="text-xs font-bold text-[#2F3284] hover:underline">
                                         Voir détails &rarr;
                                     </a>
-                                    <a href="{{ route('public.programme.candidater', $p->id) }}" class="px-3.5 py-1.5 rounded-lg bg-[#F8B81D] hover:bg-[#e5a510] text-slate-900 text-xs font-bold transition">
+                                    <a href="{{ $p->public_apply_url }}" class="px-3.5 py-1.5 rounded-lg bg-[#F8B81D] hover:bg-[#e5a510] text-slate-900 text-xs font-bold transition">
                                         Candidater
                                     </a>
                                 </div>

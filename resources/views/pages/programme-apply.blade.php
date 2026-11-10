@@ -6,7 +6,7 @@
                 <span>/</span>
                 <a href="{{ route('public.programmes') }}" class="hover:text-[#F8B81D]">Programmes</a>
                 <span>/</span>
-                <a href="{{ route('public.programme.detail', $program->id) }}" class="hover:text-[#F8B81D]">{{ $program->name }}</a>
+                <a href="{{ $program->public_detail_url }}" class="hover:text-[#F8B81D]">{{ $program->name }}</a>
                 <span>/</span>
                 <span class="text-slate-200">Candidature</span>
             </nav>

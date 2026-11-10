@@ -27,7 +27,7 @@ class EditCohort extends EditRecord
                 ->form([
                     TextInput::make('join_url')
                         ->label('Lien d\'invitation directe')
-                        ->default(fn (Cohort $record) => route('public.cohort.join', $record->id))
+                        ->default(fn (Cohort $record) => $record->public_join_url)
                         ->readOnly()
                         ->helperText('Ce lien amène l\'entrepreneur à se connecter ou s\'inscrire, puis le redirige vers le formulaire de cette cohorte.'),
                 ])
@@ -39,7 +39,7 @@ class EditCohort extends EditRecord
                         ->icon('heroicon-o-clipboard-document-check')
                         ->color('primary')
                         ->action(function ($livewire, Cohort $record) {
-                            $url = route('public.cohort.join', $record->id);
+                            $url = $record->public_join_url;
                             $livewire->js("window.navigator.clipboard.writeText('{$url}')");
                             Notification::make()
                                 ->title('Lien copié !')

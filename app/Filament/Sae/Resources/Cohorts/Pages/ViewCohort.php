@@ -34,7 +34,7 @@ class ViewCohort extends ViewRecord
                 ->form([
                     TextInput::make('join_url')
                         ->label('Lien de candidature directe')
-                        ->default(fn (Cohort $record): string => route('public.cohort.join.clean', $record->id))
+                        ->default(fn (Cohort $record): string => $record->public_join_url)
                         ->readOnly(),
                 ])
                 ->modalSubmitAction(false)
@@ -45,7 +45,7 @@ class ViewCohort extends ViewRecord
                         ->icon('heroicon-o-clipboard-document-check')
                         ->color('primary')
                         ->action(function ($livewire, Cohort $record): void {
-                            $joinUrl = route('public.cohort.join.clean', $record->id);
+                            $joinUrl = $record->public_join_url;
                             $livewire->js("window.navigator.clipboard.writeText('{$joinUrl}')");
 
                             Notification::make()

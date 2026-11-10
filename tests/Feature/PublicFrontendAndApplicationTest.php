@@ -109,14 +109,14 @@ test('public programme detail page renders with eligibility criteria and candida
         'registration_end' => now()->addDays(20),
     ]);
 
-    $response = $this->get("/programmes/{$program->id}");
+    $response = $this->get($program->public_detail_url);
 
     $response->assertOk();
     $response->assertSee('Incubation Climat 2026');
     $response->assertSee('Incubateur Sahel Excellence');
     $response->assertSee('Éligibilité');
     $response->assertSee('Déposer ma Candidature');
-    $response->assertSee("/programmes/{$program->id}/candidater");
+    $response->assertSee($program->public_apply_url);
 });
 
 test('new entrepreneur can submit complete application through livewire application wizard', function () {

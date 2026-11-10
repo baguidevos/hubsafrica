@@ -188,7 +188,7 @@ class CohortsRelationManager extends RelationManager
                     ->icon('heroicon-o-link')
                     ->color('warning')
                     ->action(function ($livewire, Cohort $record): void {
-                        $joinUrl = route('public.cohort.join.clean', $record->id);
+                        $joinUrl = $record->public_join_url;
                         $livewire->js("window.navigator.clipboard.writeText('{$joinUrl}')");
 
                         Notification::make()

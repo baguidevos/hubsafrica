@@ -165,7 +165,7 @@
                         @endif
 
                         <h3 class="text-lg font-black text-slate-900 group-hover:text-[#2F3284] transition line-clamp-1">
-                            <a href="{{ route('public.programme.detail', $p->id) }}">
+                            <a href="{{ $p->public_detail_url }}">
                                 {{ $p->name }}
                             </a>
                         </h3>
@@ -187,11 +187,11 @@
 
                     <div
                         class="px-6 py-3.5 border-t border-slate-100 bg-slate-50/80 flex items-center justify-between gap-3">
-                        <a href="{{ route('public.programme.detail', $p->id) }}"
+                        <a href="{{ $p->public_detail_url }}"
                             class="text-xs font-bold text-slate-600 hover:text-[#2F3284] transition">
                             Détails &amp; Critères
                         </a>
-                        <a href="{{ route('public.programme.candidater', $p->id) }}"
+                        <a href="{{ $p->public_apply_url }}"
                             class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 font-bold text-xs shadow-xs transition transform hover:scale-105">
                             <span>Candidater</span>
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

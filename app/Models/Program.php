@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Program extends Model
 {
@@ -18,6 +19,7 @@ class Program extends Model
     protected $fillable = [
         'sae_id',
         'name',
+        'slug',
         'image',
         'description',
         'objectives',
@@ -33,6 +35,17 @@ class Program extends Model
         'admission_threshold',
         'waitlist_threshold',
     ];
+
+    protected static function booted(): void
+    {
+        static::creating(function (self $program): void {
+            if (blank($program->slug)) {
+                $baseSlug = Str::slug($program->name) ?: 'programme';
+                $uniqueSuffix = Str::lower(Str::random(6));
+                $program->slug = "{$baseSlug}-{$uniqueSuffix}";
+            }
+        });
+    }
 
     protected function casts(): array
     {
@@ -69,6 +82,16 @@ class Program extends Model
     public function getWaitlistThreshold(): int
     {
         return $this->waitlist_threshold ?? $this->sae?->getWaitlistThreshold() ?? 50;
+    }
+
+    public function getPublicDetailUrlAttribute(): string
+    {
+        return route('public.programme.detail', ['id' => $this->slug ?: $this->id]);
+    }
+
+    public function getPublicApplyUrlAttribute(): string
+    {
+        return route('public.programme.candidater', ['id' => $this->slug ?: $this->id]);
     }
 
     public function level(): BelongsTo

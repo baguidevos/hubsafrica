@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Cohort extends Model
 {
@@ -19,6 +20,7 @@ class Cohort extends Model
         'program_id',
         'application_form_id',
         'name',
+        'slug',
         'number',
         'capacity',
         'start_date',
@@ -26,6 +28,17 @@ class Cohort extends Model
         'objectives',
         'status',
     ];
+
+    protected static function booted(): void
+    {
+        static::creating(function (self $cohort): void {
+            if (blank($cohort->slug)) {
+                $baseSlug = Str::slug($cohort->name) ?: 'cohorte';
+                $uniqueSuffix = Str::lower(Str::random(6));
+                $cohort->slug = "{$baseSlug}-{$uniqueSuffix}";
+            }
+        });
+    }
 
     protected function casts(): array
     {
@@ -42,6 +55,11 @@ class Cohort extends Model
     public function getMaxParticipantsAttribute(): ?int
     {
         return $this->capacity;
+    }
+
+    public function getPublicJoinUrlAttribute(): string
+    {
+        return route('public.cohort.join', ['id' => $this->slug ?: $this->id]);
     }
 
     public function program(): BelongsTo

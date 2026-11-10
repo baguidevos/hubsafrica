@@ -13,7 +13,7 @@
                 <span>/</span>
                 <a href="{{ route('public.programmes') }}" class="hover:text-[#F8B81D] transition">Programmes</a>
                 <span>/</span>
-                <a href="{{ route('public.programme.detail', $cohort->program_id) }}" class="hover:text-[#F8B81D] transition">{{ $cohort->program->name }}</a>
+                <a href="{{ $cohort->program->public_detail_url }}" class="hover:text-[#F8B81D] transition">{{ $cohort->program->name }}</a>
                 <span>/</span>
                 <span class="text-slate-200">Rejoindre la promotion</span>
             </nav>
@@ -123,7 +123,7 @@
                     </p>
                 </div>
                 <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <a href="{{ route('public.programme.detail', $cohort->program_id) }}" class="w-full sm:w-auto px-6 py-3 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 font-bold text-xs transition">
+                    <a href="{{ $cohort->program->public_detail_url }}" class="w-full sm:w-auto px-6 py-3 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 font-bold text-xs transition">
                         Voir la fiche du programme
                     </a>
                     <a href="{{ route('public.programmes') }}" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 font-bold text-xs shadow-sm transition">
@@ -147,7 +147,7 @@
                         </p>
                     </div>
 
-                    <form method="POST" action="{{ route('public.cohort.login', $cohort->id) }}" class="space-y-4">
+                    <form method="POST" action="{{ route('public.cohort.login', $cohort->slug ?: $cohort->id) }}" class="space-y-4">
                         @csrf
 
                         <div>
@@ -228,7 +228,7 @@
                         </p>
                     </div>
 
-                    <form method="POST" action="{{ route('public.cohort.register', $cohort->id) }}" class="space-y-4">
+                    <form method="POST" action="{{ route('public.cohort.register', $cohort->slug ?: $cohort->id) }}" class="space-y-4">
                         @csrf
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">

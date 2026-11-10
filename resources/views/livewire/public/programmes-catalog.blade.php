@@ -176,7 +176,7 @@
 
                             {{-- Titre & Structure Organisatrice --}}
                             <h3 class="text-lg font-extrabold text-slate-900 group-hover:text-[#2F3284] transition line-clamp-1">
-                                <a href="{{ route('public.programme.detail', $p->id) }}">
+                                <a href="{{ $p->public_detail_url }}">
                                     {{ $p->name }}
                                 </a>
                             </h3>
@@ -249,7 +249,7 @@
                     {{-- Boutons d'action --}}
                     <div class="p-6 pt-0 flex items-center justify-between gap-3">
                         <a
-                            href="{{ route('public.programme.detail', $p->id) }}"
+                            href="{{ $p->public_detail_url }}"
                             class="flex-1 text-center py-2.5 px-3 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-100 hover:text-[#2F3284] text-xs font-bold transition"
                         >
                             Détails &amp; Critères
@@ -257,7 +257,7 @@
 
                         @if($openCohort)
                             <a
-                                href="{{ route('public.cohort.join', $openCohort->id) }}"
+                                href="{{ $openCohort->public_join_url }}"
                                 class="flex-1 text-center py-2.5 px-3 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 text-xs font-bold shadow-sm transition"
                                 title="Rejoindre directement la cohorte {{ $openCohort->name }}"
                             >
@@ -265,7 +265,7 @@
                             </a>
                         @elseif($isOpen)
                             <a
-                                href="{{ route('public.programme.candidater', $p->id) }}"
+                                href="{{ $p->public_apply_url }}"
                                 class="flex-1 text-center py-2.5 px-3 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 text-xs font-bold shadow-sm transition"
                             >
                                 Candidater &rarr;

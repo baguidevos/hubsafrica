@@ -54,7 +54,7 @@
                 @if($isOpen)
                     <div class="shrink-0">
                         <a
-                            href="{{ route('public.programme.candidater', $program->id) }}"
+                            href="{{ $program->public_apply_url }}"
                             class="px-6 py-3.5 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 font-bold text-xs sm:text-sm shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
                         >
                             <span>Déposer ma Candidature</span>
@@ -217,7 +217,7 @@
                                         <div class="shrink-0">
                                             @if($isCohortOpen)
                                                 <a
-                                                    href="{{ route('public.cohort.join', $cohort->id) }}"
+                                                    href="{{ $cohort->public_join_url }}"
                                                     class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 font-bold text-xs shadow-sm transition"
                                                 >
                                                     <span>Rejoindre cette cohorte</span>
@@ -284,7 +284,7 @@
 
                     @if($isOpen)
                         <a
-                            href="{{ route('public.programme.candidater', $program->id) }}"
+                            href="{{ $program->public_apply_url }}"
                             class="w-full block py-4 px-6 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 font-extrabold text-xs text-center shadow-md transition transform hover:-translate-y-0.5"
                         >
                             Postuler à ce programme &rarr;
