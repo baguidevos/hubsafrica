@@ -118,3 +118,33 @@ Route::get('/maintenance/migrate-force', function (Request $request) {
         return response("<pre style='background:#450a0a;color:#fca5a5;padding:20px;border-radius:10px;font-family:monospace;white-space:pre-wrap;'>=== ERREUR MIGRATION ===\n\n".e($e->getMessage())."\n\n".e($e->getTraceAsString()).'</pre>', 500);
     }
 })->name('maintenance.migrate.force');
+
+// Déploiement / Maintenance : exécution de php artisan serve (en arrière-plan) ou optimisation serveur
+Route::get('/maintenance/serve', function (Request $request) {
+    $expectedSecret = env('MIGRATION_SECRET', 'hubsafrica-migrate-force-2026');
+    $providedKey = $request->query('key');
+
+    $isAuthorized = ($providedKey && hash_equals($expectedSecret, (string) $providedKey))
+        || (auth()->check() && method_exists(auth()->user(), 'isSuperAdmin') && auth()->user()->isSuperAdmin());
+
+    if (! $isAuthorized) {
+        abort(403, 'Accès interdit. Clé de maintenance requise (?key=...) ou session Super Admin requise.');
+    }
+
+    try {
+        $host = $request->query('host', '127.0.0.1');
+        $port = (int) $request->query('port', 8000);
+        $basePath = base_path();
+        $phpBinary = PHP_BINARY ?: 'php';
+
+        if (PHP_OS_FAMILY === 'Windows') {
+            pclose(popen("start /B \"\" \"{$phpBinary}\" \"{$basePath}\\artisan\" serve --host={$host} --port={$port}", 'r'));
+        } else {
+            exec(escapeshellcmd($phpBinary).' '.escapeshellarg($basePath.'/artisan').' serve --host='.escapeshellarg((string) $host).' --port='.$port.' > /dev/null 2>&1 &');
+        }
+
+        return response("<pre style='background:#0f172a;color:#34d399;padding:20px;border-radius:10px;font-family:monospace;white-space:pre-wrap;'>=== SERVEUR ARTISAN LANCÉ EN ARRIÈRE-PLAN ===\n\nCommande : php artisan serve --host=".e((string) $host)." --port={$port}\nRépertoire : ".e($basePath).'</pre>');
+    } catch (Throwable $e) {
+        return response("<pre style='background:#450a0a;color:#fca5a5;padding:20px;border-radius:10px;font-family:monospace;white-space:pre-wrap;'>=== ERREUR SERVE ===\n\n".e($e->getMessage())."\n\n".e($e->getTraceAsString()).'</pre>', 500);
+    }
+})->name('maintenance.serve');

@@ -69,6 +69,7 @@ class ProgramPublicController extends Controller
             if ($entrepreneur) {
                 $prefillValues['first_name'] = $entrepreneur->first_name ?? '';
                 $prefillValues['last_name'] = $entrepreneur->last_name ?? '';
+                $prefillValues['full_name'] = trim(($entrepreneur->first_name ?? '').' '.($entrepreneur->last_name ?? ''));
                 $prefillValues['email'] = $entrepreneur->email ?? $user->email;
                 $prefillValues['phone'] = $entrepreneur->phone ?? '';
                 $prefillValues['gender'] = is_object($entrepreneur->gender) ? $entrepreneur->gender->value : ($entrepreneur->gender ?? 'M');
@@ -84,6 +85,7 @@ class ProgramPublicController extends Controller
                 }
             } else {
                 $prefillValues['email'] = $user->email;
+                $prefillValues['full_name'] = $user->name;
                 $names = explode(' ', $user->name, 2);
                 $prefillValues['first_name'] = $names[0] ?? '';
                 $prefillValues['last_name'] = $names[1] ?? '';

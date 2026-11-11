@@ -3,6 +3,7 @@
 use App\Enums\ApplicationStatus;
 use App\Enums\CohortStatus;
 use App\Enums\EntrepreneurStatus;
+use App\Enums\FormType;
 use App\Enums\ProgramStatus;
 use App\Enums\ProjectStatus;
 use App\Filament\Sae\Resources\Cohorts\Pages\ViewCohort;
@@ -14,6 +15,7 @@ use App\Livewire\Public\ProgrammesCatalog;
 use App\Models\Application;
 use App\Models\Cohort;
 use App\Models\Entrepreneur;
+use App\Models\Form;
 use App\Models\Level;
 use App\Models\Program;
 use App\Models\Project;
@@ -247,4 +249,42 @@ test('program can be deactivated and is filtered out on public catalog and detai
         ->assertHasNoActionErrors();
 
     expect($this->program->fresh()->is_active)->toBeTrue();
+});
+
+test('agripulse cohort 1 json form template imports cleanly with all 6 sections and conditional rules', function () {
+    $jsonPath = base_path('storage/app/templates/agripulse-cohorte-1-candidature.form.json');
+    expect(file_exists($jsonPath))->toBeTrue();
+
+    $decoded = json_decode(file_get_contents($jsonPath), true);
+    expect($decoded)->toBeArray()
+        ->and($decoded['packstub-form-builder'])->toBe(1)
+        ->and($decoded['form'])->toBeArray();
+
+    $form = Form::fromArray($decoded['form']);
+    $form->save();
+
+    expect($form->name)->toContain('AgriPulse')
+        ->and($form->type)->toBe(FormType::CANDIDATURE)
+        ->and($form->is_template)->toBeTrue()
+        ->and($form->is_mandatory)->toBeTrue()
+        ->and($form->isWizard())->toBeTrue()
+        ->and($form->sections())->toHaveCount(6)
+        ->and($form->inputFields()->has('full_name'))->toBeTrue()
+        ->and($form->inputFields()->has('project_name'))->toBeTrue()
+        ->and($form->inputFields()->has('sector'))->toBeTrue()
+        ->and($form->inputFields()->has('team_size'))->toBeTrue()
+        ->and($form->inputFields()->has('pitch_deck'))->toBeTrue()
+        ->and($form->inputFields()->has('needs'))->toBeTrue()
+        ->and($form->inputFields()->has('certify_accuracy'))->toBeTrue();
+
+    // Verify conditional visibility works as expected
+    $visibleWhenNoTeam = $form->visibleKeys(['has_team' => 'Non', 'has_prototype_or_deck' => 'Non', 'project_stage' => 'idee_simple']);
+    expect($visibleWhenNoTeam)->not->toContain('team_size')
+        ->and($visibleWhenNoTeam)->not->toContain('pitch_deck')
+        ->and($visibleWhenNoTeam)->not->toContain('customers_count');
+
+    $visibleWhenTeamAndCommercial = $form->visibleKeys(['has_team' => 'Oui', 'has_prototype_or_deck' => 'Oui', 'project_stage' => 'commercialise']);
+    expect($visibleWhenTeamAndCommercial)->toContain('team_size')
+        ->and($visibleWhenTeamAndCommercial)->toContain('pitch_deck')
+        ->and($visibleWhenTeamAndCommercial)->toContain('customers_count');
 });

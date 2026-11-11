@@ -10,6 +10,53 @@ use Packstub\FormBuilder\Models\Form as BaseForm;
 
 class Form extends BaseForm
 {
+    protected $attributes = [
+        'is_active' => true,
+        'store_submissions' => true,
+        'type' => FormType::CANDIDATURE,
+        'is_template' => true,
+        'is_mandatory' => true,
+    ];
+
+    protected static function booted(): void
+    {
+        parent::booted();
+
+        static::creating(function (self $form): void {
+            if ($form->type === null) {
+                $form->type = FormType::CANDIDATURE;
+            }
+        });
+    }
+
+    public function toPortable(): array
+    {
+        return array_merge(parent::toPortable(), [
+            'type' => $this->type instanceof FormType ? $this->type->value : $this->type,
+            'is_template' => (bool) $this->is_template,
+            'is_mandatory' => (bool) $this->is_mandatory,
+        ]);
+    }
+
+    public static function fromArray(array $definition): static
+    {
+        $form = parent::fromArray($definition);
+
+        if (isset($definition['type'])) {
+            $form->type = $definition['type'];
+        }
+
+        if (isset($definition['is_template'])) {
+            $form->is_template = (bool) $definition['is_template'];
+        }
+
+        if (isset($definition['is_mandatory'])) {
+            $form->is_mandatory = (bool) $definition['is_mandatory'];
+        }
+
+        return $form;
+    }
+
     protected function casts(): array
     {
         return array_merge(parent::casts(), [

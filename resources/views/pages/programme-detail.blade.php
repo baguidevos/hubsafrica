@@ -1,7 +1,7 @@
 <x-layouts.public>
     @php
         $now = now()->toDateString();
-        $isOpen = $program->status === \App\Enums\ProgramStatus::ACTIF && (!$program->registration_end || $program->registration_end->toDateString() >= $now);
+        $isOpen = $program->isAcceptingApplications();
         $daysRemaining = $program->registration_end ? now()->diffInDays($program->registration_end, false) : null;
     @endphp
 

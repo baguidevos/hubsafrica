@@ -86,7 +86,7 @@ class HandleCandidatureSubmission
                 if (! $user) {
                     $firstName = $data['first_name'] ?? '';
                     $lastName = $data['last_name'] ?? '';
-                    $fullName = trim("{$firstName} {$lastName}") ?: 'Candidat Hubs Africa';
+                    $fullName = trim((string) ($data['full_name'] ?? "{$firstName} {$lastName}")) ?: 'Candidat Hubs Africa';
 
                     $user = User::create([
                         'name' => $fullName,
@@ -111,7 +111,8 @@ class HandleCandidatureSubmission
             $genderValue = ($data['gender'] ?? 'M') === 'F' ? Gender::F : Gender::M;
 
             if (! $entrepreneur) {
-                $names = explode(' ', $user->name, 2);
+                $fullNameSource = trim((string) ($data['full_name'] ?? $user->name));
+                $names = explode(' ', $fullNameSource, 2);
                 $entrepreneur = Entrepreneur::create([
                     'user_id' => $user->id,
                     'sae_id' => $saeId,
@@ -168,7 +169,7 @@ class HandleCandidatureSubmission
 
             // 6. Extraction des réponses spécifiques (hors champs standards)
             $standardKeys = [
-                'first_name', 'last_name', 'email', 'phone', 'gender', 'city',
+                'full_name', 'first_name', 'last_name', 'email', 'phone', 'gender', 'city',
                 'project_name', 'sector', 'pitch', 'team_size', 'website',
                 'motivation', 'needs', 'pitch_deck', 'program_id', 'cohort_id',
                 '_fb_website', '_fb_token',

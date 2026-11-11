@@ -106,7 +106,7 @@
             @forelse($programs as $p)
                 @php
                     $now = now()->toDateString();
-                    $isOpen = $p->status === \App\Enums\ProgramStatus::ACTIF && (!$p->registration_end || $p->registration_end->toDateString() >= $now);
+                    $isOpen = $p->isAcceptingApplications();
                     $daysRemaining = $p->registration_end ? now()->diffInDays($p->registration_end, false) : null;
                     $openCohort = $p->cohorts->first(fn ($c) => $c->status === \App\Enums\CohortStatus::OUVERTE);
                 @endphp

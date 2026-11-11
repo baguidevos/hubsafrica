@@ -1,0 +1,774 @@
+{
+  "packstub-form-builder": 1,
+  "form": {
+    "name": "Formulaire de candidature – AgriPulse (Cohorte 1 : Agritech & Greentech)",
+    "slug": "candidature-agripulse-cohorte-1-agritech-greentech",
+    "description": "Formulaire officiel de sélection pour le programme d'accompagnement AgriPulse (6 mois) dédié aux porteurs d'idées, projets et startups en Agritech et Greentech.",
+    "type": "CANDIDATURE",
+    "is_template": true,
+    "is_mandatory": true,
+    "is_active": true,
+    "store_submissions": true,
+    "submit_label": "Soumettre ma candidature AgriPulse",
+    "success_message": "Merci ! Votre candidature au programme AgriPulse – Cohorte 1 (Agritech & Greentech) a bien été enregistrée. L'équipe d'évaluation reviendra vers vous après étude de votre dossier.",
+    "redirect_url": null,
+    "notification_emails": [],
+    "settings": {
+      "mode": "wizard",
+      "wizard_progress": true,
+      "wizard_step_numbers": true,
+      "wizard_back": true,
+      "next_label": "Étape suivante",
+      "previous_label": "Étape précédente"
+    },
+    "fields": [
+      {
+        "type": "section",
+        "data": {
+          "key": "informations_personnelles",
+          "label": "1. Informations personnelles du candidat",
+          "description": "Identifier le porteur du projet et faciliter les prises de contact.",
+          "fields": [
+            {
+              "type": "text",
+              "data": {
+                "key": "full_name",
+                "label": "Nom et prénom(s)",
+                "placeholder": "Ex: Koffi Jean-Marc",
+                "required": true,
+                "width": "half"
+              }
+            },
+            {
+              "type": "select",
+              "data": {
+                "key": "gender",
+                "label": "Sexe (Facultatif)",
+                "required": false,
+                "width": "half",
+                "choices": {
+                  "M": "Homme",
+                  "F": "Femme",
+                  "Autre": "Préfère ne pas préciser"
+                }
+              }
+            },
+            {
+              "type": "select",
+              "data": {
+                "key": "age_range",
+                "label": "Tranche d'âge",
+                "required": true,
+                "width": "half",
+                "choices": {
+                  "moins_18": "Moins de 18 ans",
+                  "18_24": "18 à 24 ans",
+                  "25_34": "25 à 34 ans",
+                  "35_44": "35 à 44 ans",
+                  "45_plus": "45 ans et plus"
+                }
+              }
+            },
+            {
+              "type": "date",
+              "data": {
+                "key": "birth_date",
+                "label": "Date de naissance (Facultatif)",
+                "required": false,
+                "width": "half"
+              }
+            },
+            {
+              "type": "text",
+              "data": {
+                "key": "country",
+                "label": "Pays de résidence",
+                "placeholder": "Ex: Bénin, Sénégal, Côte d'Ivoire...",
+                "required": true,
+                "width": "half"
+              }
+            },
+            {
+              "type": "text",
+              "data": {
+                "key": "city",
+                "label": "Ville / Commune",
+                "placeholder": "Ex: Cotonou, Abomey-Calavi, Parakou...",
+                "required": true,
+                "width": "half"
+              }
+            },
+            {
+              "type": "phone",
+              "data": {
+                "key": "phone",
+                "label": "Numéro de téléphone / WhatsApp",
+                "placeholder": "Ex: +229 01 00 00 00 00",
+                "required": true,
+                "width": "half"
+              }
+            },
+            {
+              "type": "email",
+              "data": {
+                "key": "email",
+                "label": "Adresse e-mail",
+                "placeholder": "exemple@domaine.com",
+                "required": true,
+                "width": "half"
+              }
+            },
+            {
+              "type": "select",
+              "data": {
+                "key": "education_level",
+                "label": "Niveau d'études",
+                "required": true,
+                "width": "half",
+                "choices": {
+                  "secondaire": "Secondaire / Baccalauréat",
+                  "formation_pro": "Formation professionnelle / Technique (BTS, DUT...)",
+                  "licence": "Licence (Bac +3)",
+                  "master": "Master / Ingénieur (Bac +5)",
+                  "doctorat": "Doctorat (PhD)",
+                  "autodidacte_autre": "Autodidacte / Autre"
+                }
+              }
+            },
+            {
+              "type": "text",
+              "data": {
+                "key": "current_occupation",
+                "label": "Profession ou situation actuelle",
+                "placeholder": "Ex: Étudiant, Entrepreneur à plein temps, Agronome, Salarié...",
+                "required": true,
+                "width": "half"
+              }
+            },
+            {
+              "type": "url",
+              "data": {
+                "key": "linkedin_url",
+                "label": "Lien vers le profil LinkedIn (Facultatif)",
+                "placeholder": "https://www.linkedin.com/in/votre-profil",
+                "required": false,
+                "width": "full"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "section",
+        "data": {
+          "key": "presentation_projet",
+          "label": "2. Présentation du projet",
+          "description": "Comprendre l'idée entrepreneuriale et son domaine d'intervention.",
+          "fields": [
+            {
+              "type": "text",
+              "data": {
+                "key": "project_name",
+                "label": "Nom du projet",
+                "placeholder": "Ex: GreenIrrig, AgroSens...",
+                "required": true,
+                "width": "half"
+              }
+            },
+            {
+              "type": "select",
+              "data": {
+                "key": "sector",
+                "label": "Dans quel domaine votre projet intervient-il ?",
+                "required": true,
+                "width": "half",
+                "choices": {
+                  "Agriculture et production végétale": "Agriculture et production végétale",
+                  "Élevage": "Élevage",
+                  "Agroalimentaire et transformation": "Agroalimentaire et transformation",
+                  "Agritech (technologies agricoles)": "Agritech (technologies agricoles)",
+                  "Greentech (technologies environnementales)": "Greentech (technologies environnementales)",
+                  "Irrigation et gestion de l'eau": "Irrigation et gestion de l'eau",
+                  "Gestion des déchets et économie circulaire": "Gestion des déchets et économie circulaire",
+                  "Autre": "Autre"
+                }
+              }
+            },
+            {
+              "type": "text",
+              "data": {
+                "key": "sector_other",
+                "label": "Précisez votre domaine d'intervention",
+                "placeholder": "Indiquez votre secteur spécifique...",
+                "required": true,
+                "width": "full",
+                "visibility": "when",
+                "visibility_logic": "all",
+                "visibility_rules": [
+                  {
+                    "field": "sector",
+                    "operator": "equals",
+                    "value": "Autre"
+                  }
+                ],
+                "requirement": "when",
+                "requirement_logic": "all",
+                "requirement_rules": [
+                  {
+                    "field": "sector",
+                    "operator": "equals",
+                    "value": "Autre"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "textarea",
+              "data": {
+                "key": "pitch",
+                "label": "Présentez votre projet en quelques phrases",
+                "placeholder": "Résumez de façon claire votre idée ou votre activité...",
+                "required": true,
+                "rows": 3,
+                "width": "full"
+              }
+            },
+            {
+              "type": "textarea",
+              "data": {
+                "key": "problem_statement",
+                "label": "Quel problème votre projet cherche-t-il à résoudre ?",
+                "placeholder": "Décrivez le défi concret rencontré sur le terrain...",
+                "required": true,
+                "rows": 3,
+                "width": "half"
+              }
+            },
+            {
+              "type": "textarea",
+              "data": {
+                "key": "proposed_solution",
+                "label": "Quelle solution proposez-vous pour résoudre ce problème ?",
+                "placeholder": "Expliquez comment votre produit ou service répond à ce problème...",
+                "required": true,
+                "rows": 3,
+                "width": "half"
+              }
+            },
+            {
+              "type": "textarea",
+              "data": {
+                "key": "target_beneficiaries",
+                "label": "Qui sont les bénéficiaires ou clients potentiels de votre solution ?",
+                "placeholder": "Ex: Producteurs maraîchers, coopératives agricoles, ménages urbains, PME agroalimentaires...",
+                "required": true,
+                "rows": 2,
+                "width": "half"
+              }
+            },
+            {
+              "type": "text",
+              "data": {
+                "key": "deployment_zone",
+                "label": "Dans quelle zone géographique souhaitez-vous déployer votre solution ?",
+                "placeholder": "Ex: Sud-Bénin, Vallée de l'Ouémé, Afrique de l'Ouest...",
+                "required": true,
+                "width": "half"
+              }
+            },
+            {
+              "type": "textarea",
+              "data": {
+                "key": "innovation_differentiator",
+                "label": "Qu'est-ce qui rend votre solution innovante ou différente ?",
+                "placeholder": "Précisez la valeur ajoutée, l'impact écologique ou l'avantage technologique...",
+                "required": true,
+                "rows": 3,
+                "width": "full"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "section",
+        "data": {
+          "key": "etat_avancement",
+          "label": "3. État d'avancement du projet",
+          "description": "Évaluer la maturité actuelle du projet (les porteurs d'idées sont également acceptés).",
+          "fields": [
+            {
+              "type": "select",
+              "data": {
+                "key": "project_stage",
+                "label": "À quel stade se trouve actuellement votre projet ?",
+                "required": true,
+                "width": "full",
+                "choices": {
+                  "idee_simple": "Simple idée",
+                  "idee_structuree": "Idée structurée",
+                  "etude_faisabilite": "Étude de faisabilité réalisée",
+                  "prototype_en_cours": "Prototype en cours de développement",
+                  "prototype_fonctionnel": "Prototype fonctionnel",
+                  "mvp_disponible": "MVP (produit minimum viable) disponible",
+                  "commercialise": "Projet déjà commercialisé"
+                }
+              }
+            },
+            {
+              "type": "radio",
+              "data": {
+                "key": "has_user_tests",
+                "label": "Avez-vous déjà réalisé des tests auprès de potentiels utilisateurs ou clients ?",
+                "required": true,
+                "width": "half",
+                "choices": {
+                  "Oui": "Oui",
+                  "Non": "Non",
+                  "En cours": "En cours"
+                }
+              }
+            },
+            {
+              "type": "radio",
+              "data": {
+                "key": "has_customers",
+                "label": "Avez-vous déjà des clients ou utilisateurs ?",
+                "required": true,
+                "width": "half",
+                "choices": {
+                  "Oui": "Oui",
+                  "Non": "Non",
+                  "En cours de prospection": "En cours de prospection"
+                }
+              }
+            },
+            {
+              "type": "number",
+              "data": {
+                "key": "customers_count",
+                "label": "Nombre approximatif de clients ou utilisateurs actifs (Facultatif)",
+                "placeholder": "Ex: 25",
+                "required": false,
+                "width": "half",
+                "visibility": "when",
+                "visibility_logic": "any",
+                "visibility_rules": [
+                  {
+                    "field": "project_stage",
+                    "operator": "equals",
+                    "value": "commercialise"
+                  },
+                  {
+                    "field": "has_customers",
+                    "operator": "equals",
+                    "value": "Oui"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "text",
+              "data": {
+                "key": "estimated_revenue",
+                "label": "Chiffre d'affaires approximatif généré à ce jour en FCFA (Facultatif)",
+                "placeholder": "Ex: 500 000 FCFA (Laissez vide si non applicable)",
+                "required": false,
+                "width": "half",
+                "visibility": "when",
+                "visibility_logic": "any",
+                "visibility_rules": [
+                  {
+                    "field": "project_stage",
+                    "operator": "equals",
+                    "value": "commercialise"
+                  },
+                  {
+                    "field": "has_customers",
+                    "operator": "equals",
+                    "value": "Oui"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "radio",
+              "data": {
+                "key": "has_team",
+                "label": "Votre projet dispose-t-il déjà d'une équipe ?",
+                "required": true,
+                "width": "half",
+                "choices": {
+                  "Oui": "Oui",
+                  "Non": "Non"
+                }
+              }
+            },
+            {
+              "type": "number",
+              "data": {
+                "key": "team_size",
+                "label": "Si oui, combien de personnes composent l'équipe ?",
+                "placeholder": "Ex: 3",
+                "required": true,
+                "width": "half",
+                "visibility": "when",
+                "visibility_logic": "all",
+                "visibility_rules": [
+                  {
+                    "field": "has_team",
+                    "operator": "equals",
+                    "value": "Oui"
+                  }
+                ],
+                "requirement": "when",
+                "requirement_logic": "all",
+                "requirement_rules": [
+                  {
+                    "field": "has_team",
+                    "operator": "equals",
+                    "value": "Oui"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "textarea",
+              "data": {
+                "key": "team_roles",
+                "label": "Précisez brièvement les profils / compétences clés de votre équipe (Facultatif)",
+                "placeholder": "Ex: 1 ingénieur agronome, 1 développeur IoT, 1 responsable commercial...",
+                "required": false,
+                "rows": 2,
+                "width": "full",
+                "visibility": "when",
+                "visibility_logic": "all",
+                "visibility_rules": [
+                  {
+                    "field": "has_team",
+                    "operator": "equals",
+                    "value": "Oui"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "radio",
+              "data": {
+                "key": "has_prototype_or_deck",
+                "label": "Disposez-vous d'un prototype, d'une maquette ou d'une présentation du projet ?",
+                "required": false,
+                "width": "full",
+                "choices": {
+                  "Oui": "Oui",
+                  "Non": "Non"
+                }
+              }
+            },
+            {
+              "type": "url",
+              "data": {
+                "key": "website",
+                "label": "Lien vers une vidéo de démonstration, maquette ou site en ligne (Facultatif)",
+                "placeholder": "https://...",
+                "required": false,
+                "width": "half",
+                "visibility": "when",
+                "visibility_logic": "all",
+                "visibility_rules": [
+                  {
+                    "field": "has_prototype_or_deck",
+                    "operator": "equals",
+                    "value": "Oui"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "file",
+              "data": {
+                "key": "pitch_deck",
+                "label": "Joindre un document de présentation ou des images du projet (Facultatif)",
+                "hint": "Formats acceptés : PDF, PPTX, JPG, PNG (max 15 Mo). Aucun business plan complet ni RCCM n'est exigé.",
+                "required": false,
+                "accept": "pdf, pptx, ppt, jpg, jpeg, png",
+                "max_kb": 15360,
+                "multiple": false,
+                "width": "half",
+                "visibility": "when",
+                "visibility_logic": "all",
+                "visibility_rules": [
+                  {
+                    "field": "has_prototype_or_deck",
+                    "operator": "equals",
+                    "value": "Oui"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "section",
+        "data": {
+          "key": "profil_entrepreneurial_motivation",
+          "label": "4. Profil entrepreneurial et motivation",
+          "description": "Évaluer la motivation et la capacité d'engagement du candidat.",
+          "fields": [
+            {
+              "type": "radio",
+              "data": {
+                "key": "has_prior_incubation",
+                "label": "Avez-vous déjà participé à un programme d'incubation ou d'accompagnement entrepreneurial ?",
+                "required": true,
+                "width": "half",
+                "choices": {
+                  "Oui": "Oui",
+                  "Non": "Non"
+                }
+              }
+            },
+            {
+              "type": "text",
+              "data": {
+                "key": "prior_incubation_details",
+                "label": "Si oui, lequel ?",
+                "placeholder": "Nom du programme, structure et année...",
+                "required": true,
+                "width": "half",
+                "visibility": "when",
+                "visibility_logic": "all",
+                "visibility_rules": [
+                  {
+                    "field": "has_prior_incubation",
+                    "operator": "equals",
+                    "value": "Oui"
+                  }
+                ],
+                "requirement": "when",
+                "requirement_logic": "all",
+                "requirement_rules": [
+                  {
+                    "field": "has_prior_incubation",
+                    "operator": "equals",
+                    "value": "Oui"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "textarea",
+              "data": {
+                "key": "motivation",
+                "label": "Pourquoi souhaitez-vous intégrer le programme AgriPulse ?",
+                "placeholder": "Expliquez vos motivations et ce que ce programme représente pour votre projet...",
+                "required": true,
+                "rows": 3,
+                "width": "full"
+              }
+            },
+            {
+              "type": "textarea",
+              "data": {
+                "key": "current_challenges",
+                "label": "Quelles sont les principales difficultés que vous rencontrez actuellement dans le développement de votre projet ?",
+                "placeholder": "Freins techniques, accès au marché, structuration, expérimentation...",
+                "required": true,
+                "rows": 3,
+                "width": "half"
+              }
+            },
+            {
+              "type": "textarea",
+              "data": {
+                "key": "skills_to_strengthen",
+                "label": "Quelles compétences souhaitez-vous renforcer pendant le programme ? (Facultatif)",
+                "placeholder": "Ex: Modélisation financière, pitch, agronomie de précision, marketing B2B...",
+                "required": false,
+                "rows": 3,
+                "width": "half"
+              }
+            },
+            {
+              "type": "textarea",
+              "data": {
+                "key": "vision_2_3_years",
+                "label": "Quelle est votre vision pour ce projet dans les 2 à 3 prochaines années ?",
+                "placeholder": "Ambition d'impact, déploiement géographique, objectifs de croissance...",
+                "required": true,
+                "rows": 3,
+                "width": "full"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "section",
+        "data": {
+          "key": "attentes_disponibilite",
+          "label": "5. Attentes et disponibilité",
+          "description": "Vérifier votre disponibilité pour suivre les 6 mois d'accompagnement.",
+          "fields": [
+            {
+              "type": "radio",
+              "data": {
+                "key": "available_6_months",
+                "label": "Êtes-vous disponible pour participer aux activités pendant les 6 mois d'accompagnement ?",
+                "required": true,
+                "width": "half",
+                "choices": {
+                  "Oui": "Oui",
+                  "Non": "Non",
+                  "Sous certaines conditions": "Sous certaines conditions"
+                }
+              }
+            },
+            {
+              "type": "text",
+              "data": {
+                "key": "availability_conditions",
+                "label": "Précisez vos conditions ou contraintes de disponibilité",
+                "placeholder": "Ex: Disponible en soirée et les week-ends, déplacements ponctuels...",
+                "required": true,
+                "width": "half",
+                "visibility": "when",
+                "visibility_logic": "all",
+                "visibility_rules": [
+                  {
+                    "field": "available_6_months",
+                    "operator": "equals",
+                    "value": "Sous certaines conditions"
+                  }
+                ],
+                "requirement": "when",
+                "requirement_logic": "all",
+                "requirement_rules": [
+                  {
+                    "field": "available_6_months",
+                    "operator": "equals",
+                    "value": "Sous certaines conditions"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "select",
+              "data": {
+                "key": "weekly_time_commitment",
+                "label": "Combien de temps pouvez-vous consacrer à votre projet chaque semaine ?",
+                "required": true,
+                "width": "half",
+                "choices": {
+                  "moins_5h": "Moins de 5 heures",
+                  "5_10h": "5 à 10 heures",
+                  "10_20h": "10 à 20 heures",
+                  "plus_20h": "Plus de 20 heures"
+                }
+              }
+            },
+            {
+              "type": "radio",
+              "data": {
+                "key": "willing_to_attend_activities",
+                "label": "Êtes-vous disposé à participer aux ateliers, formations, séances de mentorat et activités de suivi ?",
+                "required": true,
+                "width": "half",
+                "choices": {
+                  "Oui": "Oui",
+                  "Non": "Non"
+                }
+              }
+            },
+            {
+              "type": "checkboxes",
+              "data": {
+                "key": "needs",
+                "label": "Quels sont vos trois principaux besoins en accompagnement ?",
+                "hint": "Sélectionnez jusqu'à 3 besoins prioritaires.",
+                "required": false,
+                "width": "full",
+                "choices": {
+                  "Structuration de l'idée": "Structuration de l'idée",
+                  "Étude de marché": "Étude de marché",
+                  "Développement technique / Prototypage": "Développement technique / Prototypage",
+                  "Modèle économique et business plan": "Modèle économique et business plan",
+                  "Marketing et commercialisation": "Marketing et commercialisation",
+                  "Gestion financière": "Gestion financière",
+                  "Recherche de financement": "Recherche de financement",
+                  "Mise en relation avec des partenaires": "Mise en relation avec des partenaires"
+                },
+                "validation": [
+                  {
+                    "rule": "max",
+                    "value": "3"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "section",
+        "data": {
+          "key": "declaration_soumission",
+          "label": "6. Déclaration et soumission de la candidature",
+          "description": "Dernière étape avant l'envoi officiel de votre candidature à l'équipe AgriPulse.",
+          "fields": [
+            {
+              "type": "select",
+              "data": {
+                "key": "discovery_channel",
+                "label": "Comment avez-vous connu le programme AgriPulse ?",
+                "required": false,
+                "width": "full",
+                "choices": {
+                  "Réseaux sociaux": "Réseaux sociaux",
+                  "WhatsApp": "WhatsApp",
+                  "Bouche-à-oreille": "Bouche-à-oreille",
+                  "Partenaire / Organisation": "Partenaire / Organisation",
+                  "Événement": "Événement",
+                  "Autre": "Autre"
+                }
+              }
+            },
+            {
+              "type": "checkbox",
+              "data": {
+                "key": "certify_accuracy",
+                "label": "Je certifie que les informations fournies sont exactes.",
+                "required": true,
+                "width": "full"
+              }
+            },
+            {
+              "type": "checkbox",
+              "data": {
+                "key": "consent_data_processing",
+                "label": "J'accepte que mes informations soient utilisées dans le cadre du processus de sélection et de suivi de ma candidature.",
+                "required": true,
+                "width": "full"
+              }
+            },
+            {
+              "type": "hidden",
+              "data": {
+                "key": "program_id",
+                "label": "Programme ID"
+              }
+            },
+            {
+              "type": "hidden",
+              "data": {
+                "key": "cohort_id",
+                "label": "Cohorte ID"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

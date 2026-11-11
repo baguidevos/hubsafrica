@@ -13,8 +13,8 @@
         </div>
     </section>
 
-    <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-10">
+    <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div class="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-10 lg:p-12">
             @if(session('status_success'))
                 <div class="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-medium">
                     {{ session('status_success') }}

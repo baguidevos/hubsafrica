@@ -99,7 +99,7 @@ class ProgrammesCatalog extends Component
             'capacity' => $program->capacity ?: 20,
             'applications_count' => $program->applications_count,
             'cohorts_count' => $program->cohorts_count,
-            'is_open' => $program->status === ProgramStatus::ACTIF,
+            'is_open' => $program->isAcceptingApplications(),
         ];
     }
 
@@ -133,15 +133,20 @@ class ProgrammesCatalog extends Component
 
         // Filtre Statut / Inscriptions ouvertes
         $now = now()->toDateString();
+        $openStatuses = [
+            ProgramStatus::OUVERT_CANDIDATURES,
+            ProgramStatus::ACTIF,
+            ProgramStatus::LANCE,
+        ];
         if ($this->selectedStatus === 'open') {
-            $query->where('status', ProgramStatus::ACTIF)
+            $query->whereIn('status', $openStatuses)
                 ->where(function ($q) use ($now) {
                     $q->whereNull('registration_end')
                         ->orWhere('registration_end', '>=', $now);
                 });
         } elseif ($this->selectedStatus === 'closed') {
-            $query->where(function ($q) use ($now) {
-                $q->where('status', '!=', ProgramStatus::ACTIF)
+            $query->where(function ($q) use ($now, $openStatuses) {
+                $q->whereNotIn('status', $openStatuses)
                     ->orWhere(function ($sub) use ($now) {
                         $sub->whereNotNull('registration_end')
                             ->where('registration_end', '<', $now);

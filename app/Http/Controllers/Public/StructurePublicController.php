@@ -55,7 +55,7 @@ class StructurePublicController extends Controller
     public function show(int $id): View
     {
         $sae = Sae::with(['types', 'programs' => function ($q) {
-            $q->published()->where('status', 'ACTIF')->latest();
+            $q->published()->whereIn('status', ['OUVERT_CANDIDATURES', 'ACTIF', 'LANCE'])->latest();
         }, 'coaches' => function ($q) {
             $q->where('status', 'ACTIF');
         }])

@@ -99,6 +99,131 @@
         </div>
     </section>
 
+    {{-- 2.5 SECTION NOS 3 PILIERS STRATÉGIQUES --}}
+    <section class="relative bg-white py-16 sm:py-20 border-b border-slate-200/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            <div class="text-center max-w-2xl mx-auto space-y-3">
+                <span
+                    class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#2F3284] bg-[#2F3284]/10 px-3.5 py-1 rounded-full border border-[#2F3284]/20">
+                    Notre Mission
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                    Trois piliers pour structurer l'impact entrepreneurial
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    Une architecture unifiée au service des structures d'accompagnement, des mentors et des porteurs de projets.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                {{-- Pilier 1 --}}
+                <div
+                    class="group relative bg-slate-50/70 hover:bg-white rounded-3xl p-7 sm:p-8 border border-slate-200/90 hover:border-[#F8B81D] shadow-2xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-6 transform hover:-translate-y-1">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-[#2F3284] text-[#F8B81D] flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                                </svg>
+                            </div>
+                            <span class="text-xs font-black text-slate-400 group-hover:text-[#F8B81D] transition-colors">PILIER 01</span>
+                        </div>
+
+                        <h3 class="text-lg font-extrabold text-slate-900 leading-snug group-hover:text-[#2F3284] transition-colors">
+                            Fédérer l’écosystème entrepreneurial africain
+                        </h3>
+
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            Connecter au sein d'un réseau continental unique les incubateurs (SAE), accélérateurs, technopoles, mentors experts et entrepreneurs engagés.
+                        </p>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-200/70">
+                        <a href="{{ route('public.structures') }}"
+                            class="inline-flex items-center gap-1.5 text-xs font-bold text-[#2F3284] group-hover:text-[#e5a510] transition">
+                            <span>Découvrir les structures (SAE)</span>
+                            <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                {{-- Pilier 2 --}}
+                <div
+                    class="group relative bg-slate-50/70 hover:bg-white rounded-3xl p-7 sm:p-8 border border-slate-200/90 hover:border-[#F8B81D] shadow-2xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-6 transform hover:-translate-y-1">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-[#F8B81D] text-slate-950 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                </svg>
+                            </div>
+                            <span class="text-xs font-black text-slate-400 group-hover:text-[#F8B81D] transition-colors">PILIER 02</span>
+                        </div>
+
+                        <h3 class="text-lg font-extrabold text-slate-900 leading-snug group-hover:text-[#2F3284] transition-colors">
+                            Faire de l’accompagnement entrepreneurial et harmoniser les outils d’accompagnement
+                        </h3>
+
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            Standardiser les parcours de cohortes, les diagnostics de maturité, le suivi des séances de coaching et la validation des livrables.
+                        </p>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-200/70">
+                        <a href="{{ route('public.programmes') }}"
+                            class="inline-flex items-center gap-1.5 text-xs font-bold text-[#2F3284] group-hover:text-[#e5a510] transition">
+                            <span>Explorer les programmes</span>
+                            <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                {{-- Pilier 3 --}}
+                <div
+                    class="group relative bg-slate-50/70 hover:bg-white rounded-3xl p-7 sm:p-8 border border-slate-200/90 hover:border-[#F8B81D] shadow-2xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-6 transform hover:-translate-y-1">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-[#2F3284] text-[#F8B81D] flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                            </div>
+                            <span class="text-xs font-black text-slate-400 group-hover:text-[#F8B81D] transition-colors">PILIER 03</span>
+                        </div>
+
+                        <h3 class="text-lg font-extrabold text-slate-900 leading-snug group-hover:text-[#2F3284] transition-colors">
+                            Mettre à disposition les opportunités entrepreneuriales sur une même plateforme
+                        </h3>
+
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            Centraliser les appels à candidatures, subventions, concours, résidences et financements pour accélérer la croissance des projets.
+                        </p>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-200/70">
+                        <a href="{{ route('public.opportunities') }}"
+                            class="inline-flex items-center gap-1.5 text-xs font-bold text-[#2F3284] group-hover:text-[#e5a510] transition">
+                            <span>Consulter les opportunités</span>
+                            <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     {{-- 3. SECTION PROGRAMMES EN COURS --}}
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">

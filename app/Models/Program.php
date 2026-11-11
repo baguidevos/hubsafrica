@@ -69,6 +69,23 @@ class Program extends Model
         return $query->where('is_active', true);
     }
 
+    public function isAcceptingApplications(): bool
+    {
+        if (! $this->is_active) {
+            return false;
+        }
+
+        if ($this->registration_end && $this->registration_end->toDateString() < now()->toDateString()) {
+            return false;
+        }
+
+        return in_array($this->status, [
+            ProgramStatus::OUVERT_CANDIDATURES,
+            ProgramStatus::ACTIF,
+            ProgramStatus::LANCE,
+        ], true);
+    }
+
     public function getImageUrlAttribute(): ?string
     {
         if (blank($this->image)) {
