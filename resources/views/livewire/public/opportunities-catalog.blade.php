@@ -134,21 +134,46 @@
 
                 <article class="rounded-3xl shadow-xs transition-all duration-300 flex flex-col justify-between overflow-hidden group hover:-translate-y-1 {{ $isClosed ? 'bg-red-50/20 border-2 border-red-300 hover:border-red-500 hover:shadow-red-100' : 'bg-white border border-slate-200/90 hover:border-[#2F3284]/30 hover:shadow-xl' }}">
                     <div>
-                        {{-- Image d'illustration de l'opportunité si définie --}}
+                        {{-- Image d'illustration de l'opportunité si définie (visible en entier + clic plein écran) --}}
                         @if($opp->image_url)
-                            <div class="relative h-44 w-full overflow-hidden bg-slate-100">
-                                <img src="{{ $opp->image_url }}" alt="{{ $opp->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                                <div class="absolute inset-0 {{ $isClosed ? 'bg-red-950/40 mix-blend-multiply' : 'bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent' }}"></div>
-                                <div class="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
+                            <div
+                                class="relative h-48 w-full overflow-hidden bg-slate-950 group/img cursor-pointer"
+                                x-data
+                                data-image-url="{{ $opp->image_url }}"
+                                data-image-title="{{ $opp->title }}"
+                                @click.prevent.stop="$dispatch('open-image-lightbox', { url: $el.dataset.imageUrl, title: $el.dataset.imageTitle })"
+                                role="button"
+                                tabindex="0"
+                                @keydown.enter.prevent.stop="$dispatch('open-image-lightbox', { url: $el.dataset.imageUrl, title: $el.dataset.imageTitle })"
+                                title="Cliquer pour afficher l'affiche en plein écran"
+                            >
+                                {{-- Halo d'ambiance flouté --}}
+                                <img
+                                    src="{{ $opp->image_url }}"
+                                    alt=""
+                                    class="absolute inset-0 w-full h-full object-cover filter blur-md scale-110 opacity-40 pointer-events-none select-none {{ $isClosed ? 'grayscale-40' : '' }}"
+                                    aria-hidden="true"
+                                >
+
+                                {{-- Image principale centrée visible en entier sans rognage --}}
+                                <img
+                                    src="{{ $opp->image_url }}"
+                                    alt="{{ $opp->title }}"
+                                    class="relative z-10 w-full h-full object-contain p-1.5 transition-transform duration-500 group-hover/img:scale-105 {{ $isClosed ? 'grayscale-30' : '' }}"
+                                >
+
+                                <div class="absolute inset-0 z-10 {{ $isClosed ? 'bg-red-950/40 mix-blend-multiply' : 'bg-gradient-to-t from-slate-950/80 via-transparent to-transparent' }} pointer-events-none"></div>
+
+                                <div class="absolute top-3 left-3 right-3 z-20 flex items-center justify-between gap-2 pointer-events-none">
                                     @if($isClosed)
-                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-600 text-white shadow-md animate-pulse">
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-600 text-white shadow-md animate-pulse pointer-events-auto">
                                             <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                             </svg>
                                             Clôturé
                                         </span>
                                     @else
-                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/95 text-emerald-700 backdrop-blur-md shadow-xs">
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/95 text-emerald-700 backdrop-blur-md shadow-xs pointer-events-auto">
                                             <span class="relative flex h-2 w-2">
                                                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                                 <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -158,6 +183,27 @@
                                     @endif
 
                                     @if($opp->deadline)
+                                        <span class="text-xs font-bold text-white bg-slate-900/80 px-2.5 py-1 rounded-lg backdrop-blur-md pointer-events-auto">
+                                            @if($remainingDays === 0)
+                                                Clôture ce jour !
+                                            @elseif($remainingDays !== null)
+                                                J-{{ $remainingDays }}
+                                            @endif
+                                        </span>
+                                    @endif
+                                </div>
+
+                                {{-- Bouton d'agrandissement en survol --}}
+                                <div class="absolute bottom-2.5 right-2.5 z-20 opacity-0 group-hover/img:opacity-100 transition-opacity">
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-950/85 text-white text-[11px] font-semibold backdrop-blur-md border border-white/20 shadow-md">
+                                        <svg class="w-3.5 h-3.5 text-[#F8B81D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/>
+                                        </svg>
+                                        Agrandir
+                                    </span>
+                                </div>
+                            </div>
+                        @endif
                                         <span class="text-xs font-bold px-2.5 py-1 rounded-lg {{ $isClosed ? 'bg-red-950/80 text-red-200 border border-red-500' : 'bg-slate-900/80 text-white backdrop-blur-md' }}">
                                             @if($isClosed)
                                                 Échu

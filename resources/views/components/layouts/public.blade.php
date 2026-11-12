@@ -58,8 +58,37 @@
         }
     </style>
 
+    @filamentStyles
+    @stack('styles')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+
+    {{-- Protection contre les feuilles de style tierces non-layerées (ex. plugins Filament) qui écrasent @layer utilities --}}
+    <style>
+        [x-cloak] { display: none !important; }
+        .hidden { display: none; }
+        @media (min-width: 40rem) {
+            .sm\:hidden { display: none; }
+            .sm\:flex { display: flex; }
+            .sm\:inline-flex { display: inline-flex; }
+            .sm\:block { display: block; }
+            .sm\:grid { display: grid; }
+        }
+        @media (min-width: 48rem) {
+            .md\:hidden { display: none; }
+            .md\:flex { display: flex; }
+            .md\:inline-flex { display: inline-flex; }
+            .md\:block { display: block; }
+            .md\:grid { display: grid; }
+        }
+        @media (min-width: 64rem) {
+            .lg\:hidden { display: none; }
+            .lg\:flex { display: flex; }
+            .lg\:inline-flex { display: inline-flex; }
+            .lg\:block { display: block; }
+            .lg\:grid { display: grid; }
+        }
+    </style>
 </head>
 
 <body
@@ -69,8 +98,8 @@
     {{-- 1. Bandeau Institutionnel Supérieur --}}
     <header class="bg-slate-950 text-slate-300 text-xs border-b border-slate-800/80">
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2">
-            {{-- Version Mobile (< sm) : compacte, aérée, sans retour à la ligne cassé ni artefact visuel --}} <div
-                class="flex sm:hidden items-center justify-between gap-2">
+            {{-- Version Mobile (< sm) : compacte, aérée, sans retour à la ligne cassé ni artefact visuel --}}
+            <div class="flex sm:hidden items-center justify-between gap-2">
                 <div class="flex items-center gap-2 min-w-0">
                     <span
                         class="inline-flex items-center gap-1.5 font-bold text-[#F8B81D] whitespace-nowrap text-[11px] shrink-0">
@@ -99,49 +128,49 @@
                         <span class="font-medium text-[10.5px]">Contact</span>
                     </a>
                 </div>
-        </div>
-
-        {{-- Version Desktop & Tablette (>= sm) : vue large complète avec coordonnées --}}
-        <div class="hidden sm:flex items-center justify-between gap-4">
-            <div class="flex items-center gap-3 min-w-0">
-                <span class="inline-flex items-center gap-1.5 font-semibold text-[#F8B81D] whitespace-nowrap shrink-0">
-                    <span class="relative flex h-2 w-2 shrink-0">
-                        <span
-                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F8B81D] opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-[#F8B81D]"></span>
-                    </span>
-                    Portail Officiel
-                </span>
-                <span class="text-slate-600 shrink-0">&bull;</span>
-                <span class="text-slate-400 text-xs truncate lg:overflow-visible">
-                    Réseau Panafricain des Structures d'Accompagnement à l'Entrepreneuriat
-                </span>
             </div>
 
-            <div class="flex items-center gap-4 text-xs text-slate-400 shrink-0">
-                <a href="mailto:{{ config('hubsafrica.contact.email') }}"
-                    class="hover:text-[#F8B81D] transition flex items-center gap-1.5">
-                    <svg class="w-3.5 h-3.5 text-[#F8B81D] shrink-0" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                    <span>{{ config('hubsafrica.contact.email') }}</span>
-                </a>
-                @if(config('hubsafrica.contact.phone'))
-                    <span class="text-slate-700">&bull;</span>
-                    <a href="tel:{{ config('hubsafrica.contact.phone') }}"
-                        class="hover:text-[#F9B104] transition flex items-center gap-1.5">
-                        <svg class="w-3.5 h-3.5 text-[#F9B104] shrink-0" fill="none" stroke="currentColor"
+            {{-- Version Desktop & Tablette (>= sm) : vue large complète avec coordonnées --}}
+            <div class="hidden sm:flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3 min-w-0">
+                    <span class="inline-flex items-center gap-1.5 font-semibold text-[#F8B81D] whitespace-nowrap shrink-0">
+                        <span class="relative flex h-2 w-2 shrink-0">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F8B81D] opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-[#F8B81D]"></span>
+                        </span>
+                        Portail Officiel
+                    </span>
+                    <span class="text-slate-600 shrink-0">&bull;</span>
+                    <span class="text-slate-400 text-xs truncate lg:overflow-visible">
+                        Réseau Panafricain des Structures d'Accompagnement à l'Entrepreneuriat
+                    </span>
+                </div>
+
+                <div class="flex items-center gap-4 text-xs text-slate-400 shrink-0">
+                    <a href="mailto:{{ config('hubsafrica.contact.email') }}"
+                        class="hover:text-[#F8B81D] transition flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5 text-[#F8B81D] shrink-0" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                         </svg>
-                        <span>{{ config('hubsafrica.contact.phone') }}</span>
+                        <span>{{ config('hubsafrica.contact.email') }}</span>
                     </a>
-                @endif
+                    @if(config('hubsafrica.contact.phone'))
+                        <span class="text-slate-700">&bull;</span>
+                        <a href="tel:{{ config('hubsafrica.contact.phone') }}"
+                            class="hover:text-[#F9B104] transition flex items-center gap-1.5">
+                            <svg class="w-3.5 h-3.5 text-[#F9B104] shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                            <span>{{ config('hubsafrica.contact.phone') }}</span>
+                        </a>
+                    @endif
+                </div>
             </div>
-        </div>
         </div>
     </header>
 
@@ -259,8 +288,8 @@
                     </a>
                 </div>
 
-                {{-- Burger Menu Mobile & Tablette (< lg) avec bouton CTA Rejoindre rapide --}} <div
-                    class="flex lg:hidden items-center gap-2">
+                {{-- Burger Menu Mobile & Tablette (< lg) avec bouton CTA Rejoindre rapide --}}
+                <div class="flex lg:hidden items-center gap-2">
                     <a href="{{ route('public.rejoindre') }}"
                         class="inline-flex items-center px-3 py-1.5 rounded-xl bg-[#F8B81D] hover:bg-[#e5a510] text-slate-950 font-bold text-xs shadow-xs transition">
                         Rejoindre
@@ -474,6 +503,99 @@
         </div>
     </footer>
 
+    {{-- Visionneuse d'image en plein écran (Lightbox globale réactive) --}}
+    <div
+        x-data="{
+            isOpen: false,
+            imageUrl: '',
+            imageTitle: '',
+            open(url, title = '') {
+                if (!url) return;
+                this.imageUrl = url;
+                this.imageTitle = title || '';
+                this.isOpen = true;
+                document.body.classList.add('overflow-hidden');
+            },
+            close() {
+                this.isOpen = false;
+                this.imageUrl = '';
+                this.imageTitle = '';
+                document.body.classList.remove('overflow-hidden');
+            }
+        }"
+        @open-image-lightbox.window="open($event.detail.url, $event.detail.title)"
+        @keydown.escape.window="if (isOpen) close()"
+        x-cloak
+    >
+        <div
+            x-show="isOpen"
+            x-transition:enter="transition ease-out duration-250"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            class="fixed inset-0 z-[9999] flex flex-col items-center justify-between p-3 sm:p-6 bg-slate-950/95 backdrop-blur-md"
+            @click.self="close()"
+            style="display: none;"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Aperçu plein écran de l'image"
+        >
+            {{-- Barre d'outils supérieure --}}
+            <div class="w-full max-w-6xl flex items-center justify-between pb-3 sm:pb-4 text-white z-10 px-2 sm:px-0">
+                <div class="flex items-center gap-3 min-w-0 pr-4">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#F8B81D] shrink-0"></span>
+                    <h3 class="text-sm sm:text-base font-bold truncate text-slate-100" x-text="imageTitle || 'Aperçu du visuel'"></h3>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                    <a
+                        :href="imageUrl"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-semibold border border-slate-700 shadow-sm transition"
+                        title="Ouvrir le fichier original dans un nouvel onglet"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                        </svg>
+                        <span class="hidden sm:inline">Plein écran</span>
+                    </a>
+                    <button
+                        type="button"
+                        @click="close()"
+                        class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-slate-800/90 hover:bg-red-600 text-slate-200 hover:text-white transition border border-slate-700 shadow-sm"
+                        title="Fermer (Échap)"
+                        aria-label="Fermer"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            {{-- Zone d'affichage de l'image (centrée, plein écran sans dépassement) --}}
+            <div
+                class="relative flex-1 w-full max-w-6xl flex items-center justify-center overflow-hidden my-auto"
+                @click.self="close()"
+            >
+                <img
+                    :src="imageUrl"
+                    :alt="imageTitle"
+                    class="max-w-full max-h-[82vh] object-contain rounded-2xl shadow-2xl border border-white/10 select-none"
+                    @click.stop
+                >
+            </div>
+
+            {{-- Pied de page / Raccourci clavier --}}
+            <div class="pt-2 sm:pt-3 text-center text-xs text-slate-400 z-10">
+                <span>Appuyez sur <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300 font-mono text-[11px]">Échap</kbd> ou cliquez à l'extérieur pour fermer</span>
+            </div>
+        </div>
+    </div>
+
+    @filamentScripts
     @livewireScripts
 </body>
 

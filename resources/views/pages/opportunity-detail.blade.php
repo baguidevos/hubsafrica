@@ -132,17 +132,52 @@
             {{-- Colonne Gauche : Détails, Secteurs, Zones & Description (8 cols) --}}
             <div class="lg:col-span-8 space-y-8">
 
-                {{-- Visuel d'illustration de l'opportunité --}}
+                {{-- Visuel d'illustration de l'opportunité (affiché en entier avec visionneuse plein écran) --}}
                 @if($opportunity->image_url)
-                    <div class="rounded-3xl overflow-hidden border {{ $isClosed ? 'border-red-300' : 'border-slate-200/90' }} shadow-sm bg-slate-100 max-h-96 relative">
-                        <img
-                            src="{{ $opportunity->image_url }}"
-                            alt="{{ $opportunity->title }}"
-                            class="w-full h-72 sm:h-96 object-cover hover:scale-105 transition-transform duration-700 {{ $isClosed ? 'grayscale-30' : '' }}"
-                        >
+                    <div
+                        class="relative rounded-3xl overflow-hidden border {{ $isClosed ? 'border-red-900/60' : 'border-slate-800' }} shadow-lg bg-slate-950 group cursor-pointer"
+                        x-data
+                        data-image-url="{{ $opportunity->image_url }}"
+                        data-image-title="{{ $opportunity->title }}"
+                        @click="$dispatch('open-image-lightbox', { url: $el.dataset.imageUrl, title: $el.dataset.imageTitle })"
+                        role="button"
+                        tabindex="0"
+                        @keydown.enter="$dispatch('open-image-lightbox', { url: $el.dataset.imageUrl, title: $el.dataset.imageTitle })"
+                        title="Cliquer pour afficher l'affiche en plein écran"
+                    >
+                        {{-- Halo d'ambiance avec flou issu de l'affiche elle-même --}}
+                        <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-30 select-none" aria-hidden="true">
+                            <img
+                                src="{{ $opportunity->image_url }}"
+                                alt=""
+                                class="w-full h-full object-cover filter blur-2xl scale-125 {{ $isClosed ? 'grayscale-40' : '' }}"
+                            >
+                        </div>
+
+                        {{-- Image principale affichée EN ENTIER (sans rognage) --}}
+                        <div class="relative z-10 flex items-center justify-center p-3 sm:p-6 min-h-[260px] sm:min-h-[380px] max-h-[580px]">
+                            <img
+                                src="{{ $opportunity->image_url }}"
+                                alt="{{ $opportunity->title }}"
+                                class="w-auto h-auto max-w-full max-h-[520px] object-contain rounded-2xl shadow-2xl transition duration-500 group-hover:scale-[1.015] {{ $isClosed ? 'grayscale-30' : '' }}"
+                            >
+                        </div>
+
                         @if($isClosed)
-                            <div class="absolute inset-0 bg-red-950/20 pointer-events-none"></div>
+                            <div class="absolute inset-0 bg-red-950/20 pointer-events-none z-10"></div>
                         @endif
+
+                        {{-- Badge indicateur d'agrandissement --}}
+                        <div class="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 z-20">
+                            <span
+                                class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/85 group-hover:bg-slate-900 text-white text-xs font-semibold backdrop-blur-md shadow-lg border border-white/20 transition transform group-hover:scale-105"
+                            >
+                                <svg class="w-4 h-4 text-[#F8B81D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/>
+                                </svg>
+                                <span>Agrandir l'affiche</span>
+                            </span>
+                        </div>
                     </div>
                 @endif
 

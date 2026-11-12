@@ -269,4 +269,9 @@ class Sae extends Model implements HasAvatar
     {
         return $this->hasMany(AuditLog::class, 'sae_id');
     }
+
+    public function mcpApiKeys(): HasMany
+    {
+        return $this->hasMany(McpApiKey::class, 'sae_id');
+    }
 }

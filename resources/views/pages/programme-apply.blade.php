@@ -1,4 +1,10 @@
 <x-layouts.public>
+    @push('styles')
+        @if ($formBuilderStylesheet = \Packstub\FormBuilder\Livewire\LivewireAssets::stylesheetUrl())
+            <link href="{{ $formBuilderStylesheet }}" rel="stylesheet" data-navigate-track />
+        @endif
+    @endpush
+
     <section class="bg-gradient-to-b from-slate-900 to-slate-950 text-white py-12 border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3">
             <nav class="flex items-center gap-2 text-xs text-slate-400">

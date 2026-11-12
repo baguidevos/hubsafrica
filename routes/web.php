@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\McpOAuthController;
 use App\Http\Controllers\CoachInvitationController;
 use App\Http\Controllers\DevLoginController;
 use App\Http\Controllers\EntrepreneurInvitationController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\UnifiedInvitationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -148,3 +150,62 @@ Route::get('/maintenance/serve', function (Request $request) {
         return response("<pre style='background:#450a0a;color:#fca5a5;padding:20px;border-radius:10px;font-family:monospace;white-space:pre-wrap;'>=== ERREUR SERVE ===\n\n".e($e->getMessage())."\n\n".e($e->getTraceAsString()).'</pre>', 500);
     }
 })->name('maintenance.serve');
+
+// Déploiement / Maintenance : création du lien symbolique public/storage (php artisan storage:link)
+$storageLinkHandler = function (Request $request) {
+    $expectedSecret = env('MIGRATION_SECRET', 'hubsafrica-migrate-force-2026');
+    $providedKey = $request->query('key');
+
+    $isAuthorized = ($providedKey && hash_equals($expectedSecret, (string) $providedKey))
+        || auth()->check();
+
+    if (! $isAuthorized) {
+        abort(403, 'Accès interdit. Clé de maintenance requise (?key=...) ou session utilisateur active requise.');
+    }
+
+    try {
+        Artisan::call('storage:link', [
+            '--force' => true,
+        ]);
+        $output = Artisan::output();
+
+        Artisan::call('config:clear');
+
+        return response("<pre style='background:#0f172a;color:#34d399;padding:20px;border-radius:10px;font-family:monospace;white-space:pre-wrap;'>=== STORAGE:LINK EXÉCUTÉ AVEC SUCCÈS ===\n\n".e($output)."\nCache de configuration nettoyé (config:clear).</pre>");
+    } catch (Throwable $e) {
+        return response("<pre style='background:#450a0a;color:#fca5a5;padding:20px;border-radius:10px;font-family:monospace;white-space:pre-wrap;'>=== ERREUR STORAGE:LINK ===\n\n".e($e->getMessage())."\n\n".e($e->getTraceAsString()).'</pre>', 500);
+    }
+};
+
+Route::get('/maintenance/storage-link', $storageLinkHandler)->name('maintenance.storage.link');
+Route::get('/storage-link', $storageLinkHandler)->name('storage.link');
+
+// Fallback pour servir les fichiers du disque public si le symlink public/storage est absent ou bloqué par l'hébergeur
+Route::get('/storage/{path}', function (string $path) {
+    $cleanPath = ltrim(str_replace('..', '', $path), '/');
+
+    if (! Storage::disk('public')->exists($cleanPath)) {
+        abort(404);
+    }
+
+    return Storage::disk('public')->response($cleanPath, null, [
+        'Cache-Control' => 'public, max-age=86400',
+    ]);
+})->where('path', '.*')->name('storage.public.fallback');
+
+// Découverte OAuth 2.0 (RFC 8414 & RFC 9728 pour Claude / MCP)
+Route::get('/.well-known/oauth-authorization-server', [McpOAuthController::class, 'authorizationServerMetadata'])->name('oauth.metadata.server');
+Route::get('/.well-known/oauth-protected-resource', [McpOAuthController::class, 'protectedResourceMetadata'])->name('oauth.metadata.resource');
+Route::get('/.well-known/oauth-protected-resource/mcp/sae', [McpOAuthController::class, 'protectedResourceMetadata'])->name('oauth.metadata.resource.mcp');
+
+// Alias racine pour les clients MCP qui utilisent /authorize et /token par défaut
+Route::get('/authorize', [McpOAuthController::class, 'authorize'])->name('oauth.authorize.root');
+Route::post('/token', [McpOAuthController::class, 'token'])->name('oauth.token.root');
+
+// OAuth 2.0 Connecteurs IA (Claude & ChatGPT)
+Route::prefix('oauth')->group(function () {
+    Route::get('/authorize', [McpOAuthController::class, 'authorize'])->name('oauth.authorize');
+    Route::post('/authorize/approve', [McpOAuthController::class, 'approve'])->name('oauth.approve');
+    Route::post('/authorize/deny', [McpOAuthController::class, 'deny'])->name('oauth.deny');
+    Route::post('/token', [McpOAuthController::class, 'token'])->name('oauth.token');
+});

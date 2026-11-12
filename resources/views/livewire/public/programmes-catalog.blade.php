@@ -114,33 +114,68 @@
                 <article class="bg-white rounded-3xl border border-slate-200/90 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden group hover:-translate-y-1">
                     {{-- Bandeau supérieur & Badges --}}
                     <div>
-                        {{-- Image de couverture du programme si définie --}}
+                        {{-- Image de couverture du programme si définie (visible en entier + clic plein écran) --}}
                         @if($p->image_url)
-                            <div class="relative h-44 w-full overflow-hidden bg-slate-100">
-                                <img src="{{ $p->image_url }}" alt="{{ $p->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent"></div>
-                                <div class="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
+                            <div
+                                class="relative h-48 w-full overflow-hidden bg-slate-950 group/img cursor-pointer"
+                                x-data
+                                data-image-url="{{ $p->image_url }}"
+                                data-image-title="{{ $p->name }}"
+                                @click.prevent.stop="$dispatch('open-image-lightbox', { url: $el.dataset.imageUrl, title: $el.dataset.imageTitle })"
+                                role="button"
+                                tabindex="0"
+                                @keydown.enter.prevent.stop="$dispatch('open-image-lightbox', { url: $el.dataset.imageUrl, title: $el.dataset.imageTitle })"
+                                title="Cliquer pour afficher l'affiche en plein écran"
+                            >
+                                {{-- Halo d'ambiance flouté --}}
+                                <img
+                                    src="{{ $p->image_url }}"
+                                    alt=""
+                                    class="absolute inset-0 w-full h-full object-cover filter blur-md scale-110 opacity-40 pointer-events-none select-none"
+                                    aria-hidden="true"
+                                >
+
+                                {{-- Image principale centrée visible en entier sans rognage --}}
+                                <img
+                                    src="{{ $p->image_url }}"
+                                    alt="{{ $p->name }}"
+                                    class="relative z-10 w-full h-full object-contain p-1.5 transition-transform duration-500 group-hover/img:scale-105"
+                                >
+
+                                <div class="absolute inset-0 z-10 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent pointer-events-none"></div>
+
+                                <div class="absolute top-3 left-3 right-3 z-20 flex items-center justify-between gap-2 pointer-events-none">
                                     @if($openCohort)
-                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-white/95 text-emerald-800 backdrop-blur-md shadow-xs">
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-white/95 text-emerald-800 backdrop-blur-md shadow-xs pointer-events-auto">
                                             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                                             Cohorte Ouverte
                                         </span>
                                     @elseif($isOpen)
-                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-[#F8B81D] text-slate-950 shadow-xs">
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-[#F8B81D] text-slate-950 shadow-xs pointer-events-auto">
                                             <span class="w-1.5 h-1.5 rounded-full bg-slate-950 animate-pulse"></span>
                                             Candidatures Ouvertes
                                         </span>
                                     @else
-                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-slate-900/85 text-white backdrop-blur-md">
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-slate-900/85 text-white backdrop-blur-md pointer-events-auto">
                                             Clôturé
                                         </span>
                                     @endif
 
                                     @if($p->level)
-                                        <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 bg-white/95 text-[#2F3284] rounded-lg shadow-xs backdrop-blur-md">
+                                        <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 bg-white/95 text-[#2F3284] rounded-lg shadow-xs backdrop-blur-md pointer-events-auto">
                                             {{ $p->level->name }}
                                         </span>
                                     @endif
+                                </div>
+
+                                {{-- Bouton d'agrandissement en survol --}}
+                                <div class="absolute bottom-2.5 right-2.5 z-20 opacity-0 group-hover/img:opacity-100 transition-opacity">
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-950/85 text-white text-[11px] font-semibold backdrop-blur-md border border-white/20 shadow-md">
+                                        <svg class="w-3.5 h-3.5 text-[#F8B81D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/>
+                                        </svg>
+                                        Agrandir
+                                    </span>
                                 </div>
                             </div>
                         @endif
