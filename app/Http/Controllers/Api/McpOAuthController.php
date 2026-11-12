@@ -29,13 +29,40 @@ class McpOAuthController extends Controller
             'issuer' => url('/'),
             'authorization_endpoint' => url('/oauth/authorize'),
             'token_endpoint' => url('/oauth/token'),
+            'registration_endpoint' => url('/oauth/register'),
             'userinfo_endpoint' => url('/api/oauth/userinfo'),
             'response_types_supported' => ['code'],
             'grant_types_supported' => ['authorization_code'],
             'code_challenge_methods_supported' => ['S256', 'plain'],
-            'token_endpoint_auth_methods_supported' => ['client_secret_post', 'client_secret_basic', 'none'],
+            'token_endpoint_auth_methods_supported' => ['none', 'client_secret_post', 'client_secret_basic'],
             'scopes_supported' => ['mcp:sae'],
+            'client_id_metadata_document_supported' => true,
         ]);
+    }
+
+    /**
+     * Enregistrement dynamique d'un client OAuth (RFC 7591 Dynamic Client Registration).
+     */
+    public function register(Request $request): JsonResponse
+    {
+        try {
+            $registeredClient = $this->oauthService->registerDynamicClient($request->all());
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'invalid_client_metadata',
+                'error_description' => $e->getMessage(),
+            ], 400);
+        }
+
+        return response()->json([
+            'client_id' => $registeredClient->client_id,
+            'client_id_issued_at' => $registeredClient->created_at?->timestamp ?? time(),
+            'client_name' => $registeredClient->name,
+            'redirect_uris' => $registeredClient->redirect_uris,
+            'grant_types' => ['authorization_code'],
+            'response_types' => ['code'],
+            'token_endpoint_auth_method' => 'none',
+        ], 201);
     }
 
     /**

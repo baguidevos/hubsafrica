@@ -33,7 +33,7 @@ class McpOAuthService
         $clientId = $params['client_id'] ?? null;
         $client = null;
 
-        if ($clientId) {
+        if ($clientId && ! $this->isCimdClientId($clientId)) {
             $client = McpOAuthClient::where('client_id', $clientId)->first();
 
             if (! $client) {
@@ -51,6 +51,48 @@ class McpOAuthService
             'scope' => $params['scope'] ?? 'mcp:sae',
             'state' => $params['state'] ?? null,
         ];
+    }
+
+    /**
+     * Enregistre dynamiquement un client OAuth public (RFC 7591 Dynamic Client Registration).
+     *
+     * @param  array{client_name?: string, redirect_uris?: array<int, string>}  $payload
+     */
+    public function registerDynamicClient(array $payload): McpOAuthClient
+    {
+        $redirectUris = $payload['redirect_uris'] ?? null;
+
+        if (! is_array($redirectUris) || $redirectUris === []) {
+            throw new InvalidArgumentException('Le champ redirect_uris doit contenir au moins une URL valide.');
+        }
+
+        $validatedUris = [];
+        foreach ($redirectUris as $uri) {
+            if (! is_string($uri) || ! filter_var($uri, FILTER_VALIDATE_URL)) {
+                throw new InvalidArgumentException("URI de redirection invalide dans redirect_uris : '{$uri}'.");
+            }
+            $validatedUris[] = $uri;
+        }
+
+        $clientName = trim((string) ($payload['client_name'] ?? 'Assistant IA (DCR)'));
+
+        return McpOAuthClient::create([
+            'sae_id' => null,
+            'name' => Str::limit($clientName ?: 'Assistant IA (DCR)', 120, ''),
+            'client_id' => 'ha_dcr_'.Str::lower(Str::random(24)),
+            'client_secret' => null,
+            'redirect_uris' => $validatedUris,
+            'is_confidential' => false,
+        ]);
+    }
+
+    /**
+     * Détermine si le client_id correspond à un Client ID Metadata Document (URL HTTPS).
+     */
+    public function isCimdClientId(string $clientId): bool
+    {
+        return str_starts_with($clientId, 'https://')
+            && filter_var($clientId, FILTER_VALIDATE_URL) !== false;
     }
 
     /**

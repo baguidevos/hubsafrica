@@ -201,3 +201,75 @@ test('oauth authorize returns clean error views instead of type error when param
         ->assertStatus(400)
         ->assertSee('Impossible d\'établir la connexion', false);
 });
+
+test('dynamic client registration and cimd client_id work without manual client credentials', function () {
+    $this->getJson('/.well-known/oauth-authorization-server')
+        ->assertStatus(200)
+        ->assertJsonPath('registration_endpoint', url('/oauth/register'))
+        ->assertJsonPath('client_id_metadata_document_supported', true);
+
+    // 1. Requête DCR invalide sans redirect_uris
+    $this->postJson('/oauth/register', [
+        'client_name' => 'Invalid Client',
+    ])->assertStatus(400)
+        ->assertJsonPath('error', 'invalid_client_metadata');
+
+    // 2. Enregistrement dynamique réussi (Claude / ChatGPT)
+    $registerResponse = $this->postJson('/oauth/register', [
+        'client_name' => 'Claude Web Connector',
+        'redirect_uris' => ['https://claude.ai/api/mcp/auth_callback'],
+    ]);
+
+    $registerResponse->assertStatus(201)
+        ->assertJsonPath('token_endpoint_auth_method', 'none');
+
+    $dynamicClientId = $registerResponse->json('client_id');
+    expect($dynamicClientId)->toStartWith('ha_dcr_');
+
+    // 3. Flux complet OAuth PKCE avec le client dynamique
+    $user = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $user->id,
+        'name' => 'Incubateur DCR',
+        'slug' => 'incubateur-dcr-'.uniqid(),
+    ]);
+
+    $verifier = 'dcr-verifier-secret-string-for-pkce-s256-check-12345';
+    $challenge = rtrim(strtr(base64_encode(hash('sha256', $verifier, true)), '+/', '-_'), '=');
+
+    $this->actingAs($user)
+        ->get("/oauth/authorize?response_type=code&client_id={$dynamicClientId}&redirect_uri=https%3A%2F%2Fclaude.ai%2Fapi%2Fmcp%2Fauth_callback&code_challenge={$challenge}&code_challenge_method=S256")
+        ->assertStatus(200)
+        ->assertSee('Incubateur DCR');
+
+    $approveResponse = $this->actingAs($user)->post('/oauth/authorize/approve', [
+        'sae_id' => $sae->id,
+        'client_id' => $dynamicClientId,
+        'redirect_uri' => 'https://claude.ai/api/mcp/auth_callback',
+        'code_challenge' => $challenge,
+        'code_challenge_method' => 'S256',
+        'state' => 'dcr_state_1',
+    ]);
+
+    $approveResponse->assertRedirect();
+    parse_str((string) parse_url((string) $approveResponse->headers->get('Location'), PHP_URL_QUERY), $queryParams);
+    $authCode = $queryParams['code'] ?? '';
+
+    $tokenResponse = $this->postJson('/oauth/token', [
+        'grant_type' => 'authorization_code',
+        'code' => $authCode,
+        'client_id' => $dynamicClientId,
+        'redirect_uri' => 'https://claude.ai/api/mcp/auth_callback',
+        'code_verifier' => $verifier,
+    ]);
+
+    $tokenResponse->assertStatus(200)
+        ->assertJsonPath('sae.name', 'Incubateur DCR');
+    expect($tokenResponse->json('access_token'))->toStartWith('ha_mcp_live_');
+
+    // 4. Support CIMD (client_id = URL HTTPS)
+    $this->actingAs($user)
+        ->get('/oauth/authorize?response_type=code&client_id=https%3A%2F%2Fclaude.ai%2Foauth%2Fclient.json&redirect_uri=https%3A%2F%2Fclaude.ai%2Fapi%2Fmcp%2Fauth_callback')
+        ->assertStatus(200)
+        ->assertSee('Incubateur DCR');
+});

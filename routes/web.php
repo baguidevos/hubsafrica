@@ -198,9 +198,10 @@ Route::get('/.well-known/oauth-authorization-server', [McpOAuthController::class
 Route::get('/.well-known/oauth-protected-resource', [McpOAuthController::class, 'protectedResourceMetadata'])->name('oauth.metadata.resource');
 Route::get('/.well-known/oauth-protected-resource/mcp/sae', [McpOAuthController::class, 'protectedResourceMetadata'])->name('oauth.metadata.resource.mcp');
 
-// Alias racine pour les clients MCP qui utilisent /authorize et /token par défaut
+// Alias racine pour les clients MCP qui utilisent /authorize, /token et /register par défaut
 Route::get('/authorize', [McpOAuthController::class, 'authorize'])->name('oauth.authorize.root');
 Route::post('/token', [McpOAuthController::class, 'token'])->name('oauth.token.root');
+Route::post('/register', [McpOAuthController::class, 'register'])->name('oauth.register.root');
 
 // OAuth 2.0 Connecteurs IA (Claude & ChatGPT)
 Route::prefix('oauth')->group(function () {
@@ -208,4 +209,5 @@ Route::prefix('oauth')->group(function () {
     Route::post('/authorize/approve', [McpOAuthController::class, 'approve'])->name('oauth.approve');
     Route::post('/authorize/deny', [McpOAuthController::class, 'deny'])->name('oauth.deny');
     Route::post('/token', [McpOAuthController::class, 'token'])->name('oauth.token');
+    Route::post('/register', [McpOAuthController::class, 'register'])->name('oauth.register');
 });
