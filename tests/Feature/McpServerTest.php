@@ -2,6 +2,7 @@
 
 use App\Enums\ApplicationEvaluationStatus;
 use App\Enums\ApplicationStatus;
+use App\Filament\Sae\Pages\AiCopilotPage;
 use App\Filament\Sae\Pages\McpIntegrationPage;
 use App\Mcp\Tools\Metrics\GetSaeMetricsTool;
 use App\Models\Application;
@@ -472,4 +473,101 @@ test('mcp server hides explicit internal exceptions even when app debug is enabl
 
     expect($response->getContent())->not->toContain('SecretModel')
         ->not->toContain('undefined relationship');
+});
+
+test('mcp server exposes generative ui tools and renders interactive mcp app resources', function () {
+    $user = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $user->id,
+        'name' => 'Incubateur GenUI',
+        'slug' => 'incubateur-genui-'.uniqid(),
+    ]);
+    $program = Program::create([
+        'sae_id' => $sae->id,
+        'name' => 'Programme GenUI 2026',
+        'description' => 'Programme test',
+    ]);
+    $tokenResult = McpApiKey::createToken($sae, $user, 'GenUI Bot');
+
+    // 1. tools/list doit contenir open_program_creator avec _meta.ui.resourceUri
+    $toolsResponse = $this->withHeader('Authorization', 'Bearer '.$tokenResult['plainTextToken'])
+        ->postJson('/mcp/sae', [
+            'jsonrpc' => '2.0',
+            'id' => 10,
+            'method' => 'tools/list',
+            'params' => (object) [],
+        ]);
+
+    $toolsResponse->assertStatus(200);
+    $tools = collect($toolsResponse->json('result.tools'));
+    $programCreatorTool = $tools->firstWhere('name', 'open_program_creator');
+
+    expect($programCreatorTool)->not->toBeNull();
+    expect($programCreatorTool['_meta']['ui']['resourceUri'] ?? null)->toBe('ui://hubafrica/program-creator');
+
+    // 2. resources/read sur ui://hubafrica/program-creator retourne la carte HTML interactive
+    $programUiResponse = $this->withHeader('Authorization', 'Bearer '.$tokenResult['plainTextToken'])
+        ->postJson('/mcp/sae', [
+            'jsonrpc' => '2.0',
+            'id' => 11,
+            'method' => 'resources/read',
+            'params' => [
+                'uri' => 'ui://hubafrica/program-creator',
+            ],
+        ]);
+
+    $programUiResponse->assertStatus(200)
+        ->assertJsonPath('result.contents.0.mimeType', 'text/html;profile=mcp-app');
+
+    expect($programUiResponse->json('result.contents.0.text'))
+        ->toContain('Nouveau Programme')
+        ->toContain('Incubateur GenUI')
+        ->toContain('create_program');
+
+    // 3. resources/read sur ui://hubafrica/cohort-creator retourne la carte avec le programme existant
+    $cohortUiResponse = $this->withHeader('Authorization', 'Bearer '.$tokenResult['plainTextToken'])
+        ->postJson('/mcp/sae', [
+            'jsonrpc' => '2.0',
+            'id' => 12,
+            'method' => 'resources/read',
+            'params' => [
+                'uri' => 'ui://hubafrica/cohort-creator',
+            ],
+        ]);
+
+    $cohortUiResponse->assertStatus(200)
+        ->assertJsonPath('result.contents.0.mimeType', 'text/html;profile=mcp-app');
+
+    expect($cohortUiResponse->json('result.contents.0.text'))
+        ->toContain('Nouvelle Cohorte')
+        ->toContain('Programme GenUI 2026')
+        ->toContain('create_cohort');
+});
+
+test('filament ai copilot page renders interactive widgets and creates programs', function () {
+    $user = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $user->id,
+        'name' => 'SAE Copilot GenUI',
+        'slug' => 'sae-copilot-genui-'.uniqid(),
+    ]);
+    $user->saes()->syncWithoutDetaching([$sae->id => ['role' => 'RESPONSABLE']]);
+
+    $this->actingAs($user);
+    Filament::setCurrentPanel(Filament::getPanel('sae'));
+    Filament::setTenant($sae);
+
+    Livewire::test(AiCopilotPage::class)
+        ->assertSuccessful()
+        ->call('submitPrompt', 'Je veux créer un programme')
+        ->assertSet('activeWidget', 'program_creator')
+        ->set('programName', 'Programme Copilot 2026')
+        ->set('programDescription', 'Créé via carte interactive Filament')
+        ->call('createProgram')
+        ->assertSet('activeWidget', 'metrics_dashboard');
+
+    $this->assertDatabaseHas('programs', [
+        'sae_id' => $sae->id,
+        'name' => 'Programme Copilot 2026',
+    ]);
 });

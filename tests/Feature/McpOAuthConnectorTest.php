@@ -187,3 +187,17 @@ test('oauth discovery endpoints and root authorize token aliases work for claude
         ->assertJsonPath('token_type', 'Bearer');
     expect($tokenResponse->json('access_token'))->toStartWith('ha_mcp_live_');
 });
+
+test('oauth authorize returns clean error views instead of type error when params invalid or user has no sae', function () {
+    $userWithoutSae = User::factory()->create();
+
+    $this->actingAs($userWithoutSae)
+        ->get('/oauth/authorize?response_type=code&redirect_uri=https://chatgpt.com/callback')
+        ->assertStatus(403)
+        ->assertSee('Impossible d\'établir la connexion', false);
+
+    $this->actingAs($userWithoutSae)
+        ->get('/oauth/authorize?response_type=invalid&redirect_uri=https://chatgpt.com/callback')
+        ->assertStatus(400)
+        ->assertSee('Impossible d\'établir la connexion', false);
+});

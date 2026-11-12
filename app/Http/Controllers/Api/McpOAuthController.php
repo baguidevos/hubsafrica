@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class McpOAuthController extends Controller
@@ -53,7 +54,7 @@ class McpOAuthController extends Controller
     /**
      * Écran d'autorisation OAuth (affiché dans la popup OpenAI / Claude).
      */
-    public function authorize(Request $request): View|RedirectResponse
+    public function authorize(Request $request): View|RedirectResponse|Response
     {
         if (! auth()->check()) {
             session()->put('url.intended', $request->fullUrl());
@@ -72,10 +73,14 @@ class McpOAuthController extends Controller
         /** @var User $user */
         $user = auth()->user();
 
-        // Récupérer les SAEs dont l'utilisateur est propriétaire ou membre
-        $ownedSaes = Sae::where('owner_id', $user->id)->get();
-        $memberSaes = $user->saes()->get();
-        $userSaes = $ownedSaes->merge($memberSaes)->unique('id');
+        if ($user->hasRole('super_admin')) {
+            $userSaes = Sae::orderBy('name')->get();
+        } else {
+            // Récupérer les SAEs dont l'utilisateur est propriétaire ou membre
+            $ownedSaes = Sae::where('owner_id', $user->id)->get();
+            $memberSaes = $user->saes()->get();
+            $userSaes = $ownedSaes->merge($memberSaes)->unique('id');
+        }
 
         if ($userSaes->isEmpty()) {
             return response()->view('oauth.error', [
