@@ -6,6 +6,7 @@ use App\Enums\ProgramStatus;
 use App\Models\Program;
 use App\Services\AccompanimentTemplateService;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -125,33 +126,35 @@ class ProgramsTable
                             ->success()
                             ->send();
                     }),
-                Action::make('applyTemplate')
-                    ->label('Template')
-                    ->icon('heroicon-o-sparkles')
-                    ->color('emerald')
-                    ->tooltip('Appliquer un pack méthodologique complet (6 phases, livrables, etc.)')
-                    ->slideOver()
-                    ->modalHeading(fn ($record) => "Appliquer un modèle à : {$record->name}")
-                    ->form([
-                        Select::make('template_key')
-                            ->label('Modèle méthodologique')
-                            ->options(fn (AccompanimentTemplateService $service) => $service->asSelectOptions())
-                            ->default('cube-saei-kpital')
-                            ->required(),
-                    ])
-                    ->action(function ($record, array $data, AccompanimentTemplateService $service) {
-                        $sae = filament()->getTenant();
-                        $summary = $service->apply($data['template_key'], $sae, $record);
+                ActionGroup::make([
+                    Action::make('applyTemplate')
+                        ->label('Template')
+                        ->icon('heroicon-o-sparkles')
+                        ->color('emerald')
+                        ->tooltip('Appliquer un pack méthodologique complet (6 phases, livrables, etc.)')
+                        ->slideOver()
+                        ->modalHeading(fn ($record) => "Appliquer un modèle à : {$record->name}")
+                        ->form([
+                            Select::make('template_key')
+                                ->label('Modèle méthodologique')
+                                ->options(fn (AccompanimentTemplateService $service) => $service->asSelectOptions())
+                                ->default('cube-saei-kpital')
+                                ->required(),
+                        ])
+                        ->action(function ($record, array $data, AccompanimentTemplateService $service) {
+                            $sae = filament()->getTenant();
+                            $summary = $service->apply($data['template_key'], $sae, $record);
 
-                        Notification::make()
-                            ->title('Modèle appliqué !')
-                            ->success()
-                            ->body("Généré pour {$record->name} : {$summary['phases']} phases, {$summary['startup_deliverables']} livrables startups, {$summary['programme_deliverables']} livrables SAEI.")
-                            ->send();
-                    }),
-                ViewAction::make(),
-                EditAction::make()->slideOver(),
-                DeleteAction::make(),
+                            Notification::make()
+                                ->title('Modèle appliqué !')
+                                ->success()
+                                ->body("Généré pour {$record->name} : {$summary['phases']} phases, {$summary['startup_deliverables']} livrables startups, {$summary['programme_deliverables']} livrables SAEI.")
+                                ->send();
+                        }),
+                    ViewAction::make(),
+                    EditAction::make()->slideOver(),
+                    DeleteAction::make(),
+                ]),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

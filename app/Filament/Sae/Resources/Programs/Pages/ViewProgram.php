@@ -2,12 +2,16 @@
 
 namespace App\Filament\Sae\Resources\Programs\Pages;
 
+use App\Enums\ApplicationStatus;
 use App\Filament\Sae\Resources\Programs\ProgramResource;
 use App\Models\Program;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Schemas\Components\View;
+use Filament\Schemas\Schema;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class ViewProgram extends ViewRecord
@@ -43,6 +47,14 @@ class ViewProgram extends ViewRecord
         ];
     }
 
+    public function content(Schema $schema): Schema
+    {
+        return $schema->components([
+            View::make('filament.sae.resources.programs.pages.view-program'),
+            $this->getRelationManagersContentComponent(),
+        ]);
+    }
+
     public function hasCombinedRelationManagerTabsWithContent(): bool
     {
         return false;
@@ -55,6 +67,15 @@ class ViewProgram extends ViewRecord
 
         return $program
             ->load(['level', 'sae'])
-            ->loadCount(['cohorts', 'applications', 'phases', 'partners']);
+            ->loadCount([
+                'cohorts',
+                'applications',
+                'phases',
+                'partners',
+                'deliverableDefinitions',
+                'evaluationCriteria',
+                'applications as accepted_applications_count' => fn (Builder $query): Builder => $query->where('status', ApplicationStatus::ACCEPTEE),
+                'applications as pending_applications_count' => fn (Builder $query): Builder => $query->where('status', ApplicationStatus::SOUMISE),
+            ]);
     }
 }
