@@ -2,6 +2,7 @@
 
 namespace App\Filament\Sae\Resources\Cohorts\Pages;
 
+use App\Enums\ApplicationStatus;
 use App\Filament\Sae\Resources\Cohorts\CohortResource;
 use App\Filament\Sae\Resources\Programs\ProgramResource;
 use App\Models\Cohort;
@@ -10,6 +11,9 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Schemas\Components\View;
+use Filament\Schemas\Schema;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class ViewCohort extends ViewRecord
@@ -60,6 +64,14 @@ class ViewCohort extends ViewRecord
         ];
     }
 
+    public function content(Schema $schema): Schema
+    {
+        return $schema->components([
+            View::make('filament.sae.resources.cohorts.pages.view-cohort'),
+            $this->getRelationManagersContentComponent(),
+        ]);
+    }
+
     public function hasCombinedRelationManagerTabsWithContent(): bool
     {
         return false;
@@ -72,6 +84,14 @@ class ViewCohort extends ViewRecord
 
         return $cohort
             ->load(['program.level', 'applicationForm'])
-            ->loadCount(['applications', 'enrollments', 'phases', 'coachingSessions']);
+            ->loadCount([
+                'applications',
+                'enrollments',
+                'phases',
+                'coachingSessions',
+                'evaluators',
+                'applications as pending_applications_count' => fn (Builder $query): Builder => $query->where('status', ApplicationStatus::SOUMISE),
+                'applications as accepted_applications_count' => fn (Builder $query): Builder => $query->where('status', ApplicationStatus::ACCEPTEE),
+            ]);
     }
 }
