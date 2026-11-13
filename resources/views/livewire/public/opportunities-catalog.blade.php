@@ -204,19 +204,6 @@
                                 </div>
                             </div>
                         @endif
-                                        <span class="text-xs font-bold px-2.5 py-1 rounded-lg {{ $isClosed ? 'bg-red-950/80 text-red-200 border border-red-500' : 'bg-slate-900/80 text-white backdrop-blur-md' }}">
-                                            @if($isClosed)
-                                                Échu
-                                            @elseif($remainingDays === 0)
-                                                Clôture ce jour !
-                                            @elseif($remainingDays !== null)
-                                                J-{{ $remainingDays }}
-                                            @endif
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-                        @endif
 
                         {{-- En-tête de carte : badge statut & SAE --}}
                         <div class="p-6 pb-4 border-b {{ $isClosed ? 'border-red-100 bg-red-50/60' : 'border-slate-100 bg-gradient-to-br from-slate-50 to-white' }}">
