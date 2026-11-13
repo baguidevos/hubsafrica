@@ -29,6 +29,8 @@ class AiCopilotPage extends Page
 
     protected static ?int $navigationSort = 11;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     public string $prompt = '';
 
     /**

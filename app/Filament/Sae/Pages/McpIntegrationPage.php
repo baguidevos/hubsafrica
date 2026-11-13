@@ -30,6 +30,8 @@ class McpIntegrationPage extends Page
 
     protected static ?int $navigationSort = 10;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     /**
      * Jeton en clair affiché temporairement lors de la génération.
      */

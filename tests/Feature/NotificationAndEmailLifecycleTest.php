@@ -369,7 +369,7 @@ test('direct coach invitation can be queued and rendered cleanly', function () {
     ]);
 
     expect($invitation->token)->not->toBeEmpty();
-    expect($invitation->getInvitationUrl())->toContain('/coach/invite/'.$invitation->token);
+    expect($invitation->getInvitationUrl())->toContain('/join/'.$invitation->token);
 
     Mail::to($invitation->email)->queue(new CoachDirectInvitationMail($invitation));
 

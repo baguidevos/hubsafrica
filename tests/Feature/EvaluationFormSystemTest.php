@@ -59,7 +59,7 @@ test('evaluation form can be associated with program and typed with FormType enu
 
 test('form unlock can be created with due date and tracks overdue status', function () {
     $user = User::factory()->create();
-    $user->saes()->attach($this->sae->id);
+    $user->saes()->attach($this->sae->id, ['role' => 'ENTREPRENEUR']);
 
     $entrepreneur = Entrepreneur::create([
         'sae_id' => $this->sae->id,
@@ -99,7 +99,7 @@ test('form unlock can be created with due date and tracks overdue status', funct
 
 test('entrepreneur questionnaires page computes navigation badge and widget detects pending surveys', function () {
     $user = User::factory()->create();
-    $user->saes()->attach($this->sae->id);
+    $user->saes()->attach($this->sae->id, ['role' => 'ENTREPRENEUR']);
 
     $entrepreneur = Entrepreneur::create([
         'sae_id' => $this->sae->id,
@@ -134,7 +134,7 @@ test('entrepreneur questionnaires page computes navigation badge and widget dete
 
 test('handle evaluation submission listener marks unlock as completed, logs timeline and notifies users', function () {
     $user = User::factory()->create();
-    $user->saes()->attach($this->sae->id);
+    $user->saes()->attach($this->sae->id, ['role' => 'ENTREPRENEUR']);
 
     $entrepreneur = Entrepreneur::create([
         'sae_id' => $this->sae->id,
@@ -189,7 +189,7 @@ test('handle evaluation submission listener marks unlock as completed, logs time
 
 test('fill questionnaire route and page are properly defined and accessible to assigned entrepreneur', function () {
     $user = User::factory()->create();
-    $user->saes()->attach($this->sae->id);
+    $user->saes()->attach($this->sae->id, ['role' => 'ENTREPRENEUR']);
 
     $entrepreneur = Entrepreneur::create([
         'sae_id' => $this->sae->id,
