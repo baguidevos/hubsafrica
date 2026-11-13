@@ -1,3 +1,4 @@
+<x-filament-widgets::widget>
 @php
     $sae = $this->getSae();
 @endphp
@@ -73,13 +74,14 @@
                 </div>
             </div>
 
-            <div class="flex items-center gap-2 self-start sm:self-center">
+            <div class="flex shrink-0 items-center gap-2 self-start sm:self-center">
                 <a href="{{ route('filament.sae.tenant.profile', ['tenant' => $sae]) }}"
-                   class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-700 shadow-xs hover:bg-gray-50 hover:text-gray-900 dark:border-white/10 dark:text-gray-300 dark:hover:bg-white/10">
-                    <x-heroicon-m-adjustments-horizontal class="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                   class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-xl border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-700 shadow-xs hover:bg-gray-50 hover:text-gray-900 dark:border-white/10 dark:text-gray-300 dark:hover:bg-white/10">
+                    <x-heroicon-m-adjustments-horizontal class="h-4 w-4 shrink-0 text-gray-500 dark:text-gray-400" />
                     <span>Modifier le profil & types</span>
                 </a>
             </div>
         </div>
     </div>
 @endif
+</x-filament-widgets::widget>
