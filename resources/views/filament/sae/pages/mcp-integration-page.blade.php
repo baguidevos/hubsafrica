@@ -293,96 +293,118 @@
         </div>
     </div>
 
-    {{-- Guides de Configuration Prêts à l'Emploi --}}
-    <div class="mt-8 space-y-6" x-data="{ tab: 'claude' }">
-        <div class="border-b border-slate-200 dark:border-slate-800 flex items-center gap-4">
-            <button
-                type="button"
-                @click="tab = 'claude'"
-                :class="tab === 'claude' ? 'border-[#F8B81D] text-slate-900 dark:text-white font-bold' : 'border-transparent text-slate-500 hover:text-slate-700'"
-                class="py-3 px-2 border-b-2 text-sm transition flex items-center gap-2"
-            >
-                <x-heroicon-o-command-line class="w-4 h-4 text-[#F8B81D]" />
-                <span>Claude Desktop &amp; Web</span>
-            </button>
+    {{-- Guide de connexion MCP (ChatGPT & Claude) --}}
+    <div class="mt-8 space-y-6" x-data="{ tab: 'chatgpt' }">
+        <div class="border-b border-slate-200 dark:border-slate-800 flex items-center gap-6">
             <button
                 type="button"
                 @click="tab = 'chatgpt'"
-                :class="tab === 'chatgpt' ? 'border-[#F8B81D] text-slate-900 dark:text-white font-bold' : 'border-transparent text-slate-500 hover:text-slate-700'"
+                :class="tab === 'chatgpt' ? 'border-[#F8B81D] text-slate-900 dark:text-white font-bold' : 'border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'"
                 class="py-3 px-2 border-b-2 text-sm transition flex items-center gap-2"
             >
                 <x-heroicon-o-chat-bubble-left-right class="w-4 h-4 text-emerald-500" />
-                <span>ChatGPT (OpenAI Custom GPT)</span>
+                <span>ChatGPT (MCP personnalisé)</span>
             </button>
+
             <button
                 type="button"
-                @click="tab = 'openwebui'"
-                :class="tab === 'openwebui' ? 'border-[#F8B81D] text-slate-900 dark:text-white font-bold' : 'border-transparent text-slate-500 hover:text-slate-700'"
+                @click="tab = 'claude'"
+                :class="tab === 'claude' ? 'border-[#F8B81D] text-slate-900 dark:text-white font-bold' : 'border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'"
                 class="py-3 px-2 border-b-2 text-sm transition flex items-center gap-2"
             >
-                <x-heroicon-o-window class="w-4 h-4 text-indigo-500" />
-                <span>LibreChat / Cursor / OpenWebUI</span>
+                <x-heroicon-o-sparkles class="w-4 h-4 text-amber-500" />
+                <span>Claude</span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                    Bientôt
+                </span>
             </button>
-        </div>
-
-        {{-- Onglet Claude Desktop --}}
-        <div x-show="tab === 'claude'" class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4">
-            <h4 class="font-bold text-slate-900 dark:text-white text-sm">Configuration pour Claude Desktop</h4>
-            <p class="text-xs text-slate-500 leading-relaxed">
-                Ajoutez cette entrée dans votre fichier de configuration <code>claude_desktop_config.json</code> :
-            </p>
-
-            <pre class="bg-slate-950 text-slate-200 p-4 rounded-2xl font-mono text-xs overflow-x-auto leading-relaxed"><code>{
-  "mcpServers": {
-    "hubs-africa": {
-      "url": "{{ $this->mcpEndpointUrl }}",
-      "headers": {
-        "Authorization": "Bearer &lt;VOTRE_CLE_MCP&gt;"
-      }
-    }
-  }
-}</code></pre>
-            <p class="text-xs text-slate-400">
-                Remplacez <code>&lt;VOTRE_CLE_MCP&gt;</code> par la clé générée ci-dessus, puis redémarrez Claude Desktop.
-            </p>
         </div>
 
         {{-- Onglet ChatGPT --}}
-        <div x-show="tab === 'chatgpt'" style="display: none;" class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-5">
-            <div class="flex items-center justify-between">
-                <h4 class="font-bold text-slate-900 dark:text-white text-sm">Guide Connecteur 1-Clic pour ChatGPT (OpenAI Custom GPT)</h4>
-                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400">OAuth 2.0 PKCE</span>
+        <div x-show="tab === 'chatgpt'" class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs space-y-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                    <h4 class="font-bold text-slate-900 dark:text-white text-sm">Connecter Hubs Africa dans ChatGPT (Serveur MCP personnalisé)</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                        Ajoutez votre espace Hubs Africa comme plugin MCP dans ChatGPT en quelques clics, sans saisir de clé API ni d'identifiants OAuth manuellement.
+                    </p>
+                </div>
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shrink-0 self-start sm:self-center">
+                    Connexion OAuth automatique
+                </span>
             </div>
-            <p class="text-xs text-slate-500 dark:text-slate-400">
-                Avec OAuth 2.0, les utilisateurs de votre GPT n'ont plus à saisir de clé manuellement : un bouton <strong>« Se connecter avec Hubs Africa »</strong> apparaîtra directement dans la conversation ChatGPT.
-            </p>
 
-            <ol class="list-decimal list-inside space-y-3 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                <li>Ouvrez <a href="https://chatgpt.com/gpts/editor" target="_blank" class="text-amber-600 dark:text-amber-400 underline font-semibold">l'éditeur de GPT sur chatgpt.com</a>.</li>
-                <li>Dans l'onglet <strong>Configure</strong>, descendez à la section <strong>Actions</strong> et cliquez sur <strong>Create new action</strong>.</li>
-                <li>Cliquez sur <strong>Import from URL</strong> et collez le lien OpenAPI : <code class="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono select-all text-amber-600 dark:text-amber-400">{{ $this->openApiSpecUrl }}</code>.</li>
-                <li>Dans <strong>Authentication</strong>, sélectionnez <strong>OAuth</strong> (au lieu de API Key) et renseignez :
-                    <ul class="list-disc list-inside ml-4 mt-2 space-y-1 text-slate-500 dark:text-slate-400 font-mono text-[11px]">
-                        <li>Client ID : <span class="text-slate-800 dark:text-slate-200 select-all">{{ $this->oAuthClient?->client_id }}</span></li>
-                        <li>Client Secret : <span class="text-slate-800 dark:text-slate-200 select-all">{{ $this->oAuthClient?->client_secret }}</span></li>
-                        <li>Authorization URL : <span class="text-slate-800 dark:text-slate-200 select-all">{{ $this->authorizeUrl }}</span></li>
-                        <li>Token URL : <span class="text-slate-800 dark:text-slate-200 select-all">{{ $this->tokenUrl }}</span></li>
-                        <li>Scope : <span class="text-slate-800 dark:text-slate-200 select-all">mcp:sae</span></li>
-                        <li>Token Exchange Method : <span class="text-slate-800 dark:text-slate-200">Default (POST request body)</span></li>
-                    </ul>
+            <ol class="space-y-3 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                <li class="flex items-start gap-3">
+                    <span class="w-6 h-6 rounded-full bg-[#2F3284]/10 dark:bg-indigo-500/20 text-[#2F3284] dark:text-indigo-400 font-bold flex items-center justify-center shrink-0">1</span>
+                    <div class="pt-0.5">
+                        Dans le menu latéral gauche de ChatGPT, cliquez sur <strong>Plugins</strong>.
+                    </div>
                 </li>
-                <li>Enregistrez votre GPT. Lorsque vous posez une question dans le chat (ex: <em>« Quel est le bilan de notre structure ? »</em>), ChatGPT affiche un bouton <strong>« Se connecter à Hubs Africa »</strong>. Cliquez dessus pour autoriser la connexion en 1 clic !</li>
+                <li class="flex items-start gap-3">
+                    <span class="w-6 h-6 rounded-full bg-[#2F3284]/10 dark:bg-indigo-500/20 text-[#2F3284] dark:text-indigo-400 font-bold flex items-center justify-center shrink-0">2</span>
+                    <div class="pt-0.5">
+                        En haut à droite de la page Plugins, cliquez sur <strong>Ajouter</strong>.
+                    </div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="w-6 h-6 rounded-full bg-[#2F3284]/10 dark:bg-indigo-500/20 text-[#2F3284] dark:text-indigo-400 font-bold flex items-center justify-center shrink-0">3</span>
+                    <div class="pt-0.5">
+                        Dans le menu déroulant, sélectionnez <strong>Ajouter un serveur MCP personnalisé</strong>.
+                    </div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="w-6 h-6 rounded-full bg-[#2F3284]/10 dark:bg-indigo-500/20 text-[#2F3284] dark:text-indigo-400 font-bold flex items-center justify-center shrink-0">4</span>
+                    <div class="pt-0.5">
+                        Dans le champ <strong>Nom</strong>, saisissez un nom reconnaissable (par exemple <code class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono text-slate-800 dark:text-slate-200">Hubs-Africa</code>).
+                    </div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="w-6 h-6 rounded-full bg-[#2F3284]/10 dark:bg-indigo-500/20 text-[#2F3284] dark:text-indigo-400 font-bold flex items-center justify-center shrink-0">5</span>
+                    <div class="pt-0.5 space-y-2 flex-1">
+                        <div>
+                            Dans la section <strong>Connexion</strong> (onglet <strong>URL du serveur</strong>), collez l'URL du serveur MCP fournie sur ce dashboard et laissez <strong>Authentification</strong> sur <strong>OAuth</strong> :
+                        </div>
+                        <div class="flex items-center gap-2 max-w-xl bg-slate-50 dark:bg-slate-950 p-2 rounded-xl border border-slate-200 dark:border-slate-800 font-mono text-xs select-all text-slate-700 dark:text-slate-300">
+                            <span class="truncate flex-1">{{ $this->mcpEndpointUrl }}</span>
+                            <button
+                                type="button"
+                                x-data
+                                @click="navigator.clipboard.writeText('{{ $this->mcpEndpointUrl }}'); $tooltip('Copié !', { timeout: 2000 })"
+                                class="text-[#2F3284] dark:text-indigo-400 hover:opacity-80 shrink-0"
+                                title="Copier l'URL MCP"
+                            >
+                                <x-heroicon-m-clipboard class="w-4 h-4" />
+                            </button>
+                        </div>
+                    </div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="w-6 h-6 rounded-full bg-[#2F3284]/10 dark:bg-indigo-500/20 text-[#2F3284] dark:text-indigo-400 font-bold flex items-center justify-center shrink-0">6</span>
+                    <div class="pt-0.5">
+                        Cochez la case <strong>Je comprends et souhaite continuer</strong>.
+                    </div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="w-6 h-6 rounded-full bg-[#2F3284]/10 dark:bg-indigo-500/20 text-[#2F3284] dark:text-indigo-400 font-bold flex items-center justify-center shrink-0">7</span>
+                    <div class="pt-0.5">
+                        Cliquez sur <strong>Créer en tant que plugin</strong>, puis acceptez l'autorisation sur la fenêtre Hubs Africa qui s'affiche pour finaliser la connexion.
+                    </div>
+                </li>
             </ol>
         </div>
 
-        {{-- Onglet LibreChat / Cursor --}}
-        <div x-show="tab === 'openwebui'" style="display: none;" class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4">
-            <h4 class="font-bold text-slate-900 dark:text-white text-sm">Connexion HTTP / SSE Universelle</h4>
-            <div class="space-y-2 text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-mono">
-                <div><strong>Transport :</strong> SSE (Server-Sent Events) ou HTTP POST</div>
-                <div><strong>Endpoint :</strong> {{ $this->mcpEndpointUrl }}</div>
-                <div><strong>Header :</strong> Authorization: Bearer &lt;VOTRE_CLE_MCP&gt;</div>
+        {{-- Onglet Claude (Bientôt) --}}
+        <div x-show="tab === 'claude'" style="display: none;" class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs space-y-3">
+            <div class="flex items-center justify-between gap-2">
+                <h4 class="font-bold text-slate-900 dark:text-white text-sm">Connecteur MCP pour Claude</h4>
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                    Bientôt disponible
+                </span>
             </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                Le guide pas-à-pas pour connecter Hubs Africa directement dans Claude sera disponible très prochainement.
+            </p>
         </div>
     </div>
 </x-filament-panels::page>
