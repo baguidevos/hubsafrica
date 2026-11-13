@@ -1,3 +1,4 @@
+@props(['withFilament' => false])
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
 
@@ -58,37 +59,43 @@
         }
     </style>
 
-    @filamentStyles
+    @if($withFilament)
+        @filamentStyles
+    @endif
     @stack('styles')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 
-    {{-- Protection contre les feuilles de style tierces non-layerées (ex. plugins Filament) qui écrasent @layer utilities --}}
     <style>
         [x-cloak] { display: none !important; }
-        .hidden { display: none; }
-        @media (min-width: 40rem) {
-            .sm\:hidden { display: none; }
-            .sm\:flex { display: flex; }
-            .sm\:inline-flex { display: inline-flex; }
-            .sm\:block { display: block; }
-            .sm\:grid { display: grid; }
-        }
-        @media (min-width: 48rem) {
-            .md\:hidden { display: none; }
-            .md\:flex { display: flex; }
-            .md\:inline-flex { display: inline-flex; }
-            .md\:block { display: block; }
-            .md\:grid { display: grid; }
-        }
-        @media (min-width: 64rem) {
-            .lg\:hidden { display: none; }
-            .lg\:flex { display: flex; }
-            .lg\:inline-flex { display: inline-flex; }
-            .lg\:block { display: block; }
-            .lg\:grid { display: grid; }
-        }
     </style>
+    @if($withFilament)
+        {{-- Protection contre les feuilles de style tierces non-layerées (ex. plugins Filament) qui écrasent @layer utilities --}}
+        <style>
+            .hidden { display: none; }
+            @media (min-width: 40rem) {
+                .sm\:hidden { display: none; }
+                .sm\:flex { display: flex; }
+                .sm\:inline-flex { display: inline-flex; }
+                .sm\:block { display: block; }
+                .sm\:grid { display: grid; }
+            }
+            @media (min-width: 48rem) {
+                .md\:hidden { display: none; }
+                .md\:flex { display: flex; }
+                .md\:inline-flex { display: inline-flex; }
+                .md\:block { display: block; }
+                .md\:grid { display: grid; }
+            }
+            @media (min-width: 64rem) {
+                .lg\:hidden { display: none; }
+                .lg\:flex { display: flex; }
+                .lg\:inline-flex { display: inline-flex; }
+                .lg\:block { display: block; }
+                .lg\:grid { display: grid; }
+            }
+        </style>
+    @endif
 </head>
 
 <body
@@ -595,7 +602,9 @@
         </div>
     </div>
 
-    @filamentScripts
+    @if($withFilament)
+        @filamentScripts
+    @endif
     @livewireScripts
 </body>
 

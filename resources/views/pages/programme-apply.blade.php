@@ -1,4 +1,4 @@
-<x-layouts.public>
+<x-layouts.public :with-filament="true">
     @push('styles')
         @if ($formBuilderStylesheet = \Packstub\FormBuilder\Livewire\LivewireAssets::stylesheetUrl())
             <link href="{{ $formBuilderStylesheet }}" rel="stylesheet" data-navigate-track />
