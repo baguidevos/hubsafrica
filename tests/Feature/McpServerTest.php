@@ -10,7 +10,9 @@ use App\Models\ApplicationEvaluation;
 use App\Models\AuditLog;
 use App\Models\Cohort;
 use App\Models\Entrepreneur;
+use App\Models\EvaluationCriterion;
 use App\Models\McpApiKey;
+use App\Models\Opportunity;
 use App\Models\Program;
 use App\Models\Project;
 use App\Models\Sae;
@@ -570,4 +572,202 @@ test('filament ai copilot page renders interactive widgets and creates programs'
         'sae_id' => $sae->id,
         'name' => 'Programme Copilot 2026',
     ]);
+});
+
+test('mcp server exposes and executes opportunity and program selection grid tools', function () {
+    $userA = User::factory()->create();
+    $saeA = Sae::create([
+        'owner_id' => $userA->id,
+        'name' => 'Incubateur Sahel',
+        'slug' => 'incubateur-sahel-'.uniqid(),
+    ]);
+    $tokenA = McpApiKey::createToken($saeA, $userA, 'Sahel Bot')['plainTextToken'];
+
+    $userB = User::factory()->create();
+    $saeB = Sae::create([
+        'owner_id' => $userB->id,
+        'name' => 'Incubateur Autre',
+        'slug' => 'incubateur-autre-'.uniqid(),
+    ]);
+
+    $programA = Program::create([
+        'sae_id' => $saeA->id,
+        'name' => 'Programme Sahel 2026',
+        'description' => 'Incubation AgriTech',
+    ]);
+
+    $programB = Program::create([
+        'sae_id' => $saeB->id,
+        'name' => 'Programme Autre 2026',
+        'description' => 'Confidentiel',
+    ]);
+
+    Opportunity::create([
+        'sae_id' => $saeB->id,
+        'title' => 'Opportunité Confidentielle SAE B',
+        'details' => 'Ne doit pas fuiter',
+        'is_active' => true,
+    ]);
+
+    // 1. tools/list doit exposer les 3 nouveaux outils
+    $toolsResponse = $this->withHeader('Authorization', 'Bearer '.$tokenA)
+        ->postJson('/mcp/sae', [
+            'jsonrpc' => '2.0',
+            'id' => 100,
+            'method' => 'tools/list',
+            'params' => (object) [],
+        ]);
+
+    $toolsResponse->assertStatus(200);
+    $toolNames = collect($toolsResponse->json('result.tools'))->pluck('name');
+
+    expect($toolNames)
+        ->toContain('publish_opportunity')
+        ->toContain('list_opportunities')
+        ->toContain('configure_program_selection_grid');
+
+    // 2. publish_opportunity publie une opportunité pour SAE A
+    $publishResponse = $this->withHeader('Authorization', 'Bearer '.$tokenA)
+        ->postJson('/mcp/sae', [
+            'jsonrpc' => '2.0',
+            'id' => 101,
+            'method' => 'tools/call',
+            'params' => [
+                'name' => 'publish_opportunity',
+                'arguments' => [
+                    'title' => 'Challenge AgriTech Sahel 2026',
+                    'details' => 'Dotation de 25 000 EUR et accompagnement de 6 mois.',
+                    'sectors' => ['AgriTech', 'Énergie & Climat'],
+                    'target_zones' => ['Afrique de l\'Ouest', 'Togo'],
+                    'deadline' => now()->addDays(30)->toDateString(),
+                    'is_active' => true,
+                ],
+            ],
+        ]);
+
+    $publishResponse->assertStatus(200)
+        ->assertJsonPath('result.isError', false);
+
+    $this->assertDatabaseHas('opportunities', [
+        'sae_id' => $saeA->id,
+        'title' => 'Challenge AgriTech Sahel 2026',
+        'is_active' => true,
+    ]);
+
+    // Créer aussi une opportunité clôturée pour tester les filtres
+    Opportunity::create([
+        'sae_id' => $saeA->id,
+        'title' => 'Ancien Appel Clôturé',
+        'details' => 'Date dépassée',
+        'deadline' => now()->subDays(5),
+        'is_active' => true,
+    ]);
+
+    // 3. list_opportunities filtre par statut open et isole strictement SAE B
+    $listResponse = $this->withHeader('Authorization', 'Bearer '.$tokenA)
+        ->postJson('/mcp/sae', [
+            'jsonrpc' => '2.0',
+            'id' => 102,
+            'method' => 'tools/call',
+            'params' => [
+                'name' => 'list_opportunities',
+                'arguments' => [
+                    'status' => 'open',
+                    'search' => 'AgriTech',
+                ],
+            ],
+        ]);
+
+    $listResponse->assertStatus(200)
+        ->assertJsonPath('result.isError', false)
+        ->assertJsonPath('result.structuredContent.count', 1)
+        ->assertJsonPath('result.structuredContent.opportunities.0.title', 'Challenge AgriTech Sahel 2026');
+
+    expect($listResponse->getContent())->not->toContain('Opportunité Confidentielle SAE B');
+
+    // 4. configure_program_selection_grid configure les critères et seuils
+    $gridResponse = $this->withHeader('Authorization', 'Bearer '.$tokenA)
+        ->postJson('/mcp/sae', [
+            'jsonrpc' => '2.0',
+            'id' => 103,
+            'method' => 'tools/call',
+            'params' => [
+                'name' => 'configure_program_selection_grid',
+                'arguments' => [
+                    'program_id' => $programA->id,
+                    'admission_threshold' => 75,
+                    'waitlist_threshold' => 55,
+                    'criteria' => [
+                        [
+                            'name' => 'Qualité de l\'équipe fondatrice',
+                            'weight' => 3,
+                            'max_score' => 10,
+                            'description' => 'Complémentarité et engagement des fondateurs',
+                        ],
+                        [
+                            'name' => 'Impact climatique & scalabilité',
+                            'weight' => 2,
+                            'max_score' => 10,
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+    $gridResponse->assertStatus(200)
+        ->assertJsonPath('result.isError', false)
+        ->assertJsonPath('result.structuredContent.program.admission_threshold', 75)
+        ->assertJsonPath('result.structuredContent.program.waitlist_threshold', 55);
+
+    expect($gridResponse->json('result.structuredContent.criteria'))->toHaveCount(2);
+
+    $this->assertDatabaseHas('programs', [
+        'id' => $programA->id,
+        'admission_threshold' => 75,
+        'waitlist_threshold' => 55,
+    ]);
+
+    expect(EvaluationCriterion::where('program_id', $programA->id)->count())->toBe(2);
+
+    // 5. configure_program_selection_grid refuse un programme d'une autre SAE
+    $forbiddenGridResponse = $this->withHeader('Authorization', 'Bearer '.$tokenA)
+        ->postJson('/mcp/sae', [
+            'jsonrpc' => '2.0',
+            'id' => 104,
+            'method' => 'tools/call',
+            'params' => [
+                'name' => 'configure_program_selection_grid',
+                'arguments' => [
+                    'program_id' => $programB->id,
+                    'criteria' => [
+                        ['name' => 'Critère interdit'],
+                    ],
+                ],
+            ],
+        ]);
+
+    $forbiddenGridResponse->assertStatus(200)
+        ->assertJsonPath('result.isError', true);
+
+    // 6. configure_program_selection_grid refuse waitlist_threshold > admission_threshold
+    $invalidThresholdResponse = $this->withHeader('Authorization', 'Bearer '.$tokenA)
+        ->postJson('/mcp/sae', [
+            'jsonrpc' => '2.0',
+            'id' => 105,
+            'method' => 'tools/call',
+            'params' => [
+                'name' => 'configure_program_selection_grid',
+                'arguments' => [
+                    'program_id' => $programA->id,
+                    'admission_threshold' => 60,
+                    'waitlist_threshold' => 80,
+                    'criteria' => [
+                        ['name' => 'Critère valide'],
+                    ],
+                ],
+            ],
+        ]);
+
+    $invalidThresholdResponse->assertStatus(200)
+        ->assertJsonPath('result.isError', true);
 });
