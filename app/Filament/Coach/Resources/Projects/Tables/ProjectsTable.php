@@ -55,7 +55,7 @@ class ProjectsTable
                     ->options(ProjectStatus::class),
             ])
             ->recordActions([
-                ViewAction::make()->slideOver(),
+                ViewAction::make(),
                 EditAction::make()->slideOver(),
             ])
             ->toolbarActions([

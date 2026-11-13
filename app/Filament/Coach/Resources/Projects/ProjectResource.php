@@ -5,6 +5,7 @@ namespace App\Filament\Coach\Resources\Projects;
 use App\Filament\Coach\Resources\Projects\Pages\CreateProject;
 use App\Filament\Coach\Resources\Projects\Pages\EditProject;
 use App\Filament\Coach\Resources\Projects\Pages\ListProjects;
+use App\Filament\Coach\Resources\Projects\Pages\ViewProject;
 use App\Filament\Coach\Resources\Projects\Schemas\ProjectForm;
 use App\Filament\Coach\Resources\Projects\Tables\ProjectsTable;
 use App\Models\Project;
@@ -64,6 +65,7 @@ class ProjectResource extends Resource
         return [
             'index' => ListProjects::route('/'),
             'create' => CreateProject::route('/create'),
+            'view' => ViewProject::route('/{record}'),
             'edit' => EditProject::route('/{record}/edit'),
         ];
     }
