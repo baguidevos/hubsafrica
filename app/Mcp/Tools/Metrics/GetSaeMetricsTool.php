@@ -29,25 +29,57 @@ class GetSaeMetricsTool extends Tool
     {
         $sae = $this->currentSae();
 
-        $totalPrograms = Program::where('sae_id', $sae->id)->count();
-        $publishedPrograms = Program::where('sae_id', $sae->id)->where('is_published', true)->count();
+        // Programs: 2 queries → 1
+        $programStats = Program::where('sae_id', $sae->id)
+            ->selectRaw('COUNT(*) as total')
+            ->selectRaw('SUM(CASE WHEN is_active THEN 1 ELSE 0 END) as published')
+            ->toBase()->first();
 
-        $totalCohorts = Cohort::where('sae_id', $sae->id)->count();
-        $openCohorts = Cohort::where('sae_id', $sae->id)->where('status', 'OUVERTE')->count();
-        $ongoingCohorts = Cohort::where('sae_id', $sae->id)->where('status', 'EN_COURS')->count();
+        $totalPrograms = (int) $programStats->total;
+        $publishedPrograms = (int) $programStats->published;
 
-        $totalApplications = Application::where('sae_id', $sae->id)->count();
-        $acceptedApplications = Application::where('sae_id', $sae->id)->where('status', 'ACCEPTEE')->count();
-        $pendingApplications = Application::where('sae_id', $sae->id)->whereIn('status', ['SOUMISE', 'EN_REVUE', 'EN_ATTENTE'])->count();
+        // Cohorts: 3 queries → 1
+        $cohortStats = Cohort::where('sae_id', $sae->id)
+            ->selectRaw('COUNT(*) as total')
+            ->selectRaw("SUM(CASE WHEN status = 'OUVERTE' THEN 1 ELSE 0 END) as open")
+            ->selectRaw("SUM(CASE WHEN status = 'EN_COURS' THEN 1 ELSE 0 END) as ongoing")
+            ->toBase()->first();
 
-        $totalProjects = Project::where('sae_id', $sae->id)->count();
-        $activeProjects = Project::where('sae_id', $sae->id)->where('status', 'ACTIF')->count();
+        $totalCohorts = (int) $cohortStats->total;
+        $openCohorts = (int) $cohortStats->open;
+        $ongoingCohorts = (int) $cohortStats->ongoing;
 
+        // Applications: 3 queries → 1
+        $applicationStats = Application::where('sae_id', $sae->id)
+            ->selectRaw('COUNT(*) as total')
+            ->selectRaw("SUM(CASE WHEN status = 'ACCEPTEE' THEN 1 ELSE 0 END) as accepted")
+            ->selectRaw("SUM(CASE WHEN status IN ('SOUMISE', 'EN_REVUE', 'EN_ATTENTE') THEN 1 ELSE 0 END) as pending")
+            ->toBase()->first();
+
+        $totalApplications = (int) $applicationStats->total;
+        $acceptedApplications = (int) $applicationStats->accepted;
+        $pendingApplications = (int) $applicationStats->pending;
+
+        // Projects: 2 queries → 1
+        $projectStats = Project::where('sae_id', $sae->id)
+            ->selectRaw('COUNT(*) as total')
+            ->selectRaw("SUM(CASE WHEN status = 'ACTIF' THEN 1 ELSE 0 END) as active")
+            ->toBase()->first();
+
+        $totalProjects = (int) $projectStats->total;
+        $activeProjects = (int) $projectStats->active;
+
+        // Coaches: already a single query
         $totalCoaches = Coach::where('sae_id', $sae->id)->count();
-        $totalSessions = CoachingSession::where('sae_id', $sae->id)->count();
-        $hoursDelivered = (float) CoachingSession::where('sae_id', $sae->id)
-            ->where('status', 'REALISEE')
-            ->sum('hours_delivered');
+
+        // Sessions: 2 queries → 1 (sum only for completed sessions)
+        $sessionStats = CoachingSession::where('sae_id', $sae->id)
+            ->selectRaw('COUNT(*) as total')
+            ->selectRaw("SUM(CASE WHEN status = 'REALISEE' THEN hours_delivered ELSE 0 END) as hours_delivered")
+            ->toBase()->first();
+
+        $totalSessions = (int) $sessionStats->total;
+        $hoursDelivered = (float) ($sessionStats->hours_delivered ?? 0);
 
         return Response::structured([
             'sae' => [

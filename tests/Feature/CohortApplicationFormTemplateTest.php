@@ -139,7 +139,7 @@ test('un candidat peut postuler a une cohorte avec des questions specifiques et 
         ->set('custom_answers.impact_carbone', 'Réduction de 50 tonnes de CO2 par an grâce aux mini-réseaux.')
         ->call('submitApplication')
         ->assertHasNoErrors()
-        ->assertSee('votre dossier a été transmis');
+        ->assertRedirect(route('filament.entrepreneur.pages.dashboard', ['tenant' => $this->sae]));
 
     // Vérification de la candidature en BDD
     $application = Application::where('email', 'fatou.faye@startup.sn')

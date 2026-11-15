@@ -162,7 +162,8 @@ test('new entrepreneur can submit complete application through livewire applicat
         ->set('needs', ['Mentorat & Structuration', 'Levée de fonds & Financement'])
         ->call('submitApplication')
         ->assertHasNoErrors()
-        ->assertSet('isSubmitted', true);
+        ->assertSet('isSubmitted', true)
+        ->assertRedirect(route('filament.entrepreneur.pages.dashboard', ['tenant' => $sae]));
 
     // Vérifications en Base de Données
     $createdUser = User::where('email', 'mamadou.traore@ecofuel.africa')->first();
@@ -172,6 +173,10 @@ test('new entrepreneur can submit complete application through livewire applicat
     $createdEntrepreneur = Entrepreneur::where('user_id', $createdUser->id)->first();
     expect($createdEntrepreneur)->not->toBeNull();
     expect($createdEntrepreneur->sae_id)->toBe($sae->id);
+
+    $this->actingAs($createdUser)
+        ->get(route('filament.entrepreneur.pages.dashboard', ['tenant' => $sae]))
+        ->assertOk();
 
     $createdProject = Project::where('entrepreneur_id', $createdEntrepreneur->id)->first();
     expect($createdProject)->not->toBeNull();

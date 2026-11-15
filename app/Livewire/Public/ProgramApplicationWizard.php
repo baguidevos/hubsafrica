@@ -238,6 +238,13 @@ class ProgramApplicationWizard extends Component
                 ]);
             }
 
+            if ($this->program->sae_id && ! $user->saes()->where('saes.id', $this->program->sae_id)->exists()) {
+                $user->saes()->attach($this->program->sae_id, [
+                    'role' => 'ENTREPRENEUR',
+                    'status' => 'ACTIVE',
+                ]);
+            }
+
             // 3. Création ou association du Projet
             $project = Project::where('entrepreneur_id', $entrepreneur->id)
                 ->where('name', $this->project_name)
@@ -337,6 +344,13 @@ class ProgramApplicationWizard extends Component
             }
 
             $this->isSubmitted = true;
+
+            $sae = $this->program->sae;
+            $portalUrl = $sae
+                ? route('filament.entrepreneur.pages.dashboard', ['tenant' => $sae])
+                : url('/portal');
+
+            $this->redirect($portalUrl);
         } catch (\Throwable $e) {
             DB::rollBack();
             $this->addError('submit_error', 'Une erreur est survenue lors de l\'enregistrement de votre dossier : '.$e->getMessage());
