@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\McpOAuthController;
 use App\Http\Controllers\CoachInvitationController;
 use App\Http\Controllers\DevLoginController;
 use App\Http\Controllers\EntrepreneurInvitationController;
+use App\Http\Controllers\Public\AccompanimentToolPublicController;
 use App\Http\Controllers\Public\CoachJoinRequestPublicController;
 use App\Http\Controllers\Public\CohortPublicController;
 use App\Http\Controllers\Public\HomeController;
@@ -45,6 +46,13 @@ Route::get('/structures/{id}', [StructurePublicController::class, 'show'])->name
 // Opportunités & Appels à Projets (Publiés par les SAEs)
 Route::get('/opportunites', [OpportunityPublicController::class, 'index'])->name('public.opportunities');
 Route::get('/opportunites/{slug}', [OpportunityPublicController::class, 'show'])->name('public.opportunities.detail');
+
+// Outils d'Accompagnement (Documents & Liens Drive partagés par les SAEs)
+Route::get('/outils', [AccompanimentToolPublicController::class, 'index'])->name('public.outils');
+Route::get('/outils/{slug}/acces', [AccompanimentToolPublicController::class, 'access'])->name('public.outils.access');
+Route::post('/outils/{slug}/demander', [AccompanimentToolPublicController::class, 'requestAccess'])->middleware('auth')->name('public.outils.request');
+Route::post('/outils/{slug}/payer', [AccompanimentToolPublicController::class, 'initiatePayment'])->middleware('auth')->name('public.outils.pay');
+Route::match(['get', 'post'], '/outils/paiement/callback/{reference}', [AccompanimentToolPublicController::class, 'paymentCallback'])->name('public.outils.payment.callback');
 
 // Portail d'Orientation & Choix de Profil
 Route::get('/rejoindre', [OrientationController::class, 'index'])->name('public.rejoindre');

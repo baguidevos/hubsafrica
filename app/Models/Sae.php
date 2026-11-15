@@ -271,6 +271,11 @@ class Sae extends Model implements HasAvatar
         return $this->hasMany(Resource::class, 'sae_id');
     }
 
+    public function accompanimentTools(): HasMany
+    {
+        return $this->hasMany(AccompanimentTool::class, 'sae_id');
+    }
+
     public function dataRoomDocuments(): HasMany
     {
         return $this->hasMany(DataRoomDocument::class, 'sae_id');

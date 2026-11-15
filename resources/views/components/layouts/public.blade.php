@@ -208,6 +208,10 @@
                         class="text-xs sm:text-sm font-semibold {{ request()->routeIs('public.opportunities*') ? 'text-[#2F3284] font-bold border-b-2 border-[#F8B81D] pb-1' : 'text-slate-600 hover:text-[#2F3284]' }} transition">
                         Opportunités
                     </a>
+                    <a href="{{ route('public.outils') }}"
+                        class="text-xs sm:text-sm font-semibold {{ request()->routeIs('public.outils*') ? 'text-[#2F3284] font-bold border-b-2 border-[#F8B81D] pb-1' : 'text-slate-600 hover:text-[#2F3284]' }} transition">
+                        Outils
+                    </a>
                     <a href="{{ route('public.structures') }}"
                         class="text-xs sm:text-sm font-semibold {{ request()->routeIs('public.structures*') ? 'text-[#2F3284] font-bold border-b-2 border-[#F8B81D] pb-1' : 'text-slate-600 hover:text-[#2F3284]' }} transition">
                         Structures SAE
@@ -328,6 +332,8 @@
                 class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-[#2F3284]">Programmes</a>
             <a href="{{ route('public.opportunities') }}"
                 class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-[#2F3284]">Opportunités</a>
+            <a href="{{ route('public.outils') }}"
+                class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-[#2F3284]">Outils d'accompagnement</a>
             <a href="{{ route('public.structures') }}"
                 class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-[#2F3284]">Structures
                 SAE</a>
