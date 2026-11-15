@@ -1,46 +1,113 @@
 <x-filament-panels::page>
-    {{-- Bannière d'affichage de la clé nouvellement générée --}}
-    @if ($newlyCreatedPlainToken)
-        <div class="p-6 mb-6 rounded-2xl bg-amber-500/10 border-2 border-amber-500/40 text-amber-950 dark:text-amber-100 shadow-md">
-            <div class="flex items-start justify-between gap-4">
-                <div class="space-y-2 flex-1">
-                    <div class="flex items-center gap-2">
-                        <span class="flex h-3 w-3 relative">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+    {{-- Générateur de lien dynamique MCP Streamable HTTP (en haut de page) --}}
+    <div class="mb-8 p-6 rounded-3xl bg-white dark:bg-slate-900 border-2 {{ $this->dynamicStreamableUrl ? 'border-emerald-500/40' : 'border-slate-200 dark:border-slate-800' }} shadow-xs space-y-5">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div class="flex items-start sm:items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                    <x-heroicon-o-link class="w-6 h-6" />
+                </div>
+                <div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <h3 class="text-base font-bold text-slate-900 dark:text-white">Lien dynamique MCP (Streamable HTTP)</h3>
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                            StreamableHTTP
                         </span>
-                        <h3 class="text-base font-bold text-amber-900 dark:text-amber-200">
-                            Nouvelle Clé API MCP générée : « {{ $newlyCreatedKeyName }} »
-                        </h3>
                     </div>
-                    <p class="text-xs text-amber-800 dark:text-amber-300">
-                        Copiez immédiatement ce jeton secret. <strong>Pour des raisons de sécurité, il ne sera plus jamais affiché.</strong>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">
+                        Générez une URL prête à coller (avec jeton intégré) pour les clients MCP en mode <strong>StreamableHTTP</strong> (Cherry Studio, Cursor, OpenWebUI, etc.).
                     </p>
+                </div>
+            </div>
 
-                    <div class="mt-3 flex items-center gap-2 max-w-2xl bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-amber-300 dark:border-amber-700/60 font-mono text-xs select-all text-slate-800 dark:text-slate-100 shadow-inner">
-                        <span class="truncate flex-1 font-semibold text-emerald-600 dark:text-emerald-400">{{ $newlyCreatedPlainToken }}</span>
-                        <button
-                            type="button"
-                            x-data
-                            @click="navigator.clipboard.writeText('{{ $newlyCreatedPlainToken }}'); $tooltip('Copié dans le presse-papier !', { timeout: 2000 })"
-                            class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs transition shrink-0"
-                        >
-                            Copier
-                        </button>
+            <form wire:submit="generateStreamableLink" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 shrink-0">
+                <input
+                    type="text"
+                    wire:model="streamableLinkName"
+                    placeholder="Nom du client (ex: Cherry Studio)"
+                    maxlength="100"
+                    class="px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/40"
+                />
+                <button
+                    type="submit"
+                    class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shadow-xs transition cursor-pointer"
+                >
+                    <x-heroicon-m-sparkles class="w-4 h-4" />
+                    <span>Générer le lien dynamique</span>
+                </button>
+            </form>
+        </div>
+
+        @if ($this->dynamicStreamableUrl)
+            <div class="p-5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 space-y-4">
+                <div class="flex items-start justify-between gap-4">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <span class="flex h-2.5 w-2.5 relative">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                            </span>
+                            <h4 class="text-sm font-bold text-emerald-950 dark:text-emerald-200">
+                                Lien généré pour « {{ $newlyCreatedKeyName }} »
+                            </h4>
+                        </div>
+                        <p class="text-xs text-emerald-900/80 dark:text-emerald-300/90">
+                            Copiez immédiatement ce lien ou cette clé. <strong>Pour des raisons de sécurité, le jeton ne sera plus affiché après fermeture.</strong>
+                        </p>
                     </div>
+
+                    <button
+                        type="button"
+                        wire:click="dismissNewKeyBanner"
+                        class="text-emerald-800 dark:text-emerald-300 hover:opacity-75 p-1"
+                        title="Fermer ce message"
+                    >
+                        <x-heroicon-m-x-mark class="w-5 h-5" />
+                    </button>
                 </div>
 
-                <button
-                    type="button"
-                    wire:click="dismissNewKeyBanner"
-                    class="text-amber-700 dark:text-amber-400 hover:text-amber-950 p-1"
-                    title="Fermer ce message"
-                >
-                    <x-heroicon-m-x-mark class="w-5 h-5" />
-                </button>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                    <div class="bg-white dark:bg-slate-900 p-3 rounded-xl border border-emerald-500/30 space-y-1.5">
+                        <div class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">URL StreamableHTTP complète (prête à coller)</div>
+                        <div class="flex items-center gap-2 font-mono text-xs select-all">
+                            <span class="truncate flex-1 font-semibold text-emerald-700 dark:text-emerald-400">{{ $this->dynamicStreamableUrl }}</span>
+                            <button
+                                type="button"
+                                x-data
+                                @click="navigator.clipboard.writeText(@js($this->dynamicStreamableUrl)); $tooltip('Lien copié !', { timeout: 2000 })"
+                                class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition shrink-0"
+                            >
+                                Copier le lien
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-900 p-3 rounded-xl border border-emerald-500/30 space-y-1.5">
+                        <div class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">Clé API MCP (Authorization: Bearer)</div>
+                        <div class="flex items-center gap-2 font-mono text-xs select-all">
+                            <span class="truncate flex-1 font-semibold text-slate-800 dark:text-slate-100">{{ $newlyCreatedPlainToken }}</span>
+                            <button
+                                type="button"
+                                x-data
+                                @click="navigator.clipboard.writeText(@js($newlyCreatedPlainToken)); $tooltip('Clé copiée !', { timeout: 2000 })"
+                                class="px-3 py-1.5 rounded-lg bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-bold text-xs transition shrink-0"
+                            >
+                                Copier la clé
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    @endif
+        @else
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs">
+                <div class="text-slate-500 dark:text-slate-400">
+                    Endpoint de base : <code class="font-mono text-slate-700 dark:text-slate-200">{{ $this->mcpEndpointUrl }}</code>
+                </div>
+                <span class="text-[11px] text-slate-400">
+                    Le lien généré inclut automatiquement <code class="font-mono">?token=...</code>
+                </span>
+            </div>
+        @endif
+    </div>
 
     {{-- Section Connecteur 1-Clic OAuth 2.0 (Claude & ChatGPT) --}}
     <div class="mb-8 p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs space-y-6">

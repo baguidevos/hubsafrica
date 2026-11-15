@@ -47,6 +47,8 @@ class McpIntegrationPage extends Page
 
     public ?string $newlyCreatedKeyName = null;
 
+    public string $streamableLinkName = '';
+
     public function getActiveTenantProperty(): ?Sae
     {
         return Filament::getTenant();
@@ -78,6 +80,17 @@ class McpIntegrationPage extends Page
     public function getMcpEndpointUrlProperty(): string
     {
         return url('/mcp/sae');
+    }
+
+    public function getDynamicStreamableUrlProperty(): ?string
+    {
+        if (! $this->newlyCreatedPlainToken) {
+            return null;
+        }
+
+        return $this->mcpEndpointUrl.'?'.http_build_query([
+            'token' => $this->newlyCreatedPlainToken,
+        ]);
     }
 
     public function getOpenApiSpecUrlProperty(): string
@@ -209,6 +222,41 @@ class McpIntegrationPage extends Page
                 ->warning()
                 ->send();
         }
+    }
+
+    public function generateStreamableLink(): void
+    {
+        $tenant = $this->getActiveTenant();
+        $user = auth()->user();
+
+        if (! $tenant || ! $user) {
+            Notification::make()
+                ->title('Action impossible')
+                ->body('Structure ou utilisateur non identifié.')
+                ->danger()
+                ->send();
+
+            return;
+        }
+
+        $label = trim($this->streamableLinkName);
+        if ($label === '') {
+            $label = 'Streamable HTTP — '.now()->format('d/m/Y H:i');
+        }
+
+        $label = Str::limit($label, 100, '');
+        $result = McpApiKey::createToken($tenant, $user, $label);
+
+        $this->newlyCreatedPlainToken = $result['plainTextToken'];
+        $this->newlyCreatedKeyName = $label;
+        $this->streamableLinkName = '';
+
+        Notification::make()
+            ->title('Lien Streamable HTTP généré')
+            ->body('Copiez le lien dynamique ci-dessus et collez-le dans votre client MCP (type StreamableHTTP).')
+            ->success()
+            ->persistent()
+            ->send();
     }
 
     public function dismissNewKeyBanner(): void

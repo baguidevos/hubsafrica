@@ -128,3 +128,44 @@ test('admin can configure granular ai features per sae from sae ai settings page
         ->and($sae->isAiFeatureEnabled('mcp_tools.coaching'))->toBeFalse()
         ->and($sae->isAiFeatureEnabled('mcp_tools.projects'))->toBeTrue();
 });
+
+test('sae can generate a dynamic streamable http mcp link and authenticate with it', function () {
+    $owner = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $owner->id,
+        'name' => 'SAE Streamable',
+        'slug' => 'sae-streamable-'.uniqid(),
+        'ai_features' => SaeAiFeatures::allEnabled(),
+    ]);
+
+    $this->actingAs($owner);
+    Filament::setTenant($sae);
+
+    $component = Livewire::test(McpIntegrationPage::class)
+        ->set('streamableLinkName', 'Cherry Studio Test')
+        ->call('generateStreamableLink')
+        ->assertNotified('Lien Streamable HTTP généré');
+
+    $plainToken = $component->get('newlyCreatedPlainToken');
+    $dynamicUrl = $component->get('dynamicStreamableUrl');
+
+    expect($plainToken)->toStartWith('ha_mcp_live_')
+        ->and($dynamicUrl)->toContain('/mcp/sae?token='.urlencode($plainToken));
+
+    $component->assertSee($dynamicUrl);
+
+    $this->postJson('/mcp/sae?token='.$plainToken, [
+        'jsonrpc' => '2.0',
+        'id' => 1,
+        'method' => 'initialize',
+        'params' => [
+            'protocolVersion' => '2025-03-26',
+            'capabilities' => [],
+            'clientInfo' => [
+                'name' => 'Cherry Studio',
+                'version' => '1.0.0',
+            ],
+        ],
+    ])->assertOk()
+        ->assertJsonPath('result.serverInfo.name', 'Hubs Africa SAE Server');
+});
