@@ -30,7 +30,15 @@ class McpIntegrationPage extends Page
 
     protected static ?int $navigationSort = 10;
 
-    protected static bool $shouldRegisterNavigation = false;
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Filament::getTenant()?->isAiFeatureEnabled('mcp_keys_enabled') ?? false;
+    }
+
+    public static function canAccess(): bool
+    {
+        return Filament::getTenant()?->isAiFeatureEnabled('mcp_keys_enabled') ?? false;
+    }
 
     /**
      * Jeton en clair affiché temporairement lors de la génération.

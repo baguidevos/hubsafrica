@@ -5,6 +5,7 @@ use App\Models\McpOAuthCode;
 use App\Models\Sae;
 use App\Models\User;
 use App\Services\McpOAuthService;
+use App\Support\SaeAiFeatures;
 
 test('oauth authorize endpoint redirects unauthenticated users to login', function () {
     $response = $this->get('/oauth/authorize?response_type=code&redirect_uri=https://chatgpt.com/callback');
@@ -15,6 +16,7 @@ test('oauth authorize endpoint redirects unauthenticated users to login', functi
 test('oauth authorize endpoint displays authorization dialog for authenticated user with sae', function () {
     $user = User::factory()->create();
     $sae = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
         'owner_id' => $user->id,
         'name' => 'Incubateur Test OAuth',
         'slug' => 'incubateur-test-oauth-'.uniqid(),
@@ -34,6 +36,7 @@ test('oauth authorize endpoint displays authorization dialog for authenticated u
 test('oauth approve generates authorization code and redirects to callback with state', function () {
     $user = User::factory()->create();
     $sae = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
         'owner_id' => $user->id,
         'name' => 'Incubateur Test Approve',
         'slug' => 'incubateur-test-approve-'.uniqid(),
@@ -67,6 +70,7 @@ test('oauth approve generates authorization code and redirects to callback with 
 test('oauth token endpoint successfully exchanges authorization code for bearer access token', function () {
     $user = User::factory()->create();
     $sae = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
         'owner_id' => $user->id,
         'name' => 'Incubateur Token Exchange',
         'slug' => 'incubateur-token-exchange-'.uniqid(),
@@ -151,6 +155,7 @@ test('oauth discovery endpoints and root authorize token aliases work for claude
 
     $user = User::factory()->create();
     $sae = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
         'owner_id' => $user->id,
         'name' => 'Incubateur Claude PKCE',
         'slug' => 'incubateur-claude-pkce-'.uniqid(),
@@ -229,6 +234,7 @@ test('dynamic client registration and cimd client_id work without manual client 
     // 3. Flux complet OAuth PKCE avec le client dynamique
     $user = User::factory()->create();
     $sae = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
         'owner_id' => $user->id,
         'name' => 'Incubateur DCR',
         'slug' => 'incubateur-dcr-'.uniqid(),

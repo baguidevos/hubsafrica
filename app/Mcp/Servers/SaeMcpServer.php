@@ -32,6 +32,7 @@ use App\Mcp\Tools\Projects\ListProjectsTool;
 use App\Mcp\Tools\Projects\UpdateProjectLevelTool;
 use App\Mcp\Tools\Ui\OpenCohortCreatorTool;
 use App\Mcp\Tools\Ui\OpenProgramCreatorTool;
+use App\Models\Sae;
 use Laravel\Mcp\Server;
 use Laravel\Mcp\Server\Attributes\Instructions;
 use Laravel\Mcp\Server\Attributes\Name;
@@ -111,4 +112,31 @@ class SaeMcpServer extends Server
         EvaluateApplicationPrompt::class,
         SummarizeCohortPrompt::class,
     ];
+
+    protected function boot(): void
+    {
+        parent::boot();
+
+        if (! app()->has('current_sae')) {
+            return;
+        }
+
+        /** @var Sae $sae */
+        $sae = app('current_sae');
+
+        $this->tools = array_values(array_filter(
+            $this->tools,
+            fn (string $toolClass): bool => $sae->isMcpToolAllowed($toolClass),
+        ));
+
+        if (! $sae->isAiFeatureEnabled('mcp_tools.generative_ui')) {
+            $this->resources = array_values(array_filter(
+                $this->resources,
+                fn (string $resourceClass): bool => ! in_array($resourceClass, [
+                    ProgramCreatorAppResource::class,
+                    CohortCreatorAppResource::class,
+                ], true),
+            ));
+        }
+    }
 }

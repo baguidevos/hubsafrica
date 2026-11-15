@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\SaeOriginType;
+use App\Support\SaeAiFeatures;
 use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -39,6 +40,7 @@ class Sae extends Model implements HasAvatar
         'status',
         'default_admission_threshold',
         'default_waitlist_threshold',
+        'ai_features',
         'vision',
         'mission',
         'objectives',
@@ -51,7 +53,26 @@ class Sae extends Model implements HasAvatar
             'origin_type' => SaeOriginType::class,
             'default_admission_threshold' => 'integer',
             'default_waitlist_threshold' => 'integer',
+            'ai_features' => 'array',
         ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getAiFeatures(): array
+    {
+        return SaeAiFeatures::resolve($this->ai_features);
+    }
+
+    public function isAiFeatureEnabled(string $feature): bool
+    {
+        return SaeAiFeatures::isEnabled($this->ai_features, $feature);
+    }
+
+    public function isMcpToolAllowed(string $toolClass): bool
+    {
+        return SaeAiFeatures::isToolAllowed($this->ai_features, $toolClass);
     }
 
     public function getAdmissionThreshold(): int

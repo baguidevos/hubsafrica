@@ -17,6 +17,7 @@ use App\Models\Program;
 use App\Models\Project;
 use App\Models\Sae;
 use App\Models\User;
+use App\Support\SaeAiFeatures;
 use Filament\Facades\Filament;
 use Livewire\Livewire;
 
@@ -50,6 +51,7 @@ test('openapi specification endpoint is public and valid', function () {
 test('mcp api authenticates and strictly isolates data per sae', function () {
     $userA = User::factory()->create();
     $saeA = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
         'owner_id' => $userA->id,
         'name' => 'Incubateur Alpha',
         'slug' => 'incubateur-alpha-'.uniqid(),
@@ -68,6 +70,7 @@ test('mcp api authenticates and strictly isolates data per sae', function () {
 
     $userB = User::factory()->create();
     $saeB = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
         'owner_id' => $userB->id,
         'name' => 'Incubateur Beta',
         'slug' => 'incubateur-beta-'.uniqid(),
@@ -140,6 +143,7 @@ test('mcp api authenticates and strictly isolates data per sae', function () {
 test('mcp action logs audit trail in audit_logs table', function () {
     $user = User::factory()->create();
     $sae = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
         'owner_id' => $user->id,
         'name' => 'Incubateur Test Audit',
         'slug' => 'incubateur-test-audit-'.uniqid(),
@@ -203,6 +207,7 @@ test('mcp action logs audit trail in audit_logs table', function () {
 test('native mcp server endpoint responds to json-rpc tools/list with all 17 registered tools', function () {
     $user = User::factory()->create();
     $sae = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
         'owner_id' => $user->id,
         'name' => 'Incubateur JSON-RPC',
         'slug' => 'incubateur-jsonrpc-'.uniqid(),
@@ -248,6 +253,7 @@ test('native mcp server endpoint responds to json-rpc tools/list with all 17 reg
 test('native mcp server endpoint executes tools/call for get_sae_metrics', function () {
     $user = User::factory()->create();
     $sae = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
         'owner_id' => $user->id,
         'name' => 'Incubateur MCP Tool Call',
         'slug' => 'incubateur-mcp-tool-call-'.uniqid(),
@@ -277,6 +283,7 @@ test('native mcp server endpoint executes tools/call for get_sae_metrics', funct
 test('native mcp server endpoint responds to prompts/list and resources/list', function () {
     $user = User::factory()->create();
     $sae = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
         'owner_id' => $user->id,
         'name' => 'Incubateur Resources',
         'slug' => 'incubateur-resources-'.uniqid(),
@@ -315,6 +322,7 @@ test('native mcp server endpoint responds to prompts/list and resources/list', f
 test('cohort tools allow creating and updating cohort status with valid enum values', function () {
     $user = User::factory()->create();
     $sae = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
         'owner_id' => $user->id,
         'name' => 'Incubateur Cohortes',
         'slug' => 'incubateur-cohortes-'.uniqid(),
@@ -377,6 +385,7 @@ test('cohort tools allow creating and updating cohort status with valid enum val
 test('mcp integration filament page loads successfully for sae tenant and displays active keys', function () {
     $user = User::factory()->create();
     $sae = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
         'owner_id' => $user->id,
         'name' => 'Teranga Africa SAE',
         'slug' => 'teranga-africa-'.uniqid(),
@@ -399,6 +408,7 @@ test('mcp integration filament page loads successfully for sae tenant and displa
 test('get_application_details tool loads application with evaluations cleanly', function () {
     $user = User::factory()->create();
     $sae = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
         'owner_id' => $user->id,
         'name' => 'Incubateur Eval',
         'slug' => 'incubateur-eval-'.uniqid(),
@@ -456,6 +466,7 @@ test('mcp server hides explicit internal exceptions even when app debug is enabl
 
     $user = User::factory()->create();
     $sae = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
         'owner_id' => $user->id,
         'name' => 'Incubateur Secure Error',
         'slug' => 'incubateur-secure-error-'.uniqid(),
@@ -480,6 +491,7 @@ test('mcp server hides explicit internal exceptions even when app debug is enabl
 test('mcp server exposes generative ui tools and renders interactive mcp app resources', function () {
     $user = User::factory()->create();
     $sae = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
         'owner_id' => $user->id,
         'name' => 'Incubateur GenUI',
         'slug' => 'incubateur-genui-'.uniqid(),
@@ -549,6 +561,7 @@ test('mcp server exposes generative ui tools and renders interactive mcp app res
 test('filament ai copilot page renders interactive widgets and creates programs', function () {
     $user = User::factory()->create();
     $sae = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
         'owner_id' => $user->id,
         'name' => 'SAE Copilot GenUI',
         'slug' => 'sae-copilot-genui-'.uniqid(),
@@ -577,6 +590,7 @@ test('filament ai copilot page renders interactive widgets and creates programs'
 test('mcp server exposes and executes opportunity and program selection grid tools', function () {
     $userA = User::factory()->create();
     $saeA = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
         'owner_id' => $userA->id,
         'name' => 'Incubateur Sahel',
         'slug' => 'incubateur-sahel-'.uniqid(),
@@ -585,6 +599,7 @@ test('mcp server exposes and executes opportunity and program selection grid too
 
     $userB = User::factory()->create();
     $saeB = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
         'owner_id' => $userB->id,
         'name' => 'Incubateur Autre',
         'slug' => 'incubateur-autre-'.uniqid(),

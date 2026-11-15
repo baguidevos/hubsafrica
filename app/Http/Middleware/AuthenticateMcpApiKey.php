@@ -51,6 +51,16 @@ class AuthenticateMcpApiKey
             ], 401, ['WWW-Authenticate' => 'Bearer error="invalid_token"']);
         }
 
+        if (! $apiKey->sae || ! $apiKey->sae->isAiFeatureEnabled('mcp_server_enabled')) {
+            return response()->json([
+                'jsonrpc' => '2.0',
+                'error' => [
+                    'code' => -32003,
+                    'message' => 'Les fonctionnalités IA / MCP sont désactivées pour cette structure.',
+                ],
+            ], 403);
+        }
+
         $apiKey->updateQuietly(['last_used_at' => now()]);
 
         // Définition de l'utilisateur authentifié et liaison de la SAE dans le conteneur

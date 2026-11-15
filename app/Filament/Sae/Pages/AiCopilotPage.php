@@ -29,7 +29,15 @@ class AiCopilotPage extends Page
 
     protected static ?int $navigationSort = 11;
 
-    protected static bool $shouldRegisterNavigation = false;
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Filament::getTenant()?->isAiFeatureEnabled('copilot_enabled') ?? false;
+    }
+
+    public static function canAccess(): bool
+    {
+        return Filament::getTenant()?->isAiFeatureEnabled('copilot_enabled') ?? false;
+    }
 
     public string $prompt = '';
 
