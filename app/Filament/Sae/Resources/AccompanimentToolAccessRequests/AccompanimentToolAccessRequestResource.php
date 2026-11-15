@@ -3,7 +3,7 @@
 namespace App\Filament\Sae\Resources\AccompanimentToolAccessRequests;
 
 use App\Enums\AccompanimentToolRequestStatus;
-use App\Filament\Sae\Clusters\AccompagnementCluster;
+use App\Filament\Sae\Clusters\OutilsCluster;
 use App\Filament\Sae\Resources\AccompanimentToolAccessRequests\Pages\ListAccompanimentToolAccessRequests;
 use App\Models\AccompanimentToolAccessRequest;
 use BackedEnum;
@@ -19,7 +19,7 @@ class AccompanimentToolAccessRequestResource extends Resource
 {
     protected static ?string $model = AccompanimentToolAccessRequest::class;
 
-    protected static ?string $cluster = AccompagnementCluster::class;
+    protected static ?string $cluster = OutilsCluster::class;
 
     protected static ?string $navigationLabel = 'Demandes d\'outils';
 
@@ -29,7 +29,7 @@ class AccompanimentToolAccessRequestResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-key';
 
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 2;
 
     public static function canCreate(): bool
     {

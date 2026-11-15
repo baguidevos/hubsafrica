@@ -2,7 +2,7 @@
 
 namespace App\Filament\Sae\Resources\AccompanimentTools;
 
-use App\Filament\Sae\Clusters\AccompagnementCluster;
+use App\Filament\Sae\Clusters\OutilsCluster;
 use App\Filament\Sae\Resources\AccompanimentTools\Pages\CreateAccompanimentTool;
 use App\Filament\Sae\Resources\AccompanimentTools\Pages\EditAccompanimentTool;
 use App\Filament\Sae\Resources\AccompanimentTools\Pages\ListAccompanimentTools;
@@ -18,7 +18,7 @@ class AccompanimentToolResource extends Resource
 {
     protected static ?string $model = AccompanimentTool::class;
 
-    protected static ?string $cluster = AccompagnementCluster::class;
+    protected static ?string $cluster = OutilsCluster::class;
 
     protected static ?string $navigationLabel = 'Outils partagés';
 
@@ -28,7 +28,7 @@ class AccompanimentToolResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-wrench-screwdriver';
 
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {
