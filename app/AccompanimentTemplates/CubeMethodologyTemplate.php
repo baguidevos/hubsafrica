@@ -259,55 +259,55 @@ class CubeMethodologyTemplate implements AccompanimentTemplateInterface
     public function getOfficialDriveResources(): array
     {
         return [
-            [
-                'title' => 'Formulaire de Diagnostic Initial d\'Entrée (Dossier Téléchargeable)',
-                'description' => 'Dossier Drive contenant le formulaire d\'inscription et de diagnostic préalable pour auditer la maturité du projet.',
-                'url' => 'https://drive.google.com/drive/folders/1g3R5o3Zrf2YF5I7657kiFvAvUyIuLQVg?usp=sharing',
-                'type' => 'FOLDER',
-                'is_official' => true,
-            ],
-            [
-                'title' => 'Modèle de Plan de Travail & Plan d\'Accompagnement Personnalisé (PAS)',
-                'description' => 'Dossier Drive avec le modèle de Plan de travail individualisé et le modèle de Plan d\'Accompagnement Personnalisé (PAS).',
-                'url' => 'https://drive.google.com/drive/folders/1kbEFq9VVkwgKJOSLLCfxMy1jKrckmsFV?usp=sharing',
-                'type' => 'FOLDER',
-                'is_official' => true,
-            ],
-            [
-                'title' => 'Documents Officiels de Formalisation de l\'Accompagnement',
-                'description' => 'Dossier Drive des conventions d\'incubation, chartes d\'engagement et contrats types de la SAEI CUBE.',
-                'url' => 'https://drive.google.com/drive/folders/1OTCCOJRxTTkcrNKdlvqxmtWO_MWIcjb7?usp=sharing',
-                'type' => 'FOLDER',
-                'is_official' => true,
-            ],
-            [
-                'title' => 'Boîte à Outils Complète d\'Accompagnement Entrepreneuriat CUBE',
-                'description' => 'Dossier Drive des différents outils, canevas et guides pratiques utilisés durant tout le déroulement de l\'accompagnement.',
-                'url' => 'https://drive.google.com/drive/folders/1P5mhRplF599oTEFhHAFbrvroYOld2Y5B?usp=sharing',
-                'type' => 'FOLDER',
-                'is_official' => true,
-            ],
-            [
-                'title' => 'Formulaire d\'Évaluation & Scoring de Projet (Par l\'Entrepreneur-e)',
-                'description' => 'Tableur Google Sheets officiel d\'évaluation et de scoring avec justifications et feedback dans la section Feedback Entrepreneur-e.',
-                'url' => 'https://docs.google.com/spreadsheets/d/1e_6lo4AR_82GcnBrgkhkz9y7nsoZvqx/edit?usp=sharing&ouid=101144735494555714130&rtpof=true&sd=true',
-                'type' => 'SPREADSHEET',
-                'is_official' => true,
-            ],
-            [
-                'title' => 'Formulaire de Checking & Pièces de la Virtual Data Room (VDR)',
-                'description' => 'Tableur Google Sheets de vérification rigoureuse de la présence et conformité de l\'ensemble des pièces du Data Room.',
-                'url' => 'https://docs.google.com/spreadsheets/d/1J95rWQjx2aUIcci2AhrS_NAPHICbHIcW/edit?usp=sharing&ouid=101144735494555714130&rtpof=true&sd=true',
-                'type' => 'SPREADSHEET',
-                'is_official' => true,
-            ],
-            [
-                'title' => 'Support de Formation Officiel Levée de Fonds #KPITAL_INVEST',
-                'description' => 'Support de formation complet sur la levée de fonds, les Business Angels, la valorisation d\'entreprise et le pitch deck.',
-                'url' => 'https://drive.google.com/file/d/1eHz9t2cMzULQchZuGVyuew2GCVwH2cEf/view?usp=sharing',
-                'type' => 'DOCUMENT',
-                'is_official' => true,
-            ],
+            // [
+            //     'title' => 'Formulaire de Diagnostic Initial d\'Entrée (Dossier Téléchargeable)',
+            //     'description' => 'Dossier Drive contenant le formulaire d\'inscription et de diagnostic préalable pour auditer la maturité du projet.',
+            //     'url' => 'https://drive.google.com/drive/folders/1g3R5o3Zrf2YF5I7657kiFvAvUyIuLQVg?usp=sharing',
+            //     'type' => 'FOLDER',
+            //     'is_official' => true,
+            // ],
+            // [
+            //     'title' => 'Modèle de Plan de Travail & Plan d\'Accompagnement Personnalisé (PAS)',
+            //     'description' => 'Dossier Drive avec le modèle de Plan de travail individualisé et le modèle de Plan d\'Accompagnement Personnalisé (PAS).',
+            //     'url' => 'https://drive.google.com/drive/folders/1kbEFq9VVkwgKJOSLLCfxMy1jKrckmsFV?usp=sharing',
+            //     'type' => 'FOLDER',
+            //     'is_official' => true,
+            // ],
+            // [
+            //     'title' => 'Documents Officiels de Formalisation de l\'Accompagnement',
+            //     'description' => 'Dossier Drive des conventions d\'incubation, chartes d\'engagement et contrats types de la SAEI CUBE.',
+            //     'url' => 'https://drive.google.com/drive/folders/1OTCCOJRxTTkcrNKdlvqxmtWO_MWIcjb7?usp=sharing',
+            //     'type' => 'FOLDER',
+            //     'is_official' => true,
+            // ],
+            // [
+            //     'title' => 'Boîte à Outils Complète d\'Accompagnement Entrepreneuriat CUBE',
+            //     'description' => 'Dossier Drive des différents outils, canevas et guides pratiques utilisés durant tout le déroulement de l\'accompagnement.',
+            //     'url' => 'https://drive.google.com/drive/folders/1P5mhRplF599oTEFhHAFbrvroYOld2Y5B?usp=sharing',
+            //     'type' => 'FOLDER',
+            //     'is_official' => true,
+            // ],
+            // [
+            //     'title' => 'Formulaire d\'Évaluation & Scoring de Projet (Par l\'Entrepreneur-e)',
+            //     'description' => 'Tableur Google Sheets officiel d\'évaluation et de scoring avec justifications et feedback dans la section Feedback Entrepreneur-e.',
+            //     'url' => 'https://docs.google.com/spreadsheets/d/1e_6lo4AR_82GcnBrgkhkz9y7nsoZvqx/edit?usp=sharing&ouid=101144735494555714130&rtpof=true&sd=true',
+            //     'type' => 'SPREADSHEET',
+            //     'is_official' => true,
+            // ],
+            // [
+            //     'title' => 'Formulaire de Checking & Pièces de la Virtual Data Room (VDR)',
+            //     'description' => 'Tableur Google Sheets de vérification rigoureuse de la présence et conformité de l\'ensemble des pièces du Data Room.',
+            //     'url' => 'https://docs.google.com/spreadsheets/d/1J95rWQjx2aUIcci2AhrS_NAPHICbHIcW/edit?usp=sharing&ouid=101144735494555714130&rtpof=true&sd=true',
+            //     'type' => 'SPREADSHEET',
+            //     'is_official' => true,
+            // ],
+            // [
+            //     'title' => 'Support de Formation Officiel Levée de Fonds #KPITAL_INVEST',
+            //     'description' => 'Support de formation complet sur la levée de fonds, les Business Angels, la valorisation d\'entreprise et le pitch deck.',
+            //     'url' => 'https://drive.google.com/file/d/1eHz9t2cMzULQchZuGVyuew2GCVwH2cEf/view?usp=sharing',
+            //     'type' => 'DOCUMENT',
+            //     'is_official' => true,
+            // ],
         ];
     }
 

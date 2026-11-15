@@ -28,7 +28,7 @@ class AccompanimentMonitoringDashboard extends Page
 
     protected static ?string $navigationLabel = 'Tableau de bord M&E (SAE)';
 
-    protected static ?string $title = 'Tableau de bord de Suivi & Évaluation (SAE / Afric\'innov)';
+    protected static ?string $title = 'Tableau de bord de Suivi & Évaluation (SAE)';
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-presentation-chart-line';
 
