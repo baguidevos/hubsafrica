@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ApplicationStatus;
+use App\Enums\EntrepreneurStatus;
 use App\Enums\ProjectStatus;
 use App\Models\Concerns\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -120,6 +121,10 @@ class Application extends Model
                 'enrolled_at' => now(),
             ]
         );
+
+        if ($this->entrepreneur && $this->entrepreneur->status === EntrepreneurStatus::CANDIDAT) {
+            $this->entrepreneur->update(['status' => EntrepreneurStatus::ACTIVE]);
+        }
 
         if ($this->project) {
             $targetLevelId = $this->program?->level_id ?? $this->project->current_level_id;

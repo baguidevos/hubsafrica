@@ -38,7 +38,9 @@ class KanbanProjects extends BoardPage
     public function board(Board $board): Board
     {
         return $board
-            ->query(fn () => Project::query()->with(['entrepreneur', 'currentLevel']))
+            ->query(fn () => Project::query()
+                ->where('status', '!=', ProjectStatus::CANDIDAT->value)
+                ->with(['entrepreneur', 'currentLevel']))
             ->statusColumn('current_level_id')
             ->columns(function () {
                 $tenant = Filament::getTenant();

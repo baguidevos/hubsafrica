@@ -3,6 +3,7 @@
 namespace App\Livewire\Public;
 
 use App\Enums\ApplicationStatus;
+use App\Enums\EntrepreneurStatus;
 use App\Enums\Gender;
 use App\Enums\ProjectStatus;
 use App\Models\Application;
@@ -234,7 +235,7 @@ class ProgramApplicationWizard extends Component
                     'phone' => $this->phone,
                     'gender' => $this->gender === 'F' ? Gender::F : Gender::M,
                     'city' => $this->city ?: 'Dakar',
-                    'status' => 'ACTIVE',
+                    'status' => EntrepreneurStatus::CANDIDAT,
                 ]);
             }
 
@@ -258,7 +259,7 @@ class ProgramApplicationWizard extends Component
                     'sector' => $this->sector,
                     'pitch' => $this->pitch,
                     'team_size' => $this->team_size ?: 1,
-                    'status' => ProjectStatus::ACTIF,
+                    'status' => ProjectStatus::CANDIDAT,
                     'current_level_id' => $this->program->level_id,
                     'current_level_entered_at' => now(),
                 ]);

@@ -7,6 +7,7 @@ use Filament\Support\Contracts\HasLabel;
 
 enum EntrepreneurStatus: string implements HasColor, HasLabel
 {
+    case CANDIDAT = 'CANDIDAT';
     case ACTIVE = 'ACTIVE';
     case ABANDONNE = 'ABANDONNE';
     case DIPLOME = 'DIPLOME';
@@ -15,6 +16,7 @@ enum EntrepreneurStatus: string implements HasColor, HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
+            self::CANDIDAT => 'Candidat',
             self::ACTIVE => 'Actif',
             self::ABANDONNE => 'Abandonné',
             self::DIPLOME => 'Diplômé',
@@ -25,6 +27,7 @@ enum EntrepreneurStatus: string implements HasColor, HasLabel
     public function getColor(): string|array|null
     {
         return match ($this) {
+            self::CANDIDAT => 'info',
             self::ACTIVE => 'success',
             self::ABANDONNE => 'danger',
             self::DIPLOME => 'emerald',

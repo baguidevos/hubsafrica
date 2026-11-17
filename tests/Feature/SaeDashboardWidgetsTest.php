@@ -2,16 +2,21 @@
 
 use App\Enums\ApplicationStatus;
 use App\Enums\CoachStatus;
+use App\Enums\EntrepreneurStatus;
 use App\Enums\ProgramStatus;
+use App\Enums\ProjectStatus;
 use App\Filament\Sae\Widgets\ApplicationsChartWidget;
 use App\Filament\Sae\Widgets\CoachWorkloadWidget;
 use App\Filament\Sae\Widgets\PerformanceRatesWidget;
 use App\Filament\Sae\Widgets\PortfolioSectorChartWidget;
 use App\Filament\Sae\Widgets\SaeStatsOverviewWidget;
+use App\Livewire\Public\ProgramApplicationWizard;
 use App\Models\Application;
 use App\Models\Coach;
+use App\Models\Cohort;
 use App\Models\Entrepreneur;
 use App\Models\Program;
+use App\Models\Project;
 use App\Models\Sae;
 use App\Models\User;
 use Filament\Facades\Filament;
@@ -131,4 +136,66 @@ test('sae dashboard widgets count both active status variants and exclude draft 
     $rates = collect(app(PerformanceRatesWidget::class)->getFormulesData())->keyBy('key');
     expect($rates['chargeCoach']['tone'])->toBe('emerald')
         ->and($rates['chargeCoach']['den'])->toBe('Coachs actifs (2)');
+});
+
+test('submitted candidate starts as CANDIDAT with portal access and is promoted to ACTIVE on acceptance', function () {
+    $owner = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $owner->id,
+        'name' => 'SAE Sélection',
+        'slug' => 'sae-selection-'.uniqid(),
+    ]);
+
+    $program = Program::create([
+        'sae_id' => $sae->id,
+        'name' => 'Programme Incubation',
+        'status' => ProgramStatus::OUVERT_CANDIDATURES,
+    ]);
+
+    $cohort = Cohort::create([
+        'sae_id' => $sae->id,
+        'program_id' => $program->id,
+        'name' => 'Cohorte 1',
+        'status' => 'OUVERTE',
+    ]);
+
+    Livewire::test(ProgramApplicationWizard::class, ['program' => $program])
+        ->set('first_name', 'Moussa')
+        ->set('last_name', 'Ndiaye')
+        ->set('email', 'moussa.candidat@example.com')
+        ->set('password', 'password123')
+        ->set('phone', '+221770000000')
+        ->set('gender', 'M')
+        ->set('city', 'Dakar')
+        ->set('project_name', 'AgriTech Senegal')
+        ->set('sector', 'Agriculture')
+        ->set('pitch', 'Plateforme agricole')
+        ->set('team_size', 2)
+        ->set('motivation', 'Développer notre solution.')
+        ->call('submitApplication')
+        ->assertHasNoErrors();
+
+    $candidateUser = User::where('email', 'moussa.candidat@example.com')->firstOrFail();
+    $entrepreneur = Entrepreneur::where('user_id', $candidateUser->id)->firstOrFail();
+    $project = Project::where('entrepreneur_id', $entrepreneur->id)->firstOrFail();
+    $application = Application::where('project_id', $project->id)->firstOrFail();
+
+    expect($entrepreneur->status)->toBe(EntrepreneurStatus::CANDIDAT)
+        ->and($project->status)->toBe(ProjectStatus::CANDIDAT)
+        ->and($application->status)->toBe(ApplicationStatus::SOUMISE)
+        ->and($candidateUser->canAccessPanel(Filament::getPanel('entrepreneur')))->toBeTrue()
+        ->and($candidateUser->getTenants(Filament::getPanel('entrepreneur'))->pluck('id'))->toContain($sae->id);
+
+    // Le dashboard SAE ne doit pas compter le candidat dans les projets/entrepreneurs actifs
+    $this->actingAs($owner);
+    Filament::setTenant($sae);
+
+    expect(Entrepreneur::where('status', EntrepreneurStatus::ACTIVE->value)->count())->toBe(0)
+        ->and(Project::where('status', ProjectStatus::ACTIF->value)->count())->toBe(0);
+
+    // Acceptation par le jury -> promotion automatique en ACTIVE / ACTIF
+    $application->update(['cohort_id' => $cohort->id, 'status' => ApplicationStatus::ACCEPTEE]);
+
+    expect($entrepreneur->fresh()->status)->toBe(EntrepreneurStatus::ACTIVE)
+        ->and($project->fresh()->status)->toBe(ProjectStatus::ACTIF);
 });

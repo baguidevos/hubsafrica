@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Enums\ApplicationStatus;
 use App\Enums\DocumentCategory;
+use App\Enums\EntrepreneurStatus;
 use App\Enums\FormType;
 use App\Enums\Gender;
 use App\Enums\ProjectStatus;
@@ -122,7 +123,7 @@ class HandleCandidatureSubmission
                     'phone' => $data['phone'] ?? '',
                     'gender' => $genderValue,
                     'territory' => $data['city'] ?? $data['territory'] ?? 'Dakar',
-                    'status' => 'ACTIVE',
+                    'status' => EntrepreneurStatus::CANDIDAT,
                 ]);
             } else {
                 $updates = [];
@@ -140,6 +141,13 @@ class HandleCandidatureSubmission
                 }
             }
 
+            if ($saeId && ! $user->saes()->where('saes.id', $saeId)->exists()) {
+                $user->saes()->attach($saeId, [
+                    'role' => 'ENTREPRENEUR',
+                    'status' => 'ACTIVE',
+                ]);
+            }
+
             // 4. Création ou association du Projet (Startup)
             $projectName = $data['project_name'] ?? ('Projet '.$entrepreneur->first_name);
 
@@ -155,7 +163,7 @@ class HandleCandidatureSubmission
                     'sector' => $data['sector'] ?? 'Général',
                     'pitch' => $data['pitch'] ?? '',
                     'team_size' => (int) ($data['team_size'] ?? 1) ?: 1,
-                    'status' => ProjectStatus::ACTIF,
+                    'status' => ProjectStatus::CANDIDAT,
                     'current_level_id' => $program?->level_id,
                     'current_level_entered_at' => now(),
                 ]);
