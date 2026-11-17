@@ -29,14 +29,16 @@ class CoachWorkloadWidget extends Widget
             ->get();
 
         return $coaches->map(function ($c) {
-            $capacite = $c->capacity ?: 5;
+            $capacite = $c->max_capacity ?: 5;
             $actifs = $c->assignments_count;
             $pct = $capacite > 0 ? min(100, round(($actifs / $capacite) * 100)) : 0;
 
             return [
                 'id' => $c->id,
                 'name' => $c->name,
-                'specialty' => $c->specialty ?: 'Généraliste',
+                'specialty' => is_array($c->specialties) && ! empty($c->specialties)
+                    ? implode(', ', $c->specialties)
+                    : 'Généraliste',
                 'actifs' => $actifs,
                 'capacite' => $capacite,
                 'pct' => $pct,

@@ -4,19 +4,23 @@ namespace App\Filament\Sae\Widgets;
 
 use App\Enums\ApplicationStatus;
 use App\Enums\CoachAssignmentStatus;
+use App\Enums\CoachingSessionStatus;
 use App\Enums\CoachStatus;
+use App\Enums\CohortStatus;
 use App\Enums\DeliverableSubmissionStatus;
 use App\Enums\DeliverableTarget;
+use App\Enums\FundingStatus;
 use App\Enums\ProjectStatus;
 use App\Models\Application;
 use App\Models\Coach;
 use App\Models\CoachAssignment;
+use App\Models\CoachingSession;
 use App\Models\Cohort;
 use App\Models\DeliverableDefinition;
 use App\Models\DeliverableSubmission;
 use App\Models\Enrollment;
+use App\Models\FundingRecord;
 use App\Models\Project;
-use App\Models\ProjectLevelHistory;
 use Filament\Widgets\Widget;
 
 class PerformanceRatesWidget extends Widget
@@ -29,20 +33,28 @@ class PerformanceRatesWidget extends Widget
 
     public function getFormulesData(): array
     {
-        // 1. Taux d'admission
+        // 1. Taux d'admission (décisions rendues hors brouillons et retraits)
         $examinees = Application::whereNotNull('reviewed_at')->count();
         if ($examinees === 0) {
-            $examinees = Application::whereNotIn('status', [
-                ApplicationStatus::BROUILLON->value,
-                ApplicationStatus::RETIREE->value,
+            $examinees = Application::whereIn('status', [
+                ApplicationStatus::ACCEPTEE->value,
+                ApplicationStatus::REFUSEE->value,
+                ApplicationStatus::EN_ATTENTE->value,
+                ApplicationStatus::REORIENTEE->value,
             ])->count();
         }
         $acceptees = Application::where('status', ApplicationStatus::ACCEPTEE->value)->count();
-        $tauxAdmission = $examinees > 0 ? round(($acceptees / $examinees) * 100, 1) : 0;
+        $tauxAdmission = $examinees > 0 ? min(100, round(($acceptees / $examinees) * 100, 1)) : 0;
 
-        // 2. Taux de remplissage
-        $integres = Enrollment::count();
-        $capacite = (int) Cohort::sum('capacity');
+        // 2. Taux de remplissage des cohortes actives (OUVERTE | EN_COURS)
+        $activeCohortIds = Cohort::whereIn('status', [
+            CohortStatus::OUVERTE->value,
+            CohortStatus::EN_COURS->value,
+        ])->pluck('id');
+        $capacite = (int) Cohort::whereIn('id', $activeCohortIds)->sum('capacity');
+        $integres = $activeCohortIds->isNotEmpty()
+            ? Enrollment::whereIn('cohort_id', $activeCohortIds)->where('status', 'ACTIF')->count()
+            : 0;
         $tauxRemplissage = $capacite > 0 ? min(100, round(($integres / $capacite) * 100, 1)) : 0;
 
         // 3. Charge par coach
@@ -53,14 +65,21 @@ class PerformanceRatesWidget extends Widget
             ? 'rose'
             : ($chargeCoach <= 5 ? 'emerald' : ($chargeCoach <= 8 ? 'amber' : 'rose'));
 
-        // 4. Taux de dépôt
+        // 4. Réalisation des séances de coaching (hors annulées)
+        $seancesPrevues = CoachingSession::where('status', '!=', CoachingSessionStatus::ANNULEE->value)->count();
+        $seancesRealisees = CoachingSession::where('status', CoachingSessionStatus::REALISEE->value)->count();
+        $tauxRealisationSeances = $seancesPrevues > 0 ? round(($seancesRealisees / $seancesPrevues) * 100, 1) : 0;
+
+        // 5. Taux de dépôt des livrables (sur projets actifs)
         $projetsActifs = Project::where('status', ProjectStatus::ACTIF->value)->count();
-        $depots = DeliverableSubmission::where('status', '!=', DeliverableSubmissionStatus::BROUILLON->value)->count();
+        $depots = DeliverableSubmission::where('status', '!=', DeliverableSubmissionStatus::BROUILLON->value)
+            ->whereHas('project', fn ($q) => $q->where('status', ProjectStatus::ACTIF->value))
+            ->count();
         $startupDefsCount = DeliverableDefinition::where('target_type', DeliverableTarget::STARTUP->value)->count();
         $attendus = $startupDefsCount > 0 ? ($projetsActifs * $startupDefsCount) : 0;
         $tauxDepot = $attendus > 0 ? min(100, round(($depots / $attendus) * 100, 1)) : 0;
 
-        // 5. Taux de validation
+        // 6. Taux de validation des livrables
         $evalues = DeliverableSubmission::whereIn('status', [
             DeliverableSubmissionStatus::VALIDEE->value,
             DeliverableSubmissionStatus::VALIDE->value,
@@ -74,21 +93,16 @@ class PerformanceRatesWidget extends Widget
         ])->count();
         $tauxValidation = $evalues > 0 ? round(($valides / $evalues) * 100, 1) : 0;
 
-        // 6. Taux de resoumission
-        $retours = DeliverableSubmission::whereIn('status', [
-            DeliverableSubmissionStatus::REJETEE->value,
-            DeliverableSubmissionStatus::NON_VALIDE->value,
-            DeliverableSubmissionStatus::CORRECTION_DEMANDEE->value,
-        ])->count();
-        $resoumis = DeliverableSubmission::where('version', '>', 1)->count();
-        $tauxResoumission = $retours > 0 ? min(100, round(($resoumis / $retours) * 100, 1)) : 0;
-
-        // 7. Taux de progression
-        $eligibles = $projetsActifs;
-        $promus = ProjectLevelHistory::whereHas('project', function ($q) {
-            $q->where('status', ProjectStatus::ACTIF->value);
-        })->distinct('project_id')->count('project_id');
-        $tauxProgression = $eligibles > 0 ? min(100, round(($promus / $eligibles) * 100, 1)) : 0;
+        // 7. Couverture des financements (obtenus / recherchés)
+        $besoinsFinancement = (float) FundingRecord::sum('amount_sought');
+        $obtenusFinancement = (float) FundingRecord::whereIn('status', [
+            FundingStatus::ACCORDE->value,
+            FundingStatus::DECAISSE->value,
+            FundingStatus::INVESTI->value,
+        ])->sum('amount_obtained');
+        $tauxCouvertureFinancement = $besoinsFinancement > 0
+            ? min(100, round(($obtenusFinancement / $besoinsFinancement) * 100, 1))
+            : 0;
 
         return [
             [
@@ -98,16 +112,16 @@ class PerformanceRatesWidget extends Widget
                 'raw' => $tauxAdmission,
                 'tone' => $this->rateTone($tauxAdmission),
                 'num' => "Candidatures acceptées ({$acceptees})",
-                'den' => "Candidatures examinées ({$examinees}) × 100",
+                'den' => "Décisions rendues ({$examinees}) × 100",
             ],
             [
                 'key' => 'remplissage',
-                'label' => 'Taux de remplissage',
+                'label' => 'Remplissage cohortes',
                 'val' => $tauxRemplissage.' %',
                 'raw' => $tauxRemplissage,
                 'tone' => $this->rateTone($tauxRemplissage),
-                'num' => "Effectif intégré ({$integres})",
-                'den' => $capacite > 0 ? "Capacité prévue ({$capacite}) × 100" : 'Capacité non définie (0)',
+                'num' => "Enrôlés actifs ({$integres})",
+                'den' => $capacite > 0 ? "Capacité ouverte/en cours ({$capacite}) × 100" : 'Capacité non définie (0)',
             ],
             [
                 'key' => 'chargeCoach',
@@ -117,6 +131,15 @@ class PerformanceRatesWidget extends Widget
                 'tone' => $chargeTone,
                 'num' => "Accompagnements ({$accompagnements})",
                 'den' => "Coachs actifs ({$coachsActifs})",
+            ],
+            [
+                'key' => 'seances',
+                'label' => 'Réalisation séances',
+                'val' => $tauxRealisationSeances.' %',
+                'raw' => $tauxRealisationSeances,
+                'tone' => $this->rateTone($tauxRealisationSeances),
+                'num' => "Séances réalisées ({$seancesRealisees})",
+                'den' => "Séances planifiées ({$seancesPrevues}) × 100",
             ],
             [
                 'key' => 'depot',
@@ -137,22 +160,15 @@ class PerformanceRatesWidget extends Widget
                 'den' => "Livrables évalués ({$evalues}) × 100",
             ],
             [
-                'key' => 'resoumission',
-                'label' => 'Taux de resoumission',
-                'val' => $tauxResoumission.' %',
-                'raw' => $tauxResoumission,
-                'tone' => $this->rateTone($tauxResoumission),
-                'num' => "Livrables redéposés ({$resoumis})",
-                'den' => "Livrables rejetés ({$retours}) × 100",
-            ],
-            [
-                'key' => 'progression',
-                'label' => 'Taux de progression',
-                'val' => $tauxProgression.' %',
-                'raw' => $tauxProgression,
-                'tone' => $this->rateTone($tauxProgression),
-                'num' => "Projets promus ({$promus})",
-                'den' => "Projets actifs ({$eligibles}) × 100",
+                'key' => 'financement',
+                'label' => 'Couverture financement',
+                'val' => $tauxCouvertureFinancement.' %',
+                'raw' => $tauxCouvertureFinancement,
+                'tone' => $this->rateTone($tauxCouvertureFinancement),
+                'num' => 'Obtenus ('.number_format($obtenusFinancement, 0, ',', ' ').')',
+                'den' => $besoinsFinancement > 0
+                    ? 'Recherchés ('.number_format($besoinsFinancement, 0, ',', ' ').') × 100'
+                    : 'Besoins non renseignés (0)',
             ],
         ];
     }

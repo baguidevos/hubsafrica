@@ -36,7 +36,8 @@ test('sae dashboard widgets do not fabricate fallback data when empty', function
     Livewire::test(SaeStatsOverviewWidget::class)
         ->assertSuccessful()
         ->assertSee('Entrepreneurs accompagnés')
-        ->assertSee('Accordés, décaissés et investis');
+        ->assertSee('Financements décaissés')
+        ->assertSee('accordés en cours');
 
     $rates = app(PerformanceRatesWidget::class)->getFormulesData();
     $byKey = collect($rates)->keyBy('key');
@@ -44,6 +45,8 @@ test('sae dashboard widgets do not fabricate fallback data when empty', function
     expect($byKey['validation']['val'])->toBe('0 %')
         ->and($byKey['remplissage']['val'])->toBe('0 %')
         ->and($byKey['remplissage']['den'])->toBe('Capacité non définie (0)')
+        ->and($byKey['seances']['val'])->toBe('0 %')
+        ->and($byKey['financement']['val'])->toBe('0 %')
         ->and($byKey['chargeCoach']['tone'])->toBe('rose');
 
     $sectorChart = new class extends PortfolioSectorChartWidget
