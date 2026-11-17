@@ -32,17 +32,26 @@ class SaeStatsOverviewWidget extends BaseWidget
 
     protected function getStats(): array
     {
-        // 1. Portefeuille & Inclusion
-        $entrepreneursActifs = Entrepreneur::where('status', EntrepreneurStatus::ACTIVE->value)->count();
-        $entrepreneursDiplomes = Entrepreneur::where('status', EntrepreneurStatus::DIPLOME->value)->count();
-        $porteeEntrepreneurs = Entrepreneur::whereIn('status', [
-            EntrepreneurStatus::ACTIVE->value,
-            EntrepreneurStatus::DIPLOME->value,
-        ])->count();
-        $femmesEntrepreneurs = Entrepreneur::whereIn('status', [
-            EntrepreneurStatus::ACTIVE->value,
-            EntrepreneurStatus::DIPLOME->value,
-        ])->where('gender', 'F')->count();
+        // 1. Portefeuille & Inclusion (exclut les dossiers sans projet ni enrôlement)
+        $accompaniedEntrepreneurs = Entrepreneur::query()
+            ->where(fn ($q) => $q->whereHas('projects')->orWhereHas('enrollments'));
+
+        $entrepreneursActifs = (clone $accompaniedEntrepreneurs)
+            ->where('status', EntrepreneurStatus::ACTIVE->value)
+            ->count();
+        $entrepreneursDiplomes = (clone $accompaniedEntrepreneurs)
+            ->where('status', EntrepreneurStatus::DIPLOME->value)
+            ->count();
+        $porteeEntrepreneurs = (clone $accompaniedEntrepreneurs)
+            ->whereIn('status', [
+                EntrepreneurStatus::ACTIVE->value,
+                EntrepreneurStatus::DIPLOME->value,
+            ])->count();
+        $femmesEntrepreneurs = (clone $accompaniedEntrepreneurs)
+            ->whereIn('status', [
+                EntrepreneurStatus::ACTIVE->value,
+                EntrepreneurStatus::DIPLOME->value,
+            ])->where('gender', 'F')->count();
         $tauxFeminisation = $porteeEntrepreneurs > 0
             ? round(($femmesEntrepreneurs / $porteeEntrepreneurs) * 100)
             : 0;

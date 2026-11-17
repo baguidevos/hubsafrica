@@ -3,6 +3,7 @@
 namespace App\Filament\Entrepreneur\Widgets;
 
 use App\Enums\ProjectStatus;
+use App\Filament\Entrepreneur\Resources\Projects\ProjectResource;
 use App\Models\CoachingSession;
 use App\Models\DeliverableSubmission;
 use App\Models\FundingRecord;
@@ -68,10 +69,11 @@ class EntrepreneurStatsOverviewWidget extends BaseWidget
         }
 
         return [
-            Stat::make('Mon projet', $project?->name ?: 'En attente')
-                ->description('Statut : '.$statusLabel)
+            Stat::make('Mon projet', $project?->name ?: 'À compléter')
+                ->description($project ? 'Statut : '.$statusLabel : 'Cliquez ici pour créer votre fiche projet')
                 ->descriptionIcon($statusIcon)
-                ->color($statusColor),
+                ->color($project ? $statusColor : 'warning')
+                ->url(! $project ? ProjectResource::getUrl('create') : null),
 
             Stat::make('Jalon / Niveau', $niveau)
                 ->description('Parcours d\'incubation')

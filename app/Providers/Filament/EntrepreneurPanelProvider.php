@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Http\Middleware\EnsureEntrepreneurHasProject;
 use App\Models\Sae;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -72,6 +73,9 @@ class EntrepreneurPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->tenantMiddleware([
+                EnsureEntrepreneurHasProject::class,
             ]);
     }
 }

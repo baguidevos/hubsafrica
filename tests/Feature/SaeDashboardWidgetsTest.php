@@ -5,21 +5,26 @@ use App\Enums\CoachStatus;
 use App\Enums\EntrepreneurStatus;
 use App\Enums\ProgramStatus;
 use App\Enums\ProjectStatus;
+use App\Filament\Sae\Resources\EntrepreneurInvitations\Pages\CreateEntrepreneurInvitation;
+use App\Filament\Sae\Resources\Entrepreneurs\Pages\ListEntrepreneurs;
 use App\Filament\Sae\Widgets\ApplicationsChartWidget;
 use App\Filament\Sae\Widgets\CoachWorkloadWidget;
 use App\Filament\Sae\Widgets\PerformanceRatesWidget;
 use App\Filament\Sae\Widgets\PortfolioSectorChartWidget;
 use App\Filament\Sae\Widgets\SaeStatsOverviewWidget;
 use App\Livewire\Public\ProgramApplicationWizard;
+use App\Mail\CompleteProjectCohortInviteMail;
 use App\Models\Application;
 use App\Models\Coach;
 use App\Models\Cohort;
+use App\Models\Enrollment;
 use App\Models\Entrepreneur;
 use App\Models\Program;
 use App\Models\Project;
 use App\Models\Sae;
 use App\Models\User;
 use Filament\Facades\Filament;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
 
 test('sae dashboard widgets do not fabricate fallback data when empty', function () {
@@ -317,4 +322,124 @@ test('cohort public registration creates entrepreneur with CANDIDAT status and k
 
     expect($entrepreneur->status)->toBe(EntrepreneurStatus::CANDIDAT)
         ->and($user->saes()->where('saes.id', $sae->id)->exists())->toBeTrue();
+});
+
+test('sae stats exclude entrepreneurs without project or enrollment and bulk action invites and enrolls them', function () {
+    Mail::fake();
+
+    $owner = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $owner->id,
+        'name' => 'SAE Bulk',
+        'slug' => 'sae-bulk-'.uniqid(),
+    ]);
+
+    $program = Program::create([
+        'sae_id' => $sae->id,
+        'name' => 'Programme Bulk',
+        'status' => ProgramStatus::ACTIF,
+    ]);
+
+    $cohort = Cohort::create([
+        'sae_id' => $sae->id,
+        'program_id' => $program->id,
+        'name' => 'Cohorte Relance',
+        'status' => 'OUVERTE',
+    ]);
+
+    $orphanUser = User::factory()->create();
+    $orphanEntrepreneur = Entrepreneur::create([
+        'user_id' => $orphanUser->id,
+        'sae_id' => $sae->id,
+        'first_name' => 'Oumar',
+        'last_name' => 'Diop',
+        'email' => 'oumar@example.com',
+        'status' => EntrepreneurStatus::ACTIVE,
+    ]);
+
+    $this->actingAs($owner);
+    Filament::setTenant($sae);
+    Filament::setCurrentPanel(Filament::getPanel('sae'));
+
+    Livewire::test(SaeStatsOverviewWidget::class)
+        ->assertSuccessful()
+        ->assertSeeInOrder(['Entrepreneurs accompagnés', '0']);
+
+    Livewire::test(ListEntrepreneurs::class)
+        ->callTableBulkAction('invite_complete_project', [$orphanEntrepreneur], [
+            'cohort_id' => $cohort->id,
+            'custom_message' => 'Merci de remplir votre fiche projet.',
+        ])
+        ->assertHasNoTableActionErrors();
+
+    expect(Enrollment::where('cohort_id', $cohort->id)->where('entrepreneur_id', $orphanEntrepreneur->id)->exists())->toBeTrue();
+
+    Mail::assertQueued(CompleteProjectCohortInviteMail::class, function (CompleteProjectCohortInviteMail $mail) use ($orphanEntrepreneur, $cohort) {
+        return $mail->hasTo($orphanEntrepreneur->email)
+            && $mail->cohort->id === $cohort->id;
+    });
+});
+
+test('entrepreneur invitation form requires cohort_id', function () {
+    $owner = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $owner->id,
+        'name' => 'SAE Invite',
+        'slug' => 'sae-invite-'.uniqid(),
+    ]);
+
+    $this->actingAs($owner);
+    Filament::setTenant($sae);
+    Filament::setCurrentPanel(Filament::getPanel('sae'));
+
+    Livewire::test(CreateEntrepreneurInvitation::class)
+        ->fillForm([
+            'email' => 'nouveau@example.com',
+            'cohort_id' => null,
+        ])
+        ->call('create')
+        ->assertHasFormErrors(['cohort_id' => 'required']);
+});
+
+test('entrepreneur without project is redirected to dashboard when accessing other portal menus', function () {
+    $owner = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $owner->id,
+        'name' => 'SAE Portal Guard',
+        'slug' => 'sae-portal-guard-'.uniqid(),
+    ]);
+
+    $user = User::factory()->create();
+    $user->saes()->attach($sae->id, [
+        'role' => 'ENTREPRENEUR',
+        'status' => 'ACTIVE',
+    ]);
+    $entrepreneur = Entrepreneur::create([
+        'user_id' => $user->id,
+        'sae_id' => $sae->id,
+        'first_name' => 'Mariama',
+        'last_name' => 'Diallo',
+        'email' => $user->email,
+        'status' => EntrepreneurStatus::ACTIVE,
+    ]);
+
+    $this->actingAs($user);
+
+    $dashboardUrl = route('filament.entrepreneur.pages.dashboard', ['tenant' => $sae]);
+    $createProjectUrl = route('filament.entrepreneur.resources.projects.create', ['tenant' => $sae]);
+    $applicationsUrl = route('filament.entrepreneur.resources.applications.index', ['tenant' => $sae]);
+
+    $this->get($dashboardUrl)->assertOk();
+    $this->get($createProjectUrl)->assertOk();
+    $this->get($applicationsUrl)->assertRedirect($dashboardUrl);
+
+    // Une fois le projet créé, l'accès aux autres menus est débloqué
+    Project::create([
+        'sae_id' => $sae->id,
+        'entrepreneur_id' => $entrepreneur->id,
+        'name' => 'Mon Projet Validé',
+        'status' => ProjectStatus::ACTIF,
+    ]);
+
+    $this->get($applicationsUrl)->assertOk();
 });

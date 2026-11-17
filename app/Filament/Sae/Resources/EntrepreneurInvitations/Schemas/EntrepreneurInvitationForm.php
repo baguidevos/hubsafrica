@@ -51,7 +51,7 @@ class EntrepreneurInvitationForm
                     ->description('Vous pouvez directement intégrer l\'entrepreneur dans une cohorte active de votre structure.')
                     ->schema([
                         Select::make('cohort_id')
-                            ->label('Cohorte / Promotion en cours (Optionnel)')
+                            ->label('Cohorte / Promotion de rattachement')
                             ->relationship(
                                 name: 'cohort',
                                 titleAttribute: 'name',
@@ -68,9 +68,10 @@ class EntrepreneurInvitationForm
                                 }
                             )
                             ->getOptionLabelFromRecordUsing(fn (Cohort $record) => "{$record->name}".($record->program ? " ({$record->program->name})" : ''))
+                            ->required()
                             ->searchable()
                             ->preload()
-                            ->helperText('Si sélectionnée, l\'entrepreneur sera automatiquement admis et inscrit dans cette cohorte dès l\'acceptation de son invitation.'),
+                            ->helperText('Obligatoire : l\'entrepreneur sera automatiquement admis et inscrit dans cette cohorte dès l\'acceptation de son invitation.'),
 
                         TextInput::make('project_name')
                             ->label('Nom du projet ou de la startup (Optionnel)')
