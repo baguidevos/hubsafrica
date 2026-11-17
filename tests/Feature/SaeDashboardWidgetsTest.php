@@ -36,6 +36,7 @@ test('sae dashboard widgets do not fabricate fallback data when empty', function
     Livewire::test(SaeStatsOverviewWidget::class)
         ->assertSuccessful()
         ->assertSee('Entrepreneurs accompagnés')
+        ->assertSee('Appels à candidatures')
         ->assertSee('Financements décaissés')
         ->assertSee('accordés en cours');
 
@@ -279,4 +280,41 @@ test('maintenance route for fix-candidate-stats requires authorization and runs 
     $this->get("/maintenance/fix-candidate-stats?key={$secret}&dry_run=1")
         ->assertOk()
         ->assertSee('SIMULATION SAE:FIX-CANDIDATE-STATS');
+});
+
+test('cohort public registration creates entrepreneur with CANDIDAT status and keeps portal access', function () {
+    $owner = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $owner->id,
+        'name' => 'SAE Cohorte',
+        'slug' => 'sae-cohorte-'.uniqid(),
+    ]);
+
+    $program = Program::create([
+        'sae_id' => $sae->id,
+        'name' => 'Programme Cohorte',
+        'status' => ProgramStatus::OUVERT_CANDIDATURES,
+    ]);
+
+    $cohort = Cohort::create([
+        'sae_id' => $sae->id,
+        'program_id' => $program->id,
+        'name' => 'Cohorte Publique',
+        'status' => 'OUVERTE',
+    ]);
+
+    $this->post(route('public.cohort.register', ['id' => $cohort->id]), [
+        'first_name' => 'Aissatou',
+        'last_name' => 'Ba',
+        'email' => 'aissatou.cohorte@example.com',
+        'phone' => '+221770001122',
+        'password' => 'password123',
+        'password_confirmation' => 'password123',
+    ])->assertRedirect();
+
+    $user = User::where('email', 'aissatou.cohorte@example.com')->firstOrFail();
+    $entrepreneur = Entrepreneur::where('user_id', $user->id)->firstOrFail();
+
+    expect($entrepreneur->status)->toBe(EntrepreneurStatus::CANDIDAT)
+        ->and($user->saes()->where('saes.id', $sae->id)->exists())->toBeTrue();
 });

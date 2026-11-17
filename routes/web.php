@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ImpersonationController;
 use App\Http\Controllers\Api\McpOAuthController;
 use App\Http\Controllers\CoachInvitationController;
 use App\Http\Controllers\DevLoginController;
@@ -79,6 +80,12 @@ Route::get('/register/coach', function (Request $request) {
     return $token
         ? redirect()->route('invitation.join', ['token' => $token])
         : redirect()->route('public.coach.join');
+});
+
+// Accès direct et sécurisé au portail entrepreneur pour le Super Admin (Impersonation)
+Route::middleware(['auth'])->prefix('auth/impersonate')->name('admin.impersonate.')->group(function () {
+    Route::get('/entrepreneur/{entrepreneur}', [ImpersonationController::class, 'impersonateEntrepreneur'])->name('entrepreneur');
+    Route::get('/stop', [ImpersonationController::class, 'stopImpersonating'])->name('stop');
 });
 
 // Redirection conviviale pour l'espace Coach/Mentor

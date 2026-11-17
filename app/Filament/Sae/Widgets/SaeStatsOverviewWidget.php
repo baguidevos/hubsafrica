@@ -55,6 +55,10 @@ class SaeStatsOverviewWidget extends BaseWidget
         $projetsCandidats = Project::where('status', ProjectStatus::CANDIDAT->value)->count();
 
         $programmesActifs = Program::whereIn('status', [ProgramStatus::ACTIF->value, ProgramStatus::LANCE->value])->count();
+        $programmesEnAppel = Program::where('status', ProgramStatus::OUVERT_CANDIDATURES->value)->count();
+        $candidaturesEnAppel = Application::where('status', '!=', ApplicationStatus::BROUILLON->value)
+            ->whereHas('program', fn ($q) => $q->where('status', ProgramStatus::OUVERT_CANDIDATURES->value))
+            ->count();
         $cohortesEnCours = Cohort::where('status', CohortStatus::EN_COURS->value)->count();
         $cohortesOuvertes = Cohort::where('status', CohortStatus::OUVERTE->value)->count();
 
@@ -109,7 +113,7 @@ class SaeStatsOverviewWidget extends BaseWidget
                 ->color('primary'),
 
             Stat::make('Projets en incubation', $projetsActifs)
-                ->description("{$emploisDirects} emplois · {$projetsCandidats} candidat(s)")
+                ->description("{$projetsCandidats} candidat(s)")
                 ->descriptionIcon('heroicon-m-light-bulb')
                 ->color('primary'),
 
@@ -117,6 +121,11 @@ class SaeStatsOverviewWidget extends BaseWidget
                 ->description("{$cohortesEnCours} cohorte(s) en cours · {$cohortesOuvertes} ouverte(s)")
                 ->descriptionIcon('heroicon-m-rectangle-stack')
                 ->color('info'),
+
+            Stat::make('Appels à candidatures', $programmesEnAppel)
+                ->description("{$candidaturesEnAppel} candidature(s) · {$cohortesOuvertes} cohorte(s) ouverte(s)")
+                ->descriptionIcon('heroicon-m-megaphone')
+                ->color($programmesEnAppel > 0 ? 'primary' : 'gray'),
 
             Stat::make('Candidatures à traiter', $candidaturesATraiter)
                 ->description("{$candidaturesRecues} reçues · {$admissions} admise(s)")

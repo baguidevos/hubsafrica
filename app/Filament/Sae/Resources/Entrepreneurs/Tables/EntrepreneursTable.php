@@ -26,6 +26,7 @@ class EntrepreneursTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->deferLoading()
             ->columns([
                 TextColumn::make('full_name')
                     ->label('Entrepreneur')

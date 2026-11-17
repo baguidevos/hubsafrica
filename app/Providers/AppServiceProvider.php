@@ -86,6 +86,16 @@ class AppServiceProvider extends ServiceProvider
             PanelsRenderHook::BODY_END,
             fn () => view('filament.hooks.livewire-error-handler'),
         );
+
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::TOPBAR_START,
+            fn () => view('filament.hooks.impersonation-banner'),
+        );
+
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::PAGE_START,
+            fn () => view('filament.hooks.impersonation-banner'),
+        );
     }
 
     /**

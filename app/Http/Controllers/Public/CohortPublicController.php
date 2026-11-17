@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Public;
 
 use App\Enums\CohortStatus;
+use App\Enums\EntrepreneurStatus;
 use App\Http\Controllers\Controller;
 use App\Mail\FounderWelcomeMail;
 use App\Models\Cohort;
@@ -120,7 +121,7 @@ class CohortPublicController extends Controller
                 'last_name' => $validated['last_name'],
                 'email' => $validated['email'],
                 'phone' => $validated['phone'],
-                'status' => 'ACTIVE',
+                'status' => EntrepreneurStatus::CANDIDAT,
             ]);
 
             // Rattacher l'utilisateur à la SAE avec le rôle ENTREPRENEUR si non présent
