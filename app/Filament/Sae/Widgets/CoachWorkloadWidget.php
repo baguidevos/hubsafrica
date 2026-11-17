@@ -2,6 +2,8 @@
 
 namespace App\Filament\Sae\Widgets;
 
+use App\Enums\CoachAssignmentStatus;
+use App\Enums\CoachStatus;
 use App\Models\Coach;
 use Filament\Widgets\Widget;
 
@@ -19,9 +21,10 @@ class CoachWorkloadWidget extends Widget
     public function getCoachWorkloads(): array
     {
         $coaches = Coach::withCount(['assignments' => function ($q) {
-            $q->where('status', 'ACTIF');
+            $q->where('status', CoachAssignmentStatus::ACTIF->value);
         }])
-            ->where('status', 'ACTIF')
+            ->whereIn('status', [CoachStatus::ACTIF->value, CoachStatus::ACTIVE->value])
+            ->orderByDesc('assignments_count')
             ->limit(6)
             ->get();
 

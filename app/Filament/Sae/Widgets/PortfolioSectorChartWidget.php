@@ -19,21 +19,13 @@ class PortfolioSectorChartWidget extends ChartWidget
     protected function getData(): array
     {
         $sectors = Project::whereNotNull('sector')
+            ->where('sector', '!=', '')
             ->selectRaw('sector, count(*) as count')
             ->groupBy('sector')
             ->orderByDesc('count')
             ->limit(6)
             ->pluck('count', 'sector')
             ->toArray();
-
-        if (empty($sectors)) {
-            $sectors = [
-                'Agriculture' => 3,
-                'Fintech' => 2,
-                'Énergie' => 1,
-                'Santé' => 1,
-            ];
-        }
 
         $colors = ['#0d9488', '#f59e0b', '#8b5cf6', '#16a34a', '#e11d48', '#0ea5e9'];
 

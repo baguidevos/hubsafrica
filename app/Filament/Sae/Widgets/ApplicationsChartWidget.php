@@ -2,6 +2,7 @@
 
 namespace App\Filament\Sae\Widgets;
 
+use App\Enums\ApplicationStatus;
 use App\Models\Application;
 use Filament\Widgets\ChartWidget;
 
@@ -31,18 +32,18 @@ class ApplicationsChartWidget extends ChartWidget
             $endOfMonth = $date->copy()->endOfMonth();
 
             $months[] = $monthLabel;
-            $recues[] = Application::whereBetween('created_at', [$startOfMonth, $endOfMonth])->count();
-            $admises[] = Application::where('status', 'ACCEPTEE')
+            $recues[] = Application::where('status', '!=', ApplicationStatus::BROUILLON->value)
                 ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
                 ->count();
-        }
-
-        // Si la base est encore jeune et vide sur les 6 mois, injecter les valeurs actuelles
-        if (array_sum($recues) === 0) {
-            $total = Application::count();
-            $adm = Application::where('status', 'ACCEPTEE')->count();
-            $recues[5] = max($total, 1);
-            $admises[5] = max($adm, 0);
+            $admises[] = Application::where('status', ApplicationStatus::ACCEPTEE->value)
+                ->where(function ($q) use ($startOfMonth, $endOfMonth) {
+                    $q->whereBetween('reviewed_at', [$startOfMonth, $endOfMonth])
+                        ->orWhere(function ($q2) use ($startOfMonth, $endOfMonth) {
+                            $q2->whereNull('reviewed_at')
+                                ->whereBetween('updated_at', [$startOfMonth, $endOfMonth]);
+                        });
+                })
+                ->count();
         }
 
         return [

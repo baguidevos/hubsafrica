@@ -13,9 +13,12 @@
         <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 pt-2">
             @foreach($this->getFormulesData() as $f)
                 @php
-                    $isGood = $f['raw'] >= 60;
-                    $isWarning = $f['raw'] >= 30 && $f['raw'] < 60;
-                    $toneClass = $isGood ? 'text-emerald-600' : ($isWarning ? 'text-amber-600' : 'text-rose-600');
+                    $tone = $f['tone'] ?? ($f['raw'] >= 60 ? 'emerald' : ($f['raw'] >= 30 ? 'amber' : 'rose'));
+                    $toneClass = match ($tone) {
+                        'emerald' => 'text-emerald-600',
+                        'amber' => 'text-amber-600',
+                        default => 'text-rose-600',
+                    };
                 @endphp
                 <div class="rounded-xl border border-stone-200 dark:border-stone-100 p-3 shadow-sm transition hover:shadow-md flex flex-col justify-between">
                     <div>
