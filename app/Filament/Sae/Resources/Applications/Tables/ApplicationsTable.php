@@ -4,6 +4,7 @@ namespace App\Filament\Sae\Resources\Applications\Tables;
 
 use App\Enums\ApplicationEvaluationStatus;
 use App\Enums\ApplicationStatus;
+use App\Enums\ProgramStatus;
 use App\Models\Application;
 use App\Models\ApplicationEvaluation;
 use App\Models\ApplicationEvaluationScore;
@@ -81,6 +82,12 @@ class ApplicationsTable
                     ->sortable(),
             ])
             ->filters([
+                Filter::make('open_call_programs')
+                    ->label('Programmes en appel à candidatures')
+                    ->query(fn ($query) => $query
+                        ->where('status', '!=', ApplicationStatus::BROUILLON->value)
+                        ->whereHas('program', fn ($q) => $q->where('status', ProgramStatus::OUVERT_CANDIDATURES->value))),
+
                 Filter::make('unprocessed')
                     ->label('Non traitées uniquement')
                     ->query(fn ($query) => $query->where('status', ApplicationStatus::SOUMISE)),

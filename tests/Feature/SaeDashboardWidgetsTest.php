@@ -5,6 +5,7 @@ use App\Enums\CoachStatus;
 use App\Enums\EntrepreneurStatus;
 use App\Enums\ProgramStatus;
 use App\Enums\ProjectStatus;
+use App\Filament\Sae\Resources\Applications\ApplicationResource;
 use App\Filament\Sae\Resources\EntrepreneurInvitations\Pages\CreateEntrepreneurInvitation;
 use App\Filament\Sae\Resources\Entrepreneurs\Pages\ListEntrepreneurs;
 use App\Filament\Sae\Widgets\ApplicationsChartWidget;
@@ -442,4 +443,30 @@ test('entrepreneur without project is redirected to dashboard when accessing oth
     ]);
 
     $this->get($applicationsUrl)->assertOk();
+});
+
+test('open call widget links directly to applications filtered by open call programs', function () {
+    $owner = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $owner->id,
+        'name' => 'SAE Filter Link',
+        'slug' => 'sae-filter-link-'.uniqid(),
+    ]);
+
+    $this->actingAs($owner);
+    Filament::setTenant($sae);
+    Filament::setCurrentPanel(Filament::getPanel('sae'));
+
+    $url = ApplicationResource::getUrl('index', [
+        'tenant' => $sae,
+        'filters' => [
+            'open_call_programs' => ['isActive' => true],
+        ],
+    ]);
+
+    Livewire::test(SaeStatsOverviewWidget::class)
+        ->assertSuccessful()
+        ->assertSee($url, false);
+
+    $this->get($url)->assertOk();
 });

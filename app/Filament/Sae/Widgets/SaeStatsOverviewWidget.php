@@ -12,6 +12,7 @@ use App\Enums\EntrepreneurStatus;
 use App\Enums\FundingStatus;
 use App\Enums\ProgramStatus;
 use App\Enums\ProjectStatus;
+use App\Filament\Sae\Resources\Applications\ApplicationResource;
 use App\Models\Application;
 use App\Models\Coach;
 use App\Models\CoachingSession;
@@ -21,6 +22,7 @@ use App\Models\Entrepreneur;
 use App\Models\FundingRecord;
 use App\Models\Program;
 use App\Models\Project;
+use Filament\Facades\Filament;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
@@ -134,7 +136,13 @@ class SaeStatsOverviewWidget extends BaseWidget
             Stat::make('Appels à candidatures', $programmesEnAppel)
                 ->description("{$candidaturesEnAppel} candidature(s) · {$cohortesOuvertes} cohorte(s) ouverte(s)")
                 ->descriptionIcon('heroicon-m-megaphone')
-                ->color($programmesEnAppel > 0 ? 'primary' : 'gray'),
+                ->color($programmesEnAppel > 0 ? 'primary' : 'gray')
+                ->url(fn (): ?string => Filament::getTenant() ? ApplicationResource::getUrl('index', [
+                    'tenant' => Filament::getTenant(),
+                    'filters' => [
+                        'open_call_programs' => ['isActive' => true],
+                    ],
+                ]) : null),
 
             Stat::make('Candidatures à traiter', $candidaturesATraiter)
                 ->description("{$candidaturesRecues} reçues · {$admissions} admise(s)")
