@@ -188,6 +188,34 @@ $storageLinkHandler = function (Request $request) {
 Route::get('/maintenance/storage-link', $storageLinkHandler)->name('maintenance.storage.link');
 Route::get('/storage-link', $storageLinkHandler)->name('storage.link');
 
+// Maintenance : correction des statuts des candidats (ACTIF/ACTIVE -> CANDIDAT) et accès portail
+Route::get('/maintenance/fix-candidate-stats', function (Request $request) {
+    $expectedSecret = env('MIGRATION_SECRET', 'hubsafrica-migrate-force-2026');
+    $providedKey = $request->query('key');
+
+    $isAuthorized = ($providedKey && hash_equals($expectedSecret, (string) $providedKey))
+        || auth()->user()?->isSuperAdmin();
+
+    if (! $isAuthorized) {
+        abort(403, 'Accès interdit. Clé de maintenance requise (?key=...) ou session Super Admin requise.');
+    }
+
+    try {
+        $isDryRun = $request->boolean('dry_run') || $request->boolean('dry-run');
+
+        Artisan::call('sae:fix-candidate-stats', $isDryRun ? ['--dry-run' => true] : []);
+        $output = Artisan::output();
+
+        $title = $isDryRun
+            ? '=== SIMULATION SAE:FIX-CANDIDATE-STATS (--dry-run) ==='
+            : '=== SAE:FIX-CANDIDATE-STATS EXÉCUTÉ AVEC SUCCÈS ===';
+
+        return response("<pre style='background:#0f172a;color:#34d399;padding:20px;border-radius:10px;font-family:monospace;white-space:pre-wrap;'>{$title}\n\n".e($output).'</pre>');
+    } catch (Throwable $e) {
+        return response("<pre style='background:#450a0a;color:#fca5a5;padding:20px;border-radius:10px;font-family:monospace;white-space:pre-wrap;'>=== ERREUR SAE:FIX-CANDIDATE-STATS ===\n\n".e($e->getMessage())."\n\n".e($e->getTraceAsString()).'</pre>', 500);
+    }
+})->name('maintenance.fix.candidate.stats');
+
 // Fallback pour servir les fichiers du disque public si le symlink public/storage est absent ou bloqué par l'hébergeur
 Route::get('/storage/{path}', function (string $path) {
     $cleanPath = ltrim(str_replace('..', '', $path), '/');

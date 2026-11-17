@@ -199,3 +199,81 @@ test('submitted candidate starts as CANDIDAT with portal access and is promoted 
     expect($entrepreneur->fresh()->status)->toBe(EntrepreneurStatus::ACTIVE)
         ->and($project->fresh()->status)->toBe(ProjectStatus::ACTIF);
 });
+
+test('sae:fix-candidate-stats command backfills legacy candidate statuses safely without touching accepted or manual records', function () {
+    $owner = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $owner->id,
+        'name' => 'SAE Prod',
+        'slug' => 'sae-prod-'.uniqid(),
+    ]);
+
+    $program = Program::create([
+        'sae_id' => $sae->id,
+        'name' => 'Programme Prod',
+        'status' => ProgramStatus::ACTIF,
+    ]);
+
+    // 1. Ancien candidat soumis avant le patch (statuts restés ACTIVE / ACTIF et sans pivot sae_user)
+    $legacyUser = User::factory()->create();
+    $legacyEntrepreneur = Entrepreneur::create([
+        'user_id' => $legacyUser->id,
+        'sae_id' => $sae->id,
+        'first_name' => 'Fatou',
+        'last_name' => 'Sow',
+        'email' => $legacyUser->email,
+        'status' => EntrepreneurStatus::ACTIVE,
+    ]);
+    $legacyProject = Project::create([
+        'sae_id' => $sae->id,
+        'entrepreneur_id' => $legacyEntrepreneur->id,
+        'name' => 'Projet Soumis',
+        'status' => ProjectStatus::ACTIF,
+    ]);
+    Application::create([
+        'sae_id' => $sae->id,
+        'program_id' => $program->id,
+        'entrepreneur_id' => $legacyEntrepreneur->id,
+        'project_id' => $legacyProject->id,
+        'status' => ApplicationStatus::SOUMISE,
+    ]);
+
+    // 2. Projet créé manuellement (sans candidature) -> doit rester ACTIF / ACTIVE
+    $manualEntrepreneur = Entrepreneur::create([
+        'sae_id' => $sae->id,
+        'first_name' => 'Ibrahima',
+        'last_name' => 'Ba',
+        'email' => 'ibrahima@example.com',
+        'status' => EntrepreneurStatus::ACTIVE,
+    ]);
+    $manualProject = Project::create([
+        'sae_id' => $sae->id,
+        'entrepreneur_id' => $manualEntrepreneur->id,
+        'name' => 'Projet Manuel',
+        'status' => ProjectStatus::ACTIF,
+    ]);
+
+    // Dry-run ne modifie rien
+    $this->artisan('sae:fix-candidate-stats', ['--dry-run' => true])->assertSuccessful();
+    expect($legacyProject->fresh()->status)->toBe(ProjectStatus::ACTIF)
+        ->and($legacyEntrepreneur->fresh()->status)->toBe(EntrepreneurStatus::ACTIVE);
+
+    // Exécution réelle
+    $this->artisan('sae:fix-candidate-stats')->assertSuccessful();
+
+    expect($legacyProject->fresh()->status)->toBe(ProjectStatus::CANDIDAT)
+        ->and($legacyEntrepreneur->fresh()->status)->toBe(EntrepreneurStatus::CANDIDAT)
+        ->and($legacyUser->saes()->where('saes.id', $sae->id)->exists())->toBeTrue()
+        ->and($manualProject->fresh()->status)->toBe(ProjectStatus::ACTIF)
+        ->and($manualEntrepreneur->fresh()->status)->toBe(EntrepreneurStatus::ACTIVE);
+});
+
+test('maintenance route for fix-candidate-stats requires authorization and runs with valid key', function () {
+    $this->get('/maintenance/fix-candidate-stats')->assertForbidden();
+
+    $secret = env('MIGRATION_SECRET', 'hubsafrica-migrate-force-2026');
+
+    $this->get("/maintenance/fix-candidate-stats?key={$secret}&dry_run=1")
+        ->assertOk()
+        ->assertSee('SIMULATION SAE:FIX-CANDIDATE-STATS');
+});
