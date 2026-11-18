@@ -36,6 +36,15 @@ class AccompanimentToolForm
                                 ->label('Catégorie (optionnel)')
                                 ->placeholder('Ex: Finance, Modèle économique, Juridique')
                                 ->maxLength(100),
+
+                            Select::make('saeTypes')
+                                ->label('Types de SAE cibles')
+                                ->relationship('saeTypes', 'name', fn ($query) => $query->where('is_active', true))
+                                ->multiple()
+                                ->preload()
+                                ->searchable()
+                                ->helperText('Ex: Couveuse, Préincubation, Incubateur... Laissez vide pour tous les types de structures.')
+                                ->columnSpanFull(),
                         ]),
 
                         Textarea::make('description')
@@ -103,6 +112,11 @@ class AccompanimentToolForm
                         Toggle::make('is_published')
                             ->label('Publier dans l\'onglet public « Outils »')
                             ->default(true),
+
+                        Toggle::make('is_shared_with_network')
+                            ->label('Partager avec les autres SAEI & Coachs inscrits')
+                            ->helperText('Rend cet outil directement visible dans la bibliothèque réseau des SAEI et Coachs correspondant aux types sélectionnés.')
+                            ->default(false),
                     ]),
             ]);
     }

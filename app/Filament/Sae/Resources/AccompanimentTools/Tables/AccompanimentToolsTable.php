@@ -30,6 +30,12 @@ class AccompanimentToolsTable
                     ->label('Niveau d\'accès')
                     ->badge(),
 
+                TextColumn::make('saeTypes.name')
+                    ->label('Types de SAE')
+                    ->badge()
+                    ->color('info')
+                    ->placeholder('Tous types'),
+
                 TextColumn::make('price')
                     ->label('Tarif')
                     ->formatStateUsing(fn ($record): string => $record->access_level === AccompanimentToolAccessLevel::PAID ? $record->formattedPrice() : '—'),
@@ -37,11 +43,19 @@ class AccompanimentToolsTable
                 IconColumn::make('is_published')
                     ->label('Publié')
                     ->boolean(),
+
+                IconColumn::make('is_shared_with_network')
+                    ->label('Partagé réseau')
+                    ->boolean(),
             ])
             ->filters([
                 SelectFilter::make('access_level')
                     ->label('Niveau d\'accès')
                     ->options(AccompanimentToolAccessLevel::class),
+
+                SelectFilter::make('saeTypes')
+                    ->label('Type de SAE')
+                    ->relationship('saeTypes', 'name'),
             ])
             ->recordActions([
                 EditAction::make(),

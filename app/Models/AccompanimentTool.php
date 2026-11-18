@@ -8,9 +8,11 @@ use App\Enums\AccompanimentToolPaymentStatus;
 use App\Models\Concerns\BelongsToTenant;
 use App\Support\AccompanimentToolAccessDecision;
 use App\Support\AccompanimentToolAccessPolicy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
@@ -33,6 +35,7 @@ class AccompanimentTool extends Model
         'price',
         'currency',
         'is_published',
+        'is_shared_with_network',
     ];
 
     protected function casts(): array
@@ -42,6 +45,7 @@ class AccompanimentTool extends Model
             'access_level' => AccompanimentToolAccessLevel::class,
             'price' => 'integer',
             'is_published' => 'boolean',
+            'is_shared_with_network' => 'boolean',
         ];
     }
 
@@ -75,6 +79,44 @@ class AccompanimentTool extends Model
         return $this->hasMany(AccompanimentToolPayment::class, 'accompaniment_tool_id');
     }
 
+    public function saeTypes(): BelongsToMany
+    {
+        return $this->belongsToMany(SaeType::class, 'accompaniment_tool_sae_type', 'accompaniment_tool_id', 'sae_type_id')
+            ->withTimestamps();
+    }
+
+    /**
+     * Filtre les outils partagés sur le réseau correspondant aux types d'une SAE (ou universels).
+     */
+    public function scopeSharedForSae(Builder $query, ?Sae $viewerSae, ?int $selectedTypeId = null): Builder
+    {
+        $query->withoutGlobalScopes()
+            ->where('is_published', true)
+            ->where('is_shared_with_network', true);
+
+        if ($selectedTypeId !== null) {
+            return $query->where(function (Builder $subQuery) use ($selectedTypeId): void {
+                $subQuery->whereDoesntHave('saeTypes')
+                    ->orWhereHas('saeTypes', fn (Builder $typeQuery) => $typeQuery->where('sae_types.id', $selectedTypeId));
+            });
+        }
+
+        if (! $viewerSae) {
+            return $query->whereDoesntHave('saeTypes');
+        }
+
+        $viewerTypeIds = $viewerSae->types()->pluck('sae_types.id')->all();
+
+        if ($viewerTypeIds === []) {
+            return $query;
+        }
+
+        return $query->where(function (Builder $subQuery) use ($viewerTypeIds): void {
+            $subQuery->whereDoesntHave('saeTypes')
+                ->orWhereHas('saeTypes', fn (Builder $typeQuery) => $typeQuery->whereIn('sae_types.id', $viewerTypeIds));
+        });
+    }
+
     public function evaluateAccessFor(?User $user): AccompanimentToolAccessDecision
     {
         if (! $user) {
@@ -86,10 +128,12 @@ class AccompanimentTool extends Model
         }
 
         $accessRequest = $this->accessRequests()
+            ->withoutGlobalScopes()
             ->where('user_id', $user->id)
             ->first();
 
         $hasPaidAccess = $this->payments()
+            ->withoutGlobalScopes()
             ->where('user_id', $user->id)
             ->where('status', AccompanimentToolPaymentStatus::PAID->value)
             ->exists();

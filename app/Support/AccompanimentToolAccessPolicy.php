@@ -78,4 +78,23 @@ final class AccompanimentToolAccessPolicy
             message: 'Cet outil est accessible sur demande auprès de la structure.',
         );
     }
+
+    /**
+     * Détermine de façon pure si un outil ciblant certains types de SAE correspond aux types d'une structure.
+     *
+     * @param  array<int, int>  $toolTypeIds
+     * @param  array<int, int>  $saeTypeIds
+     */
+    public static function matchesSaeTypes(array $toolTypeIds, array $saeTypeIds): bool
+    {
+        if ($toolTypeIds === []) {
+            return true;
+        }
+
+        if ($saeTypeIds === []) {
+            return false;
+        }
+
+        return array_intersect($toolTypeIds, $saeTypeIds) !== [];
+    }
 }
