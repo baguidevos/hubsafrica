@@ -22,18 +22,21 @@
 @endphp
 
 <div class="space-y-6">
-    {{-- 1. En-tête de pilotage du projet --}}
-    <x-filament::section>
-        <div class="w-full flex flex-col md:flex-row md:items-center md:justify-between gap-6 text-left">
-            <div class="flex items-start gap-4 sm:gap-5 min-w-0">
+    {{-- 1. Bannière de pilotage du projet --}}
+    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-[#1e225a] p-6 sm:p-8 text-white shadow-lg border border-slate-800">
+        <div class="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-[#F8B81D]/15 blur-3xl" aria-hidden="true"></div>
+        <div class="pointer-events-none absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-emerald-500/10 blur-3xl" aria-hidden="true"></div>
+
+        <div class="relative z-10 w-full" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; text-align: left;">
+            <div class="flex items-start gap-4 sm:gap-5 min-w-0" style="flex: 1 1 320px;">
                 @if($logoUrl)
                     <img
                         src="{{ $logoUrl }}"
                         alt="{{ $record->name }}"
-                        class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border border-gray-200 dark:border-white/15 shadow-xs shrink-0"
+                        class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover bg-white border border-white/15 shadow-md shrink-0"
                     >
                 @else
-                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-primary-500/10 border border-primary-500/20 flex items-center justify-center text-primary-600 dark:text-primary-400 font-black text-2xl shrink-0">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center text-[#F8B81D] font-black text-2xl shrink-0">
                         {{ strtoupper(substr($record->name, 0, 2)) }}
                     </div>
                 @endif
@@ -57,18 +60,19 @@
                         @endif
 
                         @if($cohort)
-                            <x-filament::badge color="warning" icon="heroicon-m-academic-cap">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#F8B81D]/20 text-[#F8B81D] border border-[#F8B81D]/40">
+                                <x-heroicon-m-academic-cap class="w-3.5 h-3.5" />
                                 {{ $cohort->name }}
-                            </x-filament::badge>
+                            </span>
                         @endif
                     </div>
 
-                    <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight text-gray-950 dark:text-white">
+                    <h2 class="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-white">
                         {{ $record->name }}
                     </h2>
 
                     @if($record->pitch)
-                        <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed max-w-3xl">
+                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-3xl">
                             {{ $record->pitch }}
                         </p>
                     @endif
@@ -76,67 +80,67 @@
             </div>
 
             @if($record->entrepreneur)
-                <div class="shrink-0 rounded-xl bg-gray-500/5 border border-gray-200 dark:border-white/10 px-4 py-3 text-xs space-y-1">
-                    <span class="block text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 font-semibold">Porteur du projet</span>
-                    <span class="block font-bold text-gray-950 dark:text-white text-sm">{{ $record->entrepreneur->full_name }}</span>
+                <div class="shrink-0 rounded-xl bg-white/[0.06] border border-white/10 px-4 py-3 text-xs space-y-1" style="text-align: left;">
+                    <span class="block text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Porteur du projet</span>
+                    <span class="block font-bold text-white text-sm">{{ $record->entrepreneur->full_name }}</span>
                     @if($record->entrepreneur->email)
-                        <span class="block text-gray-600 dark:text-gray-300">{{ $record->entrepreneur->email }}</span>
+                        <span class="block text-slate-300">{{ $record->entrepreneur->email }}</span>
                     @endif
                 </div>
             @endif
         </div>
 
         {{-- 4 KPIs de synthèse --}}
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-6 pt-6 border-t border-gray-200 dark:border-white/10">
-            <div class="rounded-xl bg-gray-500/5 border border-gray-200 dark:border-white/10 p-4">
-                <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+        <div class="relative z-10 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-6 pt-6 border-t border-white/10">
+            <div class="rounded-xl bg-white/[0.06] border border-white/10 p-4">
+                <div class="flex items-center justify-between text-xs text-slate-300">
                     <span>Territoire</span>
-                    <x-heroicon-o-map-pin class="w-4 h-4 text-amber-500" />
+                    <x-heroicon-o-map-pin class="w-4 h-4 text-[#F8B81D]" />
                 </div>
-                <div class="mt-1.5 text-lg font-black text-gray-950 dark:text-white truncate">
+                <div class="mt-1.5 text-lg font-black text-white truncate">
                     {{ $record->territory ?: 'Non renseigné' }}
                 </div>
-                <div class="mt-1 text-[11px] text-gray-500 dark:text-gray-400 truncate">
-                    Équipe : <strong class="text-gray-900 dark:text-white">{{ $record->team_size ? $record->team_size.' personne(s)' : 'Non précisée' }}</strong>
+                <div class="mt-1 text-[11px] text-slate-300 truncate">
+                    Équipe : <strong class="text-white">{{ $record->team_size ? $record->team_size.' personne(s)' : 'Non précisée' }}</strong>
                 </div>
             </div>
 
-            <div class="rounded-xl bg-gray-500/5 border border-gray-200 dark:border-white/10 p-4">
-                <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+            <div class="rounded-xl bg-white/[0.06] border border-white/10 p-4">
+                <div class="flex items-center justify-between text-xs text-slate-300">
                     <span>Maturation / Palier</span>
-                    <x-heroicon-o-arrow-trending-up class="w-4 h-4 text-sky-500" />
+                    <x-heroicon-o-arrow-trending-up class="w-4 h-4 text-sky-400" />
                 </div>
-                <div class="mt-1.5 text-lg font-black text-gray-950 dark:text-white truncate">
+                <div class="mt-1.5 text-lg font-black text-white truncate">
                     {{ $record->currentLevel?->name ?? 'Non défini' }}
                 </div>
-                <div class="mt-1 text-[11px] text-gray-500 dark:text-gray-400 truncate">
+                <div class="mt-1 text-[11px] text-slate-300 truncate">
                     Entrée : {{ $record->initialLevel?->name ?? '—' }}
                 </div>
             </div>
 
-            <div class="rounded-xl bg-gray-500/5 border border-gray-200 dark:border-white/10 p-4">
-                <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+            <div class="rounded-xl bg-white/[0.06] border border-white/10 p-4">
+                <div class="flex items-center justify-between text-xs text-slate-300">
                     <span>Sessions de coaching</span>
-                    <x-heroicon-o-chat-bubble-left-right class="w-4 h-4 text-emerald-500" />
+                    <x-heroicon-o-chat-bubble-left-right class="w-4 h-4 text-emerald-400" />
                 </div>
-                <div class="mt-1.5 text-2xl font-black text-gray-950 dark:text-white">{{ $sessionsCount }}</div>
-                <div class="mt-1 text-[11px] text-gray-500 dark:text-gray-400">
+                <div class="mt-1.5 text-2xl font-black text-white">{{ $sessionsCount }}</div>
+                <div class="mt-1 text-[11px] text-slate-300">
                     {{ $coachesCount }} coach(es) actif(s)
                 </div>
             </div>
 
-            <div class="rounded-xl bg-gray-500/5 border border-gray-200 dark:border-white/10 p-4">
-                <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+            <div class="rounded-xl bg-white/[0.06] border border-white/10 p-4">
+                <div class="flex items-center justify-between text-xs text-slate-300">
                     <span>Livrables soumis</span>
-                    <x-heroicon-o-document-check class="w-4 h-4 text-purple-500" />
+                    <x-heroicon-o-document-check class="w-4 h-4 text-purple-400" />
                 </div>
-                <div class="mt-1.5 text-2xl font-black text-gray-950 dark:text-white">{{ $submissionsCount }}</div>
-                <div class="mt-1 text-[11px] text-gray-500 dark:text-gray-400">
+                <div class="mt-1.5 text-2xl font-black text-white">{{ $submissionsCount }}</div>
+                <div class="mt-1 text-[11px] text-slate-300">
                     Dossier(s) méthodologique(s)
                 </div>
             </div>
         </div>
-    </x-filament::section>
+    </div>
 
     {{-- 2. Corps de la fiche projet (8 / 4 colonnes) --}}
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
