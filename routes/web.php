@@ -15,6 +15,7 @@ use App\Http\Controllers\Public\ProgramPublicController;
 use App\Http\Controllers\Public\StructurePublicController;
 use App\Http\Controllers\Sae\ReportPrintController;
 use App\Http\Controllers\UnifiedInvitationController;
+use App\Models\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -223,17 +224,47 @@ Route::get('/maintenance/fix-candidate-stats', function (Request $request) {
     }
 })->name('maintenance.fix.candidate.stats');
 
-// Fallback pour servir les fichiers du disque public si le symlink public/storage est absent ou bloqué par l'hébergeur
+// Fallback pour servir les fichiers du disque public (et de façon sécurisée les uploads privés form-builder/)
 Route::get('/storage/{path}', function (string $path) {
     $cleanPath = ltrim(str_replace('..', '', $path), '/');
 
-    if (! Storage::disk('public')->exists($cleanPath)) {
-        abort(404);
+    if (Storage::disk('public')->exists($cleanPath)) {
+        return Storage::disk('public')->response($cleanPath, null, [
+            'Cache-Control' => 'public, max-age=86400',
+        ]);
     }
 
-    return Storage::disk('public')->response($cleanPath, null, [
-        'Cache-Control' => 'public, max-age=86400',
-    ]);
+    if (str_starts_with($cleanPath, 'form-builder/')) {
+        $formBuilderDisk = config('packstub-form-builder.uploads.disk', 'local');
+
+        if (! Storage::disk($formBuilderDisk)->exists($cleanPath)) {
+            abort(404);
+        }
+
+        $user = auth()->user();
+        if (! $user) {
+            abort(403, 'Authentification requise pour accéder à ce document.');
+        }
+
+        $document = Document::withoutGlobalScopes()->with('sae')->where('path', $cleanPath)->first();
+        $isAuthorized = $user->isSuperAdmin()
+            || ($document && (
+                (int) $document->uploaded_by_id === (int) $user->id
+                || ($document->sae && (
+                    (int) $document->sae->owner_id === (int) $user->id
+                    || $user->saes()->where('saes.id', $document->sae_id)->exists()
+                ))
+            ))
+            || (! $document && ($user->isSaeManager() || $user->coachProfile()->exists()));
+
+        if (! $isAuthorized) {
+            abort(403, 'Accès non autorisé à ce document.');
+        }
+
+        return Storage::disk($formBuilderDisk)->response($cleanPath);
+    }
+
+    abort(404);
 })->where('path', '.*')->name('storage.public.fallback');
 
 // Découverte OAuth 2.0 (RFC 8414 & RFC 9728 pour Claude / MCP)

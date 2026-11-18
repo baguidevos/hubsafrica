@@ -2,6 +2,7 @@
 
 use App\Enums\ApplicationStatus;
 use App\Enums\CoachStatus;
+use App\Enums\DocumentCategory;
 use App\Enums\EntrepreneurStatus;
 use App\Enums\ProgramStatus;
 use App\Enums\ProjectStatus;
@@ -20,6 +21,7 @@ use App\Mail\CompleteProjectCohortInviteMail;
 use App\Models\Application;
 use App\Models\Coach;
 use App\Models\Cohort;
+use App\Models\Document;
 use App\Models\Enrollment;
 use App\Models\Entrepreneur;
 use App\Models\Program;
@@ -29,6 +31,7 @@ use App\Models\User;
 use App\Services\ReportExportService;
 use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 
 test('sae dashboard widgets do not fabricate fallback data when empty', function () {
@@ -508,4 +511,42 @@ test('reports and analytics service returns real metrics without fake fallbacks 
 
     Livewire::test(ReportsPage::class)->assertSuccessful();
     Livewire::test(AnalyticsPage::class)->assertSuccessful();
+});
+
+test('private form-builder uploads are served securely via storage fallback to authorized users', function () {
+    Storage::fake('local');
+
+    $owner = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $owner->id,
+        'name' => 'SAE Docs',
+        'slug' => 'sae-docs-'.uniqid(),
+    ]);
+
+    $otherUser = User::factory()->create();
+
+    $path = 'form-builder/2/test-pitch-deck.pptx';
+    Storage::disk('local')->put($path, 'fake-pptx-content');
+
+    Document::create([
+        'sae_id' => $sae->id,
+        'documentable_type' => Sae::class,
+        'documentable_id' => $sae->id,
+        'category' => DocumentCategory::CANDIDATURE,
+        'title' => 'Pitch Deck Test',
+        'disk' => 'local',
+        'path' => $path,
+        'original_name' => 'test-pitch-deck.pptx',
+        'version' => 1,
+        'uploaded_by_id' => $owner->id,
+    ]);
+
+    // Anonyme -> 403
+    $this->get("/storage/{$path}")->assertForbidden();
+
+    // Autre utilisateur -> 403
+    $this->actingAs($otherUser)->get("/storage/{$path}")->assertForbidden();
+
+    // Propriétaire de la SAE -> 200
+    $this->actingAs($owner)->get("/storage/{$path}")->assertOk();
 });
