@@ -3,6 +3,7 @@
 namespace App\Filament\Coach\Resources\Projects\Pages;
 
 use App\Filament\Coach\Resources\Projects\ProjectResource;
+use App\Filament\Concerns\HasDynamicRecordTitle;
 use App\Models\Project;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
@@ -12,6 +13,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ViewProject extends ViewRecord
 {
+    use HasDynamicRecordTitle;
+
     protected static string $resource = ProjectResource::class;
 
     public function content(Schema $schema): Schema

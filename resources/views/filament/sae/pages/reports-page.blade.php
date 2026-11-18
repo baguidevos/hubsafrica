@@ -87,9 +87,9 @@
 
         <!-- Synthèse visuelle des 4 piliers d'impact -->
         @php
-            $tauxAdmission = collect($indicators)->firstWhere('name', 'Taux d\'admission au programme')['current'] ?? 28.5;
-            $tauxFemmes = collect($indicators)->firstWhere('name', 'Taux de féminisation (Parité genre)')['current'] ?? 45.0;
-            $tauxLivrables = collect($indicators)->firstWhere('name', 'Taux de conformité des livrables')['current'] ?? 82.5;
+            $tauxAdmission = collect($indicators)->firstWhere('name', 'Taux d\'admission au programme')['current'] ?? 0;
+            $tauxFemmes = collect($indicators)->firstWhere('name', 'Taux de féminisation (Parité genre)')['current'] ?? 0;
+            $tauxLivrables = collect($indicators)->firstWhere('name', 'Taux de conformité des livrables')['current'] ?? 0;
             $fonds = collect($indicators)->firstWhere('name', 'Volume de financements décaissés')['current'] ?? 0;
         @endphp
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

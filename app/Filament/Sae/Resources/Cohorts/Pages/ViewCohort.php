@@ -3,6 +3,7 @@
 namespace App\Filament\Sae\Resources\Cohorts\Pages;
 
 use App\Enums\ApplicationStatus;
+use App\Filament\Concerns\HasDynamicRecordTitle;
 use App\Filament\Sae\Resources\Cohorts\CohortResource;
 use App\Filament\Sae\Resources\Programs\ProgramResource;
 use App\Models\Cohort;
@@ -18,6 +19,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ViewCohort extends ViewRecord
 {
+    use HasDynamicRecordTitle;
+
     protected static string $resource = CohortResource::class;
 
     protected function getHeaderActions(): array

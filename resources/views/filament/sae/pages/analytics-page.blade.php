@@ -70,6 +70,33 @@
             </div>
         </x-filament::section>
 
+        <!-- Filtres par programme et cohorte -->
+        <x-filament::section compact>
+            <div class="flex flex-wrap items-center gap-6">
+                <div class="flex items-center gap-2 text-xs">
+                    <label class="font-semibold text-gray-700 dark:text-gray-300">Programme :</label>
+                    <select wire:model.live="selectedProgramId"
+                        class="text-xs rounded-xl border-gray-300 dark:border-white/10 bg-gray-50/50 dark:bg-white/5 text-gray-900 dark:text-white py-1.5 px-3 shadow-sm focus:border-primary-500 focus:ring-primary-500">
+                        <option value="all">Tous les programmes</option>
+                        @foreach($this->programs as $p)
+                            <option value="{{ $p->id }}">{{ $p->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-2 text-xs">
+                    <label class="font-semibold text-gray-700 dark:text-gray-300">Cohorte :</label>
+                    <select wire:model.live="selectedCohortId"
+                        class="text-xs rounded-xl border-gray-300 dark:border-white/10 bg-gray-50/50 dark:bg-white/5 text-gray-900 dark:text-white py-1.5 px-3 shadow-sm focus:border-primary-500 focus:ring-primary-500">
+                        <option value="all">Toutes les cohortes</option>
+                        @foreach($this->cohorts as $c)
+                            <option value="{{ $c->id }}">{{ $c->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </x-filament::section>
+
         <!-- 1. Entonnoir de sélection & Conversion -->
         <x-filament::section>
             <x-slot name="heading">
@@ -235,9 +262,16 @@
                 </x-slot>
 
                 <x-slot name="headerEnd">
-                    <x-filament::badge color="success">
-                        {{ number_format($d['totalFinancement'], 0, ',', ' ') }} FCFA
-                    </x-filament::badge>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <x-filament::badge color="success">
+                            {{ number_format($d['totalFinancement'], 0, ',', ' ') }} FCFA décaissés
+                        </x-filament::badge>
+                        @if(($d['totalFinancementAccorde'] ?? 0) > 0)
+                            <x-filament::badge color="info">
+                                {{ number_format($d['totalFinancementAccorde'], 0, ',', ' ') }} FCFA accordés
+                            </x-filament::badge>
+                        @endif
+                    </div>
                 </x-slot>
 
                 <div class="space-y-3">

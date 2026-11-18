@@ -2,8 +2,14 @@
 
 namespace App\Services;
 
+use App\Enums\ApplicationStatus;
+use App\Enums\CoachingSessionStatus;
 use App\Enums\CoachingSessionType;
+use App\Enums\DeliverableSubmissionStatus;
+use App\Enums\EntrepreneurStatus;
+use App\Enums\FundingStatus;
 use App\Enums\FundingType;
+use App\Enums\ProjectStatus;
 use App\Models\Application;
 use App\Models\CoachingSession;
 use App\Models\DeliverableSubmission;
@@ -120,6 +126,8 @@ class ReportExportService
         }
 
         // Calculs dynamiques standards S&E si la table manuelle est vierge pour ce tenant
+        $filteredProjectIds = $this->resolveFilteredProjectIds($tenant, $filters);
+
         $appQuery = Application::withoutGlobalScopes()->where('sae_id', $tenant->id);
         if (! empty($filters['program_id']) && $filters['program_id'] !== 'all') {
             $appQuery->where('program_id', $filters['program_id']);
@@ -128,42 +136,92 @@ class ReportExportService
             $appQuery->where('cohort_id', $filters['cohort_id']);
         }
 
-        $candidatures = (clone $appQuery)->where('status', '!=', 'BROUILLON')->count();
-        $admises = (clone $appQuery)->where('status', 'ACCEPTEE')->count();
-        $tauxAdmission = $candidatures > 0 ? round(($admises / $candidatures) * 100, 1) : 28.5;
+        $examinees = (clone $appQuery)->whereNotNull('reviewed_at')->count();
+        if ($examinees === 0) {
+            $examinees = (clone $appQuery)->whereIn('status', [
+                ApplicationStatus::ACCEPTEE->value,
+                ApplicationStatus::REFUSEE->value,
+                ApplicationStatus::EN_ATTENTE->value,
+                ApplicationStatus::REORIENTEE->value,
+            ])->count();
+        }
+        $admises = (clone $appQuery)->where('status', ApplicationStatus::ACCEPTEE->value)->count();
+        $tauxAdmission = $examinees > 0 ? min(100, round(($admises / $examinees) * 100, 1)) : 0.0;
 
-        $entQuery = Entrepreneur::withoutGlobalScopes()->where('sae_id', $tenant->id);
-        $totalEnt = $entQuery->count();
+        $entQuery = Entrepreneur::withoutGlobalScopes()
+            ->where('sae_id', $tenant->id)
+            ->whereIn('status', [EntrepreneurStatus::ACTIVE->value, EntrepreneurStatus::DIPLOME->value])
+            ->where(function ($q) use ($filteredProjectIds) {
+                if ($filteredProjectIds !== null) {
+                    $q->whereHas('projects', fn ($pq) => $pq->withoutGlobalScopes()->whereIn('projects.id', $filteredProjectIds));
+                } else {
+                    $q->whereHas('projects')->orWhereHas('enrollments');
+                }
+            });
+
+        $totalEnt = (clone $entQuery)->count();
         $femmes = (clone $entQuery)->where('gender', 'F')->count();
-        $tauxGenre = $totalEnt > 0 ? round(($femmes / $totalEnt) * 100, 1) : 45.0;
+        $tauxGenre = $totalEnt > 0 ? round(($femmes / $totalEnt) * 100, 1) : 0.0;
 
         $subQuery = DeliverableSubmission::withoutGlobalScopes()->where('sae_id', $tenant->id);
-        $livrablesEvalues = (clone $subQuery)->whereIn('status', ['VALIDEE', 'REJETEE'])->count();
-        $livrablesValides = (clone $subQuery)->where('status', 'VALIDEE')->count();
-        $tauxValidation = $livrablesEvalues > 0 ? round(($livrablesValides / $livrablesEvalues) * 100, 1) : 82.5;
+        if ($filteredProjectIds !== null) {
+            $subQuery->whereIn('project_id', $filteredProjectIds);
+        }
+        $livrablesEvalues = (clone $subQuery)->whereIn('status', [
+            DeliverableSubmissionStatus::VALIDEE->value,
+            DeliverableSubmissionStatus::VALIDE->value,
+            DeliverableSubmissionStatus::REJETEE->value,
+            DeliverableSubmissionStatus::NON_VALIDE->value,
+            DeliverableSubmissionStatus::CORRECTION_DEMANDEE->value,
+        ])->count();
+        $livrablesValides = (clone $subQuery)->whereIn('status', [
+            DeliverableSubmissionStatus::VALIDEE->value,
+            DeliverableSubmissionStatus::VALIDE->value,
+        ])->count();
+        $tauxValidation = $livrablesEvalues > 0 ? round(($livrablesValides / $livrablesEvalues) * 100, 1) : 0.0;
 
-        $fondsQuery = FundingRecord::withoutGlobalScopes()->where('sae_id', $tenant->id)
-            ->whereIn('status', ['ACCORDE', 'DECAISSE', 'INVESTI']);
-        $fonds = (float) $fondsQuery->sum('amount_obtained');
+        $sessionQuery = CoachingSession::withoutGlobalScopes()->where('sae_id', $tenant->id);
+        if ($filteredProjectIds !== null) {
+            $sessionQuery->whereIn('project_id', $filteredProjectIds);
+        }
+        $seancesPrevues = (clone $sessionQuery)->where('status', '!=', CoachingSessionStatus::ANNULEE->value)->count();
+        $seancesRealisees = (clone $sessionQuery)->where('status', CoachingSessionStatus::REALISEE->value)->count();
+        $tauxSeances = $seancesPrevues > 0 ? round(($seancesRealisees / $seancesPrevues) * 100, 1) : 0.0;
+
+        $projectQuery = Project::withoutGlobalScopes()
+            ->where('sae_id', $tenant->id)
+            ->whereIn('status', [ProjectStatus::ACTIF->value, ProjectStatus::DIPLOME->value]);
+        if ($filteredProjectIds !== null) {
+            $projectQuery->whereIn('id', $filteredProjectIds);
+        }
+        $emploisDirects = (int) $projectQuery->sum('team_size');
+
+        $fondsQuery = FundingRecord::withoutGlobalScopes()
+            ->where('sae_id', $tenant->id)
+            ->whereIn('status', [FundingStatus::DECAISSE->value, FundingStatus::INVESTI->value]);
+        if ($filteredProjectIds !== null) {
+            $fondsQuery->whereIn('project_id', $filteredProjectIds);
+        }
+        $fonds = (float) $fondsQuery->selectRaw('SUM(COALESCE(NULLIF(amount_obtained, 0), amount_invested, 0)) as total')->value('total');
 
         return [
             [
                 'name' => 'Taux d\'admission au programme',
                 'category' => 'GOUVERNANCE',
-                'formula' => 'Candidatures admises / Candidatures examinées × 100',
+                'formula' => 'Candidatures admises / Décisions rendues × 100',
                 'current' => $tauxAdmission,
                 'unit' => '%',
                 'target' => 30.0,
-                'status' => $tauxAdmission <= 35 ? 'ATTEINT' : 'VIGILANCE',
+                'status' => $examinees === 0 ? 'NON_MESURABLE' : ($tauxAdmission <= 35 ? 'ATTEINT' : 'VIGILANCE'),
             ],
             [
                 'name' => 'Taux de féminisation (Parité genre)',
                 'category' => 'INCLUSION',
-                'formula' => 'Entrepreneures femmes / Total des porteurs × 100',
+                'formula' => 'Entrepreneures femmes / Total des porteurs accompagnés × 100',
                 'current' => $tauxGenre,
                 'unit' => '%',
                 'target' => 40.0,
-                'status' => $tauxGenre >= 40 ? 'ATTEINT' : 'NON_ATTEINT',
+                'status' => $totalEnt === 0 ? 'NON_MESURABLE' : ($tauxGenre >= 40 ? 'ATTEINT' : 'NON_ATTEINT'),
             ],
             [
                 'name' => 'Taux de conformité des livrables',
@@ -172,25 +230,34 @@ class ReportExportService
                 'current' => $tauxValidation,
                 'unit' => '%',
                 'target' => 80.0,
-                'status' => $tauxValidation >= 75 ? 'ATTEINT' : 'VIGILANCE',
+                'status' => $livrablesEvalues === 0 ? 'NON_MESURABLE' : ($tauxValidation >= 75 ? 'ATTEINT' : 'VIGILANCE'),
+            ],
+            [
+                'name' => 'Taux de réalisation des séances de coaching',
+                'category' => 'ACCOMPAGNEMENT',
+                'formula' => 'Séances réalisées / Séances planifiées (hors annulées) × 100',
+                'current' => $tauxSeances,
+                'unit' => '%',
+                'target' => 80.0,
+                'status' => $seancesPrevues === 0 ? 'NON_MESURABLE' : ($tauxSeances >= 75 ? 'ATTEINT' : 'VIGILANCE'),
+            ],
+            [
+                'name' => 'Emplois directs portés (taille d\'équipe)',
+                'category' => 'IMPACT',
+                'formula' => 'Somme des membres d\'équipe sur projets actifs et diplômés',
+                'current' => $emploisDirects,
+                'unit' => 'emplois',
+                'target' => 50.0,
+                'status' => $emploisDirects > 0 ? 'ATTEINT' : 'VIGILANCE',
             ],
             [
                 'name' => 'Volume de financements décaissés',
                 'category' => 'FINANCEMENT',
-                'formula' => 'Somme des montants obtenus & investis',
+                'formula' => 'Somme des montants décaissés & investis',
                 'current' => $fonds,
                 'unit' => 'FCFA',
                 'target' => 50000000.0,
                 'status' => $fonds > 0 ? 'ATTEINT' : 'VIGILANCE',
-            ],
-            [
-                'name' => 'Taux de satisfaction globale des porteurs',
-                'category' => 'QUALITÉ',
-                'formula' => 'Moyenne des évaluations de fin d\'accompagnement',
-                'current' => 88.0,
-                'unit' => '%',
-                'target' => 85.0,
-                'status' => 'ATTEINT',
             ],
         ];
     }
@@ -200,6 +267,8 @@ class ReportExportService
      */
     public function getAnalyticsData(Sae $tenant, array $filters = []): array
     {
+        $filteredProjectIds = $this->resolveFilteredProjectIds($tenant, $filters);
+
         $appQuery = Application::withoutGlobalScopes()->where('sae_id', $tenant->id);
         if (! empty($filters['program_id']) && $filters['program_id'] !== 'all') {
             $appQuery->where('program_id', $filters['program_id']);
@@ -208,73 +277,86 @@ class ReportExportService
             $appQuery->where('cohort_id', $filters['cohort_id']);
         }
 
-        $deposees = (clone $appQuery)->where('status', '!=', 'BROUILLON')->count();
+        $deposees = (clone $appQuery)->where('status', '!=', ApplicationStatus::BROUILLON->value)->count();
         $examinees = (clone $appQuery)->whereNotNull('reviewed_at')->count();
-        if ($examinees === 0 && $deposees > 0) {
-            $examinees = $deposees;
+        if ($examinees === 0) {
+            $examinees = (clone $appQuery)->whereIn('status', [
+                ApplicationStatus::ACCEPTEE->value,
+                ApplicationStatus::REFUSEE->value,
+                ApplicationStatus::EN_ATTENTE->value,
+                ApplicationStatus::REORIENTEE->value,
+            ])->count();
         }
-        $acceptees = (clone $appQuery)->where('status', 'ACCEPTEE')->count();
-        $integrees = Enrollment::withoutGlobalScopes()->where('sae_id', $tenant->id)->count();
-        if ($integrees === 0 && $acceptees > 0) {
-            $integrees = min($acceptees, 15);
-        }
+        $acceptees = (clone $appQuery)->where('status', ApplicationStatus::ACCEPTEE->value)->count();
 
-        // Si nouveau tenant sans données, données de cadrage de démonstration
-        if ($deposees === 0) {
-            $deposees = 24;
-            $examinees = 20;
-            $acceptees = 8;
-            $integrees = 8;
+        $enrollmentQuery = Enrollment::withoutGlobalScopes()
+            ->where('sae_id', $tenant->id)
+            ->where('status', 'ACTIF');
+        if (! empty($filters['cohort_id']) && $filters['cohort_id'] !== 'all') {
+            $enrollmentQuery->where('cohort_id', $filters['cohort_id']);
+        } elseif (! empty($filters['program_id']) && $filters['program_id'] !== 'all') {
+            $enrollmentQuery->whereHas('cohort', fn ($q) => $q->withoutGlobalScopes()->where('program_id', $filters['program_id']));
         }
+        $integrees = $enrollmentQuery->count();
 
         $funnel = [
-            ['stage' => 'Candidatures déposées', 'count' => $deposees, 'pct' => 100],
-            ['stage' => 'Candidatures examinées', 'count' => $examinees, 'pct' => $deposees > 0 ? round(($examinees / $deposees) * 100) : 0],
-            ['stage' => 'Candidatures admises', 'count' => $acceptees, 'pct' => $deposees > 0 ? round(($acceptees / $deposees) * 100) : 0],
-            ['stage' => 'Intégrés en cohorte', 'count' => $integrees, 'pct' => $deposees > 0 ? round(($integrees / $deposees) * 100) : 0],
+            ['stage' => 'Candidatures déposées', 'count' => $deposees, 'pct' => $deposees > 0 ? 100 : 0],
+            ['stage' => 'Candidatures examinées', 'count' => $examinees, 'pct' => $deposees > 0 ? min(100, round(($examinees / $deposees) * 100)) : 0],
+            ['stage' => 'Candidatures admises', 'count' => $acceptees, 'pct' => $deposees > 0 ? min(100, round(($acceptees / $deposees) * 100)) : 0],
+            ['stage' => 'Intégrés en cohorte', 'count' => $integrees, 'pct' => $deposees > 0 ? min(100, round(($integrees / $deposees) * 100)) : 0],
         ];
 
-        // Démographie
-        $entQuery = Entrepreneur::withoutGlobalScopes()->where('sae_id', $tenant->id);
-        $totalEnt = $entQuery->count();
+        // Démographie (uniquement porteurs actifs/diplômés avec projet ou enrôlement)
+        $entQuery = Entrepreneur::withoutGlobalScopes()
+            ->where('sae_id', $tenant->id)
+            ->whereIn('status', [EntrepreneurStatus::ACTIVE->value, EntrepreneurStatus::DIPLOME->value])
+            ->where(function ($q) use ($filteredProjectIds) {
+                if ($filteredProjectIds !== null) {
+                    $q->whereHas('projects', fn ($pq) => $pq->withoutGlobalScopes()->whereIn('projects.id', $filteredProjectIds));
+                } else {
+                    $q->whereHas('projects')->orWhereHas('enrollments');
+                }
+            });
+
+        $totalEnt = (clone $entQuery)->count();
         $femmes = (clone $entQuery)->where('gender', 'F')->count();
         $hommes = (clone $entQuery)->where('gender', 'M')->count();
 
-        if ($totalEnt === 0) {
-            $totalEnt = 8;
-            $femmes = 4;
-            $hommes = 4;
-        }
+        $pctFemmes = $totalEnt > 0 ? round(($femmes / $totalEnt) * 100) : 0;
+        $pctHommes = $totalEnt > 0 ? round(($hommes / $totalEnt) * 100) : 0;
 
-        $pctFemmes = round(($femmes / max(1, $totalEnt)) * 100);
-        $pctHommes = round(($hommes / max(1, $totalEnt)) * 100);
-
-        $territoires = Entrepreneur::withoutGlobalScopes()
-            ->where('sae_id', $tenant->id)
+        $territoires = (clone $entQuery)
             ->whereNotNull('territory')
+            ->where('territory', '!=', '')
             ->selectRaw('territory, count(*) as count')
             ->groupBy('territory')
             ->orderByDesc('count')
             ->limit(5)
             ->get();
 
-        $niveauxEtudes = Entrepreneur::withoutGlobalScopes()
-            ->where('sae_id', $tenant->id)
+        $niveauxEtudes = (clone $entQuery)
             ->whereNotNull('education_level')
+            ->where('education_level', '!=', '')
             ->selectRaw('education_level, count(*) as count')
             ->groupBy('education_level')
             ->orderByDesc('count')
             ->limit(5)
             ->get();
 
-        // Accompagnement
-        $sessionQuery = CoachingSession::withoutGlobalScopes()->where('sae_id', $tenant->id);
-        $totalSessions = (clone $sessionQuery)->count();
-        $totalMinutes = (int) (clone $sessionQuery)->sum('duration');
-        $totalHeures = $totalMinutes > 0 ? round($totalMinutes / 60) : ($totalSessions * 2);
-
-        $typesSeance = CoachingSession::withoutGlobalScopes()
+        // Accompagnement (uniquement séances réalisées)
+        $sessionQuery = CoachingSession::withoutGlobalScopes()
             ->where('sae_id', $tenant->id)
+            ->where('status', CoachingSessionStatus::REALISEE->value);
+        if ($filteredProjectIds !== null) {
+            $sessionQuery->whereIn('project_id', $filteredProjectIds);
+        }
+
+        $totalSessions = (clone $sessionQuery)->count();
+        $totalHeures = round((float) (clone $sessionQuery)
+            ->selectRaw('SUM(COALESCE(hours_delivered, duration / 60.0)) as total_hours')
+            ->value('total_hours'), 1);
+
+        $typesSeance = (clone $sessionQuery)
             ->selectRaw('type, count(*) as count')
             ->groupBy('type')
             ->orderByDesc('count')
@@ -285,22 +367,34 @@ class ReportExportService
                 return [$key => $r->count];
             });
 
-        // Financement
-        $financements = FundingRecord::withoutGlobalScopes()
-            ->where('sae_id', $tenant->id)
-            ->selectRaw('type, sum(amount_obtained) as total')
-            ->whereIn('status', ['ACCORDE', 'DECAISSE', 'INVESTI'])
+        // Financement (décaissés/investis réels + accordés séparément)
+        $fundingBaseQuery = FundingRecord::withoutGlobalScopes()->where('sae_id', $tenant->id);
+        if ($filteredProjectIds !== null) {
+            $fundingBaseQuery->whereIn('project_id', $filteredProjectIds);
+        }
+
+        $financements = (clone $fundingBaseQuery)
+            ->selectRaw('type, SUM(COALESCE(NULLIF(amount_obtained, 0), amount_invested, 0)) as total')
+            ->whereIn('status', [FundingStatus::DECAISSE->value, FundingStatus::INVESTI->value])
             ->groupBy('type')
             ->orderByDesc('total')
             ->get();
 
-        $totalFinancement = (float) FundingRecord::withoutGlobalScopes()
-            ->where('sae_id', $tenant->id)
-            ->whereIn('status', ['ACCORDE', 'DECAISSE', 'INVESTI'])
+        $totalFinancement = (float) (clone $fundingBaseQuery)
+            ->whereIn('status', [FundingStatus::DECAISSE->value, FundingStatus::INVESTI->value])
+            ->selectRaw('SUM(COALESCE(NULLIF(amount_obtained, 0), amount_invested, 0)) as total')
+            ->value('total');
+
+        $totalFinancementAccorde = (float) (clone $fundingBaseQuery)
+            ->where('status', FundingStatus::ACCORDE->value)
             ->sum('amount_obtained');
 
-        $statutsProjets = Project::withoutGlobalScopes()
-            ->where('sae_id', $tenant->id)
+        $projectStatusQuery = Project::withoutGlobalScopes()->where('sae_id', $tenant->id);
+        if ($filteredProjectIds !== null) {
+            $projectStatusQuery->whereIn('id', $filteredProjectIds);
+        }
+
+        $statutsProjets = $projectStatusQuery
             ->selectRaw('status, count(*) as count')
             ->groupBy('status')
             ->orderByDesc('count')
@@ -319,8 +413,44 @@ class ReportExportService
             'typesSeance' => $typesSeance,
             'financements' => $financements,
             'totalFinancement' => $totalFinancement,
+            'totalFinancementAccorde' => $totalFinancementAccorde,
             'statutsProjets' => $statutsProjets,
         ];
+    }
+
+    /**
+     * Retourne les IDs de projets correspondant aux filtres programme/cohorte, ou null si aucun filtre actif.
+     *
+     * @return array<int, int>|null
+     */
+    protected function resolveFilteredProjectIds(Sae $tenant, array $filters): ?array
+    {
+        $cohortId = $filters['cohort_id'] ?? 'all';
+        $programId = $filters['program_id'] ?? 'all';
+
+        if (! empty($cohortId) && $cohortId !== 'all') {
+            return Enrollment::withoutGlobalScopes()
+                ->where('sae_id', $tenant->id)
+                ->where('cohort_id', $cohortId)
+                ->pluck('project_id')
+                ->filter()
+                ->unique()
+                ->values()
+                ->all();
+        }
+
+        if (! empty($programId) && $programId !== 'all') {
+            return Enrollment::withoutGlobalScopes()
+                ->where('sae_id', $tenant->id)
+                ->whereHas('cohort', fn ($q) => $q->withoutGlobalScopes()->where('program_id', $programId))
+                ->pluck('project_id')
+                ->filter()
+                ->unique()
+                ->values()
+                ->all();
+        }
+
+        return null;
     }
 
     /**

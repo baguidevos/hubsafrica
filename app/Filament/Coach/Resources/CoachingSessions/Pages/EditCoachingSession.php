@@ -3,11 +3,14 @@
 namespace App\Filament\Coach\Resources\CoachingSessions\Pages;
 
 use App\Filament\Coach\Resources\CoachingSessions\CoachingSessionResource;
+use App\Filament\Concerns\HasDynamicRecordTitle;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditCoachingSession extends EditRecord
 {
+    use HasDynamicRecordTitle;
+
     protected static string $resource = CoachingSessionResource::class;
 
     public function hasCombinedRelationManagerTabsWithContent(): bool

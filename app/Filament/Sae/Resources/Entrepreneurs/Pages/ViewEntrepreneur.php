@@ -2,6 +2,7 @@
 
 namespace App\Filament\Sae\Resources\Entrepreneurs\Pages;
 
+use App\Filament\Concerns\HasDynamicRecordTitle;
 use App\Filament\Sae\Resources\Entrepreneurs\EntrepreneurResource;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
@@ -9,6 +10,8 @@ use Filament\Resources\Pages\ViewRecord;
 
 class ViewEntrepreneur extends ViewRecord
 {
+    use HasDynamicRecordTitle;
+
     protected static string $resource = EntrepreneurResource::class;
 
     protected function getHeaderActions(): array

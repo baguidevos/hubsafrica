@@ -2,6 +2,8 @@
 
 namespace App\Filament\Sae\Pages;
 
+use App\Models\Cohort;
+use App\Models\Program;
 use App\Models\Sae;
 use App\Services\ReportExportService;
 use BackedEnum;
@@ -23,21 +25,48 @@ class AnalyticsPage extends Page
 
     protected static ?int $navigationSort = 3;
 
+    public ?string $selectedProgramId = 'all';
+
+    public ?string $selectedCohortId = 'all';
+
     public function getActiveTenant(): ?Sae
     {
         return Filament::getTenant();
+    }
+
+    public function getProgramsProperty()
+    {
+        $tenant = $this->getActiveTenant();
+
+        return Program::query()
+            ->when($tenant, fn ($q) => $q->where('sae_id', $tenant->id))
+            ->get();
+    }
+
+    public function getCohortsProperty()
+    {
+        $tenant = $this->getActiveTenant();
+
+        return Cohort::query()
+            ->when($tenant, fn ($q) => $q->where('sae_id', $tenant->id))
+            ->when($this->selectedProgramId && $this->selectedProgramId !== 'all', fn ($q) => $q->where('program_id', $this->selectedProgramId))
+            ->get();
     }
 
     public function getAnalyticsData(): array
     {
         $tenant = $this->getActiveTenant();
         $service = app(ReportExportService::class);
+        $filters = [
+            'program_id' => $this->selectedProgramId,
+            'cohort_id' => $this->selectedCohortId,
+        ];
 
         if ($tenant) {
-            return $service->getAnalyticsData($tenant);
+            return $service->getAnalyticsData($tenant, $filters);
         }
 
-        return $service->getAnalyticsData(new Sae(['name' => 'Hubs Africa SAE', 'slug' => 'sae']));
+        return $service->getAnalyticsData(new Sae(['name' => 'Hubs Africa SAE', 'slug' => 'sae']), $filters);
     }
 
     public function getPrintUrl(): string
@@ -46,6 +75,8 @@ class AnalyticsPage extends Page
 
         return route('sae.reports.analytics.print', [
             'tenant' => $tenant?->slug ?? 'default',
+            'program_id' => $this->selectedProgramId,
+            'cohort_id' => $this->selectedCohortId,
         ]);
     }
 
@@ -55,6 +86,8 @@ class AnalyticsPage extends Page
 
         return route('sae.reports.analytics.download', [
             'tenant' => $tenant?->slug ?? 'default',
+            'program_id' => $this->selectedProgramId,
+            'cohort_id' => $this->selectedCohortId,
         ]);
     }
 
@@ -64,6 +97,8 @@ class AnalyticsPage extends Page
 
         return route('sae.reports.analytics.csv', [
             'tenant' => $tenant?->slug ?? 'default',
+            'program_id' => $this->selectedProgramId,
+            'cohort_id' => $this->selectedCohortId,
         ]);
     }
 
@@ -73,6 +108,9 @@ class AnalyticsPage extends Page
         $service = app(ReportExportService::class);
         $data = $this->getAnalyticsData();
 
-        return $service->exportAnalyticsCsv($tenant, $data);
+        return $service->exportAnalyticsCsv($tenant, $data, [
+            'program_id' => $this->selectedProgramId,
+            'cohort_id' => $this->selectedCohortId,
+        ]);
     }
 }

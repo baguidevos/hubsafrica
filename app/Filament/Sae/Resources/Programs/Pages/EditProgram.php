@@ -2,12 +2,15 @@
 
 namespace App\Filament\Sae\Resources\Programs\Pages;
 
+use App\Filament\Concerns\HasDynamicRecordTitle;
 use App\Filament\Sae\Resources\Programs\ProgramResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditProgram extends EditRecord
 {
+    use HasDynamicRecordTitle;
+
     protected static string $resource = ProgramResource::class;
 
     protected function getHeaderActions(): array

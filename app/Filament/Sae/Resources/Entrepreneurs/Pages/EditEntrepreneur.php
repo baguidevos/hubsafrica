@@ -2,12 +2,15 @@
 
 namespace App\Filament\Sae\Resources\Entrepreneurs\Pages;
 
+use App\Filament\Concerns\HasDynamicRecordTitle;
 use App\Filament\Sae\Resources\Entrepreneurs\EntrepreneurResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditEntrepreneur extends EditRecord
 {
+    use HasDynamicRecordTitle;
+
     protected static string $resource = EntrepreneurResource::class;
 
     protected function getHeaderActions(): array

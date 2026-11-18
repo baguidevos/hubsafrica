@@ -2,6 +2,7 @@
 
 namespace App\Filament\Entrepreneur\Resources\Applications\Pages;
 
+use App\Filament\Concerns\HasDynamicRecordTitle;
 use App\Filament\Entrepreneur\Resources\Applications\ApplicationResource;
 use App\Filament\Entrepreneur\Resources\Projects\ProjectResource;
 use Filament\Actions\Action;
@@ -10,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ViewApplication extends ViewRecord
 {
+    use HasDynamicRecordTitle;
+
     protected static string $resource = ApplicationResource::class;
 
     protected string $view = 'filament.common.view-application';

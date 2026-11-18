@@ -2,6 +2,7 @@
 
 namespace App\Filament\Sae\Resources\CoachingSessions\Pages;
 
+use App\Filament\Concerns\HasDynamicRecordTitle;
 use App\Filament\Sae\Resources\CoachingSessions\CoachingSessionResource;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
@@ -9,6 +10,8 @@ use Filament\Resources\Pages\ViewRecord;
 
 class ViewCoachingSession extends ViewRecord
 {
+    use HasDynamicRecordTitle;
+
     protected static string $resource = CoachingSessionResource::class;
 
     protected function getHeaderActions(): array

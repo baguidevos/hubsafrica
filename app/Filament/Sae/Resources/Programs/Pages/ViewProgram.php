@@ -3,6 +3,7 @@
 namespace App\Filament\Sae\Resources\Programs\Pages;
 
 use App\Enums\ApplicationStatus;
+use App\Filament\Concerns\HasDynamicRecordTitle;
 use App\Filament\Sae\Resources\Programs\ProgramResource;
 use App\Models\Program;
 use Filament\Actions\Action;
@@ -16,6 +17,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ViewProgram extends ViewRecord
 {
+    use HasDynamicRecordTitle;
+
     protected static string $resource = ProgramResource::class;
 
     protected function getHeaderActions(): array

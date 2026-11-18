@@ -4,6 +4,7 @@ namespace App\Filament\Sae\Resources\Applications\Pages;
 
 use App\Enums\ApplicationEvaluationStatus;
 use App\Enums\ApplicationStatus;
+use App\Filament\Concerns\HasDynamicRecordTitle;
 use App\Filament\Sae\Resources\Applications\ApplicationResource;
 use App\Filament\Sae\Resources\Projects\ProjectResource;
 use App\Models\Application;
@@ -20,6 +21,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ViewApplication extends ViewRecord
 {
+    use HasDynamicRecordTitle;
+
     protected static string $resource = ApplicationResource::class;
 
     protected string $view = 'filament.common.view-application';

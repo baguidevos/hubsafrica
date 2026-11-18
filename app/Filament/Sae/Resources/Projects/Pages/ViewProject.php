@@ -2,6 +2,7 @@
 
 namespace App\Filament\Sae\Resources\Projects\Pages;
 
+use App\Filament\Concerns\HasDynamicRecordTitle;
 use App\Filament\Sae\Resources\Projects\ProjectResource;
 use App\Models\Project;
 use Filament\Actions\Action;
@@ -13,6 +14,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ViewProject extends ViewRecord
 {
+    use HasDynamicRecordTitle;
+
     protected static string $resource = ProjectResource::class;
 
     public function content(Schema $schema): Schema

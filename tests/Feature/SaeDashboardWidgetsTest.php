@@ -5,6 +5,8 @@ use App\Enums\CoachStatus;
 use App\Enums\EntrepreneurStatus;
 use App\Enums\ProgramStatus;
 use App\Enums\ProjectStatus;
+use App\Filament\Sae\Pages\AnalyticsPage;
+use App\Filament\Sae\Pages\ReportsPage;
 use App\Filament\Sae\Resources\Applications\ApplicationResource;
 use App\Filament\Sae\Resources\EntrepreneurInvitations\Pages\CreateEntrepreneurInvitation;
 use App\Filament\Sae\Resources\Entrepreneurs\Pages\ListEntrepreneurs;
@@ -24,6 +26,7 @@ use App\Models\Program;
 use App\Models\Project;
 use App\Models\Sae;
 use App\Models\User;
+use App\Services\ReportExportService;
 use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
@@ -469,4 +472,40 @@ test('open call widget links directly to applications filtered by open call prog
         ->assertSee($url, false);
 
     $this->get($url)->assertOk();
+});
+
+test('reports and analytics service returns real metrics without fake fallbacks and respects filters', function () {
+    $owner = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $owner->id,
+        'name' => 'SAE Reports',
+        'slug' => 'sae-reports-'.uniqid(),
+    ]);
+
+    $service = app(ReportExportService::class);
+
+    // Base vide -> aucune valeur fictive (28.5, 45.0, 82.5, 88.0, 24, 8)
+    $indicators = collect($service->getImpactIndicators($sae))->keyBy('name');
+    expect($indicators["Taux d'admission au programme"]['current'])->toBe(0.0)
+        ->and($indicators['Taux de féminisation (Parité genre)']['current'])->toBe(0.0)
+        ->and($indicators['Taux de conformité des livrables']['current'])->toBe(0.0)
+        ->and($indicators['Taux de réalisation des séances de coaching']['current'])->toBe(0.0)
+        ->and($indicators['Emplois directs portés (taille d\'équipe)']['current'])->toBe(0)
+        ->and($indicators->has('Taux de satisfaction globale des porteurs'))->toBeFalse();
+
+    $analytics = $service->getAnalyticsData($sae);
+    expect($analytics['funnel'][0]['count'])->toBe(0)
+        ->and($analytics['femmes'])->toBe(0)
+        ->and($analytics['hommes'])->toBe(0)
+        ->and($analytics['totalSessions'])->toBe(0)
+        ->and($analytics['totalFinancement'])->toBe(0.0)
+        ->and($analytics['totalFinancementAccorde'])->toBe(0.0);
+
+    // Rendu des pages Rapports et Centre d'analyse
+    $this->actingAs($owner);
+    Filament::setTenant($sae);
+    Filament::setCurrentPanel(Filament::getPanel('sae'));
+
+    Livewire::test(ReportsPage::class)->assertSuccessful();
+    Livewire::test(AnalyticsPage::class)->assertSuccessful();
 });

@@ -6,6 +6,7 @@ use App\Enums\ApplicationEvaluationStatus;
 use App\Enums\ApplicationStatus;
 use App\Filament\Coach\Resources\Applications\ApplicationResource;
 use App\Filament\Coach\Resources\Projects\ProjectResource;
+use App\Filament\Concerns\HasDynamicRecordTitle;
 use App\Models\Application;
 use App\Models\ApplicationEvaluation;
 use App\Models\ApplicationEvaluationScore;
@@ -19,6 +20,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ViewApplication extends ViewRecord
 {
+    use HasDynamicRecordTitle;
+
     protected static string $resource = ApplicationResource::class;
 
     protected string $view = 'filament.common.view-application';

@@ -2,12 +2,15 @@
 
 namespace App\Filament\Entrepreneur\Resources\CoachingSessions\Pages;
 
+use App\Filament\Concerns\HasDynamicRecordTitle;
 use App\Filament\Entrepreneur\Resources\CoachingSessions\CoachingSessionResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditCoachingSession extends EditRecord
 {
+    use HasDynamicRecordTitle;
+
     protected static string $resource = CoachingSessionResource::class;
 
     protected function getHeaderActions(): array
