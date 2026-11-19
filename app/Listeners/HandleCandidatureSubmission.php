@@ -20,6 +20,7 @@ use App\Models\Project;
 use App\Models\Sae;
 use App\Models\TimelineEvent;
 use App\Models\User;
+use App\Support\FormSubmissionRedirectResolver;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -275,6 +276,19 @@ class HandleCandidatureSubmission
                 Auth::login($user);
             }
 
+            $sae = $saeId ? Sae::find($saeId) : null;
+
+            // 10b. Préparation de la redirection post-soumission vers la fiche projet de l'entrepreneur
+            if ($sae) {
+                session()->flash(
+                    FormSubmissionRedirectResolver::SESSION_PROJECT_URL_KEY,
+                    route('filament.entrepreneur.resources.projects.view', [
+                        'tenant' => $sae->slug,
+                        'record' => $project->id,
+                    ]),
+                );
+            }
+
             // 11. Notification in-app & Email pour l'entrepreneur
             Notification::make()
                 ->title('Candidature enregistrée avec succès')
@@ -291,9 +305,8 @@ class HandleCandidatureSubmission
                 ->queue(new ApplicationReceivedMail($application));
 
             // 12. Notification in-app & Email aux seuls responsables de la SAE
-            if ($saeId) {
-                $sae = Sae::find($saeId);
-                $saeResponsibles = $sae ? $sae->getResponsibles() : collect();
+            if ($sae) {
+                $saeResponsibles = $sae->getResponsibles();
 
                 foreach ($saeResponsibles as $responsible) {
                     if ($responsible->id === $user->id) {

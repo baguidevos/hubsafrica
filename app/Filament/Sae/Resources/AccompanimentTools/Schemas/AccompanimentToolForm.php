@@ -48,7 +48,11 @@ class AccompanimentToolForm
                         ]),
 
                         Textarea::make('description')
-                            ->label('Description')
+                            ->label('Description courte')
+                            ->placeholder('Ex : Référentiel pratique pour structurer le parcours d\'accompagnement selon le type de SAE.')
+                            ->helperText('Affichée sur la carte de l\'outil dans le catalogue public et la bibliothèque réseau (2 à 3 lignes recommandées).')
+                            ->required()
+                            ->maxLength(500)
                             ->rows(3)
                             ->columnSpanFull(),
                     ]),

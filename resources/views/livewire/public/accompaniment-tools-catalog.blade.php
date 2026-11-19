@@ -128,9 +128,9 @@
                                 <h3 class="text-base font-bold text-slate-900 leading-snug group-hover:text-slate-700 transition-colors">
                                     {{ $tool->title }}
                                 </h3>
-                                @if ($tool->description)
-                                    <p class="text-xs text-slate-500 leading-relaxed line-clamp-3">{{ $tool->description }}</p>
-                                @endif
+                                <p class="text-xs text-slate-500 leading-relaxed line-clamp-2">
+                                    {{ filled($tool->description) ? $tool->description : "Ressource d'accompagnement ({$fileType['label']}) partagée par {$saeName}." }}
+                                </p>
                             </div>
                         </div>
 
