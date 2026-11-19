@@ -3,6 +3,7 @@
 namespace App\Mcp\Servers;
 
 use App\Mcp\Apps\CohortCreatorAppResource;
+use App\Mcp\Apps\FormCreatorAppResource;
 use App\Mcp\Apps\ProgramCreatorAppResource;
 use App\Mcp\Prompts\EvaluateApplicationPrompt;
 use App\Mcp\Prompts\SummarizeCohortPrompt;
@@ -16,6 +17,7 @@ use App\Mcp\Tools\Coaching\AssignCoachToProjectTool;
 use App\Mcp\Tools\Coaching\ListCoachesTool;
 use App\Mcp\Tools\Coaching\ListCoachingSessionsTool;
 use App\Mcp\Tools\Coaching\LogCoachingSessionTool;
+use App\Mcp\Tools\Forms\CreateFormTool;
 use App\Mcp\Tools\Metrics\GetCohortSummaryTool;
 use App\Mcp\Tools\Metrics\GetSaeMetricsTool;
 use App\Mcp\Tools\Opportunities\ListOpportunitiesTool;
@@ -32,6 +34,7 @@ use App\Mcp\Tools\Projects\ListProjectDeliverablesTool;
 use App\Mcp\Tools\Projects\ListProjectsTool;
 use App\Mcp\Tools\Projects\UpdateProjectLevelTool;
 use App\Mcp\Tools\Ui\OpenCohortCreatorTool;
+use App\Mcp\Tools\Ui\OpenFormCreatorTool;
 use App\Mcp\Tools\Ui\OpenProgramCreatorTool;
 use App\Models\Sae;
 use Laravel\Mcp\Server;
@@ -47,7 +50,7 @@ Tu es l'assistant métier de la structure d'accompagnement (SAE) sur Hubs Africa
 RÈGLES DE COMMUNICATION STRICTES :
 1. Langage 100 % métier : parle toujours comme un conseiller Hubs Africa. Ne mentionne JAMAIS de détails techniques liés au système à l'utilisateur : aucun nom d'outil interne (ex. jamais `open_program_creator`, `create_cohort`, `get_sae_metrics`, etc.), aucune URI (`ui://...`), aucune route API, aucun nom de modèle, de table, de colonne, de framework (Laravel, MCP, JSON) ou de trace d'erreur.
 2. En cas d'erreur ou d'indisponibilité : reste sobre et orienté utilisateur. Indique simplement que l'opération n'a pas pu aboutir et propose de réessayer ou de vérifier les informations métier, sans jamais formuler d'hypothèse technique ni exposer de message système.
-3. Interfaces interactives : lorsque l'utilisateur souhaite créer un programme ou une cohorte sans avoir fourni toutes les informations nécessaires, ouvre immédiatement la carte/formulaire interactif correspondant au lieu de poser les questions une par une par texte, et présente-le naturellement sans citer le nom de l'outil.
+3. Interfaces interactives : lorsque l'utilisateur souhaite créer un programme, une cohorte ou un formulaire/questionnaire sans avoir fourni toutes les informations nécessaires, ouvre immédiatement la carte/formulaire interactif correspondant au lieu de poser les questions une par une par texte, et présente-le naturellement sans citer le nom de l'outil.
 INSTRUCTIONS)]
 class SaeMcpServer extends Server
 {
@@ -82,6 +85,9 @@ class SaeMcpServer extends Server
         PublishOpportunityTool::class,
         UpdateOpportunityTool::class,
 
+        // Formulaires & Questionnaires
+        CreateFormTool::class,
+
         // Coaching & Accompagnement
         ListCoachesTool::class,
         AssignCoachToProjectTool::class,
@@ -95,6 +101,7 @@ class SaeMcpServer extends Server
         // Interfaces Interactives (Generative UI / MCP Apps)
         OpenProgramCreatorTool::class,
         OpenCohortCreatorTool::class,
+        OpenFormCreatorTool::class,
     ];
 
     /**
@@ -105,6 +112,7 @@ class SaeMcpServer extends Server
         ActiveProgramsResource::class,
         ProgramCreatorAppResource::class,
         CohortCreatorAppResource::class,
+        FormCreatorAppResource::class,
     ];
 
     /**

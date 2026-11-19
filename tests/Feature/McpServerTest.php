@@ -11,12 +11,14 @@ use App\Models\AuditLog;
 use App\Models\Cohort;
 use App\Models\Entrepreneur;
 use App\Models\EvaluationCriterion;
+use App\Models\Form;
 use App\Models\McpApiKey;
 use App\Models\Opportunity;
 use App\Models\Program;
 use App\Models\Project;
 use App\Models\Sae;
 use App\Models\User;
+use App\Support\FormDefinitionBuilder;
 use App\Support\SaeAiFeatures;
 use Filament\Facades\Filament;
 use Livewire\Livewire;
@@ -897,4 +899,153 @@ test('mcp update_opportunity updates sae opportunity partially and isolates othe
         ->assertJsonPath('result.isError', true);
 
     expect($opportunityB->fresh()->title)->toBe('Opportunité SAE B');
+});
+
+test('mcp exposes interactive form creator app and creates structured forms for current sae', function () {
+    // 1. Test pur du constructeur de structure Packstub
+    $sections = FormDefinitionBuilder::buildPackstubSections([
+        ['label' => 'Nom du projet', 'type' => 'text', 'required' => true],
+        ['label' => 'Nom du projet', 'type' => 'textarea', 'required' => false],
+        ['label' => 'Stade', 'type' => 'select', 'required' => true, 'options' => ['Idéation', 'MVP']],
+    ], 'Diagnostic Initial');
+
+    expect($sections)->toHaveCount(1)
+        ->and($sections[0]['type'])->toBe('section')
+        ->and($sections[0]['data']['fields'])->toHaveCount(3)
+        ->and($sections[0]['data']['fields'][0]['data']['key'])->toBe('nom_du_projet')
+        ->and($sections[0]['data']['fields'][1]['data']['key'])->toBe('nom_du_projet_2')
+        ->and($sections[0]['data']['fields'][2]['data']['choices'])->toBe(['ideation' => 'Idéation', 'mvp' => 'MVP']);
+
+    // 2. Configuration de 2 SAEs pour tester l'isolation
+    $userA = User::factory()->create();
+    $saeA = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
+        'owner_id' => $userA->id,
+        'name' => 'SAE Form Alpha',
+        'slug' => 'sae-form-alpha-'.uniqid(),
+    ]);
+    $tokenA = McpApiKey::createToken($saeA, $userA, 'Form Bot')['plainTextToken'];
+
+    $programA = Program::create([
+        'sae_id' => $saeA->id,
+        'name' => 'Programme Alpha 2026',
+        'slug' => 'programme-alpha-'.uniqid(),
+    ]);
+
+    $userB = User::factory()->create();
+    $saeB = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
+        'owner_id' => $userB->id,
+        'name' => 'SAE Form Beta',
+        'slug' => 'sae-form-beta-'.uniqid(),
+    ]);
+
+    $programB = Program::create([
+        'sae_id' => $saeB->id,
+        'name' => 'Programme Beta Privé',
+        'slug' => 'programme-beta-'.uniqid(),
+    ]);
+
+    // 3. tools/list expose open_form_creator et create_form
+    $toolsResponse = $this->withHeader('Authorization', 'Bearer '.$tokenA)
+        ->postJson('/mcp/sae', [
+            'jsonrpc' => '2.0',
+            'id' => 300,
+            'method' => 'tools/list',
+        ]);
+
+    $toolNames = collect($toolsResponse->json('result.tools'))->pluck('name')->all();
+    expect($toolNames)
+        ->toContain('open_form_creator')
+        ->toContain('create_form');
+
+    // 4. open_form_creator + lecture de la ressource UI interactive
+    $openResponse = $this->withHeader('Authorization', 'Bearer '.$tokenA)
+        ->postJson('/mcp/sae', [
+            'jsonrpc' => '2.0',
+            'id' => 301,
+            'method' => 'tools/call',
+            'params' => [
+                'name' => 'open_form_creator',
+                'arguments' => [],
+            ],
+        ]);
+
+    $openResponse->assertStatus(200)
+        ->assertJsonPath('result.isError', false);
+
+    $uiResourceResponse = $this->withHeader('Authorization', 'Bearer '.$tokenA)
+        ->postJson('/mcp/sae', [
+            'jsonrpc' => '2.0',
+            'id' => 302,
+            'method' => 'resources/read',
+            'params' => [
+                'uri' => 'ui://hubafrica/form-creator',
+            ],
+        ]);
+
+    $uiResourceResponse->assertStatus(200);
+    $uiHtml = (string) ($uiResourceResponse->json('result.contents.0.text') ?? '');
+    expect($uiHtml)
+        ->toContain('SAE Form Alpha')
+        ->toContain('Programme Alpha 2026')
+        ->not->toContain('Programme Beta Privé');
+
+    // 5. create_form crée un formulaire structuré pour SAE A
+    $createResponse = $this->withHeader('Authorization', 'Bearer '.$tokenA)
+        ->postJson('/mcp/sae', [
+            'jsonrpc' => '2.0',
+            'id' => 303,
+            'method' => 'tools/call',
+            'params' => [
+                'name' => 'create_form',
+                'arguments' => [
+                    'name' => 'Diagnostic Maturité 2026',
+                    'type' => 'DIAGNOSTIC',
+                    'description' => 'Évaluation initiale des startups entrantes',
+                    'program_id' => $programA->id,
+                    'is_mandatory' => true,
+                    'is_active' => true,
+                    'fields' => [
+                        ['label' => 'Nom de la startup', 'type' => 'text', 'required' => true],
+                        ['label' => 'Stade actuel', 'type' => 'select', 'required' => true, 'options' => ['Idéation', 'MVP', 'Traction']],
+                    ],
+                ],
+            ],
+        ]);
+
+    $createResponse->assertStatus(200)
+        ->assertJsonPath('result.isError', false)
+        ->assertJsonPath('result.structuredContent.form.name', 'Diagnostic Maturité 2026')
+        ->assertJsonPath('result.structuredContent.form.type', 'DIAGNOSTIC')
+        ->assertJsonPath('result.structuredContent.form.fields_count', 2);
+
+    $this->assertDatabaseHas((new Form)->getTable(), [
+        'sae_id' => $saeA->id,
+        'program_id' => $programA->id,
+        'name' => 'Diagnostic Maturité 2026',
+        'type' => 'DIAGNOSTIC',
+    ]);
+
+    // 6. Isolation stricte : impossible d'associer le programme d'une autre SAE
+    $forbiddenCreate = $this->withHeader('Authorization', 'Bearer '.$tokenA)
+        ->postJson('/mcp/sae', [
+            'jsonrpc' => '2.0',
+            'id' => 304,
+            'method' => 'tools/call',
+            'params' => [
+                'name' => 'create_form',
+                'arguments' => [
+                    'name' => 'Formulaire Interdit',
+                    'type' => 'DIAGNOSTIC',
+                    'program_id' => $programB->id,
+                    'fields' => [
+                        ['label' => 'Question 1', 'type' => 'text', 'required' => true],
+                    ],
+                ],
+            ],
+        ]);
+
+    $forbiddenCreate->assertStatus(200)
+        ->assertJsonPath('result.isError', true);
 });
