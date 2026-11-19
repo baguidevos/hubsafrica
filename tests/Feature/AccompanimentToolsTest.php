@@ -248,3 +248,12 @@ test('paid tool requires payment and unlocks permanently after sandbox callback'
         ->get(route('public.outils.access', ['slug' => $tool->slug]))
         ->assertRedirect('https://drive.google.com/file/d/pack-juridique');
 });
+
+test('resolveFileTypeBadge detects file extensions, google drive, and external links purely', function () {
+    expect(AccompanimentTool::resolveFileTypeBadge(AccompanimentToolFormat::DOCUMENT, 'guide.pdf')['key'])->toBe('pdf')
+        ->and(AccompanimentTool::resolveFileTypeBadge(AccompanimentToolFormat::DOCUMENT, 'contrat.docx')['key'])->toBe('word')
+        ->and(AccompanimentTool::resolveFileTypeBadge(AccompanimentToolFormat::DOCUMENT, 'budget.xlsx')['key'])->toBe('excel')
+        ->and(AccompanimentTool::resolveFileTypeBadge(AccompanimentToolFormat::DOCUMENT, 'pitch.pptx')['key'])->toBe('powerpoint')
+        ->and(AccompanimentTool::resolveFileTypeBadge(AccompanimentToolFormat::DRIVE_LINK, null, 'https://drive.google.com/file/d/abc')['key'])->toBe('google_drive')
+        ->and(AccompanimentTool::resolveFileTypeBadge(AccompanimentToolFormat::DRIVE_LINK, null, 'https://notion.so/template')['key'])->toBe('link');
+});

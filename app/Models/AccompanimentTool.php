@@ -153,4 +153,82 @@ class AccompanimentTool extends Model
 
         return "{$amount} {$this->currency}";
     }
+
+    /**
+     * @return array{key: string, label: string, badgeClasses: string}
+     */
+    public function fileTypeBadge(): array
+    {
+        return self::resolveFileTypeBadge(
+            format: $this->format,
+            filename: $this->original_filename ?: $this->file_path,
+            driveUrl: $this->drive_url,
+        );
+    }
+
+    /**
+     * Détermine le type visuel d'un outil (icône, libellé et couleurs) sans dépendance externe.
+     *
+     * @return array{key: string, label: string, badgeClasses: string}
+     */
+    public static function resolveFileTypeBadge(
+        ?AccompanimentToolFormat $format,
+        ?string $filename = null,
+        ?string $driveUrl = null,
+    ): array {
+        if ($format === AccompanimentToolFormat::DRIVE_LINK) {
+            $normalizedUrl = strtolower((string) $driveUrl);
+            $isGoogleDrive = str_contains($normalizedUrl, 'drive.google.com')
+                || str_contains($normalizedUrl, 'docs.google.com');
+
+            if ($isGoogleDrive) {
+                return [
+                    'key' => 'google_drive',
+                    'label' => 'DRIVE',
+                    'badgeClasses' => 'bg-amber-50 text-amber-800 border-amber-200',
+                ];
+            }
+
+            return [
+                'key' => 'link',
+                'label' => 'LIEN',
+                'badgeClasses' => 'bg-violet-50 text-violet-700 border-violet-200',
+            ];
+        }
+
+        $extension = strtolower(pathinfo((string) $filename, PATHINFO_EXTENSION));
+
+        return match ($extension) {
+            'pdf' => [
+                'key' => 'pdf',
+                'label' => 'PDF',
+                'badgeClasses' => 'bg-rose-50 text-rose-700 border-rose-200',
+            ],
+            'doc', 'docx', 'odt', 'rtf' => [
+                'key' => 'word',
+                'label' => strtoupper($extension),
+                'badgeClasses' => 'bg-blue-50 text-blue-700 border-blue-200',
+            ],
+            'xls', 'xlsx', 'csv', 'ods' => [
+                'key' => 'excel',
+                'label' => strtoupper($extension),
+                'badgeClasses' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
+            ],
+            'ppt', 'pptx', 'odp' => [
+                'key' => 'powerpoint',
+                'label' => strtoupper($extension),
+                'badgeClasses' => 'bg-orange-50 text-orange-700 border-orange-200',
+            ],
+            'zip', 'rar', '7z' => [
+                'key' => 'archive',
+                'label' => strtoupper($extension),
+                'badgeClasses' => 'bg-slate-100 text-slate-700 border-slate-200',
+            ],
+            default => [
+                'key' => 'document',
+                'label' => $extension !== '' ? strtoupper($extension) : 'DOC',
+                'badgeClasses' => 'bg-slate-100 text-slate-700 border-slate-200',
+            ],
+        };
+    }
 }
