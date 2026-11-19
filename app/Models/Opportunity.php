@@ -216,4 +216,52 @@ class Opportunity extends Model
                 ->orWhere('target_zones', 'like', "%{$cleanedTerm}%");
         });
     }
+
+    public function renderedDetailsHtml(): string
+    {
+        return self::renderDetailsHtml($this->details);
+    }
+
+    public function plainExcerpt(int $limit = 130): string
+    {
+        return self::renderDetailsExcerpt($this->details, $limit);
+    }
+
+    /**
+     * Convertit le contenu Markdown en HTML sûr tout en préservant les contenus HTML déjà formatés (RichEditor).
+     */
+    public static function renderDetailsHtml(?string $details): string
+    {
+        if (blank($details)) {
+            return '';
+        }
+
+        $trimmed = trim($details);
+
+        if (preg_match('/<\s*(p|div|ul|ol|li|h[1-6]|br|table|blockquote)\b/i', $trimmed) === 1) {
+            return $trimmed;
+        }
+
+        return Str::markdown($trimmed, [
+            'html_input' => 'strip',
+            'allow_unsafe_links' => false,
+        ]);
+    }
+
+    /**
+     * Génère un extrait texte propre (sans balises HTML ni syntaxe Markdown brute).
+     */
+    public static function renderDetailsExcerpt(?string $details, int $limit = 130): string
+    {
+        $html = self::renderDetailsHtml($details);
+
+        if ($html === '') {
+            return '';
+        }
+
+        $plainText = html_entity_decode(strip_tags($html), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $normalized = preg_replace('/\s+/u', ' ', trim($plainText)) ?? '';
+
+        return Str::limit($normalized, $limit);
+    }
 }

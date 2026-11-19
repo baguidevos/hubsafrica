@@ -315,3 +315,51 @@ test('opportunity provides secure opaque share urls and multi-channel share link
         ->assertSee('LinkedIn')
         ->assertSee('Copier le lien public sécurisé');
 });
+
+test('opportunity details render markdown cleanly on detail page and strip markdown in catalog excerpt', function () {
+    $markdown = "## Critères d'éligibilité\n\nDotation de **25 000 EUR**.\n\n- Startup basée en Afrique\n- MVP fonctionnel\n\n<script>alert('xss')</script>";
+
+    $rendered = Opportunity::renderDetailsHtml($markdown);
+    expect($rendered)
+        ->toContain('<h2>')
+        ->toContain('<strong>25 000 EUR</strong>')
+        ->toContain('<ul>')
+        ->toContain('<li>Startup basée en Afrique</li>')
+        ->not->toContain('<script>');
+
+    $existingHtml = '<p>Texte <strong>RichEditor</strong></p><ul><li>Item 1</li></ul>';
+    expect(Opportunity::renderDetailsHtml($existingHtml))->toBe($existingHtml);
+
+    $excerpt = Opportunity::renderDetailsExcerpt($markdown, 130);
+    expect($excerpt)
+        ->toContain("Critères d'éligibilité")
+        ->toContain('25 000 EUR')
+        ->not->toContain('##')
+        ->not->toContain('**');
+
+    $user = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $user->id,
+        'name' => 'Hub Markdown',
+        'slug' => 'hub-markdown-'.uniqid(),
+    ]);
+
+    $opportunity = Opportunity::create([
+        'sae_id' => $sae->id,
+        'title' => 'Fonds Innovation Markdown 2026',
+        'details' => $markdown,
+        'deadline' => now()->addDays(20),
+        'is_active' => true,
+    ]);
+
+    $this->get(route('public.opportunities.detail', $opportunity->slug))
+        ->assertOk()
+        ->assertSee('<strong>25 000 EUR</strong>', false)
+        ->assertSee('<li>Startup basée en Afrique</li>', false)
+        ->assertDontSee('<script>', false);
+
+    Livewire::test(OpportunitiesCatalog::class)
+        ->assertSee('Fonds Innovation Markdown 2026')
+        ->assertSee('25 000 EUR')
+        ->assertDontSee('**25 000 EUR**');
+});

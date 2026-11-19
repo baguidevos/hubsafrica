@@ -195,9 +195,9 @@
                         @endif
                     </div>
 
-                    {{-- Contenu éditorial riche --}}
-                    <div class="prose max-w-none text-sm text-slate-700 leading-relaxed space-y-4">
-                        {!! $opportunity->details !!}
+                    {{-- Contenu éditorial riche (Markdown & HTML) --}}
+                    <div class="text-sm text-slate-700 leading-relaxed space-y-4 [&_h1]:text-2xl [&_h1]:font-extrabold [&_h1]:text-slate-900 [&_h1]:mt-6 [&_h1]:mb-2 [&_h2]:text-lg [&_h2]:font-bold [&_h2]:text-slate-900 [&_h2]:mt-6 [&_h2]:mb-2 [&_h3]:text-base [&_h3]:font-bold [&_h3]:text-slate-900 [&_h3]:mt-4 [&_h3]:mb-1.5 [&_p]:leading-relaxed [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1.5 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1.5 [&_li]:leading-relaxed [&_strong]:font-bold [&_strong]:text-slate-900 [&_em]:italic [&_a]:text-[#2F3284] [&_a]:font-semibold [&_a]:underline [&_a]:hover:text-[#F8B81D] [&_blockquote]:border-l-4 [&_blockquote]:border-[#F8B81D] [&_blockquote]:bg-amber-50/50 [&_blockquote]:pl-4 [&_blockquote]:py-2 [&_blockquote]:rounded-r-xl [&_blockquote]:italic [&_hr]:border-slate-200 [&_hr]:my-6 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:bg-slate-100 [&_code]:text-xs [&_code]:font-mono [&_table]:w-full [&_table]:border-collapse [&_th]:bg-slate-100 [&_th]:text-left [&_th]:p-2.5 [&_th]:border [&_th]:border-slate-200 [&_th]:font-bold [&_td]:p-2.5 [&_td]:border [&_td]:border-slate-200">
+                        {!! $opportunity->renderedDetailsHtml() !!}
                     </div>
                 </div>
 

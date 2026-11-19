@@ -128,8 +128,7 @@
                 @php
                     $isClosed = $opp->isClosed();
                     $remainingDays = $opp->daysRemaining();
-                    $plainDetails = strip_tags($opp->details);
-                    $excerpt = \Illuminate\Support\Str::limit($plainDetails, 130);
+                    $excerpt = $opp->plainExcerpt(130);
                 @endphp
 
                 <article class="rounded-3xl shadow-xs transition-all duration-300 flex flex-col justify-between overflow-hidden group hover:-translate-y-1 {{ $isClosed ? 'bg-red-50/20 border-2 border-red-300 hover:border-red-500 hover:shadow-red-100' : 'bg-white border border-slate-200/90 hover:border-[#2F3284]/30 hover:shadow-xl' }}">

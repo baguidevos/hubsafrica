@@ -786,3 +786,115 @@ test('mcp server exposes and executes opportunity and program selection grid too
     $invalidThresholdResponse->assertStatus(200)
         ->assertJsonPath('result.isError', true);
 });
+
+test('mcp update_opportunity updates sae opportunity partially and isolates other saes', function () {
+    $userA = User::factory()->create();
+    $saeA = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
+        'owner_id' => $userA->id,
+        'name' => 'SAE Alpha',
+        'slug' => 'sae-alpha-'.uniqid(),
+    ]);
+    $tokenA = McpApiKey::createToken($saeA, $userA, 'Alpha Bot')['plainTextToken'];
+
+    $userB = User::factory()->create();
+    $saeB = Sae::create([
+        'ai_features' => SaeAiFeatures::allEnabled(),
+        'owner_id' => $userB->id,
+        'name' => 'SAE Beta',
+        'slug' => 'sae-beta-'.uniqid(),
+    ]);
+
+    $opportunityA = Opportunity::create([
+        'sae_id' => $saeA->id,
+        'title' => 'Ancien Titre',
+        'details' => 'Ancienne description',
+        'sectors' => ['AgriTech'],
+        'target_zones' => ['Sénégal'],
+        'is_active' => true,
+    ]);
+
+    $opportunityB = Opportunity::create([
+        'sae_id' => $saeB->id,
+        'title' => 'Opportunité SAE B',
+        'details' => 'Privée',
+        'is_active' => true,
+    ]);
+
+    // 1. tools/list expose update_opportunity
+    $toolsResponse = $this->withHeader('Authorization', 'Bearer '.$tokenA)
+        ->postJson('/mcp/sae', [
+            'jsonrpc' => '2.0',
+            'id' => 200,
+            'method' => 'tools/list',
+        ]);
+
+    $toolNames = collect($toolsResponse->json('result.tools'))->pluck('name')->all();
+    expect($toolNames)->toContain('update_opportunity');
+
+    // 2. Mise à jour partielle de l'opportunité SAE A (les secteurs non fournis restent intacts)
+    $updateResponse = $this->withHeader('Authorization', 'Bearer '.$tokenA)
+        ->postJson('/mcp/sae', [
+            'jsonrpc' => '2.0',
+            'id' => 201,
+            'method' => 'tools/call',
+            'params' => [
+                'name' => 'update_opportunity',
+                'arguments' => [
+                    'opportunity_id' => $opportunityA->id,
+                    'title' => 'Nouveau Titre 2026',
+                    'details' => "## Critères\n\n- **Dotation** : 30 000 EUR",
+                    'is_active' => false,
+                ],
+            ],
+        ]);
+
+    $updateResponse->assertStatus(200)
+        ->assertJsonPath('result.isError', false)
+        ->assertJsonPath('result.structuredContent.opportunity.title', 'Nouveau Titre 2026')
+        ->assertJsonPath('result.structuredContent.opportunity.is_active', false)
+        ->assertJsonPath('result.structuredContent.opportunity.sectors.0', 'AgriTech');
+
+    $opportunityA->refresh();
+    expect($opportunityA->title)->toBe('Nouveau Titre 2026')
+        ->and($opportunityA->details)->toContain('## Critères')
+        ->and($opportunityA->sectors)->toBe(['AgriTech'])
+        ->and($opportunityA->is_active)->toBeFalse();
+
+    // 3. Refus si aucun champ à modifier
+    $emptyUpdateResponse = $this->withHeader('Authorization', 'Bearer '.$tokenA)
+        ->postJson('/mcp/sae', [
+            'jsonrpc' => '2.0',
+            'id' => 202,
+            'method' => 'tools/call',
+            'params' => [
+                'name' => 'update_opportunity',
+                'arguments' => [
+                    'opportunity_id' => $opportunityA->id,
+                ],
+            ],
+        ]);
+
+    $emptyUpdateResponse->assertStatus(200)
+        ->assertJsonPath('result.isError', true);
+
+    // 4. Isolation stricte : impossible de modifier une opportunité d'une autre SAE
+    $forbiddenResponse = $this->withHeader('Authorization', 'Bearer '.$tokenA)
+        ->postJson('/mcp/sae', [
+            'jsonrpc' => '2.0',
+            'id' => 203,
+            'method' => 'tools/call',
+            'params' => [
+                'name' => 'update_opportunity',
+                'arguments' => [
+                    'opportunity_id' => $opportunityB->id,
+                    'title' => 'Piraté',
+                ],
+            ],
+        ]);
+
+    $forbiddenResponse->assertStatus(200)
+        ->assertJsonPath('result.isError', true);
+
+    expect($opportunityB->fresh()->title)->toBe('Opportunité SAE B');
+});

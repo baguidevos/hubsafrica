@@ -20,6 +20,7 @@ use App\Mcp\Tools\Metrics\GetCohortSummaryTool;
 use App\Mcp\Tools\Metrics\GetSaeMetricsTool;
 use App\Mcp\Tools\Opportunities\ListOpportunitiesTool;
 use App\Mcp\Tools\Opportunities\PublishOpportunityTool;
+use App\Mcp\Tools\Opportunities\UpdateOpportunityTool;
 use App\Mcp\Tools\Programs\ConfigureProgramSelectionGridTool;
 use App\Mcp\Tools\Programs\CreateCohortTool;
 use App\Mcp\Tools\Programs\CreateProgramTool;
@@ -79,6 +80,7 @@ class SaeMcpServer extends Server
         // Opportunités
         ListOpportunitiesTool::class,
         PublishOpportunityTool::class,
+        UpdateOpportunityTool::class,
 
         // Coaching & Accompagnement
         ListCoachesTool::class,
