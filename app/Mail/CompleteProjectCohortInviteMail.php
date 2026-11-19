@@ -36,11 +36,25 @@ class CompleteProjectCohortInviteMail extends Mailable implements ShouldQueue
     public function content(): Content
     {
         $sae = $this->sae ?? $this->entrepreneur->sae;
+        $latestProject = $sae
+            ? $this->entrepreneur->projects()
+                ->withoutGlobalScopes()
+                ->where('sae_id', $sae->id)
+                ->latest('id')
+                ->first()
+            : null;
 
         try {
-            $projectUrl = $sae
-                ? ProjectResource::getUrl('create', ['tenant' => $sae], panel: 'entrepreneur')
-                : url('/portal');
+            if ($sae && $latestProject) {
+                $projectUrl = ProjectResource::getUrl('edit', [
+                    'tenant' => $sae,
+                    'record' => $latestProject->id,
+                ], panel: 'entrepreneur');
+            } elseif ($sae) {
+                $projectUrl = ProjectResource::getUrl('create', ['tenant' => $sae], panel: 'entrepreneur');
+            } else {
+                $projectUrl = url('/portal');
+            }
         } catch (\Throwable) {
             $projectUrl = url('/portal');
         }

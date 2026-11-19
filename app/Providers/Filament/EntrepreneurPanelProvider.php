@@ -13,6 +13,8 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Width;
+use Filament\View\PanelsRenderHook;
+use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -60,6 +62,10 @@ class EntrepreneurPanelProvider extends PanelProvider
             ])
             ->databaseNotifications()
             // ->databaseNotificationsPolling('120s')
+            ->renderHook(
+                PanelsRenderHook::TOPBAR_AFTER,
+                fn (): View => view('filament.entrepreneur.components.completion-banner'),
+            )
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

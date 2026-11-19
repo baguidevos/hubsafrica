@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ProjectStatus;
 use App\Models\Concerns\BelongsToTenant;
+use App\Support\EntrepreneurCompletionChecker;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -53,6 +54,14 @@ class Project extends Model
 
     protected static function booted(): void
     {
+        static::saved(function (Project $project): void {
+            EntrepreneurCompletionChecker::forgetForProject($project);
+        });
+
+        static::deleted(function (Project $project): void {
+            EntrepreneurCompletionChecker::forgetForProject($project);
+        });
+
         static::creating(function (Project $project) {
             if ($project->current_level_id && ! $project->initial_level_id) {
                 $project->initial_level_id = $project->current_level_id;
