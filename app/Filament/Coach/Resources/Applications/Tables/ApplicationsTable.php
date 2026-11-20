@@ -28,7 +28,7 @@ class ApplicationsTable
                     ->label('Entrepreneur candidat')
                     ->weight('bold')
                     ->searchable(['first_name', 'last_name'])
-                    ->sortable(),
+                    ->sortable(['last_name', 'first_name']),
 
                 TextColumn::make('project.name')
                     ->label('Projet')

@@ -9,6 +9,7 @@ use App\Mail\CompleteProjectCohortInviteMail;
 use App\Models\Cohort;
 use App\Models\Enrollment;
 use App\Models\Entrepreneur;
+use App\Models\Program;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
@@ -39,7 +40,7 @@ class EntrepreneursTable
                     ->label('Entrepreneur')
                     ->weight('bold')
                     ->searchable(['first_name', 'last_name'])
-                    ->sortable(),
+                    ->sortable(['last_name', 'first_name']),
 
                 TextColumn::make('email')
                     ->label('Email')
@@ -99,9 +100,50 @@ class EntrepreneursTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                SelectFilter::make('program_id')
+                    ->label('Programme')
+                    ->searchable()
+                    ->options(function () {
+                        $tenant = Filament::getTenant();
+
+                        return Program::query()
+                            ->when($tenant, fn (Builder $query) => $query->where('sae_id', $tenant->id))
+                            ->orderBy('name')
+                            ->pluck('name', 'id')
+                            ->all();
+                    })
+                    ->query(function (Builder $query, array $data): Builder {
+                        $programId = $data['value'] ?? null;
+
+                        if (blank($programId)) {
+                            return $query;
+                        }
+
+                        return $query->where(function (Builder $subQuery) use ($programId): void {
+                            $subQuery->whereHas('cohorts', fn (Builder $cohortQuery) => $cohortQuery->where('program_id', $programId))
+                                ->orWhereHas('applications', fn (Builder $applicationQuery) => $applicationQuery->where('program_id', $programId));
+                        });
+                    }),
+
                 SelectFilter::make('cohorts')
                     ->label('Cohorte')
                     ->relationship('cohorts', 'name'),
+
+                SelectFilter::make('country')
+                    ->label('Pays')
+                    ->searchable()
+                    ->options(function () {
+                        $tenant = Filament::getTenant();
+
+                        return Entrepreneur::query()
+                            ->when($tenant, fn (Builder $query) => $query->where('sae_id', $tenant->id))
+                            ->whereNotNull('country')
+                            ->where('country', '!=', '')
+                            ->distinct()
+                            ->orderBy('country')
+                            ->pluck('country', 'country')
+                            ->all();
+                    }),
 
                 SelectFilter::make('gender')
                     ->label('Genre')

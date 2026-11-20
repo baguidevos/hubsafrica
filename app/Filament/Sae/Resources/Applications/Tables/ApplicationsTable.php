@@ -34,7 +34,7 @@ class ApplicationsTable
                     ->weight('bold')
                     ->searchable(['first_name', 'last_name'])
                     ->description(fn (Application $record) => $record->status === ApplicationStatus::SOUMISE ? 'Nouvelle candidature non traitée' : null)
-                    ->sortable(),
+                    ->sortable(['last_name', 'first_name']),
 
                 TextColumn::make('project.name')
                     ->label('Projet')

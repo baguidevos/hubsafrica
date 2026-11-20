@@ -27,7 +27,7 @@ class DataRoomDocumentsTable
                 TextColumn::make('entrepreneur.full_name')
                     ->label('Entrepreneur')
                     ->searchable(['first_name', 'last_name'])
-                    ->sortable(),
+                    ->sortable(['last_name', 'first_name']),
 
                 TextColumn::make('project.name')
                     ->label('Projet')

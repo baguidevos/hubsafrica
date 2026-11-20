@@ -34,7 +34,7 @@ class EntrepreneursTable
                     ->label('Entrepreneur')
                     ->weight('bold')
                     ->searchable(['first_name', 'last_name'])
-                    ->sortable()
+                    ->sortable(['last_name', 'first_name'])
                     ->description(fn (Entrepreneur $record) => $record->profession ?: ($record->territory ?: null)),
 
                 TextColumn::make('email')

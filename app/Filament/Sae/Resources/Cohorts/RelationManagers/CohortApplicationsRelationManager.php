@@ -44,7 +44,7 @@ class CohortApplicationsRelationManager extends RelationManager
                     ->weight('bold')
                     ->searchable(['first_name', 'last_name', 'email'])
                     ->description(fn (Application $record): ?string => $record->entrepreneur?->email)
-                    ->sortable(),
+                    ->sortable(['last_name', 'first_name']),
 
                 TextColumn::make('project.name')
                     ->label('Projet / Startup')

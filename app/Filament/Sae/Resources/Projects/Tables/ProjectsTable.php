@@ -28,7 +28,7 @@ class ProjectsTable
                 TextColumn::make('entrepreneur.full_name')
                     ->label('Entrepreneur porteur')
                     ->searchable(['first_name', 'last_name'])
-                    ->sortable(),
+                    ->sortable(['last_name', 'first_name']),
 
                 TextColumn::make('sector')
                     ->label('Secteur')
