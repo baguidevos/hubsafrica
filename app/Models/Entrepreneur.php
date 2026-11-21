@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 
 class Entrepreneur extends Model
 {
@@ -52,9 +53,58 @@ class Entrepreneur extends Model
             EntrepreneurCompletionChecker::forgetForEntrepreneur($entrepreneur);
         });
 
+        static::deleting(function (self $entrepreneur): void {
+            Project::withoutGlobalScopes()
+                ->where('entrepreneur_id', $entrepreneur->id)
+                ->get()
+                ->each
+                ->delete();
+        });
+
         static::deleted(function (self $entrepreneur): void {
             EntrepreneurCompletionChecker::forgetForEntrepreneur($entrepreneur);
+
+            if (! $entrepreneur->user_id) {
+                return;
+            }
+
+            $user = User::find($entrepreneur->user_id);
+
+            if (! $user) {
+                return;
+            }
+
+            DB::table('sae_users')
+                ->where('user_id', $user->id)
+                ->where('sae_id', $entrepreneur->sae_id)
+                ->where('role', 'ENTREPRENEUR')
+                ->delete();
+
+            if (self::canDeleteAssociatedUser($user, (int) $entrepreneur->id)) {
+                $user->delete();
+            }
         });
+    }
+
+    private static function canDeleteAssociatedUser(User $user, int $deletedEntrepreneurId): bool
+    {
+        if ($user->isSuperAdmin() || $user->isSaeManager() || $user->isCoach()) {
+            return false;
+        }
+
+        $hasOtherEntrepreneurProfile = self::withoutGlobalScopes()
+            ->where('user_id', $user->id)
+            ->where('id', '!=', $deletedEntrepreneurId)
+            ->exists();
+
+        if ($hasOtherEntrepreneurProfile) {
+            return false;
+        }
+
+        return ! DB::table('sae_users')
+            ->where('user_id', $user->id)
+            ->where('role', '!=', 'ENTREPRENEUR')
+            ->exists();
     }
 
     public function getCityAttribute(): ?string

@@ -47,20 +47,27 @@ class CoachingSessionResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
-        $entrepreneur = auth()->user()?->entrepreneurProfile;
-        if ($entrepreneur) {
-            $cohortIds = Enrollment::where('entrepreneur_id', $entrepreneur->id)
-                ->whereIn('status', ['ACCEPTE', 'EN_COURS', 'VALIDE', 'ACTIF'])
-                ->pluck('cohort_id');
+        $user = auth()->user();
 
-            $query->where(function ($q) use ($entrepreneur, $cohortIds) {
-                $q->where('entrepreneur_id', $entrepreneur->id)
-                    ->orWhereHas('attendees', fn ($att) => $att->where('entrepreneur_id', $entrepreneur->id))
-                    ->orWhereIn('cohort_id', $cohortIds);
-            });
+        if ($user?->isSuperAdmin()) {
+            return $query;
         }
 
-        return $query;
+        $entrepreneur = $user?->entrepreneurProfile;
+
+        if (! $entrepreneur) {
+            return $query->whereRaw('1 = 0');
+        }
+
+        $cohortIds = Enrollment::where('entrepreneur_id', $entrepreneur->id)
+            ->whereIn('status', ['ACCEPTE', 'EN_COURS', 'VALIDE', 'ACTIF'])
+            ->pluck('cohort_id');
+
+        return $query->where(function ($q) use ($entrepreneur, $cohortIds) {
+            $q->where('entrepreneur_id', $entrepreneur->id)
+                ->orWhereHas('attendees', fn ($att) => $att->where('entrepreneur_id', $entrepreneur->id))
+                ->orWhereIn('cohort_id', $cohortIds);
+        });
     }
 
     public static function canEdit(Model $record): bool

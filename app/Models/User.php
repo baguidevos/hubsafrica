@@ -149,10 +149,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasTenant
                 || $this->saes()->wherePivot('role', 'COACH')->exists();
         }
 
-        // 5. Panel Entrepreneur : Réservé aux porteurs de projets
+        // 5. Panel Entrepreneur : Réservé aux porteurs de projets disposant d'un profil actif
         if ($panelId === 'entrepreneur') {
-            return $this->entrepreneurProfile()->exists()
-                || $this->saes()->wherePivot('role', 'ENTREPRENEUR')->exists();
+            return $this->entrepreneurProfile()->exists();
         }
 
         return true;
@@ -226,10 +225,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasTenant
         }
 
         if ($currentPanelId === 'entrepreneur') {
-            return $this->saes()
-                ->where('saes.id', $tenant->id)
-                ->wherePivot('role', 'ENTREPRENEUR')
-                ->exists();
+            return $this->entrepreneurProfile()->exists()
+                && $this->saes()
+                    ->where('saes.id', $tenant->id)
+                    ->wherePivot('role', 'ENTREPRENEUR')
+                    ->exists();
         }
 
         if ($this->ownedSae && $this->ownedSae->id === $tenant->id) {

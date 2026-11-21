@@ -45,12 +45,19 @@ class ProjectResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
-        $entrepreneur = auth()->user()?->entrepreneurProfile;
-        if ($entrepreneur) {
-            $query->where('entrepreneur_id', $entrepreneur->id);
+        $user = auth()->user();
+
+        if ($user?->isSuperAdmin()) {
+            return $query;
         }
 
-        return $query;
+        $entrepreneur = $user?->entrepreneurProfile;
+
+        if (! $entrepreneur) {
+            return $query->whereRaw('1 = 0');
+        }
+
+        return $query->where('entrepreneur_id', $entrepreneur->id);
     }
 
     /**
@@ -67,9 +74,38 @@ class ProjectResource extends Resource
         return ! Project::where('entrepreneur_id', $entrepreneur->id)->exists();
     }
 
+    public static function canView(Model $record): bool
+    {
+        return self::ownsProject($record);
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return self::ownsProject($record);
+    }
+
     public static function canDelete(Model $record): bool
     {
-        return ! $record->applications()->exists() && ! $record->submissions()->exists();
+        return self::ownsProject($record)
+            && ! $record->applications()->exists()
+            && ! $record->submissions()->exists();
+    }
+
+    private static function ownsProject(Model $record): bool
+    {
+        $user = auth()->user();
+
+        if ($user?->isSuperAdmin()) {
+            return true;
+        }
+
+        $entrepreneur = $user?->entrepreneurProfile;
+
+        if (! $entrepreneur) {
+            return false;
+        }
+
+        return (int) $record->getAttribute('entrepreneur_id') === (int) $entrepreneur->id;
     }
 
     public static function getRelations(): array

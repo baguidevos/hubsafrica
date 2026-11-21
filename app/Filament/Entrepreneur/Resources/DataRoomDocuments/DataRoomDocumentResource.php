@@ -42,22 +42,37 @@ class DataRoomDocumentResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
-        $entrepreneur = auth()->user()?->entrepreneurProfile;
-        if ($entrepreneur) {
-            $query->where('entrepreneur_id', $entrepreneur->id);
+        $user = auth()->user();
+
+        if ($user?->isSuperAdmin()) {
+            return $query;
         }
 
-        return $query;
+        $entrepreneur = $user?->entrepreneurProfile;
+
+        if (! $entrepreneur) {
+            return $query->whereRaw('1 = 0');
+        }
+
+        return $query->where('entrepreneur_id', $entrepreneur->id);
     }
 
     public static function canEdit(Model $record): bool
     {
-        return $record->status !== 'VALIDE';
+        $entrepreneur = auth()->user()?->entrepreneurProfile;
+
+        return $entrepreneur !== null
+            && (int) $record->getAttribute('entrepreneur_id') === (int) $entrepreneur->id
+            && $record->status !== 'VALIDE';
     }
 
     public static function canDelete(Model $record): bool
     {
-        return $record->status !== 'VALIDE';
+        $entrepreneur = auth()->user()?->entrepreneurProfile;
+
+        return $entrepreneur !== null
+            && (int) $record->getAttribute('entrepreneur_id') === (int) $entrepreneur->id
+            && $record->status !== 'VALIDE';
     }
 
     public static function getPages(): array

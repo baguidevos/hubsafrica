@@ -46,22 +46,37 @@ class DeliverableSubmissionResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
-        $entrepreneur = auth()->user()?->entrepreneurProfile;
-        if ($entrepreneur) {
-            $query->where('entrepreneur_id', $entrepreneur->id);
+        $user = auth()->user();
+
+        if ($user?->isSuperAdmin()) {
+            return $query;
         }
 
-        return $query;
+        $entrepreneur = $user?->entrepreneurProfile;
+
+        if (! $entrepreneur) {
+            return $query->whereRaw('1 = 0');
+        }
+
+        return $query->where('entrepreneur_id', $entrepreneur->id);
     }
 
     public static function canEdit(Model $record): bool
     {
-        return $record->status !== DeliverableSubmissionStatus::VALIDE;
+        $entrepreneur = auth()->user()?->entrepreneurProfile;
+
+        return $entrepreneur !== null
+            && (int) $record->getAttribute('entrepreneur_id') === (int) $entrepreneur->id
+            && $record->status !== DeliverableSubmissionStatus::VALIDE;
     }
 
     public static function canDelete(Model $record): bool
     {
-        return $record->status !== DeliverableSubmissionStatus::VALIDE;
+        $entrepreneur = auth()->user()?->entrepreneurProfile;
+
+        return $entrepreneur !== null
+            && (int) $record->getAttribute('entrepreneur_id') === (int) $entrepreneur->id
+            && $record->status !== DeliverableSubmissionStatus::VALIDE;
     }
 
     public static function getRelations(): array
