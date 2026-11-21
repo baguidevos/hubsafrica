@@ -2,8 +2,6 @@
 
 namespace App\Filament\Sae\Resources\AuditLogs;
 
-use App\Filament\Sae\Resources\AuditLogs\Pages\CreateAuditLog;
-use App\Filament\Sae\Resources\AuditLogs\Pages\EditAuditLog;
 use App\Filament\Sae\Resources\AuditLogs\Pages\ListAuditLogs;
 use App\Filament\Sae\Resources\AuditLogs\Schemas\AuditLogForm;
 use App\Filament\Sae\Resources\AuditLogs\Tables\AuditLogsTable;
@@ -12,6 +10,7 @@ use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class AuditLogResource extends Resource
 {
@@ -46,12 +45,30 @@ class AuditLogResource extends Resource
         ];
     }
 
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return false;
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return false;
+    }
+
+    public static function canDeleteAny(): bool
+    {
+        return false;
+    }
+
     public static function getPages(): array
     {
         return [
             'index' => ListAuditLogs::route('/'),
-            'create' => CreateAuditLog::route('/create'),
-            'edit' => EditAuditLog::route('/{record}/edit'),
         ];
     }
 }

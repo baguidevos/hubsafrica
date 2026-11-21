@@ -2,12 +2,29 @@
 
 namespace App\Providers;
 
+use App\Listeners\LogAuthenticationAudit;
+use App\Models\AccompanimentTool;
 use App\Models\Application;
+use App\Models\Coach;
 use App\Models\CoachAssignment;
 use App\Models\CoachingSession;
+use App\Models\Cohort;
+use App\Models\Course;
+use App\Models\DataRoomDocument;
 use App\Models\DeliverableSubmission;
+use App\Models\Enrollment;
+use App\Models\Entrepreneur;
+use App\Models\FundingRecord;
+use App\Models\Opportunity;
+use App\Models\Partner;
+use App\Models\Program;
+use App\Models\Project;
+use App\Models\Resource;
+use App\Models\Sae;
+use App\Models\User;
 use App\Notifications\FilamentResetPassword;
 use App\Observers\ApplicationObserver;
+use App\Observers\AuditModelObserver;
 use App\Observers\CoachAssignmentObserver;
 use App\Observers\CoachingSessionObserver;
 use App\Observers\DeliverableSubmissionObserver;
@@ -15,8 +32,12 @@ use Carbon\CarbonImmutable;
 use Filament\Auth\Notifications\ResetPassword;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Logout;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Head\Facades\Head;
@@ -47,8 +68,47 @@ class AppServiceProvider extends ServiceProvider
         CoachingSession::observe(CoachingSessionObserver::class);
         DeliverableSubmission::observe(DeliverableSubmissionObserver::class);
 
+        $this->configureAuditLogging();
+
         $this->configureFilamentAuthHooks();
         $this->configureFilamentLivewireHooks();
+    }
+
+    /**
+     * Enregistrement automatique du journal d'audit pour les entités métier et l'authentification.
+     */
+    protected function configureAuditLogging(): void
+    {
+        $auditedModels = [
+            AccompanimentTool::class,
+            Application::class,
+            Coach::class,
+            CoachAssignment::class,
+            CoachingSession::class,
+            Cohort::class,
+            Course::class,
+            DataRoomDocument::class,
+            DeliverableSubmission::class,
+            Enrollment::class,
+            Entrepreneur::class,
+            FundingRecord::class,
+            Opportunity::class,
+            Partner::class,
+            Program::class,
+            Project::class,
+            Resource::class,
+            Sae::class,
+            User::class,
+        ];
+
+        foreach ($auditedModels as $modelClass) {
+            $modelClass::observe(AuditModelObserver::class);
+        }
+
+        Event::listen(
+            [Login::class, Logout::class, PasswordReset::class],
+            LogAuthenticationAudit::class,
+        );
     }
 
     /**
