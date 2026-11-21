@@ -15,19 +15,19 @@ use App\Models\Application;
 use App\Models\Cohort;
 use App\Models\Document;
 use App\Models\Entrepreneur;
+use App\Models\Form;
 use App\Models\Program;
 use App\Models\Project;
 use App\Models\Sae;
 use App\Models\TimelineEvent;
 use App\Models\User;
+use App\Support\EntrepreneurCompletionChecker;
 use App\Support\FormSubmissionRedirectResolver;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Packstub\FormBuilder\Events\SubmissionReceived;
 
 class HandleCandidatureSubmission
@@ -76,28 +76,9 @@ class HandleCandidatureSubmission
         DB::beginTransaction();
 
         try {
-            // 2. Résolution ou création du compte utilisateur
+            // 2. Résolution obligatoire du compte utilisateur connecté (on ne se repose plus sur le champ email du formulaire)
             $userId = $event->context->userId ?? $submission->user_id ?? Auth::id();
             $user = $userId ? User::find($userId) : null;
-
-            $email = $data['email'] ?? null;
-
-            if (! $user && $email) {
-                $user = User::where('email', $email)->first();
-
-                if (! $user) {
-                    $firstName = $data['first_name'] ?? '';
-                    $lastName = $data['last_name'] ?? '';
-                    $fullName = trim((string) ($data['full_name'] ?? "{$firstName} {$lastName}")) ?: 'Candidat Hubs Africa';
-
-                    $user = User::create([
-                        'name' => $fullName,
-                        'email' => $email,
-                        'password' => Hash::make(Str::random(16)),
-                        'email_verified_at' => now(),
-                    ]);
-                }
-            }
 
             if (! $user) {
                 DB::rollBack();
@@ -210,59 +191,59 @@ class HandleCandidatureSubmission
                 ->where('project_id', $project->id)
                 ->first();
 
-            if ($existingApplication) {
-                DB::commit();
+            $application = $existingApplication;
+            $isNewApplication = false;
 
-                return;
-            }
+            if (! $existingApplication) {
+                $application = Application::create([
+                    'sae_id' => $saeId,
+                    'program_id' => $program?->id,
+                    'cohort_id' => $cohort?->id,
+                    'form_id' => $form->id,
+                    'answers' => $customAnswers,
+                    'entrepreneur_id' => $entrepreneur->id,
+                    'project_id' => $project->id,
+                    'status' => ApplicationStatus::SOUMISE,
+                    'submitted_at' => now(),
+                    'comment' => $commentBody,
+                ]);
+                $isNewApplication = true;
 
-            $application = Application::create([
-                'sae_id' => $saeId,
-                'program_id' => $program?->id,
-                'cohort_id' => $cohort?->id,
-                'form_id' => $form->id,
-                'answers' => $customAnswers,
-                'entrepreneur_id' => $entrepreneur->id,
-                'project_id' => $project->id,
-                'status' => ApplicationStatus::SOUMISE,
-                'submitted_at' => now(),
-                'comment' => $commentBody,
-            ]);
+                // 7.1 Enregistrement du Pitch Deck dans la GED de la candidature
+                if (! empty($pitchDeck) && is_string($pitchDeck)) {
+                    $diskName = config('packstub-form-builder.uploads.disk', 'local');
+                    $fileSize = Storage::disk($diskName)->exists($pitchDeck) ? Storage::disk($diskName)->size($pitchDeck) : null;
+                    $originalName = pathinfo($pitchDeck, PATHINFO_BASENAME);
+                    if (str_contains($originalName, '_')) {
+                        $originalName = substr($originalName, strpos($originalName, '_') + 1);
+                    }
 
-            // 7.1 Enregistrement du Pitch Deck dans la GED de la candidature
-            if (! empty($pitchDeck) && is_string($pitchDeck)) {
-                $diskName = config('packstub-form-builder.uploads.disk', 'local');
-                $fileSize = Storage::disk($diskName)->exists($pitchDeck) ? Storage::disk($diskName)->size($pitchDeck) : null;
-                $originalName = pathinfo($pitchDeck, PATHINFO_BASENAME);
-                if (str_contains($originalName, '_')) {
-                    $originalName = substr($originalName, strpos($originalName, '_') + 1);
+                    Document::create([
+                        'sae_id' => $saeId,
+                        'documentable_type' => Application::class,
+                        'documentable_id' => $application->id,
+                        'category' => DocumentCategory::CANDIDATURE,
+                        'title' => 'Pitch Deck — '.($project->name ?? 'Projet'),
+                        'disk' => $diskName,
+                        'path' => $pitchDeck,
+                        'original_name' => $originalName ?: 'pitch_deck.pdf',
+                        'size' => $fileSize,
+                        'version' => 1,
+                        'uploaded_by_id' => $user->id,
+                    ]);
                 }
 
-                Document::create([
+                // 8. Traçabilité dans la timeline du projet
+                TimelineEvent::create([
                     'sae_id' => $saeId,
-                    'documentable_type' => Application::class,
-                    'documentable_id' => $application->id,
-                    'category' => DocumentCategory::CANDIDATURE,
-                    'title' => 'Pitch Deck — '.($project->name ?? 'Projet'),
-                    'disk' => $diskName,
-                    'path' => $pitchDeck,
-                    'original_name' => $originalName ?: 'pitch_deck.pdf',
-                    'size' => $fileSize,
-                    'version' => 1,
-                    'uploaded_by_id' => $user->id,
+                    'project_id' => $project->id,
+                    'entrepreneur_id' => $entrepreneur->id,
+                    'title' => 'Candidature officielle déposée : '.($program?->name ?? 'Programme'),
+                    'description' => 'Le dossier de candidature a été validé et transmis au comité de sélection via le formulaire standardisé/personnalisé.',
+                    'type' => 'MILESTONE',
+                    'icon' => 'heroicon-m-document-text',
                 ]);
             }
-
-            // 8. Traçabilité dans la timeline du projet
-            TimelineEvent::create([
-                'sae_id' => $saeId,
-                'project_id' => $project->id,
-                'entrepreneur_id' => $entrepreneur->id,
-                'title' => 'Candidature officielle déposée : '.($program?->name ?? 'Programme'),
-                'description' => 'Le dossier de candidature a été validé et transmis au comité de sélection via le formulaire standardisé/personnalisé.',
-                'type' => 'MILESTONE',
-                'icon' => 'heroicon-m-document-text',
-            ]);
 
             // 9. Association de l'utilisateur à la soumission
             if (! $submission->user_id) {
@@ -278,15 +259,64 @@ class HandleCandidatureSubmission
 
             $sae = $saeId ? Sae::find($saeId) : null;
 
-            // 10b. Préparation de la redirection post-soumission vers la fiche projet de l'entrepreneur
-            if ($sae) {
-                session()->flash(
-                    FormSubmissionRedirectResolver::SESSION_PROJECT_URL_KEY,
-                    route('filament.entrepreneur.resources.projects.view', [
-                        'tenant' => $sae->slug,
-                        'record' => $project->id,
-                    ]),
-                );
+            // 10b. Vérification de la complétion (projet puis profil) et décision de redirection
+            $freshEntrepreneur = $entrepreneur->fresh() ?? $entrepreneur;
+            $freshProject = $project->fresh() ?? $project;
+
+            $completion = EntrepreneurCompletionChecker::evaluate(
+                profileValues: $freshEntrepreneur->only(array_keys(EntrepreneurCompletionChecker::PROFILE_FIELDS)),
+                projectValues: $freshProject->only(array_keys(EntrepreneurCompletionChecker::PROJECT_FIELDS)),
+            );
+
+            $projectEditUrl = $sae
+                ? route('filament.entrepreneur.resources.projects.edit', [
+                    'tenant' => $sae->slug,
+                    'record' => $freshProject->id,
+                ])
+                : null;
+
+            $profileUrl = $sae
+                ? route('filament.entrepreneur.pages.profile-page', [
+                    'tenant' => $sae->slug,
+                ])
+                : null;
+
+            $defaultPortalUrl = filled($form->redirect_url)
+                ? (string) $form->redirect_url
+                : ($sae
+                    ? route('filament.entrepreneur.pages.dashboard', ['tenant' => $sae->slug])
+                    : Form::DEFAULT_REDIRECT_URL);
+
+            $redirectDecision = FormSubmissionRedirectResolver::resolveForCandidature(
+                isProjectComplete: $completion['project_complete'],
+                isProfileComplete: $completion['profile_complete'],
+                projectEditUrl: $projectEditUrl,
+                profileUrl: $profileUrl,
+                portalUrl: $defaultPortalUrl,
+            );
+
+            session()->flash(
+                FormSubmissionRedirectResolver::SESSION_PROJECT_URL_KEY,
+                $redirectDecision['url'],
+            );
+
+            // Applique en mémoire la cible de redirection pour que Packstub redirige immédiatement
+            $form->setAttribute('redirect_url', $redirectDecision['url']);
+
+            if ($redirectDecision['forced']) {
+                $noticeBody = ! $completion['project_complete']
+                    ? 'Votre candidature est enregistrée. Veuillez compléter tous les champs de votre fiche projet.'
+                    : 'Votre candidature est enregistrée. Veuillez compléter tous les champs de votre profil entrepreneur.';
+
+                Notification::make()
+                    ->title('Action requise pour finaliser votre dossier')
+                    ->body($noticeBody)
+                    ->warning()
+                    ->send();
+            }
+
+            if (! $isNewApplication || ! $application) {
+                return;
             }
 
             // 11. Notification in-app & Email pour l'entrepreneur

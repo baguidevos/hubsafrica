@@ -24,6 +24,48 @@ final class FormSubmissionRedirectResolver
     }
 
     /**
+     * Décision pure de redirection après soumission d'un formulaire de candidature :
+     * 1. Projet incomplet (< 100%) -> redirection forcée vers la fiche projet
+     * 2. Profil incomplet (< 100%) -> redirection forcée vers le profil entrepreneur
+     * 3. Les deux à 100% -> laisse passer vers le portail (ou l'URL configurée)
+     *
+     * @return array{url: string, label: string, forced: bool, delaySeconds: int}
+     */
+    public static function resolveForCandidature(
+        bool $isProjectComplete,
+        bool $isProfileComplete,
+        ?string $projectEditUrl,
+        ?string $profileUrl,
+        string $portalUrl = '/portal',
+        int $delaySeconds = 3,
+    ): array {
+        if (! $isProjectComplete && $projectEditUrl !== null && trim($projectEditUrl) !== '') {
+            return [
+                'url' => $projectEditUrl,
+                'label' => 'Compléter ma fiche projet',
+                'forced' => true,
+                'delaySeconds' => $delaySeconds,
+            ];
+        }
+
+        if (! $isProfileComplete && $profileUrl !== null && trim($profileUrl) !== '') {
+            return [
+                'url' => $profileUrl,
+                'label' => 'Compléter mon profil',
+                'forced' => true,
+                'delaySeconds' => $delaySeconds,
+            ];
+        }
+
+        return [
+            'url' => trim($portalUrl) !== '' ? $portalUrl : '/portal',
+            'label' => 'Accéder à mon espace',
+            'forced' => false,
+            'delaySeconds' => $delaySeconds,
+        ];
+    }
+
+    /**
      * Fonction de décision pure pour la redirection après soumission de formulaire.
      *
      * @return array{url: string, label: string, delaySeconds: int}|null

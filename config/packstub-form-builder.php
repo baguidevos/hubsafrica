@@ -103,9 +103,9 @@ return [
     'routes' => [
         'enabled' => true,
         'prefix' => 'forms',
-        'middleware' => ['web'],
+        'middleware' => ['web', 'auth'],
         'page' => true,
-        'page_middleware' => ['web'],
+        'page_middleware' => ['web', 'auth'],
         'page_layout' => 'packstub-form-builder::layout',
         'embed' => true,
     ],

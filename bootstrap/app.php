@@ -29,6 +29,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'auth.mcp' => AuthenticateMcpApiKey::class,
         ]);
+
+        $middleware->redirectGuestsTo(fn () => route('filament.entrepreneur.auth.login'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

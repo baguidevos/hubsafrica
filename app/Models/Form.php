@@ -10,12 +10,15 @@ use Packstub\FormBuilder\Models\Form as BaseForm;
 
 class Form extends BaseForm
 {
+    public const DEFAULT_REDIRECT_URL = '/portal';
+
     protected $attributes = [
         'is_active' => true,
         'store_submissions' => true,
         'type' => FormType::CANDIDATURE,
         'is_template' => true,
         'is_mandatory' => true,
+        'redirect_url' => self::DEFAULT_REDIRECT_URL,
     ];
 
     protected static function booted(): void
@@ -26,7 +29,25 @@ class Form extends BaseForm
             if ($form->type === null) {
                 $form->type = FormType::CANDIDATURE;
             }
+
+            if (blank($form->redirect_url)) {
+                $form->redirect_url = self::DEFAULT_REDIRECT_URL;
+            }
+
+            $settings = is_array($form->settings) ? $form->settings : [];
+            if (! array_key_exists('require_login', $settings)) {
+                $settings['require_login'] = true;
+                $form->settings = $settings;
+            }
         });
+    }
+
+    /**
+     * Toute soumission de formulaire nécessite un utilisateur authentifié.
+     */
+    public function requiresLogin(): bool
+    {
+        return true;
     }
 
     public function toPortable(): array

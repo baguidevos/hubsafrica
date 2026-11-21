@@ -53,6 +53,8 @@ beforeEach(function () {
 });
 
 test('la page publique de candidature affiche le composant livewire form-builder natif', function () {
+    $this->actingAs(User::factory()->create());
+
     $response = $this->get(route('public.programme.candidater', [
         'id' => $this->program->id,
         'cohort' => $this->cohort->id,
@@ -86,6 +88,11 @@ test('la structure json du template standardisé contient des sections conformes
 });
 
 test('le listener de candidature traite automatiquement une soumission du form builder natif', function () {
+    $authenticatedUser = User::factory()->create([
+        'name' => 'Moussa Ndiaye',
+        'email' => 'moussa.ndiaye@agritech.sn',
+    ]);
+
     $submissionData = [
         'first_name' => 'Moussa',
         'last_name' => 'Ndiaye',
@@ -108,6 +115,7 @@ test('le listener de candidature traite automatiquement une soumission du form b
 
     $submission = FormSubmission::create([
         'form_id' => $this->standardTemplate->id,
+        'user_id' => $authenticatedUser->id,
         'data' => $submissionData,
         'channel' => 'web',
     ]);
@@ -115,12 +123,13 @@ test('le listener de candidature traite automatiquement une soumission du form b
     $context = new SubmissionContext(
         ip: '127.0.0.1',
         sourceUrl: "http://localhost/programmes/{$this->program->id}/candidater?cohort={$this->cohort->id}",
+        userId: $authenticatedUser->id,
     );
 
     // Déclenchement de l'événement natif de soumission Packstub
     Event::dispatch(new SubmissionReceived($this->standardTemplate, $submission, $context));
 
-    // 1. Vérification de la création de l'utilisateur
+    // 1. Vérification de l'utilisateur authentifié
     $user = User::where('email', 'moussa.ndiaye@agritech.sn')->first();
     expect($user)->not->toBeNull();
     expect($user->name)->toEqual('Moussa Ndiaye');
@@ -137,7 +146,7 @@ test('le listener de candidature traite automatiquement une soumission du form b
     expect($project)->not->toBeNull();
     expect($project->name)->toEqual('AgriDrone Sahel');
     expect($project->sector)->toEqual('AgriTech');
-    expect($project->status)->toEqual(ProjectStatus::ACTIF);
+    expect($project->status)->toEqual(ProjectStatus::CANDIDAT);
 
     // 4. Vérification de la candidature officielle créée
     $application = Application::where('entrepreneur_id', $entrepreneur->id)->first();
@@ -221,6 +230,11 @@ test('le listener réutilise le compte existant pour un entrepreneur authentifi�
 });
 
 test('la soumission dune candidature ne duplique pas les lignes dapplication', function () {
+    $authenticatedUser = User::factory()->create([
+        'name' => 'Fatou Diop',
+        'email' => 'fatou.diop@techsenegal.sn',
+    ]);
+
     $submissionData = [
         'first_name' => 'Fatou',
         'last_name' => 'Diop',
@@ -238,6 +252,7 @@ test('la soumission dune candidature ne duplique pas les lignes dapplication', f
 
     $submission = FormSubmission::create([
         'form_id' => $this->standardTemplate->id,
+        'user_id' => $authenticatedUser->id,
         'data' => $submissionData,
         'channel' => 'web',
     ]);
@@ -245,6 +260,7 @@ test('la soumission dune candidature ne duplique pas les lignes dapplication', f
     $context = new SubmissionContext(
         ip: '127.0.0.1',
         sourceUrl: "http://localhost/programmes/{$this->program->id}/candidater?cohort={$this->cohort->id}",
+        userId: $authenticatedUser->id,
     );
 
     // Déclenchement de l'événement deux fois consécutives pour simuler un double clic ou re-dispatch
@@ -277,6 +293,11 @@ test('seuls les responsables de la SAE recoivent lemail dalerte, pas les autres 
     ]);
     $this->sae->members()->attach($otherEntrepreneurUser->id, ['role' => 'ENTREPRENEUR', 'status' => 'ACTIVE']);
 
+    $candidateUser = User::factory()->create([
+        'name' => 'Mamadou Ndiaye',
+        'email' => 'mamadou.ndiaye@terangabox.sn',
+    ]);
+
     $submissionData = [
         'first_name' => 'Mamadou',
         'last_name' => 'Ndiaye',
@@ -294,6 +315,7 @@ test('seuls les responsables de la SAE recoivent lemail dalerte, pas les autres 
 
     $submission = FormSubmission::create([
         'form_id' => $this->standardTemplate->id,
+        'user_id' => $candidateUser->id,
         'data' => $submissionData,
         'channel' => 'web',
     ]);
@@ -301,6 +323,7 @@ test('seuls les responsables de la SAE recoivent lemail dalerte, pas les autres 
     $context = new SubmissionContext(
         ip: '127.0.0.1',
         sourceUrl: "http://localhost/programmes/{$this->program->id}/candidater?cohort={$this->cohort->id}",
+        userId: $candidateUser->id,
     );
 
     Event::dispatch(new SubmissionReceived($this->standardTemplate, $submission, $context));

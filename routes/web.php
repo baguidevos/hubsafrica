@@ -33,7 +33,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Programmes d'Accompagnement & Candidatures
 Route::get('/programmes', [ProgramPublicController::class, 'index'])->name('public.programmes');
 Route::get('/programmes/{id}', [ProgramPublicController::class, 'show'])->name('public.programme.detail');
-Route::get('/programmes/{id}/candidater', [ProgramPublicController::class, 'candidater'])->name('public.programme.candidater');
+Route::get('/programmes/{id}/candidater', [ProgramPublicController::class, 'candidater'])
+    ->middleware('auth')
+    ->name('public.programme.candidater');
 
 // Accès Direct & Candidature à une Cohorte / Promotion spécifique
 Route::get('/join/cohort/{id}', [CohortPublicController::class, 'join'])->name('public.cohort.join.clean');
