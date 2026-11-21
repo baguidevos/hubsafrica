@@ -3,7 +3,12 @@
 @endphp
 
 @if($tenant)
-    <div class="px-3 py-2.5 mx-2 my-2 rounded-xl border border-gray-200/70 dark:border-white/10 bg-gray-50/60 dark:bg-white/5 flex items-center gap-3">
+    <div
+        x-data="{}"
+        title="{{ $tenant->name }}"
+        class="my-2 rounded-xl border border-gray-200/70 dark:border-white/10 bg-gray-50/60 dark:bg-white/5 flex items-center transition-all"
+        x-bind:class="$store.sidebar.isOpen ? 'px-3 py-2.5 mx-2 gap-3' : 'p-1.5 mx-auto justify-center w-fit'"
+    >
         @if($avatar = \Filament\Facades\Filament::getTenantAvatarUrl($tenant))
             <img src="{{ $avatar }}" alt="{{ $tenant->name }}" class="w-8 h-8 rounded-lg object-contain border border-gray-200/70 dark:border-white/10 p-0.5 shrink-0 shadow-xs">
         @else
@@ -11,7 +16,7 @@
                 {{ strtoupper(substr($tenant->name, 0, 2)) }}
             </div>
         @endif
-        <div class="min-w-0 flex-1">
+        <div class="min-w-0 flex-1" x-show="$store.sidebar.isOpen" x-cloak>
             <span class="block text-[10px] text-gray-400 dark:text-gray-400 uppercase tracking-wider font-semibold leading-none">Structure SAE</span>
             <span class="block text-xs font-bold text-gray-950 dark:text-white truncate mt-0.5" title="{{ $tenant->name }}">{{ $tenant->name }}</span>
             @if($tenant->relationLoaded('types') ? $tenant->types->isNotEmpty() : $tenant->types()->exists())
