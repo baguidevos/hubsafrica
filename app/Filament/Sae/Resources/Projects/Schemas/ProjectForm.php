@@ -24,6 +24,7 @@ class ProjectForm
                             TextInput::make('name')
                                 ->label('Nom du projet / Startup')
                                 ->placeholder('Ex: Ecobat Green Solutions')
+                                ->maxLength(255)
                                 ->required(),
 
                             Select::make('entrepreneur_id')
@@ -54,7 +55,8 @@ class ProjectForm
 
                             TextInput::make('territory')
                                 ->label('Territoire / Ville d\'implantation')
-                                ->placeholder('Ex: Dakar, Thiès, Ziguinchor'),
+                                ->placeholder('Ex: Dakar, Thiès, Ziguinchor')
+                                ->maxLength(255),
 
                             Select::make('current_level_id')
                                 ->label('Palier actuel')
@@ -85,12 +87,14 @@ class ProjectForm
                 Section::make('Modèle économique & Proposition de valeur')
                     ->schema([
                         Grid::make(2)->schema([
-                            TextInput::make('target')
+                            Textarea::make('target')
                                 ->label('Cible de clientèle (B2B, B2C, B2G)')
+                                ->rows(2)
                                 ->placeholder('Ex: PME agroalimentaires régionales'),
 
-                            TextInput::make('market')
+                            Textarea::make('market')
                                 ->label('Marché visé')
+                                ->rows(2)
                                 ->placeholder('Ex: Marché national & Zone UEMOA'),
                         ]),
 

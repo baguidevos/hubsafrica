@@ -29,6 +29,7 @@ class ProjectForm
                             TextInput::make('name')
                                 ->label('Nom du projet / Startup')
                                 ->placeholder('Ex: Ecobat Green')
+                                ->maxLength(255)
                                 ->required(),
 
                             Select::make('sector')
@@ -47,7 +48,8 @@ class ProjectForm
 
                             TextInput::make('territory')
                                 ->label('Ville / Région d\'implantation')
-                                ->placeholder('Ex: Dakar'),
+                                ->placeholder('Ex: Dakar')
+                                ->maxLength(255),
 
                             TextInput::make('team_size')
                                 ->label('Taille de l\'équipe')
@@ -67,11 +69,13 @@ class ProjectForm
                 Section::make('Offre & Proposition de valeur')
                     ->schema([
                         Grid::make(2)->schema([
-                            TextInput::make('target')
-                                ->label('Cible de clientèle (B2B, B2C, B2G)'),
+                            Textarea::make('target')
+                                ->label('Cible de clientèle (B2B, B2C, B2G)')
+                                ->rows(2),
 
-                            TextInput::make('market')
-                                ->label('Marché visé'),
+                            Textarea::make('market')
+                                ->label('Marché visé')
+                                ->rows(2),
                         ]),
 
                         Textarea::make('value_proposition')
