@@ -173,6 +173,11 @@ class AppServiceProvider extends ServiceProvider
             PanelsRenderHook::PAGE_START,
             fn () => view('filament.hooks.impersonation-banner'),
         );
+
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::SIDEBAR_START,
+            fn () => view('filament.hooks.sidebar-floating-toggle'),
+        );
     }
 
     /**
