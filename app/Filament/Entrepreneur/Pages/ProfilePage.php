@@ -83,7 +83,7 @@ class ProfilePage extends Page
                 'last_name' => $this->lastName,
                 'email' => $this->email,
                 'phone' => $this->phone,
-                'gender' => $this->gender,
+                'gender' => filled($this->gender) ? $this->gender : null,
                 'birth_date' => $this->birthDate ?: null,
                 'country' => $this->country,
                 'territory' => $this->territory,
