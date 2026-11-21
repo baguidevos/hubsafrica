@@ -18,6 +18,7 @@ class CourseForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->deferLoading()
             ->components([
                 Section::make('Informations du cours')
                     ->description('Définissez le titre, le palier d\'accès et la présentation du parcours.')

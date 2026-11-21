@@ -15,6 +15,7 @@ class ResourceForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->deferLoading()
             ->components([
                 Section::make('Ressource pédagogique & Outils')
                     ->schema([

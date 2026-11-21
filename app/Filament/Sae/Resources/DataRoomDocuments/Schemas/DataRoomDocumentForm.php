@@ -17,6 +17,7 @@ class DataRoomDocumentForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->deferLoading()
             ->components([
                 Section::make('Document & Rattachement')
                     ->schema([

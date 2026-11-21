@@ -96,6 +96,7 @@ class EvaluationFormResource extends FormResource
     public static function form(Schema $schema): Schema
     {
         return $schema
+            ->deferLoading()
             ->components([
                 Tabs::make()
                     ->tabs([
@@ -123,6 +124,33 @@ class EvaluationFormResource extends FormResource
                     ->columnSpanFull(),
             ])
             ->columns(1);
+    }
+
+    protected static function settingsSchema(): array
+    {
+        $sections = parent::settingsSchema();
+
+        foreach ($sections as $section) {
+            if (! method_exists($section, 'getDefaultChildComponents')) {
+                continue;
+            }
+
+            foreach ($section->getDefaultChildComponents() as $component) {
+                if (! method_exists($component, 'getName')) {
+                    continue;
+                }
+
+                if ($component->getName() === 'redirect_url') {
+                    $component->default(Form::DEFAULT_REDIRECT_URL);
+                }
+
+                if ($component->getName() === 'settings.require_login') {
+                    $component->default(true);
+                }
+            }
+        }
+
+        return $sections;
     }
 
     protected static function seScopeSchema(): array

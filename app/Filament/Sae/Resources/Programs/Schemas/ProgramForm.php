@@ -20,6 +20,7 @@ class ProgramForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->deferLoading()
             ->components([
                 Section::make('Présentation du programme')
                     ->schema([

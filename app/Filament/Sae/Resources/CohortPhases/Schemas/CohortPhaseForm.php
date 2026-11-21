@@ -15,6 +15,7 @@ class CohortPhaseForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->deferLoading()
             ->components([
                 Section::make('Cadrage du Jalon')
                     ->schema([

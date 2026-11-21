@@ -20,6 +20,7 @@ class OpportunityForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->deferLoading()
             ->components([
                 Section::make('Informations générales')
                     ->description('Renseignez les éléments essentiels de l\'opportunité ou de l\'appel à projets.')

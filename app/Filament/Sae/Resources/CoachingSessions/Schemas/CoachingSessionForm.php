@@ -18,6 +18,7 @@ class CoachingSessionForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->deferLoading()
             ->components([
                 Section::make('Cadrage de la séance')
                     ->description('Définissez le format, les intervenants et le rattachement de la séance d\'accompagnement.')

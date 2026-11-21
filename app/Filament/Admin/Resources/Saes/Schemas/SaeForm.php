@@ -19,6 +19,7 @@ class SaeForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->deferLoading()
             ->components([
                 Section::make('Identité & Statut de la Structure')
                     ->description('Informations générales, typologies, origine et responsable de la SAE')

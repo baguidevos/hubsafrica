@@ -19,6 +19,7 @@ class AccompanimentToolForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->deferLoading()
             ->components([
                 Hidden::make('created_by_id')
                     ->default(fn () => auth()->id()),

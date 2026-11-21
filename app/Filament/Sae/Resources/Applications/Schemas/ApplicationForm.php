@@ -18,6 +18,7 @@ class ApplicationForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->deferLoading()
             ->components([
                 Section::make('Candidat & Programme visé')
                     ->columnSpanFull()

@@ -13,6 +13,7 @@ class DeliverableSubmissionForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->deferLoading()
             ->components([
                 Select::make('sae_id')
                     ->relationship('sae', 'name')

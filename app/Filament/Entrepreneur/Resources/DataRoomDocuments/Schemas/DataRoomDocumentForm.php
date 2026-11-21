@@ -16,6 +16,7 @@ class DataRoomDocumentForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->deferLoading()
             ->components([
                 Hidden::make('entrepreneur_id')
                     ->default(fn () => auth()->user()?->entrepreneurProfile?->id),

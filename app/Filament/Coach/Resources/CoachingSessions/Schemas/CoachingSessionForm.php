@@ -19,6 +19,7 @@ class CoachingSessionForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->deferLoading()
             ->components([
                 Hidden::make('coach_id')
                     ->default(fn () => auth()->user()?->coachProfile?->id),
