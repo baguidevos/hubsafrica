@@ -1,7 +1,7 @@
 <div class="w-full border-t border-slate-200/80 dark:border-slate-800/80 backdrop-blur-md py-6 px-4 text-center text-xs text-slate-500 dark:text-slate-400 mt-auto">
     <div class="max-w-7xl mx-auto space-y-2">
         <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 font-medium">
-            <span class="text-slate-700 dark:text-slate-300 font-bold">Hubs Africa v2</span>
+            <span class="text-slate-700 dark:text-slate-300 font-bold">Hubs Africa</span>
             <span>&bull;</span>
             <span>Réseau Panafricain des Structures d'Accompagnement</span>
             <span>&bull;</span>

@@ -756,7 +756,7 @@
 
                     <div class="mt-4 pt-3 border-t border-emerald-200/60 dark:border-emerald-800/40">
                         <p class="text-xs font-bold text-emerald-800 dark:text-emerald-300">
-                            {{ $application->program?->sae?->name ?? 'Hubs Africa V2' }}
+                            {{ $application->program?->sae?->name ?? 'Hubs Africa' }}
                         </p>
                         @if($application->program?->sae?->email)
                             <a href="mailto:{{ $application->program->sae->email }}" class="text-xs text-emerald-600 hover:underline dark:text-emerald-400 block mt-0.5">

@@ -7,7 +7,7 @@
                 <div
                     class="inline-flex items-center gap-2 rounded-full bg-teal-500/20 px-3 py-1 text-xs font-semibold tracking-wide text-teal-200 backdrop-blur-md border border-teal-400/30">
                     <x-heroicon-s-sparkles class="h-4 w-4 text-teal-300" />
-                    <span>Documentation Officielle &middot; Hubs Africa V2</span>
+                    <span>Documentation Officielle &middot; Hubs Africa</span>
                 </div>
                 <h1 class="text-3xl font-extrabold tracking-tight sm:text-4xl text-white">
                     Guide Méthodologique & Pratique de l'Accompagnateur SAE

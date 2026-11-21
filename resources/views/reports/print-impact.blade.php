@@ -434,7 +434,7 @@
                     <img src="{{ $branding['hub_logo'] }}" alt="Hubs Africa"
                         style="max-height: 40px; object-fit: contain; margin-bottom: 4px; display: inline-block;">
                 @else
-                    <span class="hub-brand-badge">Plateforme Hubs Africa V2</span>
+                    <span class="hub-brand-badge">Plateforme Hubs Africa</span>
                 @endif
                 <p>
                     <strong>Date :</strong> {{ now()->format('d/m/Y H:i') }}<br>
@@ -561,7 +561,7 @@
         {{-- Pied de page --}}
         <footer class="report-footer">
             <p>
-                Rapport officiel généré électroniquement via la plateforme <strong>Hubs Africa V2</strong> pour la
+                Rapport officiel généré électroniquement via la plateforme <strong>Hubs Africa</strong> pour la
                 structure <strong>{{ $tenant->name }}</strong>.<br>
                 Toute modification manuelle non authentifiée invalide la certification de ce document d'impact.
             </p>
