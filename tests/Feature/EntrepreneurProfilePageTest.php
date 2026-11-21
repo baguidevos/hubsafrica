@@ -73,3 +73,26 @@ test('entrepreneur profile rejects an invalid gender value', function () {
         ->call('save')
         ->assertHasErrors(['gender' => 'in']);
 });
+
+test('entrepreneur profile displays and saves default education level and professional status options', function () {
+    $this->actingAs($this->entrepreneurUser);
+    Filament::setCurrentPanel(Filament::getPanel('entrepreneur'));
+    Filament::setTenant($this->sae);
+
+    Livewire::test(ProfilePage::class)
+        ->assertSee('Licence / Bac+3')
+        ->assertSee('Master / Ingénieur / Bac+5')
+        ->assertSee('Indépendant / Auto-entrepreneur')
+        ->set('firstName', 'Ahou')
+        ->set('lastName', 'Kouassi')
+        ->set('email', 'ahou.kouassi@example.com')
+        ->set('educationLevel', 'Licence')
+        ->set('professionalStatus', 'Indépendant')
+        ->call('save')
+        ->assertHasNoErrors()
+        ->assertNotified();
+
+    $fresh = $this->entrepreneur->fresh();
+    expect($fresh->education_level)->toBe('Licence')
+        ->and($fresh->professional_status)->toBe('Indépendant');
+});

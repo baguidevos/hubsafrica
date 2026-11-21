@@ -20,6 +20,31 @@ class ProfilePage extends Page
 
     protected string $view = 'filament.entrepreneur.pages.profile-page';
 
+    /**
+     * @var array<string, string>
+     */
+    public const EDUCATION_LEVEL_OPTIONS = [
+        'Sans diplôme' => 'Sans diplôme',
+        'Primaire' => 'Primaire',
+        'Secondaire / BFEM' => 'Secondaire / BFEM',
+        'Bac' => 'Baccalauréat',
+        'Bac+2' => 'Bac+2 (BTS, DUT)',
+        'Licence' => 'Licence / Bac+3',
+        'Master' => 'Master / Ingénieur / Bac+5',
+        'Doctorat' => 'Doctorat / PhD',
+    ];
+
+    /**
+     * @var array<string, string>
+     */
+    public const PROFESSIONAL_STATUS_OPTIONS = [
+        'Demandeur d\'emploi' => 'Demandeur d\'emploi',
+        'Salarié' => 'Salarié',
+        'Indépendant' => 'Indépendant / Auto-entrepreneur',
+        'Étudiant' => 'Étudiant',
+        'Autre' => 'Autre',
+    ];
+
     public ?string $firstName = '';
 
     public ?string $lastName = '';
@@ -87,9 +112,9 @@ class ProfilePage extends Page
                 'birth_date' => $this->birthDate ?: null,
                 'country' => $this->country,
                 'territory' => $this->territory,
-                'education_level' => $this->educationLevel,
+                'education_level' => filled($this->educationLevel) ? $this->educationLevel : null,
                 'profession' => $this->profession,
-                'professional_status' => $this->professionalStatus,
+                'professional_status' => filled($this->professionalStatus) ? $this->professionalStatus : null,
             ]);
 
             Notification::make()

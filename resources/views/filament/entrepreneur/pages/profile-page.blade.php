@@ -52,7 +52,16 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200">Niveau d'études</label>
-                    <input type="text" wire:model="educationLevel" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6 dark:bg-gray-800 dark:text-white dark:ring-gray-700">
+                    <select wire:model="educationLevel" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6 dark:bg-gray-800 dark:text-white dark:ring-gray-700">
+                        <option value="">Sélectionner un niveau d'études</option>
+                        @if (filled($educationLevel) && ! array_key_exists($educationLevel, \App\Filament\Entrepreneur\Pages\ProfilePage::EDUCATION_LEVEL_OPTIONS))
+                            <option value="{{ $educationLevel }}">{{ $educationLevel }}</option>
+                        @endif
+                        @foreach (\App\Filament\Entrepreneur\Pages\ProfilePage::EDUCATION_LEVEL_OPTIONS as $value => $label)
+                            <option value="{{ $value }}">{{ $label }}</option>
+                        @endforeach
+                    </select>
+                    @error('educationLevel') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200">Profession</label>
@@ -60,7 +69,16 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200">Statut professionnel</label>
-                    <input type="text" wire:model="professionalStatus" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6 dark:bg-gray-800 dark:text-white dark:ring-gray-700">
+                    <select wire:model="professionalStatus" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6 dark:bg-gray-800 dark:text-white dark:ring-gray-700">
+                        <option value="">Sélectionner un statut professionnel</option>
+                        @if (filled($professionalStatus) && ! array_key_exists($professionalStatus, \App\Filament\Entrepreneur\Pages\ProfilePage::PROFESSIONAL_STATUS_OPTIONS))
+                            <option value="{{ $professionalStatus }}">{{ $professionalStatus }}</option>
+                        @endif
+                        @foreach (\App\Filament\Entrepreneur\Pages\ProfilePage::PROFESSIONAL_STATUS_OPTIONS as $value => $label)
+                            <option value="{{ $value }}">{{ $label }}</option>
+                        @endforeach
+                    </select>
+                    @error('professionalStatus') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
                 </div>
             </div>
         </div>
