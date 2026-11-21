@@ -243,4 +243,50 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasTenant
     {
         return $this->avatar_url;
     }
+
+    /**
+     * Retourne le portail principal et la route de déconnexion pour la barre de navigation publique.
+     *
+     * @return array{url: string, label: string, logout_url: string}
+     */
+    public function resolvePrimaryPortal(): array
+    {
+        if ($this->isSuperAdmin()) {
+            return [
+                'url' => '/hubs-hq',
+                'label' => 'Hubs-HQ',
+                'logout_url' => route('filament.hubs-hq.auth.logout'),
+            ];
+        }
+
+        if ($this->isSaeManager()) {
+            return [
+                'url' => '/sae',
+                'label' => 'Mon espace SAE',
+                'logout_url' => route('filament.sae.auth.logout'),
+            ];
+        }
+
+        if ($this->isCoach()) {
+            return [
+                'url' => '/coach',
+                'label' => 'Mon espace Coach',
+                'logout_url' => route('filament.coach.auth.logout'),
+            ];
+        }
+
+        if ($this->entrepreneurProfile()->exists()) {
+            return [
+                'url' => '/portal',
+                'label' => 'Mon espace',
+                'logout_url' => route('filament.entrepreneur.auth.logout'),
+            ];
+        }
+
+        return [
+            'url' => route('public.rejoindre'),
+            'label' => 'Mon espace',
+            'logout_url' => route('filament.entrepreneur.auth.logout'),
+        ];
+    }
 }
