@@ -533,7 +533,7 @@ class ReportExportService
             fwrite($handle, "\xEF\xBB\xBF");
 
             // En-tête institutionnel
-            fputcsv($handle, ['RAPPORT D\'IMPACT & SUIVI-ÉVALUATION (M&E) — HUBS AFRICA V2']);
+            fputcsv($handle, ['RAPPORT D\'IMPACT & SUIVI-ÉVALUATION (M&E) — HUBS AFRICA']);
             fputcsv($handle, ['Structure / SAE', $tenant->name]);
             fputcsv($handle, ['Email', $tenant->email ?? '—']);
             fputcsv($handle, ['Téléphone', $tenant->phone ?? '—']);
