@@ -5,11 +5,11 @@ namespace App\Filament\Sae\Resources\Entrepreneurs\Tables;
 use App\Enums\CohortStatus;
 use App\Enums\EntrepreneurStatus;
 use App\Enums\Gender;
-use App\Mail\CompleteProjectCohortInviteMail;
 use App\Models\Cohort;
 use App\Models\Enrollment;
 use App\Models\Entrepreneur;
 use App\Models\Program;
+use App\Support\EntrepreneurProjectReminderService;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
@@ -18,8 +18,9 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Facades\Filament;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -27,7 +28,6 @@ use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Mail;
 
 class EntrepreneursTable
 {
@@ -258,86 +258,59 @@ class EntrepreneursTable
             ->toolbarActions([
                 BulkActionGroup::make([
                     BulkAction::make('invite_complete_project')
-                        ->label('Inviter à compléter le projet & rattacher à une cohorte')
+                        ->label('Inviter à compléter le projet')
                         ->icon('heroicon-o-envelope')
                         ->color('primary')
-                        ->modalHeading('Inviter à compléter leur projet & rattacher à une cohorte')
-                        ->modalDescription('Les entrepreneurs sélectionnés seront rattachés à la cohorte choisie et recevront un e-mail avec un lien direct pour renseigner leur fiche projet.')
-                        ->schema([
-                            Select::make('cohort_id')
-                                ->label('Cohorte cible')
-                                ->options(function () {
-                                    $tenant = Filament::getTenant();
+                        ->modalHeading('Inviter les entrepreneurs sélectionnés à compléter leur projet')
+                        ->modalDescription('Les entrepreneurs sélectionnés recevront un e-mail avec un lien direct pour renseigner leur fiche projet. Le rattachement à une cohorte est optionnel.')
+                        ->modalWidth('4xl')
+                        ->schema(function (): array {
+                            $reminderService = app(EntrepreneurProjectReminderService::class);
+                            $tenantId = Filament::getTenant()?->id;
 
-                                    return Cohort::query()
-                                        ->when($tenant, fn ($q) => $q->where('sae_id', $tenant->id))
-                                        ->whereIn('status', [CohortStatus::OUVERTE, CohortStatus::EN_COURS])
-                                        ->with('program')
-                                        ->get()
-                                        ->mapWithKeys(fn (Cohort $c) => [
-                                            $c->id => "{$c->name}".($c->program ? " ({$c->program->name})" : ''),
-                                        ]);
-                                })
-                                ->required()
-                                ->searchable()
-                                ->preload(),
+                            return [
+                                Select::make('cohort_id')
+                                    ->label('Cohorte cible (Optionnel)')
+                                    ->options(fn (): array => $reminderService->activeCohortOptions($tenantId))
+                                    ->placeholder('Ne pas rattacher à une cohorte — envoyer uniquement le mail')
+                                    ->searchable()
+                                    ->preload(),
 
-                            Textarea::make('custom_message')
-                                ->label('Message personnalisé (Optionnel)')
-                                ->placeholder('Ex: Merci de compléter votre fiche projet avant vendredi pour démarrer l\'accompagnement.')
-                                ->rows(3),
-                        ])
+                                TextInput::make('subject')
+                                    ->label('Objet de l\'e-mail')
+                                    ->default($reminderService->defaultDirectSubject())
+                                    ->required()
+                                    ->maxLength(255),
+
+                                RichEditor::make('custom_message')
+                                    ->label('Message de l\'e-mail')
+                                    ->default($reminderService->defaultDirectMessageHtml())
+                                    ->required()
+                                    ->columnSpanFull(),
+                            ];
+                        })
                         ->action(function (Collection $records, array $data): void {
+                            $reminderService = app(EntrepreneurProjectReminderService::class);
                             $tenant = Filament::getTenant();
-                            $cohort = Cohort::with('program')->findOrFail($data['cohort_id']);
-                            $customMessage = $data['custom_message'] ?? null;
+                            $cohort = filled($data['cohort_id'] ?? null)
+                                ? Cohort::with('program')->find($data['cohort_id'])
+                                : null;
 
-                            $enrolledCount = 0;
-                            $emailedCount = 0;
+                            $summary = $reminderService->sendDirectReminders(
+                                entrepreneurs: $records,
+                                tenant: $tenant,
+                                cohort: $cohort,
+                                subject: $data['subject'] ?? null,
+                                messageHtml: $data['custom_message'] ?? null,
+                            );
 
-                            foreach ($records as $record) {
-                                $sae = $tenant ?? $record->sae;
-                                $saeId = $sae?->id ?? $record->sae_id;
-
-                                $enrollment = Enrollment::firstOrCreate(
-                                    [
-                                        'sae_id' => $saeId,
-                                        'cohort_id' => $cohort->id,
-                                        'entrepreneur_id' => $record->id,
-                                    ],
-                                    [
-                                        'project_id' => $record->projects()->value('id'),
-                                        'status' => 'ACTIF',
-                                        'enrolled_at' => now(),
-                                    ]
-                                );
-
-                                if ($enrollment->wasRecentlyCreated) {
-                                    $enrolledCount++;
-                                }
-
-                                if ($record->status === EntrepreneurStatus::CANDIDAT) {
-                                    $record->update(['status' => EntrepreneurStatus::ACTIVE]);
-                                }
-
-                                if ($record->user && $saeId && ! $record->user->saes()->where('saes.id', $saeId)->exists()) {
-                                    $record->user->saes()->attach($saeId, [
-                                        'role' => 'ENTREPRENEUR',
-                                        'status' => 'ACTIVE',
-                                    ]);
-                                }
-
-                                if (! empty($record->email)) {
-                                    Mail::to($record->email)->queue(
-                                        new CompleteProjectCohortInviteMail($record, $cohort, $sae, $customMessage)
-                                    );
-                                    $emailedCount++;
-                                }
-                            }
+                            $body = $cohort
+                                ? "{$summary['enrolled']} nouveau(x) rattachement(s) à « {$cohort->name} » et {$summary['emailed']} e-mail(s) mis en file d'attente."
+                                : "{$summary['emailed']} e-mail(s) mis en file d'attente (sans rattachement à une cohorte).";
 
                             Notification::make()
-                                ->title('Invitations envoyées')
-                                ->body("{$enrolledCount} nouveau(x) rattachement(s) à « {$cohort->name} » et {$emailedCount} e-mail(s) envoyé(s).")
+                                ->title('Invitations programmées')
+                                ->body($body)
                                 ->success()
                                 ->send();
                         })

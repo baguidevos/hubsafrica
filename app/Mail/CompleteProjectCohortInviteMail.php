@@ -19,18 +19,26 @@ class CompleteProjectCohortInviteMail extends Mailable implements ShouldQueue
 
     public function __construct(
         public Entrepreneur $entrepreneur,
-        public Cohort $cohort,
+        public ?Cohort $cohort = null,
         public ?Sae $sae = null,
         public ?string $customMessage = null,
+        public ?string $customSubject = null,
+        public bool $isCohortEnrollment = true,
     ) {}
 
     public function envelope(): Envelope
     {
-        $saeName = $this->sae?->name ?? $this->entrepreneur->sae?->name ?? 'Hub Africa';
+        $saeName = $this->sae?->name ?? $this->entrepreneur->sae?->name ?? 'Hubs Africa';
 
-        return new Envelope(
-            subject: "Complétez votre fiche projet pour la cohorte {$this->cohort->name} — {$saeName}",
-        );
+        if (filled($this->customSubject)) {
+            return new Envelope(subject: $this->customSubject);
+        }
+
+        $defaultSubject = $this->cohort
+            ? "[Action requise] Complétez votre fiche projet pour la cohorte {$this->cohort->name} — {$saeName}"
+            : "[Action requise] Complétez votre fiche projet sur Hubs Africa — {$saeName}";
+
+        return new Envelope(subject: $defaultSubject);
     }
 
     public function content(): Content
@@ -66,6 +74,7 @@ class CompleteProjectCohortInviteMail extends Mailable implements ShouldQueue
                 'cohort' => $this->cohort,
                 'sae' => $sae,
                 'customMessage' => $this->customMessage,
+                'isCohortEnrollment' => $this->isCohortEnrollment,
                 'projectUrl' => $projectUrl,
             ],
         );

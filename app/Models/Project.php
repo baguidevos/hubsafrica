@@ -72,6 +72,20 @@ class Project extends Model
         });
 
         static::created(function (Project $project) {
+            if ($project->entrepreneur_id && $project->sae_id) {
+                Enrollment::withoutGlobalScopes()
+                    ->where('sae_id', $project->sae_id)
+                    ->where('entrepreneur_id', $project->entrepreneur_id)
+                    ->whereNull('project_id')
+                    ->update(['project_id' => $project->id]);
+
+                Application::withoutGlobalScopes()
+                    ->where('sae_id', $project->sae_id)
+                    ->where('entrepreneur_id', $project->entrepreneur_id)
+                    ->whereNull('project_id')
+                    ->update(['project_id' => $project->id]);
+            }
+
             if ($project->current_level_id) {
                 ProjectLevelHistory::firstOrCreate(
                     [
