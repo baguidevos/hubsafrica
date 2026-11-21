@@ -34,6 +34,7 @@ class CoachPanelProvider extends PanelProvider
             ->favicon(asset('favicon/favicon.ico'))
             ->viteTheme('resources/css/filament/coach/theme.css')
             ->maxContentWidth(Width::Full)
+            ->sidebarCollapsibleOnDesktop()
             ->login()
             ->passwordReset()
             ->colors([

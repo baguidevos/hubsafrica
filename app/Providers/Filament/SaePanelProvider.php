@@ -64,6 +64,7 @@ class SaePanelProvider extends PanelProvider
             )
             ->viteTheme('resources/css/filament/sae/theme.css')
             ->maxContentWidth(Width::Full)
+            ->sidebarCollapsibleOnDesktop()
             ->spa(hasPrefetching: true)
             ->login()
             ->passwordReset()

@@ -30,7 +30,10 @@ use App\Observers\CoachingSessionObserver;
 use App\Observers\DeliverableSubmissionObserver;
 use Carbon\CarbonImmutable;
 use Filament\Auth\Notifications\ResetPassword;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Facades\FilamentView;
+use Filament\Support\Icons\Heroicon;
+use Filament\View\PanelsIconAlias;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Logout;
@@ -70,8 +73,22 @@ class AppServiceProvider extends ServiceProvider
 
         $this->configureAuditLogging();
 
+        $this->configureFilamentIcons();
         $this->configureFilamentAuthHooks();
         $this->configureFilamentLivewireHooks();
+    }
+
+    /**
+     * Personnalisation des icônes de la barre latérale rétractable sur tous les panels Filament.
+     */
+    protected function configureFilamentIcons(): void
+    {
+        FilamentIcon::register([
+            PanelsIconAlias::SIDEBAR_COLLAPSE_BUTTON => Heroicon::OutlinedChevronDoubleLeft,
+            PanelsIconAlias::SIDEBAR_COLLAPSE_BUTTON_RTL => Heroicon::OutlinedChevronDoubleRight,
+            PanelsIconAlias::SIDEBAR_EXPAND_BUTTON => Heroicon::OutlinedChevronDoubleRight,
+            PanelsIconAlias::SIDEBAR_EXPAND_BUTTON_RTL => Heroicon::OutlinedChevronDoubleLeft,
+        ]);
     }
 
     /**

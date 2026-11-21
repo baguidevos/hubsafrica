@@ -35,6 +35,7 @@ class AdminPanelProvider extends PanelProvider
             ->favicon(asset('favicon/favicon.ico'))
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->maxContentWidth(Width::Full)
+            ->sidebarCollapsibleOnDesktop()
             ->login()
             ->passwordReset()
             ->profile(isSimple: false)
