@@ -96,10 +96,10 @@ class EntrepreneursTable
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('created_at')
-                    ->label('Inscrit le')
-                    ->dateTime('d/m/Y')
+                    ->label('Date d\'inscription')
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(),
             ])
             ->filters([
                 SelectFilter::make('activity')

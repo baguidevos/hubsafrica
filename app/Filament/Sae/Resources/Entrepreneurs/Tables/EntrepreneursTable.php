@@ -95,9 +95,9 @@ class EntrepreneursTable
 
                 TextColumn::make('created_at')
                     ->label('Date d\'inscription')
-                    ->date('d/m/Y')
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(),
             ])
             ->filters([
                 SelectFilter::make('program_id')
