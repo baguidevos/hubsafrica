@@ -42,7 +42,7 @@ class EvaluateApplicationPrompt extends Prompt
         $application = Application::query()
             ->where('sae_id', $sae->id)
             ->where('id', $validated['application_id'])
-            ->with(['project', 'entrepreneur.user', 'program', 'cohort'])
+            ->with(['project', 'entrepreneur.user', 'program.evaluationCriteria', 'cohort'])
             ->first();
 
         if (! $application) {
@@ -53,6 +53,26 @@ class EvaluateApplicationPrompt extends Prompt
 
         $project = $application->project;
         $candidate = $application->entrepreneur?->user;
+        $criteria = $application->program?->evaluationCriteria ?? collect();
+
+        if ($criteria->isNotEmpty()) {
+            $gridLines = $criteria->values()->map(function ($criterion, int $index): string {
+                $num = $index + 1;
+                $description = $criterion->description ? " — {$criterion->description}" : '';
+
+                return "{$num}. [ID {$criterion->id}] {$criterion->name} (/{$criterion->max_score}, poids {$criterion->weight}%){$description}";
+            })->implode("\n");
+        } else {
+            $gridLines = implode("\n", [
+                '1. Pertinence du problème et caractère innovant de la solution (/25)',
+                '2. Compétences et complémentarité de l\'équipe (/25)',
+                '3. Modèle économique et potentiel de marché (/25)',
+                '4. Faisabilité opérationnelle et adéquation avec le programme (/25)',
+            ]);
+        }
+
+        $admissionThreshold = $application->getAdmissionThreshold();
+        $waitlistThreshold = $application->getWaitlistThreshold();
 
         $promptInstruction = <<<EOT
 Tu es l'expert du comité de sélection de la structure « {$sae->name} ».
@@ -69,16 +89,17 @@ Dossier Candidat :
 - Cible / Marché : {$project?->target}
 - Taille de l'équipe : {$project?->team_size}
 
-Grille d'évaluation demandée :
-1. Pertinence du problème et caractère innovant de la solution (/25)
-2. Compétences et complémentarité de l'équipe (/25)
-3. Modèle économique et potentiel de marché (/25)
-4. Faisabilité opérationnelle et adéquation avec le programme (/25)
+Grille d'évaluation du programme :
+{$gridLines}
+
+RÈGLE IMPÉRATIVE :
+- N'applique JAMAIS la décision finale d'admission ou de refus : seul un évaluateur humain valide la décision finale.
+- Enregistre uniquement l'évaluation en brouillon critère par critère avec tes justifications, puis présente un classement clair (Réussi / Liste d'attente / Recalé) avec les raisons et la fiche Excel téléchargeable.
 
 Fournis :
-- Une analyse synthétique des points forts et des risques identifiés.
-- Une note globale recommandée sur 100.
-- Un avis final justifié : ADMISSION (≥ {$application->getAdmissionThreshold()}/100), LISTE D'ATTENTE ou REFUS.
+- Une note et une justification pour chaque critère de la grille ci-dessus.
+- Une analyse synthétique des points forts et des réserves.
+- Une recommandation indicative : RÉUSSI (≥ {$admissionThreshold}/100), LISTE D'ATTENTE (≥ {$waitlistThreshold}/100) ou RECALÉ (< {$waitlistThreshold}/100).
 EOT;
 
         return [

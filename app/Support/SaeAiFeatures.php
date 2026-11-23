@@ -2,6 +2,8 @@
 
 namespace App\Support;
 
+use App\Mcp\Tools\Applications\EvaluateApplicationByGridTool;
+use App\Mcp\Tools\Applications\ExportApplicationEvaluationsSheetTool;
 use App\Mcp\Tools\Applications\GetApplicationDetailsTool;
 use App\Mcp\Tools\Applications\ScoreApplicationTool;
 use App\Mcp\Tools\Applications\SearchApplicationsTool;
@@ -185,6 +187,8 @@ final class SaeAiFeatures
             // Candidatures
             SearchApplicationsTool::class => ['category' => 'applications', 'write' => false],
             GetApplicationDetailsTool::class => ['category' => 'applications', 'write' => false],
+            EvaluateApplicationByGridTool::class => ['category' => 'applications', 'write' => true],
+            ExportApplicationEvaluationsSheetTool::class => ['category' => 'applications', 'write' => false],
             UpdateApplicationStatusTool::class => ['category' => 'applications', 'write' => true],
             ScoreApplicationTool::class => ['category' => 'applications', 'write' => true],
 

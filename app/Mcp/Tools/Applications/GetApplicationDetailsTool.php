@@ -33,11 +33,12 @@ class GetApplicationDetailsTool extends Tool
             ->where('sae_id', $sae->id)
             ->where('id', $validated['application_id'])
             ->with([
-                'program',
+                'program.evaluationCriteria',
                 'cohort',
                 'project.currentLevel',
                 'entrepreneur.user',
                 'evaluations.evaluator',
+                'evaluations.scores.criterion',
             ])
             ->first();
 
@@ -51,7 +52,27 @@ class GetApplicationDetailsTool extends Tool
             'score' => $eval->total_score ?? $eval->score,
             'status' => $eval->status?->value ?? (string) $eval->status,
             'comments' => $eval->comment,
+            'criteria_scores' => $eval->scores->map(fn ($item) => [
+                'criterion_id' => $item->criterion_id,
+                'criterion_name' => $item->criterion?->name,
+                'score' => $item->score !== null ? (float) $item->score : null,
+                'max_score' => $item->criterion?->max_score,
+                'weight' => $item->criterion?->weight,
+                'comment' => $item->comment,
+            ])->values()->all(),
         ])->all();
+
+        $evaluationGrid = $application->program?->evaluationCriteria
+            ->map(fn ($criterion) => [
+                'criterion_id' => $criterion->id,
+                'name' => $criterion->name,
+                'description' => $criterion->description,
+                'weight' => $criterion->weight,
+                'max_score' => $criterion->max_score,
+                'position' => $criterion->position,
+            ])
+            ->values()
+            ->all() ?? [];
 
         return Response::structured([
             'id' => $application->id,
@@ -83,12 +104,16 @@ class GetApplicationDetailsTool extends Tool
             'program' => [
                 'id' => $application->program?->id,
                 'name' => $application->program?->name,
+                'admission_threshold' => $application->getAdmissionThreshold(),
+                'waitlist_threshold' => $application->getWaitlistThreshold(),
+                'evaluation_grid' => $evaluationGrid,
             ],
             'cohort' => [
                 'id' => $application->cohort?->id,
                 'name' => $application->cohort?->name,
             ],
-            'form_responses' => $application->form_responses ?? [],
+            'form_responses' => $application->answers ?? [],
+            'comment' => $application->comment,
             'evaluations' => $evaluations,
         ]);
     }
