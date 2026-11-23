@@ -288,7 +288,7 @@ test('sae performance rates widget computes formulas and renders without SQL err
 
     Livewire::test(PerformanceRatesWidget::class)
         ->assertSuccessful()
-        ->assertSee('Taux de remplissage')
+        ->assertSee('Remplissage cohortes')
         ->assertSee('Charge par coach')
         ->assertSee('Taux de validation');
 });

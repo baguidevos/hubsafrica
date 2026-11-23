@@ -9,6 +9,7 @@ use App\Models\Entrepreneur;
 use App\Models\Form;
 use App\Models\FormUnlock;
 use App\Models\Program;
+use App\Models\Project;
 use App\Models\Sae;
 use App\Models\TimelineEvent;
 use App\Models\User;
@@ -198,6 +199,13 @@ test('fill questionnaire route and page are properly defined and accessible to a
         'last_name' => 'Fall',
         'email' => $user->email,
         'status' => 'ACTIVE',
+    ]);
+
+    Project::create([
+        'sae_id' => $this->sae->id,
+        'entrepreneur_id' => $entrepreneur->id,
+        'name' => 'Projet Ousmane',
+        'status' => 'ACTIF',
     ]);
 
     $form = Form::create([

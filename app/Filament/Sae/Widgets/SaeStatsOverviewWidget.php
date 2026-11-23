@@ -59,10 +59,6 @@ class SaeStatsOverviewWidget extends BaseWidget
             : 0;
 
         $projetsActifs = Project::where('status', ProjectStatus::ACTIF->value)->count();
-        $emploisDirects = (int) Project::whereIn('status', [
-            ProjectStatus::ACTIF->value,
-            ProjectStatus::DIPLOME->value,
-        ])->sum('team_size');
         $projetsCandidats = Project::where('status', ProjectStatus::CANDIDAT->value)->count();
 
         $programmesActifs = Program::whereIn('status', [ProgramStatus::ACTIF->value, ProgramStatus::LANCE->value])->count();
@@ -129,7 +125,7 @@ class SaeStatsOverviewWidget extends BaseWidget
                 ->color('primary'),
 
             Stat::make('Programmes actifs', $programmesActifs)
-                ->description("{$cohortesEnCours} cohorte(s) en cours · {$cohortesOuvertes} ouverte(s)")
+                ->description("{$cohortesEnCours} cohorte(s) en cours")
                 ->descriptionIcon('heroicon-m-rectangle-stack')
                 ->color('info'),
 
@@ -149,7 +145,7 @@ class SaeStatsOverviewWidget extends BaseWidget
                 ->descriptionIcon('heroicon-m-clipboard-document-list')
                 ->color($candidaturesATraiter > 0 ? 'warning' : 'success'),
 
-            Stat::make('Coachs mobilisés', $coachsActifs)
+            Stat::make('Coachs actifs', $coachsActifs)
                 ->description("{$heuresCoaching}h de coaching réalisées")
                 ->descriptionIcon('heroicon-m-academic-cap')
                 ->color('info'),

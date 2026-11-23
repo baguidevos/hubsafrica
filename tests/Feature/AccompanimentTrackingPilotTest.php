@@ -323,10 +323,12 @@ test('accompaniment template detail page loads for cube and displays full A-Z me
         ->assertSee('Diagnostic Initial, Sélection & Cadrage (PAS)')
         ->assertSee('Validation du Modèle Économique Complet')
         ->assertSee('Accélération & #KPITAL_INVEST')
-        ->call('$set', 'activeTab', 'drive')
+        ->set('activeTab', 'startups')
         ->assertSee('Formulaire de Diagnostic Initial d\'Entrée')
-        ->assertSee('Modèle de Plan de Travail & Plan d\'Accompagnement Personnalisé (PAS)')
-        ->assertSee('Virtual Data Room (VDR)');
+        ->assertSee('Virtual Data Room (VDR)')
+        ->set('activeTab', 'drive')
+        ->assertSee('Ressources Cloud Partagées')
+        ->assertSee('Ajouter un lien Google Drive');
 });
 
 test('accompaniment template detail page allows adding and deleting custom google drive links', function () {

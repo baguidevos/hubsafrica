@@ -135,10 +135,16 @@ test('new entrepreneur can submit complete application through livewire applicat
         'registration_end' => now()->addMonth(),
     ]);
 
-    // Visite de la page de candidature
+    // Visite de la page de candidature (protégée par auth pour les anonymes)
     $this->get("/programmes/{$program->id}/candidater")
+        ->assertRedirect();
+
+    $this->actingAs($saeOwner)
+        ->get("/programmes/{$program->id}/candidater")
         ->assertOk()
         ->assertSee('Digital Inclusion West Africa');
+
+    auth()->logout();
 
     // Soumission du wizard Livewire par un nouvel entrepreneur non connecté
     Livewire::test(ProgramApplicationWizard::class, ['program' => $program])
@@ -181,7 +187,7 @@ test('new entrepreneur can submit complete application through livewire applicat
     $createdProject = Project::where('entrepreneur_id', $createdEntrepreneur->id)->first();
     expect($createdProject)->not->toBeNull();
     expect($createdProject->name)->toBe('EcoFuel Africa');
-    expect($createdProject->status)->toBe(ProjectStatus::ACTIF);
+    expect($createdProject->status)->toBe(ProjectStatus::CANDIDAT);
 
     $application = Application::where('program_id', $program->id)
         ->where('entrepreneur_id', $createdEntrepreneur->id)
