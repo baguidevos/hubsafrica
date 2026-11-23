@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DatabaseBackupController;
 use App\Http\Controllers\Admin\ImpersonationController;
 use App\Http\Controllers\Api\McpOAuthController;
 use App\Http\Controllers\CoachInvitationController;
@@ -89,6 +90,13 @@ Route::get('/register/coach', function (Request $request) {
 Route::middleware(['auth'])->prefix('auth/impersonate')->name('admin.impersonate.')->group(function () {
     Route::get('/entrepreneur/{entrepreneur}', [ImpersonationController::class, 'impersonateEntrepreneur'])->name('entrepreneur');
     Route::get('/stop', [ImpersonationController::class, 'stopImpersonating'])->name('stop');
+});
+
+// Téléchargement sécurisé des sauvegardes BDD (Super Admin uniquement)
+Route::middleware(['auth'])->prefix('hubs-hq/database-backups')->name('admin.database-backups.')->group(function () {
+    Route::get('/download/{filename}', [DatabaseBackupController::class, 'download'])
+        ->where('filename', '[A-Za-z0-9._-]+')
+        ->name('download');
 });
 
 // Redirection conviviale pour l'espace Coach/Mentor
