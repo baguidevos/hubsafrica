@@ -86,9 +86,12 @@ class ProjectResource extends Resource
 
     public static function canDelete(Model $record): bool
     {
-        return self::ownsProject($record)
-            && ! $record->applications()->exists()
-            && ! $record->submissions()->exists();
+        return false;
+    }
+
+    public static function canDeleteAny(): bool
+    {
+        return false;
     }
 
     private static function ownsProject(Model $record): bool

@@ -4,7 +4,6 @@ namespace App\Filament\Entrepreneur\Resources\Projects\Pages;
 
 use App\Filament\Concerns\HasDynamicRecordTitle;
 use App\Filament\Entrepreneur\Resources\Projects\ProjectResource;
-use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditProject extends EditRecord
@@ -15,9 +14,7 @@ class EditProject extends EditRecord
 
     protected function getHeaderActions(): array
     {
-        return [
-            DeleteAction::make(),
-        ];
+        return [];
     }
 
     /**

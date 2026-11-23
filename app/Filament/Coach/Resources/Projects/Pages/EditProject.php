@@ -4,7 +4,6 @@ namespace App\Filament\Coach\Resources\Projects\Pages;
 
 use App\Filament\Coach\Resources\Projects\ProjectResource;
 use App\Filament\Concerns\HasDynamicRecordTitle;
-use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditProject extends EditRecord
@@ -15,8 +14,6 @@ class EditProject extends EditRecord
 
     protected function getHeaderActions(): array
     {
-        return [
-            DeleteAction::make(),
-        ];
+        return [];
     }
 }
