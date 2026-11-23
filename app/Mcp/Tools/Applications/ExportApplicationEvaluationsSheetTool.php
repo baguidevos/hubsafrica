@@ -4,6 +4,7 @@ namespace App\Mcp\Tools\Applications;
 
 use App\Mcp\Concerns\InteractsWithSae;
 use App\Models\Application;
+use App\Models\Cohort;
 use App\Models\Program;
 use App\Services\ApplicationGridEvaluationService;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
@@ -29,19 +30,66 @@ class ExportApplicationEvaluationsSheetTool extends Tool
         $sae = $this->currentSae();
 
         $validated = $request->validate([
-            'program_id' => 'required|integer',
             'cohort_id' => 'nullable|integer',
+            'cohort_name' => 'nullable|string|max:255',
+            'program_id' => 'nullable|integer',
         ]);
 
+        if (empty($validated['cohort_id']) && empty($validated['cohort_name']) && empty($validated['program_id'])) {
+            return Response::error('Veuillez préciser le nom ou l\'identifiant de la cohorte à exporter.');
+        }
+
+        /** @var Cohort|null $cohort */
+        $cohort = null;
+
+        if (! empty($validated['cohort_id'])) {
+            $cohort = Cohort::query()
+                ->where('sae_id', $sae->id)
+                ->where('id', (int) $validated['cohort_id'])
+                ->with('program.evaluationCriteria')
+                ->first();
+
+            if (! $cohort) {
+                return Response::error("Cohorte #{$validated['cohort_id']} introuvable ou non rattachée à cette structure.");
+            }
+        } elseif (! empty($validated['cohort_name'])) {
+            $searchName = trim((string) $validated['cohort_name']);
+            $matches = Cohort::query()
+                ->where('sae_id', $sae->id)
+                ->where('name', 'like', "%{$searchName}%")
+                ->with('program.evaluationCriteria')
+                ->get();
+
+            if ($matches->isEmpty()) {
+                return Response::error("Aucune cohorte trouvée correspondant à « {$searchName} ».");
+            }
+
+            if ($matches->count() > 1) {
+                $exact = $matches->first(fn (Cohort $c): bool => mb_strtolower($c->name) === mb_strtolower($searchName));
+                if (! $exact) {
+                    $names = $matches->pluck('name')->implode(', ');
+
+                    return Response::error("Plusieurs cohortes correspondent à « {$searchName} » ({$names}). Veuillez préciser le nom exact de la cohorte.");
+                }
+                $cohort = $exact;
+            } else {
+                $cohort = $matches->first();
+            }
+        }
+
         /** @var Program|null $program */
-        $program = Program::query()
-            ->where('sae_id', $sae->id)
-            ->where('id', $validated['program_id'])
-            ->with('evaluationCriteria')
-            ->first();
+        $program = $cohort?->program;
+
+        if (! $program && ! empty($validated['program_id'])) {
+            $program = Program::query()
+                ->where('sae_id', $sae->id)
+                ->where('id', (int) $validated['program_id'])
+                ->with('evaluationCriteria')
+                ->first();
+        }
 
         if (! $program) {
-            return Response::error("Programme #{$validated['program_id']} introuvable ou non rattaché à cette structure.");
+            return Response::error('Programme associé introuvable pour cette cohorte.');
         }
 
         $applicationsQuery = Application::query()
@@ -54,8 +102,8 @@ class ExportApplicationEvaluationsSheetTool extends Tool
                 'evaluations.scores.criterion',
             ]);
 
-        if (! empty($validated['cohort_id'])) {
-            $applicationsQuery->where('cohort_id', (int) $validated['cohort_id']);
+        if ($cohort) {
+            $applicationsQuery->where('cohort_id', $cohort->id);
         }
 
         $applications = $applicationsQuery->get();
@@ -109,11 +157,12 @@ class ExportApplicationEvaluationsSheetTool extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'program_id' => $schema->integer()
-                ->description('Identifiant du programme dont on souhaite générer la fiche Excel classée')
-                ->required(),
+            'cohort_name' => $schema->string()
+                ->description('Nom de la cohorte ciblée (recommandé : résout automatiquement le programme associé)'),
             'cohort_id' => $schema->integer()
-                ->description('Optionnel : filtrer sur une cohorte précise du programme'),
+                ->description('Identifiant numérique de la cohorte ciblée'),
+            'program_id' => $schema->integer()
+                ->description('Optionnel : identifiant du programme si aucune cohorte n\'est précisée'),
         ];
     }
 }

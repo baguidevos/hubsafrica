@@ -248,3 +248,94 @@ test('export_application_evaluations_sheet ranks candidates from reussi to recal
         ->and($csv)->toContain('Recalé')
         ->and($csv)->toContain('Besoin de retravailler le modèle économique');
 });
+
+test('export_application_evaluations_sheet resolves program and filters candidates by cohort_name', function () {
+    Storage::fake('public');
+
+    $owner = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $owner->id,
+        'name' => 'SAE Cohorte Filter',
+        'slug' => 'sae-cohorte-filter-'.uniqid(),
+    ]);
+    app()->instance('current_sae', $sae);
+    $this->actingAs($owner);
+
+    $program = Program::create([
+        'sae_id' => $sae->id,
+        'name' => 'AgriPulse',
+        'status' => ProgramStatus::ACTIF,
+    ]);
+
+    $cohort1 = Cohort::create([
+        'sae_id' => $sae->id,
+        'program_id' => $program->id,
+        'name' => 'AgriPulse Cohorte 1',
+        'status' => CohortStatus::OUVERTE,
+    ]);
+
+    $cohort2 = Cohort::create([
+        'sae_id' => $sae->id,
+        'program_id' => $program->id,
+        'name' => 'AgriPulse Cohorte 2',
+        'status' => CohortStatus::OUVERTE,
+    ]);
+
+    $ent1 = Entrepreneur::create([
+        'sae_id' => $sae->id,
+        'first_name' => 'Awa',
+        'last_name' => 'One',
+        'email' => 'awa1@example.com',
+        'status' => EntrepreneurStatus::CANDIDAT,
+    ]);
+    $proj1 = Project::create([
+        'sae_id' => $sae->id,
+        'entrepreneur_id' => $ent1->id,
+        'name' => 'Projet Cohorte 1',
+        'sector' => 'Agriculture',
+        'status' => ProjectStatus::CANDIDAT,
+    ]);
+    Application::create([
+        'sae_id' => $sae->id,
+        'program_id' => $program->id,
+        'cohort_id' => $cohort1->id,
+        'entrepreneur_id' => $ent1->id,
+        'project_id' => $proj1->id,
+        'status' => ApplicationStatus::SOUMISE,
+        'score' => 88,
+    ]);
+
+    $ent2 = Entrepreneur::create([
+        'sae_id' => $sae->id,
+        'first_name' => 'Koffi',
+        'last_name' => 'Two',
+        'email' => 'koffi2@example.com',
+        'status' => EntrepreneurStatus::CANDIDAT,
+    ]);
+    $proj2 = Project::create([
+        'sae_id' => $sae->id,
+        'entrepreneur_id' => $ent2->id,
+        'name' => 'Projet Cohorte 2',
+        'sector' => 'Agriculture',
+        'status' => ProjectStatus::CANDIDAT,
+    ]);
+    Application::create([
+        'sae_id' => $sae->id,
+        'program_id' => $program->id,
+        'cohort_id' => $cohort2->id,
+        'entrepreneur_id' => $ent2->id,
+        'project_id' => $proj2->id,
+        'status' => ApplicationStatus::SOUMISE,
+        'score' => 92,
+    ]);
+
+    $response = app(ExportApplicationEvaluationsSheetTool::class)->handle(
+        new McpRequest(['cohort_name' => 'AgriPulse Cohorte 1']),
+        app(ApplicationGridEvaluationService::class),
+    );
+
+    $payload = json_decode((string) $response->responses()->first()->content(), true);
+
+    expect($payload['summary']['total'])->toBe(1)
+        ->and($payload['ranked_applications'][0]['project_name'])->toBe('Projet Cohorte 1');
+});
