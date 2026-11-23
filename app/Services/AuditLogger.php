@@ -146,6 +146,42 @@ class AuditLogger
         return implode(' | ', $formattedDiffs);
     }
 
+    /**
+     * Retourne les en-têtes CSV (Excel) pour l'export du journal d'audit.
+     *
+     * @return list<string>
+     */
+    public static function exportHeaders(): array
+    {
+        return [
+            'Date & Heure',
+            'Utilisateur',
+            'Action',
+            'Entité',
+            'ID cible',
+            'Détails',
+            'Adresse IP',
+        ];
+    }
+
+    /**
+     * Formate une ligne du journal d'audit pour l'export CSV/Excel.
+     *
+     * @return list<string>
+     */
+    public static function formatExportRow(AuditLog $log): array
+    {
+        return [
+            $log->created_at?->format('d/m/Y H:i:s') ?? '—',
+            $log->user_name ?: ($log->user?->name ?? 'Système'),
+            AuditAction::labelFor($log->action),
+            $log->entity ?? '—',
+            $log->entity_id ?? '—',
+            $log->details ?? '—',
+            $log->ip_address ?? '—',
+        ];
+    }
+
     protected static function resolveSaeId(?int $explicitSaeId, ?User $actor): ?int
     {
         if ($explicitSaeId !== null) {

@@ -184,5 +184,7 @@ test('sae audit log resource is read-only and lists recorded actions', function 
 
     Livewire::test(SaeListAuditLogs::class)
         ->assertSuccessful()
-        ->assertCanSeeTableRecords([$log]);
+        ->assertCanSeeTableRecords([$log])
+        ->callAction('exportAuditLogs')
+        ->assertFileDownloaded();
 });
