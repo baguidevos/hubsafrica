@@ -12,7 +12,6 @@ use App\Filament\Sae\Pages\Tenancy\RegisterSae;
 use App\Filament\Sae\Resources\Applications\ApplicationResource;
 use App\Filament\Sae\Resources\CoachJoinRequests\CoachJoinRequestResource;
 use App\Filament\Sae\Resources\DeliverableSubmissions\DeliverableSubmissionResource;
-use App\Filament\Sae\Resources\EvaluationForms\EvaluationFormResource;
 use App\Filament\Sae\Resources\Projects\ProjectResource;
 use App\Models\Application;
 use App\Models\CoachJoinRequest;
@@ -89,7 +88,7 @@ class SaePanelProvider extends PanelProvider
             ->widgets([])
             ->plugins([
                 FormBuilderPlugin::make()
-                    ->resource(EvaluationFormResource::class),
+                    ->withoutResource(),
                 // FilamentShieldPlugin::make(),
                 FilamentDaisyUiThemesPlugin::make()
                     ->allThemes(),
