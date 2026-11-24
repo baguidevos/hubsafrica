@@ -12,6 +12,8 @@ use App\Models\Sae;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class EntrepreneurProjectReminderService
 {
@@ -35,18 +37,100 @@ class EntrepreneurProjectReminderService
     /**
      * Entrepreneurs sans projet inscrits hors formulaire de candidature.
      */
-    public function directEntrepreneursWithoutProjectQuery(?int $saeId): Builder
+    public function directEntrepreneursWithoutProjectQuery(?int $saeId, string $sortBy = 'created_at_desc'): Builder
     {
-        return Entrepreneur::query()
+        $query = Entrepreneur::query()
             ->when($saeId !== null, fn (Builder $query) => $query->where('sae_id', $saeId))
             ->whereDoesntHave('projects')
             ->whereDoesntHave('applications')
             ->with([
                 'enrollments' => fn ($query) => $query->latest('id')->with(['cohort.program']),
                 'user',
-            ])
-            ->orderBy('first_name')
-            ->orderBy('last_name');
+            ]);
+
+        return match ($sortBy) {
+            'created_at_asc' => $query->orderBy('created_at', 'asc')->orderBy('id', 'asc'),
+            'name_asc' => $query->orderBy('first_name')->orderBy('last_name'),
+            default => $query->orderBy('created_at', 'desc')->orderBy('id', 'desc'),
+        };
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function directExportHeaders(): array
+    {
+        return [
+            'Date d\'inscription',
+            'Prénom',
+            'Nom',
+            'Email',
+            'Téléphone',
+            'Genre',
+            'Territoire',
+            'Statut',
+            'Programme(s) / Cohorte(s) lié(s)',
+        ];
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function formatDirectExportRow(Entrepreneur $entrepreneur): array
+    {
+        $linkedPrograms = $entrepreneur->enrollments
+            ->map(function (Enrollment $enrollment): ?string {
+                $cohortName = $enrollment->cohort?->name;
+                $programName = $enrollment->cohort?->program?->name;
+
+                if ($programName && $cohortName) {
+                    return "{$programName} ({$cohortName})";
+                }
+
+                return $programName ?? $cohortName;
+            })
+            ->filter()
+            ->unique()
+            ->values();
+
+        return [
+            $entrepreneur->created_at?->format('d/m/Y H:i') ?? '—',
+            $entrepreneur->first_name ?? '—',
+            $entrepreneur->last_name ?? '—',
+            $entrepreneur->email ?? '—',
+            $entrepreneur->phone ?? '—',
+            $entrepreneur->gender?->getLabel() ?? '—',
+            $entrepreneur->territory ?? '—',
+            $entrepreneur->status?->getLabel() ?? '—',
+            $linkedPrograms->isNotEmpty() ? $linkedPrograms->implode(' | ') : 'Aucun programme lié',
+        ];
+    }
+
+    public function streamDirectWithoutProjectCsv(?int $saeId, ?string $saeSlug = null, string $sortBy = 'created_at_desc'): StreamedResponse
+    {
+        $slug = Str::slug((string) ($saeSlug ?: 'sae'));
+        $filename = "hors-candidature-sans-projet-{$slug}-".now()->format('Ymd-His').'.csv';
+        $query = $this->directEntrepreneursWithoutProjectQuery($saeId, $sortBy);
+
+        return response()->streamDownload(function () use ($query): void {
+            $handle = fopen('php://output', 'w');
+
+            if ($handle === false) {
+                return;
+            }
+
+            fwrite($handle, "\xEF\xBB\xBF");
+            fputcsv($handle, $this->directExportHeaders(), ';');
+
+            /** @var Entrepreneur $entrepreneur */
+            foreach ($query->cursor() as $entrepreneur) {
+                fputcsv($handle, $this->formatDirectExportRow($entrepreneur), ';');
+            }
+
+            fclose($handle);
+        }, $filename, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+        ]);
     }
 
     /**
@@ -109,8 +193,9 @@ class EntrepreneurProjectReminderService
 
         $statusLabel = $entrepreneur->status?->getLabel() ?? 'Statut inconnu';
         $emailPart = filled($entrepreneur->email) ? " ({$entrepreneur->email})" : ' (sans email)';
+        $datePart = $entrepreneur->created_at ? ' — Inscrit le '.$entrepreneur->created_at->format('d/m/Y') : '';
 
-        return "{$entrepreneur->full_name}{$emailPart} [{$statusLabel}]{$programSuffix}";
+        return "{$entrepreneur->full_name}{$emailPart} [{$statusLabel}]{$datePart}{$programSuffix}";
     }
 
     public function defaultCandidateSubject(): string

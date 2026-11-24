@@ -286,3 +286,49 @@ test('complete project invite mail renders rich text html properly', function ()
         ->toContain('<li>Point <strong>important</strong></li>')
         ->not->toContain('&lt;p&gt;');
 });
+
+test('direct entrepreneurs without project can be sorted by creation date and exported to csv', function () {
+    $owner = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $owner->id,
+        'name' => 'SAE Tri Export',
+        'slug' => 'sae-tri-export-'.uniqid(),
+    ]);
+
+    $older = Entrepreneur::create([
+        'sae_id' => $sae->id,
+        'first_name' => 'Ancien',
+        'last_name' => 'Porteur',
+        'email' => 'ancien@example.com',
+        'status' => EntrepreneurStatus::ACTIVE,
+    ]);
+    $older->forceFill(['created_at' => now()->subDays(10)])->saveQuietly();
+
+    $newer = Entrepreneur::create([
+        'sae_id' => $sae->id,
+        'first_name' => 'Nouveau',
+        'last_name' => 'Porteur',
+        'email' => 'nouveau@example.com',
+        'status' => EntrepreneurStatus::ACTIVE,
+    ]);
+    $newer->forceFill(['created_at' => now()->subDay()])->saveQuietly();
+
+    $service = app(EntrepreneurProjectReminderService::class);
+
+    $descIds = $service->directEntrepreneursWithoutProjectQuery($sae->id, 'created_at_desc')->pluck('id')->all();
+    $ascIds = $service->directEntrepreneursWithoutProjectQuery($sae->id, 'created_at_asc')->pluck('id')->all();
+
+    expect($descIds)->toBe([$newer->id, $older->id])
+        ->and($ascIds)->toBe([$older->id, $newer->id])
+        ->and($service->formatDirectEntrepreneurOptionLabel($newer))->toContain('Inscrit le ');
+
+    $response = $service->streamDirectWithoutProjectCsv($sae->id, $sae->slug);
+    ob_start();
+    $response->sendContent();
+    $csv = (string) ob_get_clean();
+
+    expect($csv)
+        ->toContain('nouveau@example.com')
+        ->toContain('ancien@example.com')
+        ->and(strpos($csv, 'nouveau@example.com'))->toBeLessThan(strpos($csv, 'ancien@example.com'));
+});

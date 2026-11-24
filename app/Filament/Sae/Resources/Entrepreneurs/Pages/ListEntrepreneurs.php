@@ -16,6 +16,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Schemas\Components\Utilities\Get;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ListEntrepreneurs extends ListRecords
 {
@@ -107,19 +109,46 @@ class ListEntrepreneurs extends ListRecords
                 ->modalDescription('Ces entrepreneurs n\'ont pas de candidature enregistrée et pas encore de fiche projet. Vous pouvez voir s\'ils sont déjà liés à un programme et choisir ou non de les rattacher à une cohorte.')
                 ->modalWidth('4xl')
                 ->modalSubmitActionLabel('Envoyer les relances')
+                ->extraModalFooterActions([
+                    Action::make('export_direct_without_project_csv')
+                        ->label('Exporter en Excel / CSV')
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->color('success')
+                        ->action(fn (): StreamedResponse => $reminderService->streamDirectWithoutProjectCsv(
+                            saeId: $tenantId,
+                            saeSlug: Filament::getTenant()?->slug ?? Filament::getTenant()?->name,
+                        )),
+                ])
                 ->schema(function () use ($reminderService, $tenantId): array {
-                    $entrepreneurs = $reminderService->directEntrepreneursWithoutProjectQuery($tenantId)->get();
-                    $options = $entrepreneurs
-                        ->mapWithKeys(fn (Entrepreneur $entrepreneur): array => [
-                            $entrepreneur->id => $reminderService->formatDirectEntrepreneurOptionLabel($entrepreneur),
-                        ])
-                        ->all();
+                    $initialEntrepreneurs = $reminderService->directEntrepreneursWithoutProjectQuery($tenantId, 'created_at_desc')->get();
+                    $initialIds = $initialEntrepreneurs->pluck('id')->all();
 
                     return [
+                        Select::make('sort_by')
+                            ->label('Trier la liste par')
+                            ->options([
+                                'created_at_desc' => 'Date de création (plus récents d\'abord)',
+                                'created_at_asc' => 'Date de création (plus anciens d\'abord)',
+                                'name_asc' => 'Ordre alphabétique (A → Z)',
+                            ])
+                            ->default('created_at_desc')
+                            ->selectablePlaceholder(false)
+                            ->native(false)
+                            ->live(),
+
                         CheckboxList::make('entrepreneur_ids')
-                            ->label("Entrepreneurs détectés ({$entrepreneurs->count()})")
-                            ->options($options)
-                            ->default(array_keys($options))
+                            ->label("Entrepreneurs détectés ({$initialEntrepreneurs->count()})")
+                            ->options(function (Get $get) use ($reminderService, $tenantId): array {
+                                $sortBy = (string) ($get('sort_by') ?: 'created_at_desc');
+
+                                return $reminderService->directEntrepreneursWithoutProjectQuery($tenantId, $sortBy)
+                                    ->get()
+                                    ->mapWithKeys(fn (Entrepreneur $entrepreneur): array => [
+                                        $entrepreneur->id => $reminderService->formatDirectEntrepreneurOptionLabel($entrepreneur),
+                                    ])
+                                    ->all();
+                            })
+                            ->default($initialIds)
                             ->searchable()
                             ->bulkToggleable()
                             ->required()
