@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Listeners\LogAuthenticationAudit;
+use App\Listeners\TrackFormAttemptEvents;
+use App\Livewire\TrackedFormBuilderForm;
 use App\Models\AccompanimentTool;
 use App\Models\Application;
 use App\Models\Coach;
@@ -44,6 +46,9 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Head\Facades\Head;
+use Livewire\Livewire;
+use Packstub\FormBuilder\Events\SpamDetected;
+use Packstub\FormBuilder\Events\SubmissionReceived;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -72,6 +77,7 @@ class AppServiceProvider extends ServiceProvider
         DeliverableSubmission::observe(DeliverableSubmissionObserver::class);
 
         $this->configureAuditLogging();
+        $this->configureFormAttemptTracking();
 
         $this->configureFilamentIcons();
         $this->configureFilamentAuthHooks();
@@ -125,6 +131,19 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(
             [Login::class, Logout::class, PasswordReset::class],
             LogAuthenticationAudit::class,
+        );
+    }
+
+    /**
+     * Suivi de progression, blocages de validation/spam et abandons sur les formulaires.
+     */
+    protected function configureFormAttemptTracking(): void
+    {
+        Livewire::component('form-builder', TrackedFormBuilderForm::class);
+
+        Event::listen(
+            [SubmissionReceived::class, SpamDetected::class],
+            TrackFormAttemptEvents::class,
         );
     }
 
