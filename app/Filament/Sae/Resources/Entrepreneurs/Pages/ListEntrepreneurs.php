@@ -6,6 +6,7 @@ use App\Filament\Sae\Resources\EntrepreneurInvitations\Pages\CreateEntrepreneurI
 use App\Filament\Sae\Resources\Entrepreneurs\EntrepreneurResource;
 use App\Models\Cohort;
 use App\Models\Entrepreneur;
+use App\Services\EntrepreneurExportService;
 use App\Support\EntrepreneurProjectReminderService;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
@@ -211,6 +212,15 @@ class ListEntrepreneurs extends ListRecords
                         ->success()
                         ->send();
                 }),
+
+            Action::make('export_entrepreneurs_csv')
+                ->label('Exporter (Excel / CSV)')
+                ->icon('heroicon-o-arrow-down-tray')
+                ->color('success')
+                ->action(fn (): StreamedResponse => app(EntrepreneurExportService::class)->streamEntrepreneursCsv(
+                    saeId: $tenantId,
+                    saeSlug: Filament::getTenant()?->slug ?? Filament::getTenant()?->name,
+                )),
 
             Action::make('invite')
                 ->label('Inviter un entrepreneur')
