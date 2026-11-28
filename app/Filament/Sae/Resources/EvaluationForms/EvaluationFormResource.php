@@ -5,6 +5,7 @@ namespace App\Filament\Sae\Resources\EvaluationForms;
 use App\Enums\FormType;
 use App\Enums\FormUnlockStatus;
 use App\Filament\Sae\Clusters\ImpactCluster;
+use App\Filament\Sae\Resources\EvaluationForms\RelationManagers\SubmissionsRelationManager;
 use App\Filament\Sae\Resources\EvaluationForms\RelationManagers\UnlocksRelationManager;
 use App\Models\Cohort;
 use App\Models\Entrepreneur;
@@ -42,7 +43,6 @@ use Packstub\FormBuilder\Filament\Resources\FormResource;
 use Packstub\FormBuilder\Filament\Resources\FormResource\Pages\CreateForm;
 use Packstub\FormBuilder\Filament\Resources\FormResource\Pages\EditForm;
 use Packstub\FormBuilder\Filament\Resources\FormResource\Pages\ListForms;
-use Packstub\FormBuilder\Filament\Resources\FormResource\RelationManagers\SubmissionsRelationManager;
 use Packstub\FormBuilder\Filament\Resources\FormResource\RelationManagers\WebhookDeliveriesRelationManager;
 
 class EvaluationFormResource extends FormResource
