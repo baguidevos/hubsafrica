@@ -234,3 +234,38 @@ test('fill questionnaire route and page are properly defined and accessible to a
     $response->assertOk();
     $response->assertSee('Diagnostic Initial Route Test');
 });
+
+test('sae impact evaluation forms index, create and edit pages resolve routes using EvaluationFormResource', function () {
+    $owner = User::factory()->create();
+    $sae = Sae::create([
+        'owner_id' => $owner->id,
+        'name' => 'SAE Cube Impact',
+        'slug' => 'cube-impact-'.uniqid(),
+    ]);
+
+    $form = Form::create([
+        'sae_id' => $sae->id,
+        'name' => 'Enquête Baseline Cube',
+        'slug' => 'enquete-baseline-cube-'.uniqid(),
+        'type' => FormType::BASELINE,
+        'is_standard' => false,
+    ]);
+
+    $indexUrl = route('filament.sae.impact.resources.evaluation-forms.index', ['tenant' => $sae]);
+    $createUrl = route('filament.sae.impact.resources.evaluation-forms.create', ['tenant' => $sae]);
+    $editUrl = route('filament.sae.impact.resources.evaluation-forms.edit', ['tenant' => $sae, 'record' => $form]);
+
+    $this->actingAs($owner)
+        ->get($indexUrl)
+        ->assertOk()
+        ->assertSee('Enquête Baseline Cube')
+        ->assertSee($editUrl);
+
+    $this->actingAs($owner)
+        ->get($createUrl)
+        ->assertOk();
+
+    $this->actingAs($owner)
+        ->get($editUrl)
+        ->assertOk();
+});
