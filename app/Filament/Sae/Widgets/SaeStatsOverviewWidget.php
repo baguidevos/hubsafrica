@@ -91,9 +91,7 @@ class SaeStatsOverviewWidget extends BaseWidget
 
         $livrablesAEvaluer = DeliverableSubmission::whereIn('status', [
             DeliverableSubmissionStatus::SOUMIS->value,
-            DeliverableSubmissionStatus::SOUMISE->value,
             DeliverableSubmissionStatus::EN_EVALUATION->value,
-            DeliverableSubmissionStatus::EN_EXAMEN->value,
         ])->count();
         $livrablesEnRetard = DeliverableSubmission::where('is_late', true)->count();
 

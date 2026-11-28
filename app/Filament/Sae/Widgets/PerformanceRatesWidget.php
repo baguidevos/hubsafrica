@@ -81,16 +81,11 @@ class PerformanceRatesWidget extends Widget
 
         // 6. Taux de validation des livrables
         $evalues = DeliverableSubmission::whereIn('status', [
-            DeliverableSubmissionStatus::VALIDEE->value,
             DeliverableSubmissionStatus::VALIDE->value,
             DeliverableSubmissionStatus::REJETEE->value,
-            DeliverableSubmissionStatus::NON_VALIDE->value,
             DeliverableSubmissionStatus::CORRECTION_DEMANDEE->value,
         ])->count();
-        $valides = DeliverableSubmission::whereIn('status', [
-            DeliverableSubmissionStatus::VALIDEE->value,
-            DeliverableSubmissionStatus::VALIDE->value,
-        ])->count();
+        $valides = DeliverableSubmission::where('status', DeliverableSubmissionStatus::VALIDE->value)->count();
         $tauxValidation = $evalues > 0 ? round(($valides / $evalues) * 100, 1) : 0;
 
         // 7. Couverture des financements (obtenus / recherchés)

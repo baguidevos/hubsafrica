@@ -21,7 +21,7 @@ class DeliverableStatusMail extends Mailable implements ShouldQueue
 
     public function isValidated(): bool
     {
-        return in_array($this->submission->status, [DeliverableSubmissionStatus::VALIDE, DeliverableSubmissionStatus::VALIDEE], true);
+        return $this->submission->status === DeliverableSubmissionStatus::VALIDE;
     }
 
     public function envelope(): Envelope
@@ -38,7 +38,7 @@ class DeliverableStatusMail extends Mailable implements ShouldQueue
     {
         $project = $this->submission->project;
         $sae = $this->submission->sae ?? $project?->sae;
-        $isValidated = in_array($this->submission->status, [DeliverableSubmissionStatus::VALIDE, DeliverableSubmissionStatus::VALIDEE], true);
+        $isValidated = $this->isValidated();
 
         return new Content(
             view: 'emails.deliverable-status',

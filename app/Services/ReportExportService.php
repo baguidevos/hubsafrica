@@ -168,16 +168,11 @@ class ReportExportService
             $subQuery->whereIn('project_id', $filteredProjectIds);
         }
         $livrablesEvalues = (clone $subQuery)->whereIn('status', [
-            DeliverableSubmissionStatus::VALIDEE->value,
             DeliverableSubmissionStatus::VALIDE->value,
             DeliverableSubmissionStatus::REJETEE->value,
-            DeliverableSubmissionStatus::NON_VALIDE->value,
             DeliverableSubmissionStatus::CORRECTION_DEMANDEE->value,
         ])->count();
-        $livrablesValides = (clone $subQuery)->whereIn('status', [
-            DeliverableSubmissionStatus::VALIDEE->value,
-            DeliverableSubmissionStatus::VALIDE->value,
-        ])->count();
+        $livrablesValides = (clone $subQuery)->where('status', DeliverableSubmissionStatus::VALIDE->value)->count();
         $tauxValidation = $livrablesEvalues > 0 ? round(($livrablesValides / $livrablesEvalues) * 100, 1) : 0.0;
 
         $sessionQuery = CoachingSession::withoutGlobalScopes()->where('sae_id', $tenant->id);

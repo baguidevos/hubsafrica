@@ -126,7 +126,7 @@ class SaePanelProvider extends PanelProvider
                             ->icon('heroicon-o-check-badge')
                             ->color('success')
                             ->keyBindings(['mod+shift+l'])
-                            ->badge(fn () => Filament::getTenant() ? DeliverableSubmission::query()->whereIn('status', [DeliverableSubmissionStatus::SOUMIS, DeliverableSubmissionStatus::SOUMISE, DeliverableSubmissionStatus::EN_EVALUATION])->count() ?: null : null)
+                            ->badge(fn () => Filament::getTenant() ? DeliverableSubmission::query()->whereIn('status', [DeliverableSubmissionStatus::SOUMIS, DeliverableSubmissionStatus::EN_EVALUATION])->count() ?: null : null)
                             ->badgeColor('warning')
                             ->url(fn (): ?string => Filament::getTenant() ? DeliverableSubmissionResource::getUrl('kanban', ['tenant' => Filament::getTenant()]) : null),
 

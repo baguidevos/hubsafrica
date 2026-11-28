@@ -109,7 +109,7 @@ class KanbanDeliverableSubmissions extends BoardPage
                 $newStatus = DeliverableSubmissionStatus::tryFrom($columnId);
                 if ($newStatus) {
                     $record->status = $newStatus;
-                    if (in_array($newStatus, [DeliverableSubmissionStatus::VALIDE, DeliverableSubmissionStatus::VALIDEE])) {
+                    if ($newStatus === DeliverableSubmissionStatus::VALIDE) {
                         $record->validated_at = now();
                         $record->validated_by = auth()->id();
                     }

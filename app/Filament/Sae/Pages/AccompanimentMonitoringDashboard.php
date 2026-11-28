@@ -136,7 +136,7 @@ class AccompanimentMonitoringDashboard extends Page
 
         $progSubsQuery = DeliverableSubmission::whereHas('definition', function ($q) {
             $q->where('target_type', DeliverableTarget::PROGRAMME->value);
-        })->whereIn('status', [DeliverableSubmissionStatus::VALIDE->value, DeliverableSubmissionStatus::VALIDEE->value]);
+        })->where('status', DeliverableSubmissionStatus::VALIDE->value);
 
         if ($cohort) {
             $progSubsQuery->where(function ($q) use ($cohort) {
@@ -151,7 +151,7 @@ class AccompanimentMonitoringDashboard extends Page
         $totalExpectedStartupDeliverables = max($startupDefsCount * $startupsCount, 1);
 
         $startupSubsValides = DeliverableSubmission::whereIn('project_id', $projectIds)
-            ->whereIn('status', [DeliverableSubmissionStatus::VALIDE->value, DeliverableSubmissionStatus::VALIDEE->value])
+            ->where('status', DeliverableSubmissionStatus::VALIDE->value)
             ->count();
         $avancementStartups = round(($startupSubsValides / $totalExpectedStartupDeliverables) * 100, 1);
 
@@ -269,7 +269,7 @@ class AccompanimentMonitoringDashboard extends Page
 
             // Livrables validés
             $submissions = $project->submissions;
-            $valides = $submissions->whereIn('status', [DeliverableSubmissionStatus::VALIDE, DeliverableSubmissionStatus::VALIDEE])->count();
+            $valides = $submissions->where('status', DeliverableSubmissionStatus::VALIDE)->count();
             $enRetard = $submissions->where('is_late', true)->count();
             $tauxLivrables = round(($valides / $totalExpectedDefs) * 100);
 

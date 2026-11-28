@@ -20,10 +20,8 @@ class DeliverableSubmissionObserver
 
         if (! in_array($submission->status, [
             DeliverableSubmissionStatus::VALIDE,
-            DeliverableSubmissionStatus::VALIDEE,
             DeliverableSubmissionStatus::CORRECTION_DEMANDEE,
             DeliverableSubmissionStatus::REJETEE,
-            DeliverableSubmissionStatus::NON_VALIDE,
         ], true)) {
             return;
         }
