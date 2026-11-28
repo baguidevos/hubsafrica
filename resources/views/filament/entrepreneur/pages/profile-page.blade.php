@@ -44,7 +44,16 @@
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                     <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200">Pays</label>
-                    <input type="text" wire:model="country" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6 dark:bg-gray-800 dark:text-white dark:ring-gray-700">
+                    <select wire:model="country" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6 dark:bg-gray-800 dark:text-white dark:ring-gray-700">
+                        <option value="">Sélectionner un pays</option>
+                        @if (filled($country) && ! array_key_exists($country, \App\Support\CountryCatalog::options()))
+                            <option value="{{ $country }}">{{ $country }}</option>
+                        @endif
+                        @foreach (\App\Support\CountryCatalog::options() as $countryValue => $countryLabel)
+                            <option value="{{ $countryValue }}">{{ $countryLabel }}</option>
+                        @endforeach
+                    </select>
+                    @error('country') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200">Territoire / Région</label>

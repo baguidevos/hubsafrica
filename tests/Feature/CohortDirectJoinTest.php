@@ -90,6 +90,7 @@ test('un nouveau candidat peut creer un compte depuis la passerelle de cohorte e
         'last_name' => 'Ndiaye',
         'email' => 'fatou.ndiaye@startup.sn',
         'phone' => '+221 77 123 45 67',
+        'country' => 'Sénégal',
         'password' => 'Password123!',
         'password_confirmation' => 'Password123!',
     ]);

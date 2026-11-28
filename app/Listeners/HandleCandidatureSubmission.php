@@ -21,6 +21,7 @@ use App\Models\Project;
 use App\Models\Sae;
 use App\Models\TimelineEvent;
 use App\Models\User;
+use App\Support\CountryCatalog;
 use App\Support\EntrepreneurCompletionChecker;
 use App\Support\FormSubmissionRedirectResolver;
 use Filament\Notifications\Notification;
@@ -92,6 +93,7 @@ class HandleCandidatureSubmission
                 ->first();
 
             $genderValue = ($data['gender'] ?? 'M') === 'F' ? Gender::F : Gender::M;
+            $detectedCountry = CountryCatalog::extractCountryFromAnswers($data);
 
             if (! $entrepreneur) {
                 $fullNameSource = trim((string) ($data['full_name'] ?? $user->name));
@@ -104,6 +106,7 @@ class HandleCandidatureSubmission
                     'email' => $user->email,
                     'phone' => $data['phone'] ?? '',
                     'gender' => $genderValue,
+                    'country' => $detectedCountry,
                     'territory' => $data['city'] ?? $data['territory'] ?? 'Dakar',
                     'status' => EntrepreneurStatus::CANDIDAT,
                 ]);
@@ -111,6 +114,9 @@ class HandleCandidatureSubmission
                 $updates = [];
                 if (empty($entrepreneur->phone) && ! empty($data['phone'])) {
                     $updates['phone'] = $data['phone'];
+                }
+                if (empty($entrepreneur->country) && $detectedCountry !== null) {
+                    $updates['country'] = $detectedCountry;
                 }
                 if (empty($entrepreneur->territory) && (! empty($data['city']) || ! empty($data['territory']))) {
                     $updates['territory'] = $data['city'] ?? $data['territory'];

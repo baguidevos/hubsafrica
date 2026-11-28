@@ -9,6 +9,7 @@ use App\Mail\FounderWelcomeMail;
 use App\Models\Cohort;
 use App\Models\Entrepreneur;
 use App\Models\User;
+use App\Support\CountryCatalog;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -92,6 +93,7 @@ class CohortPublicController extends Controller
             'last_name' => ['required', 'string', 'max:100'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'phone' => ['required', 'string', 'max:30'],
+            'country' => ['required', 'string', 'max:100'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ], [
             'first_name.required' => 'Le prénom est obligatoire.',
@@ -99,6 +101,7 @@ class CohortPublicController extends Controller
             'email.required' => 'L\'adresse email est obligatoire.',
             'email.unique' => 'Cette adresse email possède déjà un compte. Veuillez vous connecter avec le formulaire ci-dessus.',
             'phone.required' => 'Le numéro de téléphone est obligatoire.',
+            'country.required' => 'Le pays de résidence est obligatoire.',
             'password.required' => 'Le mot de passe est obligatoire.',
             'password.min' => 'Le mot de passe doit comporter au moins 8 caractères.',
             'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
@@ -121,6 +124,7 @@ class CohortPublicController extends Controller
                 'last_name' => $validated['last_name'],
                 'email' => $validated['email'],
                 'phone' => $validated['phone'],
+                'country' => CountryCatalog::normalize($validated['country']) ?? $validated['country'],
                 'status' => EntrepreneurStatus::CANDIDAT,
             ]);
 

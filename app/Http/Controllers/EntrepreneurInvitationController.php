@@ -9,6 +9,7 @@ use App\Models\Entrepreneur;
 use App\Models\EntrepreneurInvitation;
 use App\Models\Project;
 use App\Models\User;
+use App\Support\CountryCatalog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -48,6 +49,7 @@ class EntrepreneurInvitationController extends Controller
             'last_name' => ['required', 'string', 'max:100'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'phone' => ['nullable', 'string', 'max:50'],
+            'country' => ['nullable', 'string', 'max:100'],
             'project_name' => ['nullable', 'string', 'max:255'],
             'project_sector' => ['nullable', 'string', 'max:100'],
             'project_description' => ['nullable', 'string', 'max:2000'],
@@ -99,6 +101,7 @@ class EntrepreneurInvitationController extends Controller
                     'last_name' => $validated['last_name'],
                     'email' => $invitation->email,
                     'phone' => $validated['phone'] ?? null,
+                    'country' => CountryCatalog::normalize($validated['country'] ?? null),
                     'status' => 'ACTIVE',
                 ]
             );

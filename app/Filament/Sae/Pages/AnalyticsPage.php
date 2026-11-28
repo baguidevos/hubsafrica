@@ -6,6 +6,7 @@ use App\Models\Cohort;
 use App\Models\Program;
 use App\Models\Sae;
 use App\Services\ReportExportService;
+use App\Services\SaeCountryBreakdownService;
 use BackedEnum;
 use Filament\Facades\Filament;
 use Filament\Pages\Page;
@@ -112,5 +113,45 @@ class AnalyticsPage extends Page
             'program_id' => $this->selectedProgramId,
             'cohort_id' => $this->selectedCohortId,
         ]);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getCountryBreakdown(): array
+    {
+        $tenant = $this->getActiveTenant();
+
+        if (! $tenant) {
+            return [
+                'summary' => [
+                    'total_accounts' => 0,
+                    'accounts_with_application' => 0,
+                    'accounts_with_project' => 0,
+                    'accounts_without_project' => 0,
+                    'total_applications' => 0,
+                    'total_calls' => 0,
+                ],
+                'global_by_country' => [],
+                'by_call_and_country' => [],
+            ];
+        }
+
+        $programId = ($this->selectedProgramId && $this->selectedProgramId !== 'all')
+            ? (int) $this->selectedProgramId
+            : null;
+        $cohortId = ($this->selectedCohortId && $this->selectedCohortId !== 'all')
+            ? (int) $this->selectedCohortId
+            : null;
+
+        return app(SaeCountryBreakdownService::class)->buildForSae($tenant, $programId, $cohortId);
+    }
+
+    public function exportCountryBreakdownCsv(): StreamedResponse
+    {
+        $tenant = $this->getActiveTenant() ?? new Sae(['name' => 'Hubs Africa', 'slug' => 'hubsafrica']);
+        $breakdown = $this->getCountryBreakdown();
+
+        return app(SaeCountryBreakdownService::class)->streamCsv($tenant, $breakdown);
     }
 }

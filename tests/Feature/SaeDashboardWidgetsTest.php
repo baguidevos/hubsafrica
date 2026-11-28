@@ -320,6 +320,7 @@ test('cohort public registration creates entrepreneur with CANDIDAT status and k
         'last_name' => 'Ba',
         'email' => 'aissatou.cohorte@example.com',
         'phone' => '+221770001122',
+        'country' => 'Sénégal',
         'password' => 'password123',
         'password_confirmation' => 'password123',
     ])->assertRedirect();

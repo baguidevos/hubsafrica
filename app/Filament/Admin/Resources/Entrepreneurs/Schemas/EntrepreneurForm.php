@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources\Entrepreneurs\Schemas;
 
 use App\Enums\EntrepreneurStatus;
 use App\Enums\Gender;
+use App\Support\CountryCatalog;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -84,9 +85,10 @@ class EntrepreneurForm
                 Section::make('Profil sociodémographique & Territoire')
                     ->schema([
                         Grid::make(2)->schema([
-                            TextInput::make('country')
+                            Select::make('country')
                                 ->label('Pays de résidence')
-                                ->default('Sénégal'),
+                                ->options(CountryCatalog::options())
+                                ->searchable(),
 
                             TextInput::make('territory')
                                 ->label('Région / Territoire')

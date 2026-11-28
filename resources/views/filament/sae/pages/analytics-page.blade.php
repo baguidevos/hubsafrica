@@ -1,6 +1,7 @@
 <x-filament-panels::page>
     @php
         $d = $this->getAnalyticsData();
+        $countryBreakdown = $this->getCountryBreakdown();
         $tenant = $this->getActiveTenant();
         $branding = app(\App\Services\ReportExportService::class)->getTenantBranding($tenant);
     @endphp
@@ -36,6 +37,15 @@
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2.5">
+                    <x-filament::button
+                        wire:click="exportCountryBreakdownCsv"
+                        color="success"
+                        icon="heroicon-o-globe-europe-africa"
+                        size="sm"
+                    >
+                        Export Pays &amp; Appels (Excel)
+                    </x-filament::button>
+
                     <x-filament::button
                         :href="$this->getCsvUrl()"
                         tag="a"
@@ -290,5 +300,150 @@
                 </div>
             </x-filament::section>
         </div>
+
+        <!-- Répartition Géographique par Pays & par Appel -->
+        @php
+            $cbSummary = $countryBreakdown['summary'] ?? [];
+            $globalByCountry = $countryBreakdown['global_by_country'] ?? [];
+            $byCallAndCountry = $countryBreakdown['by_call_and_country'] ?? [];
+        @endphp
+
+        <x-filament::section>
+            <x-slot name="heading">
+                <div class="flex items-center gap-2 text-sm font-bold">
+                    <x-heroicon-m-globe-europe-africa class="w-4 h-4 text-primary-600 dark:text-primary-400" />
+                    <span>Répartition géographique par pays &amp; par appel</span>
+                </div>
+            </x-slot>
+
+            <x-slot name="headerEnd">
+                <div class="flex flex-wrap items-center gap-2">
+                    <x-filament::badge color="primary">
+                        {{ $cbSummary['total_accounts'] ?? 0 }} comptes au total
+                    </x-filament::badge>
+                    <x-filament::badge color="warning">
+                        {{ $cbSummary['accounts_without_project'] ?? 0 }} sans projet
+                    </x-filament::badge>
+                    <x-filament::badge color="info">
+                        {{ $cbSummary['total_applications'] ?? 0 }} candidatures
+                    </x-filament::badge>
+                    <x-filament::button
+                        color="success"
+                        size="xs"
+                        icon="heroicon-m-table-cells"
+                        wire:click="exportCountryBreakdownCsv"
+                    >
+                        Exporter CSV / Excel
+                    </x-filament::button>
+                </div>
+            </x-slot>
+
+            <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">
+                Le pays est résolu depuis le <strong>compte entrepreneur</strong> en priorité, puis en repli depuis le formulaire de candidature si non renseigné sur le compte. La répartition globale inclut tous les comptes inscrits, y compris les comptes sans projet.
+            </p>
+
+            <!-- Mini synthèse -->
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-6">
+                <div class="p-3 rounded-xl border border-gray-200/60 dark:border-white/10 bg-gray-50/50 dark:bg-white/5 text-center">
+                    <span class="block text-[10px] text-gray-500 dark:text-gray-400 font-bold uppercase">Total comptes</span>
+                    <span class="text-lg font-black text-gray-950 dark:text-white tabular-nums">{{ $cbSummary['total_accounts'] ?? 0 }}</span>
+                </div>
+                <div class="p-3 rounded-xl border border-gray-200/60 dark:border-white/10 bg-gray-50/50 dark:bg-white/5 text-center">
+                    <span class="block text-[10px] text-gray-500 dark:text-gray-400 font-bold uppercase">Avec candidature</span>
+                    <span class="text-lg font-black text-primary-600 dark:text-primary-400 tabular-nums">{{ $cbSummary['accounts_with_application'] ?? 0 }}</span>
+                </div>
+                <div class="p-3 rounded-xl border border-gray-200/60 dark:border-white/10 bg-gray-50/50 dark:bg-white/5 text-center">
+                    <span class="block text-[10px] text-gray-500 dark:text-gray-400 font-bold uppercase">Avec projet</span>
+                    <span class="text-lg font-black text-emerald-600 dark:text-emerald-400 tabular-nums">{{ $cbSummary['accounts_with_project'] ?? 0 }}</span>
+                </div>
+                <div class="p-3 rounded-xl border border-gray-200/60 dark:border-white/10 bg-gray-50/50 dark:bg-white/5 text-center">
+                    <span class="block text-[10px] text-gray-500 dark:text-gray-400 font-bold uppercase">Sans projet</span>
+                    <span class="text-lg font-black text-amber-600 dark:text-amber-400 tabular-nums">{{ $cbSummary['accounts_without_project'] ?? 0 }}</span>
+                </div>
+                <div class="p-3 rounded-xl border border-gray-200/60 dark:border-white/10 bg-gray-50/50 dark:bg-white/5 text-center">
+                    <span class="block text-[10px] text-gray-500 dark:text-gray-400 font-bold uppercase">Total candidatures</span>
+                    <span class="text-lg font-black text-sky-600 dark:text-sky-400 tabular-nums">{{ $cbSummary['total_applications'] ?? 0 }}</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Tableau 1 : Répartition globale par pays -->
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-3">
+                        1. Répartition globale par pays (tous les comptes, y compris sans projet)
+                    </h4>
+
+                    @if(count($globalByCountry) > 0)
+                        <div class="overflow-x-auto rounded-xl border border-gray-200/70 dark:border-white/10">
+                            <table class="w-full text-xs text-left">
+                                <thead class="bg-gray-50 dark:bg-white/5 text-gray-500 dark:text-gray-400 uppercase text-[10px]">
+                                    <tr>
+                                        <th class="px-3 py-2.5 font-bold">Pays</th>
+                                        <th class="px-3 py-2.5 font-bold text-right">Total</th>
+                                        <th class="px-3 py-2.5 font-bold text-right">Candidatures</th>
+                                        <th class="px-3 py-2.5 font-bold text-right">Avec projet</th>
+                                        <th class="px-3 py-2.5 font-bold text-right">Sans projet</th>
+                                        <th class="px-3 py-2.5 font-bold text-right">Part</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100 dark:divide-white/5">
+                                    @foreach($globalByCountry as $row)
+                                        <tr class="hover:bg-gray-50/70 dark:hover:bg-white/5">
+                                            <td class="px-3 py-2 font-semibold text-gray-900 dark:text-white">{{ $row['country'] }}</td>
+                                            <td class="px-3 py-2 text-right font-bold text-gray-900 dark:text-white tabular-nums">{{ $row['total_accounts'] }}</td>
+                                            <td class="px-3 py-2 text-right text-primary-600 dark:text-primary-400 tabular-nums">{{ $row['with_application'] }}</td>
+                                            <td class="px-3 py-2 text-right text-emerald-600 dark:text-emerald-400 tabular-nums">{{ $row['with_project'] }}</td>
+                                            <td class="px-3 py-2 text-right text-amber-600 dark:text-amber-400 tabular-nums">{{ $row['without_project'] }}</td>
+                                            <td class="px-3 py-2 text-right text-gray-500 dark:text-gray-400 tabular-nums">{{ number_format($row['percentage'], 1, ',', '') }}%</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @else
+                        <div class="p-6 border border-dashed rounded-xl border-gray-200 dark:border-white/10 text-center">
+                            <p class="text-xs text-gray-400 dark:text-gray-500">Aucun compte entrepreneur enregistré pour le moment.</p>
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Tableau 2 : Répartition par appel × pays -->
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-3">
+                        2. Répartition par appel (Programme / Cohorte) × Pays
+                    </h4>
+
+                    @if(count($byCallAndCountry) > 0)
+                        <div class="space-y-3">
+                            @foreach($byCallAndCountry as $call)
+                                <div class="rounded-xl border border-gray-200/70 dark:border-white/10 overflow-hidden">
+                                    <div class="flex items-center justify-between px-3 py-2 bg-gray-50 dark:bg-white/5 border-b border-gray-200/60 dark:border-white/10">
+                                        <span class="text-xs font-bold text-gray-900 dark:text-white">{{ $call['call_label'] }}</span>
+                                        <x-filament::badge color="primary" size="sm">
+                                            {{ $call['total_applications'] }} candidature(s)
+                                        </x-filament::badge>
+                                    </div>
+                                    <table class="w-full text-xs text-left">
+                                        <tbody class="divide-y divide-gray-100 dark:divide-white/5">
+                                            @foreach($call['countries'] as $countryRow)
+                                                <tr class="hover:bg-gray-50/70 dark:hover:bg-white/5">
+                                                    <td class="px-3 py-1.5 font-medium text-gray-800 dark:text-gray-200">{{ $countryRow['country'] }}</td>
+                                                    <td class="px-3 py-1.5 text-right font-bold text-gray-900 dark:text-white tabular-nums">{{ $countryRow['count'] }}</td>
+                                                    <td class="px-3 py-1.5 text-right text-gray-500 dark:text-gray-400 tabular-nums w-20">{{ number_format($countryRow['percentage'], 1, ',', '') }}%</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="p-6 border border-dashed rounded-xl border-gray-200 dark:border-white/10 text-center">
+                            <p class="text-xs text-gray-400 dark:text-gray-500">Aucune candidature soumise pour ce périmètre.</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </x-filament::section>
     </div>
 </x-filament-panels::page>
